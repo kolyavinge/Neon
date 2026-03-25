@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\di\EngineInjectModule.cpp" />
+    <ClCompile Include="src\core\di\MainDependencyContainer.cpp" />
+    <ClCompile Include="src\engine\vehicle\VehicleForceLogic.cpp" />
+    <ClCompile Include="src\engine\vehicle\VehiclePositionLogic.cpp" />
+    <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp" />
+    <ClCompile Include="src\engine\vehicle\VehicleWeightTransferLogic.cpp" />
+    <ClCompile Include="src\lib\Assert.cpp" />
+    <ClCompile Include="src\lib\calc\Geometry.cpp" />
+    <ClCompile Include="src\lib\calc\TransformMatrix4.cpp" />
+    <ClCompile Include="src\lib\calc\UnitConverter.cpp" />
+    <ClCompile Include="src\lib\calc\Vector3.cpp" />
+    <ClCompile Include="src\lib\calc\Vector4.cpp" />
+    <ClCompile Include="src\lib\di\InstanceCollection.cpp" />
+    <ClCompile Include="src\lib\di\SingletonInstanceHolder.cpp" />
+    <ClCompile Include="src\lib\HashCode.cpp" />
+    <ClCompile Include="src\lib\calc\Math.cpp" />
+    <ClCompile Include="src\lib\Numeric.cpp" />
+    <ClCompile Include="src\lib\Object.cpp" />
+    <ClCompile Include="src\lib\Random.cpp" />
+    <ClCompile Include="src\lib\String.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\model\common\Angles.cpp" />
+    <ClCompile Include="src\model\common\Measures.cpp" />
+    <ClCompile Include="src\model\vehicle\Body.cpp" />
+    <ClCompile Include="src\model\vehicle\Engine.cpp" />
+    <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp" />
+    <ClCompile Include="src\model\vehicle\Gearbox.cpp" />
+    <ClCompile Include="src\model\vehicle\PacejkaFormula.cpp" />
+    <ClCompile Include="src\model\vehicle\Spring.cpp" />
+    <ClCompile Include="src\model\vehicle\Wheel.cpp" />
+    <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\anx\constants.h" />
+    <ClInclude Include="src\core\di\EngineInjectModule.h" />
+    <ClInclude Include="src\core\di\MainDependencyContainer.h" />
+    <ClInclude Include="src\engine\vehicle\VehicleForceLogic.h" />
+    <ClInclude Include="src\engine\vehicle\VehiclePositionLogic.h" />
+    <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
+    <ClInclude Include="src\engine\vehicle\VehicleWeightTransferLogic.h" />
+    <ClInclude Include="src\lib\Assert.h" />
+    <ClInclude Include="src\lib\calc\Geometry.h" />
+    <ClInclude Include="src\lib\calc\TransformMatrix4.h" />
+    <ClInclude Include="src\lib\calc\UnitConverter.h" />
+    <ClInclude Include="src\lib\calc\Vector3.h" />
+    <ClInclude Include="src\lib\calc\Vector4.h" />
+    <ClInclude Include="src\lib\collections\Array.h" />
+    <ClInclude Include="src\lib\collections\Collection.h" />
+    <ClInclude Include="src\lib\collections\Dictionary.h" />
+    <ClInclude Include="src\lib\collections\LookupTable.h" />
+    <ClInclude Include="src\lib\collections\IComparator.h" />
+    <ClInclude Include="src\lib\collections\List.h" />
+    <ClInclude Include="src\lib\collections\Set.h" />
+    <ClInclude Include="src\lib\di\Binder.h" />
+    <ClInclude Include="src\lib\di\DependencyContainer.h" />
+    <ClInclude Include="src\lib\di\FunctionInstanceHolder.h" />
+    <ClInclude Include="src\lib\di\InjectModule.h" />
+    <ClInclude Include="src\lib\di\InstanceCollection.h" />
+    <ClInclude Include="src\lib\di\InstanceHolder.h" />
+    <ClInclude Include="src\lib\di\Resolver.h" />
+    <ClInclude Include="src\lib\di\SingletonInstanceHolder.h" />
+    <ClInclude Include="src\lib\exceptions.h" />
+    <ClInclude Include="src\lib\HashCode.h" />
+    <ClInclude Include="src\lib\Hasher.h" />
+    <ClInclude Include="src\lib\calc\Math.h" />
+    <ClInclude Include="src\lib\Memory.h" />
+    <ClInclude Include="src\lib\Numeric.h" />
+    <ClInclude Include="src\lib\Object.h" />
+    <ClInclude Include="src\lib\Random.h" />
+    <ClInclude Include="src\lib\String.h" />
+    <ClInclude Include="src\lib\system.h" />
+    <ClInclude Include="src\model\common\Angles.h" />
+    <ClInclude Include="src\model\common\Measures.h" />
+    <ClInclude Include="src\model\vehicle\Body.h" />
+    <ClInclude Include="src\model\vehicle\Engine.h" />
+    <ClInclude Include="src\model\vehicle\EngineTorqueCurve.h" />
+    <ClInclude Include="src\model\vehicle\Gearbox.h" />
+    <ClInclude Include="src\model\vehicle\PacejkaFormula.h" />
+    <ClInclude Include="src\model\vehicle\Spring.h" />
+    <ClInclude Include="src\model\vehicle\Wheel.h" />
+    <ClInclude Include="src\model\vehicle\Vehicle.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{fc0148ea-746f-4c69-8f50-a5b831e548d1}</ProjectGuid>
+    <RootNamespace>Neon</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IntDir>bin\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <DisableSpecificWarnings>5045;4820;4514;5027;4626</DisableSpecificWarnings>
+      <TreatSpecificWarningsAsErrors>4244;4172</TreatSpecificWarningsAsErrors>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
