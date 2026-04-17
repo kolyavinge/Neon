@@ -15,4 +15,5 @@ class Spring : public Object {
     SpringData _data;
 
 public:
+    void init();
 };

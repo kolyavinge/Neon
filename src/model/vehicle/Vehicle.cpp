@@ -8,8 +8,19 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(3.0f, 10.0f, 1.0f);
+    _longitudinalForceCurve.set(4.0f, 100.0f, 1.5f);
     _lateralForceCurve.set(3.5f, 20.0f, 1.0f);
+    init();
+}
+
+void Vehicle::init() {
+    _engine.init();
+    _gearbox.init();
+    for (int i = 0; i < _wheels.getCount(); i++) _wheels[i].init();
+    for (int i = 0; i < _springs.getCount(); i++) _springs[i].init();
+    for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
+    _body.init();
+    _angles.init();
     _body.setVehicleMass(_data.mass);
 }
 
@@ -43,6 +54,14 @@ Wheel& Vehicle::getNonDriveWheel(int i) {
     return _wheels[i];
 }
 
+Axle& Vehicle::getNonDriveAxle() {
+    return _axles[0];
+}
+
+Axle& Vehicle::getDriveAxle() {
+    return _axles[1];
+}
+
 Body& Vehicle::getBody() {
     return _body;
 }
@@ -56,18 +75,12 @@ float Vehicle::getLongitudinalForceCoeff(float slipRatio) {
 }
 
 float Vehicle::getLateralForceCoeff(float slipAngle) {
+    slipAngle = UnitConverter::radiansToDegrees(slipAngle);
     return _lateralForceCurve.getValue(slipAngle);
 }
 
-Vector3 Vehicle::getLinearVelocity() {
-    Vector3 velocity;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = getDriveWheel(i);
-        velocity.add(wheel.getLinearVelocity());
-    }
-    velocity.div(Vehicle::driveWheelsCount);
-
-    return velocity;
+Vector3& Vehicle::getLinearVelocity() {
+    return getDriveAxle().getVelocity();
 }
 
 Vector3 Vehicle::getLongitudinalAcceleration() {

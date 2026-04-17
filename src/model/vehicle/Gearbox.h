@@ -17,13 +17,15 @@ enum class Gear {
 
 class Gearbox : public Object {
 
-    int _maxGearsCount;
+    inline static const int _maxGearsCount = (int)Gear::_count;
+
     Array<float, (int)Gear::_count> _gearRatios;
     int _currentGearIndex;
     bool _isClutchActive;
 
 public:
     Gearbox();
+    void init();
     Gear getGear();
     float getGearRatio();
     bool shiftUp();

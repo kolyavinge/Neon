@@ -24,6 +24,7 @@
     <ClCompile Include="src\engine\vehicle\VehicleForceLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehiclePositionLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp" />
+    <ClCompile Include="src\engine\vehicle\VehicleVelocityLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleWeightTransferLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
     <ClCompile Include="src\lib\calc\Geometry.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model\common\Angles.cpp" />
     <ClCompile Include="src\model\common\Measures.cpp" />
+    <ClCompile Include="src\model\vehicle\Axle.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
     <ClCompile Include="src\model\vehicle\Engine.cpp" />
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp" />
@@ -58,6 +60,7 @@
     <ClInclude Include="src\engine\vehicle\VehicleForceLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehiclePositionLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
+    <ClInclude Include="src\engine\vehicle\VehicleVelocityLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleWeightTransferLogic.h" />
     <ClInclude Include="src\lib\Assert.h" />
     <ClInclude Include="src\lib\calc\Geometry.h" />
@@ -92,6 +95,7 @@
     <ClInclude Include="src\lib\system.h" />
     <ClInclude Include="src\model\common\Angles.h" />
     <ClInclude Include="src\model\common\Measures.h" />
+    <ClInclude Include="src\model\vehicle\Axle.h" />
     <ClInclude Include="src\model\vehicle\Body.h" />
     <ClInclude Include="src\model\vehicle\Engine.h" />
     <ClInclude Include="src\model\vehicle\EngineTorqueCurve.h" />

@@ -5,14 +5,11 @@
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Wheel.h>
 
-void VehicleForceLogic::calculateAllForces(Vehicle& vehicle) {
-    calculateTotalForceForAllWheels(vehicle);
-}
-
-void VehicleForceLogic::calculateTotalForceForAllWheels(Vehicle& vehicle) {
+void VehicleForceLogic::calculateForces(Vehicle& vehicle) {
     calculateNewEngineRpmAndWheelsVelocity(vehicle);
     calculateDriveWheelForces(vehicle);
     calculateNonDriveWheelForces(vehicle);
+    calculateAirDragForce(vehicle);
 }
 
 void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
@@ -29,11 +26,8 @@ void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle)
     if (gearbox.isEngineAndWheelsConnected()) {
         for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
-            Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
             driveWheel.calculateNewAngularVelocity(brakingRatio, engineAngularVelocityWithGearRatio, wheelTorque, dt);
             driveWheel.updateRotateAngle(dt);
-            nonDriveWheel.setAngularVelocity(driveWheel.getAngularVelocity());
-            nonDriveWheel.updateRotateAngle(dt);
         }
     }
 }
@@ -58,9 +52,6 @@ void VehicleForceLogic::calculateDriveWheelForces(Vehicle& vehicle) {
         float lateralForceCoeff = vehicle.getLateralForceCoeff(slipAngle);
         wheel.calculateLongitudinalForce(longitudinalForceCoeff);
         wheel.calculateLateralForce(lateralForceCoeff);
-        wheel.calculateLongitudinalAcceleration(vehicle.getData().mass);
-        wheel.calculateLateralAcceleration(vehicle.getData().mass);
-        wheel.calculateTotalForce();
     }
 }
 
@@ -70,7 +61,11 @@ void VehicleForceLogic::calculateNonDriveWheelForces(Vehicle& vehicle) {
         float slipAngle = wheel.getSlipAngle();
         float longitudinalForceCoeff = vehicle.getLateralForceCoeff(slipAngle);
         wheel.calculateLateralForce(longitudinalForceCoeff);
-        wheel.calculateLateralAcceleration(vehicle.getData().mass);
-        wheel.calculateTotalForce();
     }
+}
+
+void VehicleForceLogic::calculateAirDragForce(Vehicle& vehicle) {
+    Body& body = vehicle.getBody();
+    Vector3 vehicleVelocity = vehicle.getLinearVelocity();
+    body.calculateAirDragForce(vehicleVelocity);
 }

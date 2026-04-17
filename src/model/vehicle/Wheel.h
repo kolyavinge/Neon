@@ -2,7 +2,6 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/Angles.h>
 
 class WheelData : public Object {
 
@@ -37,14 +36,11 @@ class Wheel : public Object {
     Vector3 _lateralForce;
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
-    Vector3 _totalForce;
-    Vector3 _linearAcceleration;
     Vector3 _linearVelocity;
-    Vector3 _travelledPath;
-    Vector3 _totalPath; // debug only
 
 public:
     Wheel();
+    void init();
     WheelData& getData();
     float getLoadWeight();
     void setLoadWeight(float weight);
@@ -64,11 +60,7 @@ public:
     void calculateLateralForce(float lateralForceCoeff);
     void calculateLongitudinalAcceleration(float vehicleMass);
     void calculateLateralAcceleration(float vehicleMass);
-    Vector3& getTotalForce();
-    void calculateTotalForce();
-    Vector3& getLinearAcceleration();
     Vector3& getLinearVelocity();
-    Vector3& getTravelledPath();
-    Vector3& getTotalPath();
-    void calculateTravelledPath(float vehicleMass, float deltaTime);
+    void setLinearVelocity(Vector3& velocity);
+    void calculateAngularVelocityByLinear();
 };

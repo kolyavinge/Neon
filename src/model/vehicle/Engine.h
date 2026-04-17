@@ -23,6 +23,7 @@ class Engine : public Object {
 
 public:
     Engine();
+    void init();
     float getRpm();
     float getTorque();
     void calculateNewRpm(float throttleRatio, float wheelsRpmWithGearRatio, float dt);

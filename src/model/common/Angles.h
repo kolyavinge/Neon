@@ -10,4 +10,5 @@ public:
     float roll;
 
     Angles();
+    void init();
 };

@@ -14,14 +14,21 @@ BodyData::BodyData() {
     trackWidth = 2.0f;
     maxPitch = UnitConverter::degreesToRadians(20.0f);
     maxRoll = UnitConverter::degreesToRadians(20.0f);
+    airDragCoeff = 20.0f;
 }
 
 Body::Body() {
+    init();
+}
+
+void Body::init() {
     _frontNormal.set(1.0f, 0.0f, 0.0f);
     _rightNormal.set(0.0f, -1.0f, 0.0f);
     _vehicleMass = 0.0f;
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnRight = 0.0f;
+    _airDragForce.set(0.0f, 0.0f, 0.0f);
+    _angles.init();
 }
 
 BodyData& Body::getData() {
@@ -40,20 +47,22 @@ void Body::setVehicleMass(float mass) {
     _vehicleMass = mass;
 }
 
-void Body::moveDriveAxleBy(Vector3& travelledPath) {
-    _driveAxlePosition.add(travelledPath);
-}
-
-void Body::moveNonDriveAxleBy(Vector3& travelledPath) {
-    _nonDriveAxlePosition.add(travelledPath);
-}
-
 void Body::transferWeightOnRear(float onRear) {
     _transferedWeightOnRear = onRear;
 }
 
 void Body::transferWeightOnRight(float onRight) {
     _transferedWeightOnRight = onRight;
+}
+
+Vector3& Body::getAirDragForce() {
+    return _airDragForce;
+}
+
+void Body::calculateAirDragForce(Vector3& vehicleVelocity) {
+    _airDragForce = vehicleVelocity;
+    _airDragForce.mul(vehicleVelocity.getLength());
+    _airDragForce.mul(-_data.airDragCoeff);
 }
 
 void Body::updateAngles() {

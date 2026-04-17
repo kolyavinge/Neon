@@ -17,6 +17,7 @@ public:
     float trackWidth;
     float maxPitch;
     float maxRoll;
+    float airDragCoeff;
 
     BodyData();
 };
@@ -26,8 +27,7 @@ class Body : public Object {
     BodyData _data;
     Vector3 _frontNormal;
     Vector3 _rightNormal;
-    Vector3 _driveAxlePosition;
-    Vector3 _nonDriveAxlePosition;
+    Vector3 _airDragForce;
     Angles _angles;
     float _vehicleMass;
     float _transferedWeightOnRear;
@@ -35,13 +35,14 @@ class Body : public Object {
 
 public:
     Body();
+    void init();
     BodyData& getData();
     Vector3& getFrontNormal();
     Angles& getAngles();
     void setVehicleMass(float mass);
-    void moveDriveAxleBy(Vector3& travelledPath);
-    void moveNonDriveAxleBy(Vector3& travelledPath);
     void transferWeightOnRear(float onRear);
     void transferWeightOnRight(float onRight);
+    Vector3& getAirDragForce();
+    void calculateAirDragForce(Vector3& vehicleVelocity);
     void updateAngles();
 };

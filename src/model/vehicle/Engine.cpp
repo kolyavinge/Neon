@@ -18,6 +18,10 @@ EngineData::EngineData() {
 }
 
 Engine::Engine() {
+    init();
+}
+
+void Engine::init() {
     _rpm = _data.minRpm;
     _torque = 0.0f;
 }
@@ -31,14 +35,13 @@ float Engine::getTorque() {
 }
 
 void Engine::calculateNewRpm(float throttleRatio, float wheelsRpmWithGearRatio, float dt) {
-    if (_rpm > _data.maxRpm) {
-        throttleRatio = 0.0f;
-    }
-
     _rpm +=
-        0.3f * throttleRatio * _data.torqueCurve.getValue(_rpm + dt) +
         _data.brakingForce * (wheelsRpmWithGearRatio - _rpm) -
         _data.innerFrictionCoeff * _rpm;
+
+    if (_rpm < _data.maxRpm) {
+        _rpm += 0.15f * throttleRatio * _data.torqueCurve.getValue(_rpm + dt);
+    }
 
     _rpm = Math::max(_rpm, _data.minRpm);
     _torque = _data.torqueCurve.getValue(_rpm);

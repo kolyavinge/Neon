@@ -11,12 +11,12 @@ public:
         return new VehicleForceLogic();
     }
 
-    void calculateAllForces(Vehicle& vehicle);
+    void calculateForces(Vehicle& vehicle);
 
 private:
-    void calculateTotalForceForAllWheels(Vehicle& vehicle);
     void calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle);
     float getAverageWheelsRpm(Vehicle& vehicle);
     void calculateDriveWheelForces(Vehicle& vehicle);
     void calculateNonDriveWheelForces(Vehicle& vehicle);
+    void calculateAirDragForce(Vehicle& vehicle);
 };
