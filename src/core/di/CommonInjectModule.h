@@ -3,7 +3,7 @@
 #include <lib/di/Binder.h>
 #include <lib/di/InjectModule.h>
 
-class EngineInjectModule : public InjectModule {
+class CommonInjectModule : public InjectModule {
 
 public:
     void init(Binder& binder) override;

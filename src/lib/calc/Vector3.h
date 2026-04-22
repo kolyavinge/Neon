@@ -14,6 +14,7 @@ public:
     Vector3();
     Vector3(float valueX, float valueY, float valueZ);
     void set(float valueX, float valueY, float valueZ);
+    void setZero();
     bool isZero(float eps = Numeric::epsilonFloat);
     bool equals(Object& v) override;
     int getHashCode() override;

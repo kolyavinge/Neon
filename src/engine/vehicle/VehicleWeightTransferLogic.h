@@ -7,9 +7,9 @@
 class VehicleWeightTransferLogic : public Object {
 
 public:
-    static VehicleWeightTransferLogic* resolve(Resolver&) {
-        return new VehicleWeightTransferLogic();
-    }
+    //static VehicleWeightTransferLogic* resolve(Resolver&) {
+    //    return new VehicleWeightTransferLogic();
+    //}
 
     void transferWeight(Vehicle& vehicle);
 

@@ -49,6 +49,7 @@ public:
     Wheel& getWheel(WheelPosition p);
     Wheel& getDriveWheel(int i);
     Wheel& getNonDriveWheel(int i);
+    Spring& getSpring(int i);
     Axle& getNonDriveAxle();
     Axle& getDriveAxle();
     Body& getBody();

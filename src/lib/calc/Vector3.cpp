@@ -3,8 +3,7 @@
 #include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 
-Vector3::Vector3() {
-    set(0.0f, 0.0f, 0.0f);
+Vector3::Vector3() : Vector3(0.0f, 0.0f, 0.0f) {
 }
 
 Vector3::Vector3(float valueX, float valueY, float valueZ) {
@@ -15,6 +14,10 @@ void Vector3::set(float valueX, float valueY, float valueZ) {
     x = valueX;
     y = valueY;
     z = valueZ;
+}
+
+void Vector3::setZero() {
+    set(0.0f, 0.0f, 0.0f);
 }
 
 bool Vector3::isZero(float eps) {

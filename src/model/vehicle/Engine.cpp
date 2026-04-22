@@ -1,7 +1,6 @@
 #pragma once
 
 #include <lib/Numeric.h>
-#include <lib/calc/Math.h>
 #include <model/vehicle/Engine.h>
 
 EngineData::EngineData() {
@@ -13,8 +12,8 @@ EngineData::EngineData() {
     torqueCurve.f = 3000.0f;
     minRpm = 1000.0;
     maxRpm = 8000.0;
-    innerFrictionCoeff = 0.01f;
-    brakingForce = 0.2f;
+    innerFrictionCoeff = 0.001f;
+    brakingForce = 0.01f;
 }
 
 Engine::Engine() {
@@ -34,16 +33,15 @@ float Engine::getTorque() {
     return _torque;
 }
 
-void Engine::calculateNewRpm(float throttleRatio, float wheelsRpmWithGearRatio, float dt) {
+void Engine::calculateNewRpm(float throttleRatio, float wheelsRpmWithGearRatio, float gearRatio, float dt) {
     _rpm +=
         _data.brakingForce * (wheelsRpmWithGearRatio - _rpm) -
         _data.innerFrictionCoeff * _rpm;
 
     if (_rpm < _data.maxRpm) {
-        _rpm += 0.15f * throttleRatio * _data.torqueCurve.getValue(_rpm + dt);
+        _rpm += 0.05f * throttleRatio * gearRatio * _data.torqueCurve.getValue(_rpm + dt);
     }
 
-    _rpm = Math::max(_rpm, _data.minRpm);
     _torque = _data.torqueCurve.getValue(_rpm);
 }
 

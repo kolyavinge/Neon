@@ -1,9 +1,29 @@
+#include <lib/calc/Math.h>
 #include <model/vehicle/Spring.h>
 
 SpringData::SpringData() {
-    stiffness = 2.0f;
+    stiffness = 10000.0f;
+    damper = 0.2f;
+    maxLength = 0.3f;
+}
+
+Spring::Spring() {
+    init();
 }
 
 void Spring::init() {
+    _maxLength = _data.maxLength;
+    _prevLength = _data.maxLength / 2.0f;
+    _currentLength = _prevLength;
+}
 
+float Spring::getForce() {
+    return _force;
+}
+
+void Spring::calculateForce(float dt) {
+    float depth = _maxLength - _currentLength;
+    float speed = (_prevLength - _currentLength) / dt;
+    _force = _data.stiffness * depth + _data.damper * speed;
+    _force = Math::max(_force, 0.0f);
 }

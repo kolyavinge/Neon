@@ -42,6 +42,10 @@ public:
         Memory::copy<T>(range, _items, count);
     }
 
+    T* getBuf() {
+        return _items;
+    }
+
 private:
     void checkBounds(int index) {
         bool inBounds = 0 <= index && index < Count;

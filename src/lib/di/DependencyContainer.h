@@ -1,7 +1,6 @@
 #pragma once
 
 #include <lib/di/Binder.h>
-#include <lib/di/InjectModule.h>
 #include <lib/di/InstanceCollection.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
@@ -23,7 +22,9 @@ public:
         return _resolver.resolve<TInstance>();
     }
 
-    void initFromModule(InjectModule& module) {
+    template<class TModule>
+    void initFrom() {
+        TModule module = {};
         module.init(_binder);
     }
 

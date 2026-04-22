@@ -6,9 +6,9 @@
 #include <engine/vehicle/VehicleWeightTransferLogic.h>
 
 void EngineInjectModule::init(Binder& binder) {
-    binder.bindSingleton<VehicleForceLogic>(VehicleForceLogic::resolve);
-    binder.bindSingleton<VehiclePositionLogic>(VehiclePositionLogic::resolve);
+    binder.bindSingleton<VehicleForceLogic>();
+    binder.bindSingleton<VehiclePositionLogic>();
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
-    binder.bindSingleton<VehicleVelocityLogic>(VehicleVelocityLogic::resolve);
-    binder.bindSingleton<VehicleWeightTransferLogic>(VehicleWeightTransferLogic::resolve);
+    binder.bindSingleton<VehicleVelocityLogic>();
+    binder.bindSingleton<VehicleWeightTransferLogic>();
 }

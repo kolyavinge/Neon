@@ -14,7 +14,7 @@ BodyData::BodyData() {
     trackWidth = 2.0f;
     maxPitch = UnitConverter::degreesToRadians(20.0f);
     maxRoll = UnitConverter::degreesToRadians(20.0f);
-    airDragCoeff = 20.0f;
+    airDragCoeff = 5.0f;
 }
 
 Body::Body() {
@@ -27,7 +27,7 @@ void Body::init() {
     _vehicleMass = 0.0f;
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnRight = 0.0f;
-    _airDragForce.set(0.0f, 0.0f, 0.0f);
+    _airDragForce.setZero();
     _angles.init();
 }
 

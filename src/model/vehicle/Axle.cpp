@@ -5,9 +5,9 @@ Axle::Axle() {
 }
 
 void Axle::init() {
-    _acceleration.set(0.0f, 0.0f, 0.0f);
-    _velocity.set(0.0f, 0.0f, 0.0f);
-    _center.set(0.0f, 0.0f, 0.0f);
+    _acceleration.setZero();
+    _velocity.setZero();
+    _center.setZero();
 }
 
 void Axle::calculateVelocity(Vector3& force, float vehicleMass, float deltaTime) {

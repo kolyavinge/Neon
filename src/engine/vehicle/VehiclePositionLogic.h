@@ -7,9 +7,9 @@
 class VehiclePositionLogic : public Object {
 
 public:
-    static VehiclePositionLogic* resolve(Resolver&) {
-        return new VehiclePositionLogic();
-    }
+    //static VehiclePositionLogic* resolve(Resolver&) {
+    //    return new VehiclePositionLogic();
+    //}
 
     void updatePosition(Vehicle& vehicle);
 };

@@ -33,7 +33,6 @@ int main() {
     MainDependencyContainer container;
     VehicleUpdater& vehicleUpdater = container.resolve<VehicleUpdater>();
     Vehicle vehicle;
-    Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
 
     //std::cout << engine.getEngineStat().getCharBuf() << "\r\n\r\n";
@@ -62,6 +61,28 @@ int main() {
     gearbox.shiftUp();
     gearbox.shiftUp();
     std::cout << "\tGear: " << (int)gearbox.getGear() << "\r\n\r\n";
+    showStat(0, vehicle);
+    for (timeSec = 1; timeSec <= 10; timeSec++) {
+        for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
+            vehicleUpdater.updateVehicle(vehicle);
+        }
+        showStat(timeSec, vehicle);
+    }
+    for (; timeSec < 1000; timeSec++) {
+        for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
+            vehicleUpdater.updateVehicle(vehicle);
+        }
+    }
+    showStat(timeSec, vehicle);
+
+    std::cout << "\r\n\r\n";
+
+    vehicle.init();
+    gearbox.shiftUp();
+    gearbox.shiftUp();
+    gearbox.shiftUp();
+    std::cout << "\tGear: " << (int)gearbox.getGear() << "\r\n\r\n";
+    showStat(0, vehicle);
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
             vehicleUpdater.updateVehicle(vehicle);

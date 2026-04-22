@@ -9,7 +9,7 @@
 
 WheelData::WheelData() {
     radius = 0.3f;
-    roadFrictionCoeff = 0.05f;
+    roadFrictionCoeff = 0.1f;
     brakingForceCoeff = 0.1f;
     maxSteeringAngle = UnitConverter::degreesToRadians(45.0f);
 }
@@ -22,16 +22,17 @@ void Wheel::init() {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
+    _prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
     _frontNormal.set(1.0f, 0.0f, 0.0f);
     _axleNormal.set(0.0f, 1.0f, 0.0f);
     _topNormal = CommonConstants::upVector;
-    _axlePosition.set(0.0f, 0.0f, 0.0f);
-    _longitudinalForce.set(0.0f, 0.0f, 0.0f);
-    _lateralForce.set(0.0f, 0.0f, 0.0f);
-    _longitudinalAcceleration.set(0.0f, 0.0f, 0.0f);
-    _lateralAcceleration.set(0.0f, 0.0f, 0.0f);
-    _linearVelocity.set(0.0f, 0.0f, 0.0f);
+    _axlePosition.setZero();
+    _longitudinalForce.setZero();
+    _lateralForce.setZero();
+    _longitudinalAcceleration.setZero();
+    _lateralAcceleration.setZero();
+    _linearVelocity.setZero();
 }
 
 WheelData& Wheel::getData() {
@@ -55,13 +56,14 @@ float Wheel::getAngularVelocity() {
     return _angularVelocity;
 }
 
-void Wheel::setAngularVelocity(float velocity) {
-    _angularVelocity = velocity;
-}
+//void Wheel::setAngularVelocity(float velocity) {
+//    _angularVelocity = velocity;
+//}
 
 void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
+    _prevAngularVelocity = _angularVelocity;
     _angularVelocity +=
-        0.001f * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity) -
+        0.0001f * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity) -
         (_data.brakingForceCoeff * brakingRatio * dt) -
         (_angularVelocity * _data.roadFrictionCoeff);
 }
@@ -78,8 +80,12 @@ void Wheel::steer(Vector3& vehicleForwardDirection, float angle) {
 }
 
 float Wheel::getSlipRatio() {
-    if (Numeric::floatEquals(_angularVelocity, 0.0f)) return 0.0f;
-    float drivenVelocity = _angularVelocity * _data.radius;
+    // угловую скорость берем из пред шага, ей соответствует текущая линейная скорость
+    // для текущей угловой скорости, линейная будет посчитана в конце текущего шага
+
+    if (Numeric::floatEquals(_prevAngularVelocity, 0.0f)) return 0.0f;
+    if (Numeric::between(_prevAngularVelocity, 0.0f, 10.0f)) return 0.3f;
+    float drivenVelocity = _prevAngularVelocity * _data.radius;
     float linearVelocity = _linearVelocity.getLength();
     float slipRatio = (drivenVelocity - linearVelocity) / drivenVelocity;
 
@@ -113,17 +119,17 @@ Vector3& Wheel::getLateralAcceleration() {
     return _lateralAcceleration;
 }
 
-void Wheel::calculateLongitudinalForce(float longitudinalForceCoeff) {
+void Wheel::calculateLongitudinalForce(float longitudinalForceCoeff, float springForce) {
     _longitudinalForce = _frontNormal;
-    _longitudinalForce.setLength(Math::abs(longitudinalForceCoeff) * _loadWeight);
+    _longitudinalForce.setLength(Math::abs(longitudinalForceCoeff) * springForce);
     if (longitudinalForceCoeff < 0.0f) {
         _longitudinalForce.mul(-1.0f);
     }
 }
 
-void Wheel::calculateLateralForce(float lateralForceCoeff) {
+void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
     _lateralForce = _axleNormal;
-    _lateralForce.setLength(lateralForceCoeff * _loadWeight);
+    _lateralForce.setLength(lateralForceCoeff * springForce);
 }
 
 void Wheel::calculateLongitudinalAcceleration(float vehicleMass) {
@@ -145,5 +151,6 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear() {
+    _prevAngularVelocity = _angularVelocity;
     _angularVelocity = _linearVelocity.getLength() / _data.radius;
 }

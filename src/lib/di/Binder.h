@@ -2,6 +2,7 @@
 
 #include <lib/di/FunctionInstanceHolder.h>
 #include <lib/di/InstanceCollection.h>
+#include <lib/di/SimpleInstanceHolder.h>
 #include <lib/di/SingletonInstanceHolder.h>
 #include <lib/system.h>
 
@@ -20,6 +21,15 @@ public:
     void bindSingleton(ResolvingFunction<TInstance> func) {
         if (!_instances.containsType(typeid(TInstance))) {
             _instances.add(typeid(TInstance), new SingletonInstanceHolder(new FunctionInstanceHolder<TInstance>(func)));
+        } else {
+            throw BindException();
+        }
+    }
+
+    template<class TInstance>
+    void bindSingleton() {
+        if (!_instances.containsType(typeid(TInstance))) {
+            _instances.add(typeid(TInstance), new SingletonInstanceHolder(new SimpleInstanceHolder<TInstance>()));
         } else {
             throw BindException();
         }

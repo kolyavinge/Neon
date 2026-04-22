@@ -8,8 +8,8 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(4.0f, 100.0f, 1.5f);
-    _lateralForceCurve.set(3.5f, 20.0f, 1.0f);
+    _longitudinalForceCurve.set(6.0f, 6.0f, 2.0f);
+    _lateralForceCurve.set(3.5f, 1.0f, 1.0f);
     init();
 }
 
@@ -52,6 +52,10 @@ Wheel& Vehicle::getDriveWheel(int i) {
 Wheel& Vehicle::getNonDriveWheel(int i) {
     if (!Numeric::between(i, 0, nonDriveWheelsCount - 1)) throw ArgumentException();
     return _wheels[i];
+}
+
+Spring& Vehicle::getSpring(int i) {
+    return _springs[i];
 }
 
 Axle& Vehicle::getNonDriveAxle() {
