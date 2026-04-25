@@ -12,3 +12,9 @@ public:
     inline static Vector3 axisOrigin = Vector3(0.0f, 0.0f, 0.0f);
     inline static Vector3 upVector = Vector3(0.0f, 0.0f, 1.0f);
 };
+
+class GameConstants {
+
+public:
+    inline static const int maxVehiclesCount = 1;
+};

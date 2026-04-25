@@ -1,5 +1,5 @@
 #include <core/InputManager.h>
 
-void InputManager::updateDevices() {
+void InputManager::updateInputDevices() {
     keyboard.update();
 }

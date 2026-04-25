@@ -1,4 +1,4 @@
-#include <anx/constants.h>
+#include <common/constants.h>
 #include <conio.h>
 #include <core/di/MainDependencyContainer.h>
 #include <engine/vehicle/VehicleUpdater.h>
@@ -32,7 +32,9 @@ void showStat(int timeSec, Vehicle& vehicle) {
 int main() {
     MainDependencyContainer container;
     VehicleUpdater& vehicleUpdater = container.resolve<VehicleUpdater>();
-    Vehicle vehicle;
+    VehiclesArray vehicles;
+    Vehicle& vehicle = vehicles[0];
+    vehicle.init();
     Gearbox& gearbox = vehicle.getGearbox();
 
     //std::cout << engine.getEngineStat().getCharBuf() << "\r\n\r\n";
@@ -44,13 +46,13 @@ int main() {
     int timeSec;
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
     }
     showStat(timeSec, vehicle);
@@ -64,13 +66,13 @@ int main() {
     showStat(0, vehicle);
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
     }
     showStat(timeSec, vehicle);
@@ -85,13 +87,13 @@ int main() {
     showStat(0, vehicle);
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicle(vehicle);
+            vehicleUpdater.updateVehicles(vehicles);
         }
     }
     showStat(timeSec, vehicle);

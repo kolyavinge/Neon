@@ -30,5 +30,8 @@ public:
         VehicleVelocityLogic& vehicleVelocityLogic,
         VehicleWeightTransferLogic& vehicleWeightTransferLogic);
 
+    void updateVehicles(VehiclesArray& vehicles);
+
+private:
     void updateVehicle(Vehicle& vehicle);
 };

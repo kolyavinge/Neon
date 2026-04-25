@@ -2,9 +2,7 @@
 #include <model/vehicle/DrivingInputData.h>
 
 DrivingInputData::DrivingInputData() {
-    _throttleRatio = 0.0f;
-    _brakeRatio = 0.0f;
-    _steeringRatio = 0.0f;
+    reset();
 }
 
 float DrivingInputData::getThrottleRatio() {
@@ -32,4 +30,10 @@ float DrivingInputData::getSteeringRatio() {
 void DrivingInputData::setSteeringRatio(float steeringRatio) {
     if (!Numeric::between(steeringRatio, -1.0f, 1.0f)) throw ArgumentException();
     _steeringRatio = steeringRatio;
+}
+
+void DrivingInputData::reset() {
+    _throttleRatio = 0.0f;
+    _brakeRatio = 0.0f;
+    _steeringRatio = 0.0f;
 }

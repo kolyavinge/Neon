@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/Angles.h>
@@ -66,3 +67,5 @@ public:
     float getFrontWheelsWeight();
     float getRearWheelsWeight();
 };
+
+typedef Array<Vehicle, GameConstants::maxVehiclesCount> VehiclesArray;

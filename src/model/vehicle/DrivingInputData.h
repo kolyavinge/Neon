@@ -16,4 +16,5 @@ public:
     void setBrakeRatio(float brakeRatio);
     float getSteeringRatio();
     void setSteeringRatio(float steeringRatio);
+    void reset();
 };

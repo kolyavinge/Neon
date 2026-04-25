@@ -11,6 +11,12 @@ VehicleUpdater::VehicleUpdater(
     _vehicleWeightTransferLogic(vehicleWeightTransferLogic) {
 }
 
+void VehicleUpdater::updateVehicles(VehiclesArray& vehicles) {
+    for (int i = 0; i < vehicles.getCount(); i++) {
+        updateVehicle(vehicles[i]);
+    }
+}
+
 void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
     _vehicleForceLogic.calculateForces(vehicle);
     _vehicleWeightTransferLogic.transferWeight(vehicle);

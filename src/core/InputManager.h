@@ -13,5 +13,5 @@ public:
         return new InputManager();
     }
 
-    void updateDevices();
+    void updateInputDevices();
 };
