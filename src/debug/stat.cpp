@@ -1,4 +1,5 @@
 #include <common/constants.h>
+#include <conio.h>
 #include <core/di/MainDependencyContainer.h>
 #include <debug/stat.h>
 #include <engine/vehicle/VehicleUpdater.h>
@@ -97,4 +98,6 @@ void showDebugInfo() {
         }
     }
     showStat(timeSec, vehicle);
+
+    _getch();
 }

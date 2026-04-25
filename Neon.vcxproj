@@ -26,6 +26,7 @@
     <ClCompile Include="src\common\DrivingInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\common\InputManager.cpp" />
+    <ClCompile Include="src\core\GameFactory.cpp" />
     <ClCompile Include="src\core\ScreenManager.cpp" />
     <ClCompile Include="src\debug\stat.cpp" />
     <ClCompile Include="src\engine\GameState.cpp" />
@@ -51,7 +52,7 @@
     <ClCompile Include="src\lib\Object.cpp" />
     <ClCompile Include="src\lib\Random.cpp" />
     <ClCompile Include="src\lib\String.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\model\common\Angles.cpp" />
     <ClCompile Include="src\model\common\Measures.cpp" />
     <ClCompile Include="src\model\vehicle\Axle.cpp" />
@@ -64,11 +65,14 @@
     <ClCompile Include="src\model\vehicle\Spring.cpp" />
     <ClCompile Include="src\model\vehicle\Wheel.cpp" />
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
+    <ClCompile Include="src\render\gl\opengl.cpp" />
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp" />
     <ClCompile Include="src\ui\DebugScreen.cpp" />
+    <ClInclude Include="src\App.h" />
     <ClInclude Include="src\core\di\RenderInjectModule.h" />
     <ClInclude Include="src\common\DrivingInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\core\GameFactory.h" />
     <ClInclude Include="src\debug\stat.h" />
     <ClInclude Include="src\engine\GameState.h" />
     <ClInclude Include="src\engine\GameUpdater.h" />
@@ -236,8 +240,13 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;$(ProjectDir)\external\glew\glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutputPath)glfw3.dll" copy "$(SolutionDir)external\glfw\glfw3.dll" "$(OutputPath)"
+if not exist "$(OutputPath)glew32.dll" copy "$(SolutionDir)external\glew\glew32.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

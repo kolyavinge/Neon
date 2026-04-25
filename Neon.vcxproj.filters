@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\Object.cpp">
@@ -154,6 +154,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\stat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\gl\opengl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\GameFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -366,6 +372,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\stat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\GameFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
