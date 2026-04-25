@@ -1,4 +1,4 @@
-#include <core/DrivingInputManager.h>
+#include <common/DrivingInputManager.h>
 
 DrivingInputManager::DrivingInputManager(
     InputManager& inputManager) :

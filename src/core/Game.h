@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/InputManager.h>
+#include <common/InputManager.h>
 #include <core/ScreenManager.h>
 #include <engine/GameState.h>
 #include <lib/di/Resolver.h>

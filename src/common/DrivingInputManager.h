@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/InputManager.h>
+#include <common/InputManager.h>
 #include <lib/di/Resolver.h>
 #include <model/vehicle/DrivingInputData.h>
 

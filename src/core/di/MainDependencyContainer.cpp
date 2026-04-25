@@ -1,10 +1,10 @@
-#include <core/di/CommonInjectModule.h>
 #include <core/di/EngineInjectModule.h>
+#include <core/di/GameInjectModule.h>
 #include <core/di/MainDependencyContainer.h>
 #include <core/di/RenderInjectModule.h>
 
 MainDependencyContainer::MainDependencyContainer() {
-    _dependencyContainer.initFrom<CommonInjectModule>();
     _dependencyContainer.initFrom<EngineInjectModule>();
+    _dependencyContainer.initFrom<GameInjectModule>();
     _dependencyContainer.initFrom<RenderInjectModule>();
 }

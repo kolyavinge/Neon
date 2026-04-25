@@ -120,16 +120,16 @@
     <ClCompile Include="src\lib\input\Keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\InputManager.cpp">
+    <ClCompile Include="src\common\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\di\CommonInjectModule.cpp">
+    <ClCompile Include="src\core\di\GameInjectModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\DrivingInputManager.cpp">
+    <ClCompile Include="src\common\DrivingInputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\DebugScreen.cpp">
@@ -151,6 +151,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\di\RenderInjectModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\stat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -311,10 +314,10 @@
     <ClInclude Include="src\lib\input\Keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\InputManager.h">
+    <ClInclude Include="src\common\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\di\CommonInjectModule.h">
+    <ClInclude Include="src\core\di\GameInjectModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\ScreenManager.h">
@@ -338,7 +341,7 @@
     <ClInclude Include="src\render\gl\opengl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\DrivingInputManager.h">
+    <ClInclude Include="src\common\DrivingInputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\DebugScreen.h">
@@ -360,6 +363,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\di\RenderInjectModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\stat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

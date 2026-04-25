@@ -19,14 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\di\CommonInjectModule.cpp" />
+    <ClCompile Include="src\core\di\GameInjectModule.cpp" />
     <ClCompile Include="src\core\di\EngineInjectModule.cpp" />
     <ClCompile Include="src\core\di\MainDependencyContainer.cpp" />
     <ClCompile Include="src\core\di\RenderInjectModule.cpp" />
-    <ClCompile Include="src\core\DrivingInputManager.cpp" />
+    <ClCompile Include="src\common\DrivingInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
-    <ClCompile Include="src\core\InputManager.cpp" />
+    <ClCompile Include="src\common\InputManager.cpp" />
     <ClCompile Include="src\core\ScreenManager.cpp" />
+    <ClCompile Include="src\debug\stat.cpp" />
     <ClCompile Include="src\engine\GameState.cpp" />
     <ClCompile Include="src\engine\GameUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleForceLogic.cpp" />
@@ -66,8 +67,9 @@
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp" />
     <ClCompile Include="src\ui\DebugScreen.cpp" />
     <ClInclude Include="src\core\di\RenderInjectModule.h" />
-    <ClInclude Include="src\core\DrivingInputManager.h" />
+    <ClInclude Include="src\common\DrivingInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\debug\stat.h" />
     <ClInclude Include="src\engine\GameState.h" />
     <ClInclude Include="src\engine\GameUpdater.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
@@ -80,10 +82,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\constants.h" />
-    <ClInclude Include="src\core\di\CommonInjectModule.h" />
+    <ClInclude Include="src\core\di\GameInjectModule.h" />
     <ClInclude Include="src\core\di\EngineInjectModule.h" />
     <ClInclude Include="src\core\di\MainDependencyContainer.h" />
-    <ClInclude Include="src\core\InputManager.h" />
+    <ClInclude Include="src\common\InputManager.h" />
     <ClInclude Include="src\engine\vehicle\VehicleForceLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehiclePositionLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
