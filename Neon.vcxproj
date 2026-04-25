@@ -58,6 +58,7 @@
     <ClCompile Include="src\model\vehicle\Wheel.cpp" />
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
+    <ClInclude Include="src\render\gl\opengl.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
     <ClInclude Include="src\ui\IScreenSwitcher.h" />
   </ItemGroup>
@@ -173,7 +174,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src;$(ProjectDir)external;$(IncludePath)</IncludePath>
     <IntDir>bin\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -217,6 +218,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;$(ProjectDir)\external\glew\glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
