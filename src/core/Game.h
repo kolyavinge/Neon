@@ -1,6 +1,7 @@
 #pragma once
 
 #include <common/InputManager.h>
+#include <core/GameInitializer.h>
 #include <core/ScreenManager.h>
 #include <engine/GameState.h>
 #include <lib/di/Resolver.h>
@@ -10,7 +11,7 @@ class Game : public Object {
 
     InputManager& _inputManager;
     ScreenManager& _screenManager;
-    GameUpdater& _gameUpdater;
+    GameInitializer& _gameInitializer;
     GameState _gameState;
 
 public:
@@ -18,13 +19,13 @@ public:
         return new Game(
             resolver.resolve<InputManager>(),
             resolver.resolve<ScreenManager>(),
-            resolver.resolve<GameUpdater>());
+            resolver.resolve<GameInitializer>());
     }
 
     Game(
         InputManager& inputManager,
         ScreenManager& screenManager,
-        GameUpdater& gameUpdater);
+        GameInitializer& gameInitializer);
 
     void init();
     void update();

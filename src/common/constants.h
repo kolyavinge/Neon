@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/UnitConverter.h>
 #include <lib/calc/Vector3.h>
 
 class CommonConstants {
@@ -14,6 +15,10 @@ public:
     inline static const float g = 9.81f;
     inline static Vector3 axisOrigin = Vector3(0.0f, 0.0f, 0.0f);
     inline static Vector3 upVector = Vector3(0.0f, 0.0f, 1.0f);
+    inline static const float verticalFieldOfViewDegrees = 45.0f;
+    inline static const float verticalFieldOfView = UnitConverter::degreesToRadians(verticalFieldOfViewDegrees);
+    inline static const float zNear = 0.01f;
+    inline static const float zFar = 1000.0f;
 };
 
 class GameConstants {

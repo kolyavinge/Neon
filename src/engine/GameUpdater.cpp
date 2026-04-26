@@ -5,14 +5,9 @@ GameUpdater::GameUpdater(
     VehicleUpdater& vehicleUpdater) :
     _drivingInputManager(drivingInputManager),
     _vehicleUpdater(vehicleUpdater) {
-    _gameState = nullptr;
 }
 
-void GameUpdater::init(GameState& gameState) {
-    _gameState = &gameState;
-}
-
-void GameUpdater::update() {
-    _drivingInputManager.update(_gameState->drivingInputData);
-    _vehicleUpdater.updateVehicles(_gameState->vehicles);
+void GameUpdater::update(GameState& gameState) {
+    _drivingInputManager.update(gameState.getDrivingInputData());
+    _vehicleUpdater.updateVehicles(gameState.getVehicles());
 }

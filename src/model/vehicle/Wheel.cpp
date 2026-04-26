@@ -15,19 +15,27 @@ WheelData::WheelData() {
 }
 
 Wheel::Wheel() {
-    init();
+    _rotateAngle = 0.0f;
+    _steeringAngle = 0.0f;
+    _loadWeight = 0.0f;
+    _prevAngularVelocity = 0.0f;
+    _angularVelocity = 0.0f;
 }
 
-void Wheel::init() {
+void Wheel::init(WheelPosition position) {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
     _prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
-    _frontNormal.set(1.0f, 0.0f, 0.0f);
-    _axleNormal.set(0.0f, 1.0f, 0.0f);
+    _frontNormal.set(0.0f, 1.0f, 0.0f);
+    if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
+        _outsiteNormal.set(-1.0f, 0.0f, 0.0f);
+    } else {
+        _outsiteNormal.set(1.0f, 0.0f, 0.0f);
+    }
     _topNormal = CommonConstants::upVector;
-    _axlePosition.setZero();
+    _position.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
     _longitudinalAcceleration.setZero();
@@ -37,6 +45,38 @@ void Wheel::init() {
 
 WheelData& Wheel::getData() {
     return _data;
+}
+
+Vector3& Wheel::getFrontNormal() {
+    return _frontNormal;
+}
+
+void Wheel::setFrontNormal(Vector3& frontNormal) {
+    _frontNormal = frontNormal;
+}
+
+Vector3& Wheel::getOutsiteNormal() {
+    return _outsiteNormal;
+}
+
+void Wheel::setOutsiteNormal(Vector3& outsiteNormal) {
+    _outsiteNormal = outsiteNormal;
+}
+
+Vector3& Wheel::getTopNormal() {
+    return _topNormal;
+}
+
+void Wheel::setTopNormal(Vector3& topNormal) {
+    _topNormal = topNormal;
+}
+
+Vector3& Wheel::getPosition() {
+    return _position;
+}
+
+void Wheel::setPosition(Vector3& position) {
+    _position = position;
 }
 
 float Wheel::getLoadWeight() {
@@ -56,10 +96,6 @@ float Wheel::getAngularVelocity() {
     return _angularVelocity;
 }
 
-//void Wheel::setAngularVelocity(float velocity) {
-//    _angularVelocity = velocity;
-//}
-
 void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
     _prevAngularVelocity = _angularVelocity;
     _angularVelocity +=
@@ -72,12 +108,12 @@ void Wheel::updateRotateAngle(float dt) {
     _rotateAngle = Math::normalizeRadians(_rotateAngle - _angularVelocity * dt);
 }
 
-void Wheel::steer(Vector3& vehicleForwardDirection, float angle) {
-    if (!Numeric::between(angle, -_data.maxSteeringAngle, _data.maxSteeringAngle)) throw ArgumentException();
-    _steeringAngle = angle;
-    _frontNormal = Geometry::rotatePoint(vehicleForwardDirection, _steeringAngle, _topNormal, CommonConstants::axisOrigin);
-    _frontNormal.normalize();
-}
+//void Wheel::steer(Vector3& vehicleForwardDirection, float angle) {
+//    if (!Numeric::between(angle, -_data.maxSteeringAngle, _data.maxSteeringAngle)) throw ArgumentException();
+//    _steeringAngle = angle;
+//    _frontNormal = Geometry::rotatePoint(vehicleForwardDirection, _steeringAngle, _topNormal, CommonConstants::axisOrigin);
+//    _frontNormal.normalize();
+//}
 
 float Wheel::getSlipRatio() {
     // угловую скорость берем из пред шага, ей соответствует текущая линейная скорость
@@ -128,7 +164,7 @@ void Wheel::calculateLongitudinalForce(float longitudinalForceCoeff, float sprin
 }
 
 void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
-    _lateralForce = _axleNormal;
+    _lateralForce = _outsiteNormal;
     _lateralForce.setLength(lateralForceCoeff * springForce);
 }
 

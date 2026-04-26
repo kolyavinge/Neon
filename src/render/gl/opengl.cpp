@@ -1,3 +1,4 @@
+#include <lib/calc/Math.h>
 #include <render/gl/opengl.h>
 
 void glTranslatef(Vector3& v) {
@@ -22,4 +23,18 @@ void glNormal3f(Vector3& v) {
 
 void glScalef(Vector3& v) {
     glScalef(v.x, v.y, v.z);
+}
+
+void glDrawCircleYZ(Vector3& center, float radius, int edgesCount) {
+    glPushMatrix();
+    glTranslatef(center.x, center.y, center.z);
+    glBegin(GL_LINE_LOOP);
+    const float radiansStep = Math::piDouble / (float)edgesCount;
+    float angle = 0.0f;
+    for (int i = 0; i < edgesCount; i++) {
+        glVertex3f(0.0f, radius * Math::cos(angle), radius * Math::sin(angle));
+        angle += radiansStep;
+    }
+    glEnd();
+    glPopMatrix();
 }

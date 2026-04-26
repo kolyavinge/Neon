@@ -5,8 +5,11 @@
 
 class Screen : public Object {
 
-public:
-    IScreenSwitcher* screenSwitcher = nullptr;
+protected:
+    IScreenSwitcher* _screenSwitcher;
 
+public:
+    Screen();
+    void setScreenSwitcher(IScreenSwitcher& screenSwitcher);
     void virtual update() = 0;
 };

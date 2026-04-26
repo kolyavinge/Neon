@@ -10,7 +10,6 @@ class GameUpdater : public Object {
 
     DrivingInputManager& _drivingInputManager;
     VehicleUpdater& _vehicleUpdater;
-    GameState* _gameState;
 
 public:
     static GameUpdater* resolve(Resolver& resolver) {
@@ -23,6 +22,5 @@ public:
         DrivingInputManager& drivingInputManager,
         VehicleUpdater& vehicleUpdater);
 
-    void init(GameState& gameState);
-    void update();
+    void update(GameState& gameState);
 };

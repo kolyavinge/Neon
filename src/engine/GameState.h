@@ -6,10 +6,14 @@
 
 class GameState : public Object {
 
-public:
-    VehiclesArray vehicles;
-    DrivingInputData drivingInputData;
+    VehiclesArray _vehicles;
+    Vehicle* _playerVehicle;
+    DrivingInputData _drivingInputData;
 
+public:
     GameState();
     void init();
+    VehiclesArray& getVehicles();
+    Vehicle& getPlayerVehicle();
+    DrivingInputData& getDrivingInputData();
 };

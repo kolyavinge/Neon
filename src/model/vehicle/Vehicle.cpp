@@ -5,6 +5,7 @@
 
 VehicleData::VehicleData() {
     mass = 1000.0f;
+    lengthBetweenAxleCenters = 2.0f;
 }
 
 Vehicle::Vehicle() {
@@ -16,12 +17,16 @@ Vehicle::Vehicle() {
 void Vehicle::init() {
     _engine.init();
     _gearbox.init();
-    for (int i = 0; i < _wheels.getCount(); i++) _wheels[i].init();
+    _wheels[(int)WheelPosition::frontLeft].init(WheelPosition::frontLeft);
+    _wheels[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
+    _wheels[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
+    _wheels[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
     for (int i = 0; i < _springs.getCount(); i++) _springs[i].init();
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
     _angles.init();
     _body.setVehicleMass(_data.mass);
+    _steeringAngle = 0.0f;
 }
 
 VehicleData& Vehicle::getData() {
@@ -72,6 +77,10 @@ Body& Vehicle::getBody() {
 
 Angles& Vehicle::getAngles() {
     return _angles;
+}
+
+float Vehicle::getSteeringAngle() {
+    return _steeringAngle;
 }
 
 float Vehicle::getLongitudinalForceCoeff(float slipRatio) {

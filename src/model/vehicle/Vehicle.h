@@ -16,6 +16,7 @@ class VehicleData : public Object {
 
 public:
     float mass;
+    float lengthBetweenAxleCenters;
 
     VehicleData();
 };
@@ -39,6 +40,7 @@ private:
     PacejkaFormula _longitudinalForceCurve;
     PacejkaFormula _lateralForceCurve;
     Angles _angles;
+    float _steeringAngle;
 
 public:
     Vehicle();
@@ -55,6 +57,7 @@ public:
     Axle& getDriveAxle();
     Body& getBody();
     Angles& getAngles();
+    float getSteeringAngle();
     float getLongitudinalForceCoeff(float slipRatio);
     float getLateralForceCoeff(float slipAngle);
     Vector3& getLinearVelocity();

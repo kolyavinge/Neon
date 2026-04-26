@@ -3,15 +3,14 @@
 Game::Game(
     InputManager& inputManager,
     ScreenManager& screenManager,
-    GameUpdater& gameUpdater) :
+    GameInitializer& gameInitializer) :
     _inputManager(inputManager),
     _screenManager(screenManager),
-    _gameUpdater(gameUpdater) {
+    _gameInitializer(gameInitializer) {
 }
 
 void Game::init() {
-    _gameState.init();
-    _gameUpdater.init(_gameState);
+    _gameInitializer.initGame(_gameState);
 }
 
 void Game::update() {
