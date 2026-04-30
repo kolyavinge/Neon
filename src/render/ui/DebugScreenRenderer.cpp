@@ -1,4 +1,10 @@
 #include <common/constants.h>
+#include <lib/calc/UnitConverter.h>
+#include <lib/calc/Vector3.h>
+#include <model/vehicle/Axle.h>
+#include <model/vehicle/Body.h>
+#include <model/vehicle/Spring.h>
+#include <model/vehicle/Wheel.h>
 #include <render/gl/opengl.h>
 #include <render/ui/DebugScreenRenderer.h>
 
@@ -7,19 +13,155 @@ void DebugScreenRenderer::setScreen(DebugScreen& screen) {
 }
 
 void DebugScreenRenderer::render() {
+    GameState& gameState = _screen->getGameState();
+    Vehicle& vehicle = gameState.getPlayerVehicle();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(CommonConstants::verticalFieldOfViewDegrees, CommonConstants::screenAspect, CommonConstants::zNear, CommonConstants::zFar);
-    gluLookAt(12, 6, 8, 0, 6, 0, 0, 0, 1);
+    Vector3 eyePosition = vehicle.getNonDriveAxle().getCenter();
+    eyePosition.x += 5.0f;
+    eyePosition.z += 5.0f;
+    gluLookAt(eyePosition, vehicle.getNonDriveAxle().getCenter(), CommonConstants::upVector);
     renderGrid();
     renderAxis();
-    GameState& gameState = _screen->getGameState();
-    renderVehicle(gameState.getPlayerVehicle());
+    renderVehicle(vehicle);
 }
 
 void DebugScreenRenderer::renderVehicle(Vehicle& vehicle) {
+    renderVehicleAxles(vehicle);
+    renderVehicleWheels(vehicle);
+    renderVehicleBody(vehicle);
+}
 
+void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
+    Axle& driveAxle = vehicle.getDriveAxle();
+    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
+    // axle points
+    glPointSize(5.0f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_POINTS);
+    glVertex3f(driveAxle.getCenter());
+    glEnd();
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glBegin(GL_POINTS);
+    glVertex3f(nonDriveAxle.getCenter());
+    glEnd();
+    // driveAxle velocity
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(driveAxle.getCenter());
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    Vector3 velocity = driveAxle.getVelocity();
+    velocity.div(10.0f);
+    glVertex3f(velocity);
+    glEnd();
+    glPopMatrix();
+    // nonDriveAxle velocity
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(nonDriveAxle.getCenter());
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    velocity = nonDriveAxle.getVelocity();
+    velocity.div(10.0f);
+    glVertex3f(velocity);
+    glEnd();
+    glPopMatrix();
+}
+
+void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
+    for (int i = 0; i < vehicle.wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
+        Spring& spring = vehicle.getSpring(i);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        // wheel circle
+        glDrawCircleYZ(wheel.getCenter(), wheel.getData().radius, 16);
+        // angle line
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsiteNormal());
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, wheel.getData().radius, 0.0f);
+        glEnd();
+        glPopMatrix();
+        // front normal
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glColor3f(0.0f, 0.8f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 frontNormal = wheel.getFrontNormal();
+        frontNormal.setLength(0.25f);
+        glVertex3f(frontNormal);
+        glEnd();
+        glPopMatrix();
+        // outside normal
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glColor3f(0.0f, 0.8f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 outsiteNormal = wheel.getOutsiteNormal();
+        outsiteNormal.setLength(0.25f);
+        glVertex3f(outsiteNormal);
+        glEnd();
+        glPopMatrix();
+        // longitudinal force
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 longitudinalForce = wheel.getLongitudinalForce();
+        longitudinalForce.div(_forceDivider);
+        glVertex3f(longitudinalForce);
+        glEnd();
+        glPopMatrix();
+        // spring force
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        float springForce = spring.getForce();
+        springForce /= _forceDivider;
+        glVertex3f(0.0f, 0.0f, -springForce);
+        glEnd();
+        glPopMatrix();
+    }
+}
+
+void DebugScreenRenderer::renderVehicleBody(Vehicle& vehicle) {
+    Body& body = vehicle.getBody();
+    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
+    // air drag force
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(nonDriveAxle.getCenter());
+    glTranslatef(0.0f, 0.0f, 1.5f);
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    Vector3 airDragForce = body.getAirDragForce();
+    airDragForce.div(_forceDivider);
+    glVertex3f(airDragForce);
+    glEnd();
+    glPopMatrix();
+}
+
+void DebugScreenRenderer::renderGrid() {
+    const float length = CommonConstants::zFar;
+    glColor3f(0.1f, 0.1f, 0.1f);
+    glBegin(GL_LINES);
+    for (float step = -length; step < length; step += 1.0f) {
+        glVertex3f(step, -length, 0.0f);
+        glVertex3f(step, length, 0.0f);
+        glVertex3f(-length, step, 0.0f);
+        glVertex3f(length, step, 0.0f);
+    }
+    glEnd();
 }
 
 void DebugScreenRenderer::renderAxis() {
@@ -37,18 +179,5 @@ void DebugScreenRenderer::renderAxis() {
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 1.0f);
 
-    glEnd();
-}
-
-void DebugScreenRenderer::renderGrid() {
-    const float length = CommonConstants::zFar;
-    glColor3f(0.1f, 0.1f, 0.1f);
-    glBegin(GL_LINES);
-    for (float step = -length; step < length; step += 1.0f) {
-        glVertex3f(step, -length, 0.0f);
-        glVertex3f(step, length, 0.0f);
-        glVertex3f(-length, step, 0.0f);
-        glVertex3f(length, step, 0.0f);
-    }
     glEnd();
 }

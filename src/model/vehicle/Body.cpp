@@ -1,5 +1,4 @@
 #include <common/constants.h>
-#include <lib/calc/Geometry.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Body.h>
 

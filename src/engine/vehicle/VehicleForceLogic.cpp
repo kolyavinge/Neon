@@ -6,21 +6,19 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
-void VehicleForceLogic::calculateForces(Vehicle& vehicle) {
-    calculateNewEngineRpmAndWheelsVelocity(vehicle);
+void VehicleForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
+    calculateNewEngineRpmAndWheelsVelocity(vehicle, throttleRatio, brakingRatio);
     calculateSpringForces(vehicle);
     calculateDriveWheelForces(vehicle);
     calculateNonDriveWheelForces(vehicle);
     calculateAirDragForce(vehicle);
 }
 
-void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
+void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
     const float dt = CommonConstants::deltaTimeSec;
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
     float gearRatio = gearbox.getGearRatio();
-    const float throttleRatio = 1.0f;
-    const float brakingRatio = 0.0f;
     float averageWheelsRpmWithGearRatio = getAverageWheelsRpm(vehicle) * gearRatio;
     engine.calculateNewRpm(throttleRatio, averageWheelsRpmWithGearRatio, gearRatio, dt);
     float engineAngularVelocityWithGearRatio = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
@@ -57,7 +55,7 @@ void VehicleForceLogic::calculateDriveWheelForces(Vehicle& vehicle) {
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
         Spring& spring = vehicle.getSpring(i);
-        float slipRatio = wheel.getSlipRatio();
+        float slipRatio = wheel.getSlipRatio().value;
         float slipAngle = wheel.getSlipAngle();
         float longitudinalForceCoeff = vehicle.getLongitudinalForceCoeff(slipRatio);
         float lateralForceCoeff = vehicle.getLateralForceCoeff(slipAngle);

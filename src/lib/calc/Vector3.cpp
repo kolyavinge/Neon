@@ -97,7 +97,7 @@ void Vector3::div(float a) {
 }
 
 bool Vector3::isCollinear(Vector3& v, float eps) {
-    float dot = dotProduct(v);
+    float dot = dotProduct(v) / (getLength() * v.getLength());
 
     return Numeric::floatEquals(dot, 1.0f, eps);
 }

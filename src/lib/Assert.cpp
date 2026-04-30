@@ -21,3 +21,9 @@ void Assert::isBetween(int value, int from, int to) {
         throw AssertException();
     }
 }
+
+void Assert::isBetween(float value, float from, float to) {
+    if (!(from <= value && value <= to)) {
+        throw AssertException();
+    }
+}

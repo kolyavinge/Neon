@@ -9,5 +9,5 @@ GameUpdater::GameUpdater(
 
 void GameUpdater::update(GameState& gameState) {
     _drivingInputManager.update(gameState.getDrivingInputData());
-    _vehicleUpdater.updateVehicles(gameState.getVehicles());
+    _vehicleUpdater.updateVehicles(gameState.getVehicles(), gameState.getDrivingInputData());
 }

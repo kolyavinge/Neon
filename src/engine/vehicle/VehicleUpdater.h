@@ -6,6 +6,7 @@
 #include <engine/vehicle/VehicleWeightTransferLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Vehicle.h>
 
 class VehicleUpdater : public Object {
@@ -30,8 +31,9 @@ public:
         VehicleVelocityLogic& vehicleVelocityLogic,
         VehicleWeightTransferLogic& vehicleWeightTransferLogic);
 
-    void updateVehicles(VehiclesArray& vehicles);
+    void updateVehicles(VehiclesArray& vehicles, DrivingInputData& drivingInputData);
 
 private:
-    void updateVehicle(Vehicle& vehicle);
+    void updateVehicle(Vehicle& vehicle, DrivingInputData& drivingInputData);
+    void printDebugInfo(Vehicle& vehicle);
 };

@@ -9,7 +9,7 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(6.0f, 6.0f, 2.0f);
+    _longitudinalForceCurve.set(2.0f, 1.5f, 0.5f);
     _lateralForceCurve.set(3.5f, 1.0f, 1.0f);
     init();
 }
@@ -27,6 +27,8 @@ void Vehicle::init() {
     _angles.init();
     _body.setVehicleMass(_data.mass);
     _steeringAngle = 0.0f;
+    getNonDriveAxle().getCenter().y += _data.lengthBetweenAxleCenters;
+    _gearbox.shiftUp();
 }
 
 VehicleData& Vehicle::getData() {

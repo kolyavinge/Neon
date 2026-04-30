@@ -29,15 +29,16 @@ void App::run() {
             game.update();
             game.render();
             accumulator -= CommonConstants::deltaTimeSec;
+            glfwSwapBuffers(window);
+            glfwPollEvents();
         }
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
     glfwTerminate();
 }
 
 int main(int, char**) {
     //showDebugInfo();
+
     App::run();
 
     return 0;

@@ -21,9 +21,20 @@ enum class WheelPosition {
     rearRight = 3
 };
 
+class SlipRatio : public Object {
+
+public:
+    float drivenVelocity;
+    float linearVelocity;
+    float value;
+
+    SlipRatio(float driven, float linear, float slipRatio);
+};
+
 class Wheel : public Object {
 
     WheelData _data;
+    WheelPosition _position;
     float _rotateAngle;
     float _steeringAngle;
     float _loadWeight;
@@ -32,7 +43,7 @@ class Wheel : public Object {
     Vector3 _frontNormal;
     Vector3 _outsiteNormal;
     Vector3 _topNormal;
-    Vector3 _position;
+    Vector3 _center;
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
     Vector3 _longitudinalAcceleration;
@@ -43,22 +54,25 @@ public:
     Wheel();
     void init(WheelPosition position);
     WheelData& getData();
+    WheelPosition getPosition();
+    float getRotateAngle();
     Vector3& getFrontNormal();
     void setFrontNormal(Vector3& frontNormal);
     Vector3& getOutsiteNormal();
     void setOutsiteNormal(Vector3& outsiteNormal);
     Vector3& getTopNormal();
     void setTopNormal(Vector3& topNormal);
-    Vector3& getPosition();
+    Vector3& getCenter();
     void setPosition(Vector3& position);
     float getLoadWeight();
     void setLoadWeight(float weight);
     void transferWeight(float weight);
     float getAngularVelocity();
+    void setAngularVelocityToZero();
     void calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt);
     void updateRotateAngle(float dt);
     //void steer(Vector3& vehicleForwardDirection, float angle);
-    float getSlipRatio();
+    SlipRatio getSlipRatio();
     float getSlipAngle();
     Vector3& getLongitudinalForce();
     Vector3& getLateralForce();

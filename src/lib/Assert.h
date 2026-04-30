@@ -11,4 +11,5 @@ public:
     static void isTrue(bool condition);
     static void isFalse(bool condition);
     static void isBetween(int value, int from, int to);
+    static void isBetween(float value, float from, float to);
 };

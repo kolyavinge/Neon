@@ -6,6 +6,7 @@
 
 class DebugScreenRenderer : public ScreenRenderer {
 
+    inline static const float _forceDivider = 500.0f;
     DebugScreen* _screen;
 
 public:
@@ -14,6 +15,9 @@ public:
 
 private:
     void renderVehicle(Vehicle& vehicle);
-    void renderAxis();
+    void renderVehicleAxles(Vehicle& vehicle);
+    void renderVehicleWheels(Vehicle& vehicle);
+    void renderVehicleBody(Vehicle& vehicle);
     void renderGrid();
+    void renderAxis();
 };

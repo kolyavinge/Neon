@@ -2,8 +2,8 @@
 #include <model/vehicle/Spring.h>
 
 SpringData::SpringData() {
-    stiffness = 10000.0f;
-    damper = 0.2f;
+    stiffness = 5000.0f;
+    damper = 0.1f;
     maxLength = 0.3f;
 }
 
