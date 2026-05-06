@@ -18,9 +18,10 @@ public:
     static float sin(float angle);
     static float cos(float angle);
     static float tan(float angle);
-    static float arcSin(float x);
-    static float arcCos(float x);
-    static float arcTan(float x);
+    static float arcsin(float x);
+    static float arccos(float x);
+    static float arctan(float x);
+    static float arctan2(float y, float x);
     static float power(float x, float pow);
     static float logE(float x);
     static float round(float x, float precision);

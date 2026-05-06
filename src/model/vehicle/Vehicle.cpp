@@ -9,7 +9,7 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(2.0f, 1.5f, 0.5f);
+    _longitudinalForceCurve.set(2.0f, 2.0f, 0.5f);
     _lateralForceCurve.set(3.5f, 1.0f, 1.0f);
     init();
 }

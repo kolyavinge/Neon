@@ -1,9 +1,9 @@
 #pragma once
 
-#include <engine/vehicle/VehicleForceLogic.h>
-#include <engine/vehicle/VehiclePositionLogic.h>
-#include <engine/vehicle/VehicleVelocityLogic.h>
-#include <engine/vehicle/VehicleWeightTransferLogic.h>
+#include <engine/vehicle/ForceLogic.h>
+#include <engine/vehicle/PositionLogic.h>
+#include <engine/vehicle/VelocityLogic.h>
+#include <engine/vehicle/WeightTransferLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/DrivingInputData.h>
@@ -11,25 +11,25 @@
 
 class VehicleUpdater : public Object {
 
-    VehicleForceLogic& _vehicleForceLogic;
-    VehiclePositionLogic& _vehiclePositionLogic;
-    VehicleVelocityLogic& _vehicleVelocityLogic;
-    VehicleWeightTransferLogic& _vehicleWeightTransferLogic;
+    ForceLogic& _forceLogic;
+    PositionLogic& _positionLogic;
+    VelocityLogic& _velocityLogic;
+    WeightTransferLogic& _weightTransferLogic;
 
 public:
     static VehicleUpdater* resolve(Resolver& resolver) {
         return new VehicleUpdater(
-            resolver.resolve<VehicleForceLogic>(),
-            resolver.resolve<VehiclePositionLogic>(),
-            resolver.resolve<VehicleVelocityLogic>(),
-            resolver.resolve<VehicleWeightTransferLogic>());
+            resolver.resolve<ForceLogic>(),
+            resolver.resolve<PositionLogic>(),
+            resolver.resolve<VelocityLogic>(),
+            resolver.resolve<WeightTransferLogic>());
     }
 
     VehicleUpdater(
-        VehicleForceLogic& vehicleForceLogic,
-        VehiclePositionLogic& vehiclePositionLogic,
-        VehicleVelocityLogic& vehicleVelocityLogic,
-        VehicleWeightTransferLogic& vehicleWeightTransferLogic);
+        ForceLogic& forceLogic,
+        PositionLogic& positionLogic,
+        VelocityLogic& velocityLogic,
+        WeightTransferLogic& weightTransferLogic);
 
     void updateVehicles(VehiclesArray& vehicles, DrivingInputData& drivingInputData);
 

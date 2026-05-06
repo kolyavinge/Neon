@@ -1,11 +1,11 @@
 #include <common/constants.h>
-#include <engine/vehicle/VehicleVelocityLogic.h>
+#include <engine/vehicle/VelocityLogic.h>
 #include <lib/Numeric.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 
-void VehicleVelocityLogic::calculateVelocity(Vehicle& vehicle) {
+void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
 
@@ -50,7 +50,7 @@ void VehicleVelocityLogic::calculateVelocity(Vehicle& vehicle) {
     }
 }
 
-bool VehicleVelocityLogic::isVelocityZero(Vehicle& vehicle) {
+bool VelocityLogic::isVelocityZero(Vehicle& vehicle) {
     const float minVelocityDelta = 0.1f;
     Axle& driveAxle = vehicle.getDriveAxle();
     bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, minVelocityDelta);
@@ -62,7 +62,7 @@ bool VehicleVelocityLogic::isVelocityZero(Vehicle& vehicle) {
     return result;
 }
 
-void VehicleVelocityLogic::setVelocityToZero(Vehicle& vehicle) {
+void VelocityLogic::setVelocityToZero(Vehicle& vehicle) {
     vehicle.getDriveAxle().getVelocity().setZero();
     vehicle.getNonDriveAxle().getVelocity().setZero();
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {

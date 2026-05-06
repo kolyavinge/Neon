@@ -34,18 +34,22 @@ float Math::tan(float angle) {
     return tanf(angle);
 }
 
-float Math::arcSin(float x) {
+float Math::arcsin(float x) {
     if (x > 1.0f || x < -1.0f) throw ArgumentException();
     return asinf(x);
 }
 
-float Math::arcCos(float x) {
+float Math::arccos(float x) {
     if (x > 1.0f || x < -1.0f) throw ArgumentException();
     return acosf(x);
 }
 
-float Math::arcTan(float x) {
+float Math::arctan(float x) {
     return atanf(x);
+}
+
+float Math::arctan2(float y, float x) {
+    return atan2f(y, x);
 }
 
 float Math::power(float x, float pow) {

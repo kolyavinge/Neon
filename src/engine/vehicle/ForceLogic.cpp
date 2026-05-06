@@ -1,12 +1,12 @@
 #include <common/constants.h>
-#include <engine/vehicle/VehicleForceLogic.h>
+#include <engine/vehicle/ForceLogic.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
-void VehicleForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
+void ForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
     calculateNewEngineRpmAndWheelsVelocity(vehicle, throttleRatio, brakingRatio);
     calculateSpringForces(vehicle);
     calculateDriveWheelForces(vehicle);
@@ -14,7 +14,7 @@ void VehicleForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, f
     calculateAirDragForce(vehicle);
 }
 
-void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
+void ForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
     const float dt = CommonConstants::deltaTimeSec;
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
@@ -32,7 +32,7 @@ void VehicleForceLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle,
     }
 }
 
-float VehicleForceLogic::getAverageWheelsRpm(Vehicle& vehicle) {
+float ForceLogic::getAverageWheelsRpm(Vehicle& vehicle) {
     float wheelsAngularVelocity = 0.0f;
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
@@ -43,7 +43,7 @@ float VehicleForceLogic::getAverageWheelsRpm(Vehicle& vehicle) {
     return averageWheelsRpm;
 }
 
-void VehicleForceLogic::calculateSpringForces(Vehicle& vehicle) {
+void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
         Spring& spring = vehicle.getSpring(i);
@@ -51,7 +51,7 @@ void VehicleForceLogic::calculateSpringForces(Vehicle& vehicle) {
     }
 }
 
-void VehicleForceLogic::calculateDriveWheelForces(Vehicle& vehicle) {
+void ForceLogic::calculateDriveWheelForces(Vehicle& vehicle) {
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
         Spring& spring = vehicle.getSpring(i);
@@ -64,7 +64,7 @@ void VehicleForceLogic::calculateDriveWheelForces(Vehicle& vehicle) {
     }
 }
 
-void VehicleForceLogic::calculateNonDriveWheelForces(Vehicle& vehicle) {
+void ForceLogic::calculateNonDriveWheelForces(Vehicle& vehicle) {
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
         Wheel& wheel = vehicle.getNonDriveWheel(i);
         Spring& spring = vehicle.getSpring(i);
@@ -75,7 +75,7 @@ void VehicleForceLogic::calculateNonDriveWheelForces(Vehicle& vehicle) {
     }
 }
 
-void VehicleForceLogic::calculateAirDragForce(Vehicle& vehicle) {
+void ForceLogic::calculateAirDragForce(Vehicle& vehicle) {
     Body& body = vehicle.getBody();
     Vector3 vehicleVelocity = vehicle.getLinearVelocity();
     body.calculateAirDragForce(vehicleVelocity);

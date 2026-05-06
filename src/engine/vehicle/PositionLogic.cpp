@@ -1,12 +1,12 @@
 #include <common/constants.h>
-#include <engine/vehicle/VehiclePositionLogic.h>
+#include <engine/vehicle/PositionLogic.h>
 #include <lib/calc/Geometry.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Wheel.h>
 
-void VehiclePositionLogic::updatePosition(Vehicle& vehicle) {
+void PositionLogic::updatePosition(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
@@ -45,13 +45,13 @@ void VehiclePositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::rearLeft).setFrontNormal(vehicleFrontNormal);
     vehicle.getWheel(WheelPosition::rearRight).setFrontNormal(vehicleFrontNormal);
 
-    Vector3 leftNonDriveWheelOutsiteNormal = Geometry::rotatePoint(vehicleFrontNormal, vehicle.getSteeringAngle() + Math::piHalf, body.getTopNormal(), CommonConstants::axisOrigin);
-    Vector3 rightNonDriveWheelOutsiteNormal = leftNonDriveWheelOutsiteNormal;
-    rightNonDriveWheelOutsiteNormal.mul(-1.0f);
-    vehicle.getWheel(WheelPosition::frontLeft).setOutsiteNormal(leftNonDriveWheelOutsiteNormal);
-    vehicle.getWheel(WheelPosition::frontRight).setOutsiteNormal(rightNonDriveWheelOutsiteNormal);
-    vehicle.getWheel(WheelPosition::rearLeft).setOutsiteNormal(vehicleLeftNormal);
-    vehicle.getWheel(WheelPosition::rearRight).setOutsiteNormal(vehicleRightNormal);
+    Vector3 leftNonDriveWheelOutsideNormal = Geometry::rotatePoint(vehicleFrontNormal, vehicle.getSteeringAngle() + Math::piHalf, body.getTopNormal(), CommonConstants::axisOrigin);
+    Vector3 rightNonDriveWheelOutsideNormal = leftNonDriveWheelOutsideNormal;
+    rightNonDriveWheelOutsideNormal.mul(-1.0f);
+    vehicle.getWheel(WheelPosition::frontLeft).setOutsideNormal(leftNonDriveWheelOutsideNormal);
+    vehicle.getWheel(WheelPosition::frontRight).setOutsideNormal(rightNonDriveWheelOutsideNormal);
+    vehicle.getWheel(WheelPosition::rearLeft).setOutsideNormal(vehicleLeftNormal);
+    vehicle.getWheel(WheelPosition::rearRight).setOutsideNormal(vehicleRightNormal);
 
     body.updateAngles();
 }

@@ -78,7 +78,7 @@
     <ClCompile Include="src\lib\calc\Geometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\VehicleForceLogic.cpp">
+    <ClCompile Include="src\engine\vehicle\ForceLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\di\EngineInjectModule.cpp">
@@ -87,10 +87,10 @@
     <ClCompile Include="src\core\di\MainDependencyContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\VehiclePositionLogic.cpp">
+    <ClCompile Include="src\engine\vehicle\PositionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\VehicleWeightTransferLogic.cpp">
+    <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp">
@@ -108,7 +108,7 @@
     <ClCompile Include="src\lib\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\VehicleVelocityLogic.cpp">
+    <ClCompile Include="src\engine\vehicle\VelocityLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\vehicle\Axle.cpp">
@@ -290,7 +290,7 @@
     <ClInclude Include="src\lib\calc\Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\vehicle\VehicleForceLogic.h">
+    <ClInclude Include="src\engine\vehicle\ForceLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\di\EngineInjectModule.h">
@@ -299,10 +299,10 @@
     <ClInclude Include="src\core\di\MainDependencyContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\vehicle\VehiclePositionLogic.h">
+    <ClInclude Include="src\engine\vehicle\PositionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\vehicle\VehicleWeightTransferLogic.h">
+    <ClInclude Include="src\engine\vehicle\WeightTransferLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\vehicle\EngineTorqueCurve.h">
@@ -320,7 +320,7 @@
     <ClInclude Include="src\lib\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\vehicle\VehicleVelocityLogic.h">
+    <ClInclude Include="src\engine\vehicle\VelocityLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\vehicle\Axle.h">

@@ -12,5 +12,5 @@ void PacejkaFormula::set(float valueC, float valueD, float valueE) {
 }
 
 float PacejkaFormula::getValue(float x) {
-    return d * Math::sin(c * Math::arcTan(x - e * (x - Math::arcTan(x))));
+    return d * Math::sin(c * Math::arctan(x - e * (x - Math::arctan(x))));
 }

@@ -81,7 +81,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         // angle line
         glPushMatrix();
         glTranslatef(wheel.getCenter());
-        glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsiteNormal());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsdteNormal());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
         glVertex3f(0.0f, wheel.getData().radius, 0.0f);
@@ -104,9 +104,9 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glColor3f(0.0f, 0.8f, 0.0f);
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 outsiteNormal = wheel.getOutsiteNormal();
-        outsiteNormal.setLength(0.25f);
-        glVertex3f(outsiteNormal);
+        Vector3 outsideNormal = wheel.getOutsdteNormal();
+        outsideNormal.setLength(0.25f);
+        glVertex3f(outsideNormal);
         glEnd();
         glPopMatrix();
         // longitudinal force

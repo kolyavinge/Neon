@@ -10,7 +10,7 @@ WheelData::WheelData() {
     radius = 0.3f;
     roadFrictionCoeff = 0.001f;
     brakingForceCoeff = 20.0f;
-    maxSteeringAngle = UnitConverter::degreesToRadians(45.0f);
+    maxSteeringAngle = UnitConverter::degreesToRadians(20.0f);
 }
 
 SlipRatio::SlipRatio(float driven, float linear, float slipRatio) {
@@ -37,9 +37,9 @@ void Wheel::init(WheelPosition position) {
     _angularVelocity = 0.0f;
     _frontNormal.set(0.0f, 1.0f, 0.0f);
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
-        _outsiteNormal.set(-1.0f, 0.0f, 0.0f);
+        _outsideNormal.set(-1.0f, 0.0f, 0.0f);
     } else {
-        _outsiteNormal.set(1.0f, 0.0f, 0.0f);
+        _outsideNormal.set(1.0f, 0.0f, 0.0f);
     }
     _topNormal = CommonConstants::upVector;
     _center.setZero();
@@ -70,12 +70,12 @@ void Wheel::setFrontNormal(Vector3& frontNormal) {
     _frontNormal = frontNormal;
 }
 
-Vector3& Wheel::getOutsiteNormal() {
-    return _outsiteNormal;
+Vector3& Wheel::getOutsdteNormal() {
+    return _outsideNormal;
 }
 
-void Wheel::setOutsiteNormal(Vector3& outsiteNormal) {
-    _outsiteNormal = outsiteNormal;
+void Wheel::setOutsideNormal(Vector3& outsideNormal) {
+    _outsideNormal = outsideNormal;
 }
 
 Vector3& Wheel::getTopNormal() {
@@ -117,7 +117,7 @@ void Wheel::setAngularVelocityToZero() {
 
 void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
     _prevAngularVelocity = _angularVelocity;
-    _angularVelocity += 0.001f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
+    _angularVelocity += 0.0005f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
     if (brakingRatio > 0.0f) {
         float brakingValue = _data.brakingForceCoeff * brakingRatio * dt;
         if (_angularVelocity > 0.0f) {
@@ -168,11 +168,10 @@ SlipRatio Wheel::getSlipRatio() {
 
 float Wheel::getSlipAngle() {
     if (_linearVelocity.isZero()) return 0.0f;
-    Vector3 linearVelocityDirection = _linearVelocity;
-    linearVelocityDirection.normalize();
-    float slipCos = _frontNormal.dotProduct(linearVelocityDirection);
-    slipCos = Numeric::clamp(slipCos, 0.0f, 1.0f); // float issues
-    float slipAngle = Math::arcCos(slipCos);
+    float lateralVelocity = _outsideNormal.dotProduct(_linearVelocity);
+    if (Numeric::floatEquals(lateralVelocity, 0.0f)) return 0.0f;
+    float longitudinalVelocity = _frontNormal.dotProduct(_linearVelocity);
+    float slipAngle = Math::arctan2(lateralVelocity, longitudinalVelocity);
 
     return slipAngle;
 }
@@ -199,7 +198,7 @@ void Wheel::calculateLongitudinalForce(float longitudinalForceCoeff, float sprin
 }
 
 void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
-    _lateralForce = _outsiteNormal;
+    _lateralForce = _outsideNormal;
     _lateralForce.mul(lateralForceCoeff * springForce);
 }
 

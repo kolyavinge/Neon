@@ -41,7 +41,7 @@ class Wheel : public Object {
     float _prevAngularVelocity;
     float _angularVelocity;
     Vector3 _frontNormal;
-    Vector3 _outsiteNormal;
+    Vector3 _outsideNormal;
     Vector3 _topNormal;
     Vector3 _center;
     Vector3 _longitudinalForce;
@@ -58,8 +58,8 @@ public:
     float getRotateAngle();
     Vector3& getFrontNormal();
     void setFrontNormal(Vector3& frontNormal);
-    Vector3& getOutsiteNormal();
-    void setOutsiteNormal(Vector3& outsiteNormal);
+    Vector3& getOutsdteNormal();
+    void setOutsideNormal(Vector3& outsideNormal);
     Vector3& getTopNormal();
     void setTopNormal(Vector3& topNormal);
     Vector3& getCenter();

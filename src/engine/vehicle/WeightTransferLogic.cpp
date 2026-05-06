@@ -1,9 +1,9 @@
 #include <common/constants.h>
-#include <engine/vehicle/VehicleWeightTransferLogic.h>
+#include <engine/vehicle/WeightTransferLogic.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
 
-void VehicleWeightTransferLogic::transferWeight(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
     transferWeightInStatic(vehicle);
     Vector3 longitudinalAcceleration = vehicle.getLongitudinalAcceleration();
     if (!longitudinalAcceleration.isZero()) {
@@ -15,7 +15,7 @@ void VehicleWeightTransferLogic::transferWeight(Vehicle& vehicle) {
     }
 }
 
-void VehicleWeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
     BodyData& bodyData = vehicle.getBody().getData();
     float frontWheelsWeight = (bodyData.rearWheelLengthToMassCenter / bodyData.wheelbaseLength) * vehicleData.mass;
@@ -28,7 +28,7 @@ void VehicleWeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::rearRight).setLoadWeight(rearWheelWeight);
 }
 
-void VehicleWeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     BodyData& bodyData = body.getData();
@@ -52,7 +52,7 @@ void VehicleWeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicl
     body.transferWeightOnRear(2.0f * rearWheelWeight);
 }
 
-void VehicleWeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     Body& body = vehicle.getBody();
     BodyData& bodyData = body.getData();
     Vector3 acceleration = vehicle.getLateralAcceleration();
