@@ -18,6 +18,7 @@ private:
     void renderVehicleAxles(Vehicle& vehicle);
     void renderVehicleWheels(Vehicle& vehicle);
     void renderVehicleBody(Vehicle& vehicle);
+    void renderVehicleAxis(Vehicle& vehicle);
     void renderGrid();
-    void renderAxis();
+    void renderGlobalAxis();
 };

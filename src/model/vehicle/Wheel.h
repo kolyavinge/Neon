@@ -42,7 +42,6 @@ class Wheel : public Object {
     float _angularVelocity;
     Vector3 _frontNormal;
     Vector3 _outsideNormal;
-    Vector3 _topNormal;
     Vector3 _center;
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
@@ -56,12 +55,12 @@ public:
     WheelData& getData();
     WheelPosition getPosition();
     float getRotateAngle();
+    float getSteeringAngle();
+    void setSteeringAngle(float steeringAngle);
     Vector3& getFrontNormal();
     void setFrontNormal(Vector3& frontNormal);
     Vector3& getOutsdteNormal();
     void setOutsideNormal(Vector3& outsideNormal);
-    Vector3& getTopNormal();
-    void setTopNormal(Vector3& topNormal);
     Vector3& getCenter();
     void setPosition(Vector3& position);
     float getLoadWeight();
@@ -71,7 +70,6 @@ public:
     void setAngularVelocityToZero();
     void calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt);
     void updateRotateAngle(float dt);
-    //void steer(Vector3& vehicleForwardDirection, float angle);
     SlipRatio getSlipRatio();
     float getSlipAngle();
     Vector3& getLongitudinalForce();

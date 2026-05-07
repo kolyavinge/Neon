@@ -15,15 +15,14 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
         driveAxleForce.add(wheel.getLongitudinalForce());
         driveAxleForce.add(wheel.getLateralForce());
     }
-    driveAxleForce.div(Vehicle::driveWheelsCount);
 
     Vector3 nonDriveAxleForce;
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
-        Wheel& wheel = vehicle.getNonDriveWheel(i);
-        nonDriveAxleForce.add(wheel.getLateralForce());
+        Wheel& driveWheel = vehicle.getDriveWheel(i);
+        Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
+        nonDriveAxleForce.add(driveWheel.getLongitudinalForce()); // задн€€ ось толкает переднюю
+        nonDriveAxleForce.add(nonDriveWheel.getLateralForce());
     }
-    nonDriveAxleForce.div(Vehicle::nonDriveWheelsCount);
-    nonDriveAxleForce.add(driveAxleForce);
 
     driveAxleForce.add(body.getAirDragForce());
     nonDriveAxleForce.add(body.getAirDragForce());
@@ -37,14 +36,14 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
         setVelocityToZero(vehicle);
     }
 
-    Vector3& vehicleVelocity = vehicle.getLinearVelocity();
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        wheel.setLinearVelocity(vehicleVelocity);
+    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+        Wheel& wheel = vehicle.getDriveWheel(i);
+        wheel.setLinearVelocity(driveAxle.getVelocity());
     }
 
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
         Wheel& wheel = vehicle.getNonDriveWheel(i);
+        wheel.setLinearVelocity(nonDriveAxle.getVelocity());
         wheel.calculateAngularVelocityByLinear();
         wheel.updateRotateAngle(dt);
     }

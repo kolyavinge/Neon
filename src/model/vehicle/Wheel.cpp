@@ -10,7 +10,7 @@ WheelData::WheelData() {
     radius = 0.3f;
     roadFrictionCoeff = 0.001f;
     brakingForceCoeff = 20.0f;
-    maxSteeringAngle = UnitConverter::degreesToRadians(20.0f);
+    maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
 }
 
 SlipRatio::SlipRatio(float driven, float linear, float slipRatio) {
@@ -25,7 +25,7 @@ Wheel::Wheel() {
     _loadWeight = 0.0f;
     _prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
-    _position = WheelPosition::frontLeft;
+    _position = (WheelPosition)-1; // unset position
 }
 
 void Wheel::init(WheelPosition position) {
@@ -41,7 +41,6 @@ void Wheel::init(WheelPosition position) {
     } else {
         _outsideNormal.set(1.0f, 0.0f, 0.0f);
     }
-    _topNormal = CommonConstants::upVector;
     _center.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
@@ -62,6 +61,14 @@ float Wheel::getRotateAngle() {
     return _rotateAngle;
 }
 
+float Wheel::getSteeringAngle() {
+    return _steeringAngle;
+}
+
+void Wheel::setSteeringAngle(float steeringAngle) {
+    _steeringAngle = steeringAngle;
+}
+
 Vector3& Wheel::getFrontNormal() {
     return _frontNormal;
 }
@@ -76,14 +83,6 @@ Vector3& Wheel::getOutsdteNormal() {
 
 void Wheel::setOutsideNormal(Vector3& outsideNormal) {
     _outsideNormal = outsideNormal;
-}
-
-Vector3& Wheel::getTopNormal() {
-    return _topNormal;
-}
-
-void Wheel::setTopNormal(Vector3& topNormal) {
-    _topNormal = topNormal;
 }
 
 Vector3& Wheel::getCenter() {
@@ -143,13 +142,6 @@ void Wheel::updateRotateAngle(float dt) {
     }
 }
 
-//void Wheel::steer(Vector3& vehicleForwardDirection, float angle) {
-//    if (!Numeric::between(angle, -_data.maxSteeringAngle, _data.maxSteeringAngle)) throw ArgumentException();
-//    _steeringAngle = angle;
-//    _frontNormal = Geometry::rotatePoint(vehicleForwardDirection, _steeringAngle, _topNormal, CommonConstants::axisOrigin);
-//    _frontNormal.normalize();
-//}
-
 SlipRatio Wheel::getSlipRatio() {
     // угловую скорость берем из пред шага, ей соответствует текущая линейная скорость
     // для текущей угловой скорости, линейная будет посчитана в конце текущего шага
@@ -169,9 +161,8 @@ SlipRatio Wheel::getSlipRatio() {
 float Wheel::getSlipAngle() {
     if (_linearVelocity.isZero()) return 0.0f;
     float lateralVelocity = _outsideNormal.dotProduct(_linearVelocity);
-    if (Numeric::floatEquals(lateralVelocity, 0.0f)) return 0.0f;
     float longitudinalVelocity = _frontNormal.dotProduct(_linearVelocity);
-    float slipAngle = Math::arctan2(lateralVelocity, longitudinalVelocity);
+    float slipAngle = -Math::arctan2(lateralVelocity, Math::abs(longitudinalVelocity));
 
     return slipAngle;
 }

@@ -5,18 +5,18 @@
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
 
-class PositionLogic : public Object {
+class SteeringLogic : public Object {
 
     WheelLogic& _wheelLogic;
 
 public:
-    static PositionLogic* resolve(Resolver& resolver) {
-        return new PositionLogic(
+    static SteeringLogic* resolve(Resolver& resolver) {
+        return new SteeringLogic(
             resolver.resolve<WheelLogic>());
     }
 
-    PositionLogic(
+    SteeringLogic(
         WheelLogic& wheelLogic);
 
-    void updatePosition(Vehicle& vehicle);
+    void steer(Vehicle& vehicle, float steeringRatio);
 };

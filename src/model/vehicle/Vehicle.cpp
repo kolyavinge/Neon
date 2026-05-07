@@ -9,8 +9,8 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(2.0f, 2.0f, 0.5f);
-    _lateralForceCurve.set(3.5f, 1.0f, 1.0f);
+    _longitudinalForceCurve.set(2.0f, 1.0f, 0.5f);
+    _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
     init();
 }
 
@@ -24,9 +24,8 @@ void Vehicle::init() {
     for (int i = 0; i < _springs.getCount(); i++) _springs[i].init();
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
-    _angles.init();
+    _chassis.init();
     _body.setVehicleMass(_data.mass);
-    _steeringAngle = 0.0f;
     getNonDriveAxle().getCenter().y += _data.lengthBetweenAxleCenters;
     _gearbox.shiftUp();
 }
@@ -77,12 +76,8 @@ Body& Vehicle::getBody() {
     return _body;
 }
 
-Angles& Vehicle::getAngles() {
-    return _angles;
-}
-
-float Vehicle::getSteeringAngle() {
-    return _steeringAngle;
+Chassis& Vehicle::getChassis() {
+    return _chassis;
 }
 
 float Vehicle::getLongitudinalForceCoeff(float slipRatio) {
@@ -124,7 +119,7 @@ bool Vehicle::isAccelerating() {
     Vector3 acceleration = getLongitudinalAcceleration();
     if (acceleration.isZero()) return false;
     Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3& frontNormal = _body.getFrontNormal();
+    Vector3& frontNormal = _chassis.getFrontNormal();
 
     return frontNormal.isCollinear(accelerationDirection, 0.1f);
 }
@@ -133,13 +128,13 @@ bool Vehicle::isBraking() {
     Vector3 acceleration = getLongitudinalAcceleration();
     if (acceleration.isZero()) return false;
     Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3& frontNormal = _body.getFrontNormal();
+    Vector3& frontNormal = _chassis.getFrontNormal();
 
     return !frontNormal.isCollinear(accelerationDirection, 0.1f);
 }
 
 bool Vehicle::isTurningLeft() {
-    Vector3& frontNormal = _body.getFrontNormal();
+    Vector3& frontNormal = _chassis.getFrontNormal();
     Vector3 v = getLinearVelocity();
     v.vectorProduct(frontNormal);
 
@@ -147,7 +142,7 @@ bool Vehicle::isTurningLeft() {
 }
 
 bool Vehicle::isTurningRight() {
-    Vector3& frontNormal = _body.getFrontNormal();
+    Vector3& frontNormal = _chassis.getFrontNormal();
     Vector3 v = getLinearVelocity();
     v.vectorProduct(frontNormal);
 

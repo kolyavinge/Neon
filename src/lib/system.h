@@ -10,3 +10,5 @@
 #include <lib/collections/List.h>
 #include <lib/collections/Set.h>
 #include <lib/exceptions.h>
+
+#define output

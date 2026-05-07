@@ -171,7 +171,13 @@
     <ClCompile Include="src\core\GameInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\DrivingInputLogic.cpp">
+    <ClCompile Include="src\engine\vehicle\SteeringLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\vehicle\Chassis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\vehicle\WheelLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -398,7 +404,13 @@
     <ClInclude Include="src\core\GameInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\vehicle\DrivingInputLogic.h">
+    <ClInclude Include="src\engine\vehicle\SteeringLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\vehicle\Chassis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\vehicle\WheelLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

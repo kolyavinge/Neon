@@ -24,9 +24,6 @@ Body::Body() {
 }
 
 void Body::init() {
-    _frontNormal.set(0.0f, 1.0f, 0.0f);
-    _rightNormal.set(1.0f, 0.0f, 0.0f);
-    _topNormal = CommonConstants::upVector;
     _vehicleMass = 0.0f;
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnRight = 0.0f;
@@ -36,30 +33,6 @@ void Body::init() {
 
 BodyData& Body::getData() {
     return _data;
-}
-
-Vector3& Body::getFrontNormal() {
-    return _frontNormal;
-}
-
-void Body::setFrontNormal(Vector3& frontNormal) {
-    _frontNormal = frontNormal;
-}
-
-Vector3& Body::getRightNormal() {
-    return _rightNormal;
-}
-
-void Body::setRightNormal(Vector3& rightNormal) {
-    _rightNormal = rightNormal;
-}
-
-Vector3& Body::getTopNormal() {
-    return _topNormal;
-}
-
-void Body::setTopNormal(Vector3& topNormal) {
-    _topNormal = topNormal;
 }
 
 Angles& Body::getAngles() {

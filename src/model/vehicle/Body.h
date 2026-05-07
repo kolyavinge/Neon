@@ -25,9 +25,6 @@ public:
 class Body : public Object {
 
     BodyData _data;
-    Vector3 _frontNormal;
-    Vector3 _rightNormal;
-    Vector3 _topNormal;
     Vector3 _airDragForce;
     Angles _angles;
     float _vehicleMass;
@@ -38,12 +35,6 @@ public:
     Body();
     void init();
     BodyData& getData();
-    Vector3& getFrontNormal();
-    void setFrontNormal(Vector3& frontNormal);
-    Vector3& getRightNormal();
-    void setRightNormal(Vector3& rightNormal);
-    Vector3& getTopNormal();
-    void setTopNormal(Vector3& topNormal);
     Angles& getAngles();
     void setVehicleMass(float mass);
     void transferWeightOnRear(float onRear);

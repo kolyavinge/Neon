@@ -3,7 +3,6 @@
 #include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/Angles.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Engine.h>
@@ -11,6 +10,7 @@
 #include <model/vehicle/PacejkaFormula.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
+#include <model/vehicle/Chassis.h>
 
 class VehicleData : public Object {
 
@@ -37,10 +37,9 @@ private:
     Array<Spring, Vehicle::wheelsCount> _springs;
     Array<Axle, Vehicle::axlesCount> _axles;
     Body _body;
+    Chassis _chassis;
     PacejkaFormula _longitudinalForceCurve;
     PacejkaFormula _lateralForceCurve;
-    Angles _angles;
-    float _steeringAngle;
 
 public:
     Vehicle();
@@ -56,8 +55,7 @@ public:
     Axle& getNonDriveAxle();
     Axle& getDriveAxle();
     Body& getBody();
-    Angles& getAngles();
-    float getSteeringAngle();
+    Chassis& getChassis();
     float getLongitudinalForceCoeff(float slipRatio);
     float getLateralForceCoeff(float slipAngle);
     Vector3& getLinearVelocity();

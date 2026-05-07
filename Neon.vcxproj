@@ -32,12 +32,13 @@
     <ClCompile Include="src\debug\stat.cpp" />
     <ClCompile Include="src\engine\GameState.cpp" />
     <ClCompile Include="src\engine\GameUpdater.cpp" />
-    <ClCompile Include="src\engine\vehicle\DrivingInputLogic.cpp" />
+    <ClCompile Include="src\engine\vehicle\SteeringLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\ForceLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\PositionLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\VelocityLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp" />
+    <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
     <ClCompile Include="src\lib\calc\Geometry.cpp" />
     <ClCompile Include="src\lib\calc\TransformMatrix4.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="src\model\common\Measures.cpp" />
     <ClCompile Include="src\model\vehicle\Axle.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
+    <ClCompile Include="src\model\vehicle\Chassis.cpp" />
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp" />
     <ClCompile Include="src\model\vehicle\Engine.cpp" />
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp" />
@@ -81,7 +83,9 @@
     <ClInclude Include="src\debug\stat.h" />
     <ClInclude Include="src\engine\GameState.h" />
     <ClInclude Include="src\engine\GameUpdater.h" />
-    <ClInclude Include="src\engine\vehicle\DrivingInputLogic.h" />
+    <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
+    <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\render\gl\opengl.h" />
     <ClInclude Include="src\render\RenderInitializer.h" />

@@ -2,6 +2,7 @@
 
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/PositionLogic.h>
+#include <engine/vehicle/SteeringLogic.h>
 #include <engine/vehicle/VelocityLogic.h>
 #include <engine/vehicle/WeightTransferLogic.h>
 #include <lib/di/Resolver.h>
@@ -13,6 +14,7 @@ class VehicleUpdater : public Object {
 
     ForceLogic& _forceLogic;
     PositionLogic& _positionLogic;
+    SteeringLogic& _steeringLogic;
     VelocityLogic& _velocityLogic;
     WeightTransferLogic& _weightTransferLogic;
 
@@ -21,6 +23,7 @@ public:
         return new VehicleUpdater(
             resolver.resolve<ForceLogic>(),
             resolver.resolve<PositionLogic>(),
+            resolver.resolve<SteeringLogic>(),
             resolver.resolve<VelocityLogic>(),
             resolver.resolve<WeightTransferLogic>());
     }
@@ -28,6 +31,7 @@ public:
     VehicleUpdater(
         ForceLogic& forceLogic,
         PositionLogic& positionLogic,
+        SteeringLogic& steeringLogic,
         VelocityLogic& velocityLogic,
         WeightTransferLogic& weightTransferLogic);
 

@@ -16,6 +16,10 @@ void Vector3::set(float valueX, float valueY, float valueZ) {
     z = valueZ;
 }
 
+void Vector3::set(Vector3& v) {
+    set(v.x, v.y, v.z);
+}
+
 void Vector3::setZero() {
     set(0.0f, 0.0f, 0.0f);
 }
@@ -82,6 +86,12 @@ void Vector3::sub(Vector3& v) {
     x -= v.x;
     y -= v.y;
     z -= v.z;
+}
+
+void Vector3::subMultiplied(Vector3& v, float multipliedBy) {
+    x -= multipliedBy * v.x;
+    y -= multipliedBy * v.y;
+    z -= multipliedBy * v.z;
 }
 
 void Vector3::mul(float a) {

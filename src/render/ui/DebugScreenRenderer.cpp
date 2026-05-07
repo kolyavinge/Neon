@@ -3,6 +3,7 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Chassis.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 #include <render/gl/opengl.h>
@@ -19,12 +20,13 @@ void DebugScreenRenderer::render() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(CommonConstants::verticalFieldOfViewDegrees, CommonConstants::screenAspect, CommonConstants::zNear, CommonConstants::zFar);
-    Vector3 eyePosition = vehicle.getNonDriveAxle().getCenter();
-    eyePosition.x += 5.0f;
-    eyePosition.z += 5.0f;
+    Vector3 eyePosition = vehicle.getDriveAxle().getCenter();
+    eyePosition.subMultiplied(vehicle.getChassis().getFrontNormal(), 5.0f);
+    eyePosition.addMultiplied(vehicle.getChassis().getRightNormal(), 3.0f);
+    eyePosition.z += 4.0f;
     gluLookAt(eyePosition, vehicle.getNonDriveAxle().getCenter(), CommonConstants::upVector);
     renderGrid();
-    renderAxis();
+    //renderGlobalAxis();
     renderVehicle(vehicle);
 }
 
@@ -32,11 +34,20 @@ void DebugScreenRenderer::renderVehicle(Vehicle& vehicle) {
     renderVehicleAxles(vehicle);
     renderVehicleWheels(vehicle);
     renderVehicleBody(vehicle);
+    //renderVehicleAxis(vehicle);
 }
 
 void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
     Axle& driveAxle = vehicle.getDriveAxle();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
+    // axle axis
+    glColor3f(0.5f, 0.5f, 0.5f);
+    glBegin(GL_LINES);
+    glVertex3f(nonDriveAxle.getLeftWheelPosition());
+    glVertex3f(nonDriveAxle.getRightWheelPosition());
+    glVertex3f(driveAxle.getLeftWheelPosition());
+    glVertex3f(driveAxle.getRightWheelPosition());
+    glEnd();
     // axle points
     glPointSize(5.0f);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -72,12 +83,17 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
 }
 
 void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
+    Chassis& chassis = vehicle.getChassis();
     for (int i = 0; i < vehicle.wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
         glColor3f(0.8f, 0.8f, 0.8f);
         // wheel circle
-        glDrawCircleYZ(wheel.getCenter(), wheel.getData().radius, 16);
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
+        glDrawCircleYZ(wheel.getData().radius, 16);
+        glPopMatrix();
         // angle line
         glPushMatrix();
         glTranslatef(wheel.getCenter());
@@ -94,7 +110,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
         Vector3 frontNormal = wheel.getFrontNormal();
-        frontNormal.setLength(0.25f);
+        frontNormal.setLength(0.5f);
         glVertex3f(frontNormal);
         glEnd();
         glPopMatrix();
@@ -105,7 +121,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
         Vector3 outsideNormal = wheel.getOutsdteNormal();
-        outsideNormal.setLength(0.25f);
+        outsideNormal.setLength(0.5f);
         glVertex3f(outsideNormal);
         glEnd();
         glPopMatrix();
@@ -120,6 +136,17 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glVertex3f(longitudinalForce);
         glEnd();
         glPopMatrix();
+        // lateral force
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 lateralForce = wheel.getLateralForce();
+        lateralForce.div(_forceDivider);
+        glVertex3f(lateralForce);
+        glEnd();
+        glPopMatrix();
         // spring force
         glColor3f(1.0f, 0.0f, 0.0f);
         glPushMatrix();
@@ -131,6 +158,19 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glVertex3f(0.0f, 0.0f, -springForce);
         glEnd();
         glPopMatrix();
+        // linear velocity
+        //if (!wheel.getLinearVelocity().isZero()) {
+        //    glPushMatrix();
+        //    glTranslatef(wheel.getCenter());
+        //    glColor3f(0.8f, 0.8f, 0.0f);
+        //    glBegin(GL_LINES);
+        //    glVertex3f(0.0f, 0.0f, 0.0f);
+        //    Vector3 linearVelocity = wheel.getLinearVelocity();
+        //    linearVelocity.setLength(0.5f);
+        //    glVertex3f(linearVelocity);
+        //    glEnd();
+        //    glPopMatrix();
+        //}
     }
 }
 
@@ -151,6 +191,30 @@ void DebugScreenRenderer::renderVehicleBody(Vehicle& vehicle) {
     glPopMatrix();
 }
 
+void DebugScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
+    Chassis& chassis = vehicle.getChassis();
+    Axle& driveAxle = vehicle.getDriveAxle();
+
+    glPushMatrix();
+    glTranslatef(driveAxle.getCenter());
+    glBegin(GL_LINES);
+
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(chassis.getRightNormal());
+
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(chassis.getFrontNormal());
+
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(chassis.getTopNormal());
+
+    glEnd();
+    glPopMatrix();
+}
+
 void DebugScreenRenderer::renderGrid() {
     const float length = CommonConstants::zFar;
     glColor3f(0.1f, 0.1f, 0.1f);
@@ -164,7 +228,7 @@ void DebugScreenRenderer::renderGrid() {
     glEnd();
 }
 
-void DebugScreenRenderer::renderAxis() {
+void DebugScreenRenderer::renderGlobalAxis() {
     glBegin(GL_LINES);
 
     glColor3f(1.0f, 0.0f, 0.0f);

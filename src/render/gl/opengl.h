@@ -17,4 +17,4 @@ void glVertex3f(Vector3& v);
 void gluLookAt(Vector3& position, Vector3& lookAt, Vector3& upAxis);
 void glNormal3f(Vector3& v);
 void glScalef(Vector3& v);
-void glDrawCircleYZ(Vector3& center, float radius, int edgesCount);
+void glDrawCircleYZ(float radius, int edgesCount);

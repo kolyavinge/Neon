@@ -14,6 +14,7 @@ public:
     Vector3();
     Vector3(float valueX, float valueY, float valueZ);
     void set(float valueX, float valueY, float valueZ);
+    void set(Vector3& v);
     void setZero();
     bool isZero(float eps = Numeric::epsilonFloat);
     bool equals(Object& v) override;
@@ -25,6 +26,7 @@ public:
     void add(Vector3& v);
     void addMultiplied(Vector3& v, float multipliedBy);
     void sub(Vector3& v);
+    void subMultiplied(Vector3& v, float multipliedBy);
     void mul(float a);
     void div(float a);
     bool isCollinear(Vector3& v, float eps = Numeric::epsilonFloat);

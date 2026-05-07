@@ -25,9 +25,8 @@ void glScalef(Vector3& v) {
     glScalef(v.x, v.y, v.z);
 }
 
-void glDrawCircleYZ(Vector3& center, float radius, int edgesCount) {
+void glDrawCircleYZ(float radius, int edgesCount) {
     glPushMatrix();
-    glTranslatef(center.x, center.y, center.z);
     glBegin(GL_LINE_LOOP);
     const float radiansStep = Math::piDouble / (float)edgesCount;
     float angle = 0.0f;
