@@ -41,6 +41,7 @@
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
     <ClCompile Include="src\lib\calc\Geometry.cpp" />
+    <ClCompile Include="src\lib\calc\Quaternion.cpp" />
     <ClCompile Include="src\lib\calc\TransformMatrix4.cpp" />
     <ClCompile Include="src\lib\calc\UnitConverter.cpp" />
     <ClCompile Include="src\lib\calc\Vector3.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="src\engine\GameUpdater.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\lib\calc\Quaternion.h" />
     <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\render\gl\opengl.h" />

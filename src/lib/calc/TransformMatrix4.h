@@ -10,6 +10,7 @@ class TransformMatrix4 : public Object {
 
 public:
     TransformMatrix4();
+    TransformMatrix4(float items[16]);
     void setIdentity();
     void setZero();
     void mul(TransformMatrix4& m);
