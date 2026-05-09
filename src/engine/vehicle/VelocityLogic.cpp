@@ -4,23 +4,28 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Wheel.h>
 
 void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
 
+    // оси св€заны друг с другом => продольна€ сила (longitudinal) дл€ них равна сумме сил колес
     Vector3 driveAxleForce;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = vehicle.getDriveWheel(i);
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
         driveAxleForce.add(wheel.getLongitudinalForce());
-        driveAxleForce.add(wheel.getLateralForce());
+    }
+    Vector3 nonDriveAxleForce = driveAxleForce;
+
+    // поперечные силы (lateral) индивидуальные дл€ каждой оси
+    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+        Wheel& driveWheel = vehicle.getDriveWheel(i);
+        driveAxleForce.add(driveWheel.getLateralForce());
     }
 
-    Vector3 nonDriveAxleForce;
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
-        Wheel& driveWheel = vehicle.getDriveWheel(i);
         Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
-        nonDriveAxleForce.add(driveWheel.getLongitudinalForce()); // задн€€ ось толкает переднюю
         nonDriveAxleForce.add(nonDriveWheel.getLateralForce());
     }
 
@@ -64,7 +69,7 @@ bool VelocityLogic::isVelocityZero(Vehicle& vehicle) {
 void VelocityLogic::setVelocityToZero(Vehicle& vehicle) {
     vehicle.getDriveAxle().getVelocity().setZero();
     vehicle.getNonDriveAxle().getVelocity().setZero();
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        vehicle.getDriveWheel(i).setAngularVelocityToZero();
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        vehicle.getWheel(i).setAngularVelocityToZero();
     }
 }

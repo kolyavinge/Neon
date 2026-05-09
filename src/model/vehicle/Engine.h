@@ -9,7 +9,7 @@ public:
     EngineTorqueCurve torqueCurve;
     float minRpm;
     float maxRpm;
-    float innerFrictionCoeff;
+    //float innerFrictionCoeff;
     float brakingForce;
 
     EngineData();

@@ -12,7 +12,6 @@ private:
     void calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio);
     void calculateSpringForces(Vehicle& vehicle);
     float getAverageWheelsRpm(Vehicle& vehicle);
-    void calculateDriveWheelForces(Vehicle& vehicle);
-    void calculateNonDriveWheelForces(Vehicle& vehicle);
+    void calculateWheelForces(Vehicle& vehicle);
     void calculateAirDragForce(Vehicle& vehicle);
 };

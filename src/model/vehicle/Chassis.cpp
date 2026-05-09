@@ -1,4 +1,5 @@
 #include <common/constants.h>
+#include <lib/calc/Quaternion.h>
 #include <model/vehicle/Chassis.h>
 
 Chassis::Chassis() {
@@ -9,7 +10,7 @@ void Chassis::init() {
     _frontNormal.set(0.0f, 1.0f, 0.0f);
     _rightNormal.set(1.0f, 0.0f, 0.0f);
     _topNormal = CommonConstants::upVector;
-    _angles.init();
+    _rotateAngle = 0.0f;
 }
 
 Vector3& Chassis::getFrontNormal() {
@@ -36,6 +37,22 @@ void Chassis::setTopNormal(Vector3& topNormal) {
     _topNormal = topNormal;
 }
 
-Angles& Chassis::getAngles() {
-    return _angles;
+void Chassis::calculateRotateAngleAndAxis() {
+    Quaternion q = Quaternion::rotateCoordinateSystem(
+        CommonConstants::rightVector, _rightNormal,
+        CommonConstants::frontVector, _frontNormal);
+    q.getAngleAndAxis(_rotateAngle, _rotateAxis);
+    _transformMatrix = q.getTransformMatrix4();
+}
+
+float Chassis::getRotateAngle() {
+    return _rotateAngle;
+}
+
+Vector3& Chassis::getRotateAxis() {
+    return _rotateAxis;
+}
+
+TransformMatrix4& Chassis::getTransformMatrix() {
+    return _transformMatrix;
 }

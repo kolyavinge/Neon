@@ -4,11 +4,13 @@
 
 VehicleUpdater::VehicleUpdater(
     ForceLogic& forceLogic,
+    GearboxLogic& gearboxLogic,
     PositionLogic& positionLogic,
     SteeringLogic& steeringLogic,
     VelocityLogic& velocityLogic,
     WeightTransferLogic& weightTransferLogic) :
     _forceLogic(forceLogic),
+    _gearboxLogic(gearboxLogic),
     _positionLogic(positionLogic),
     _steeringLogic(steeringLogic),
     _velocityLogic(velocityLogic),
@@ -25,6 +27,7 @@ void VehicleUpdater::updateVehicles(VehiclesArray& vehicles, DrivingInputData& d
 
 void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& drivingInputData) {
     _steeringLogic.steer(vehicle, drivingInputData.getSteeringRatio());
+    _gearboxLogic.shift(vehicle.getGearbox(), drivingInputData.isShiftedUp(), drivingInputData.isShiftedDown());
     _forceLogic.calculateForces(vehicle, drivingInputData.getThrottleRatio(), drivingInputData.getBrakeRatio());
     _weightTransferLogic.transferWeight(vehicle);
     _velocityLogic.calculateVelocity(vehicle);
@@ -33,12 +36,15 @@ void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& drivingIn
 
 void VehicleUpdater::printDebugInfo(Vehicle& vehicle) {
     printf(
-        "RPM: %i|Wh: %.2f|SR: %.2f (%.2f/%.2f)|SA: %.1f %.1f %.1f %.1f|Lng: %i|Lat: %i %i|Spng: %i|Velo: %.2f\r\n",
+        "RPM: %i|Wh: %.2f|SR: %.2f (%.2f/%.2f) %.2f (%.2f/%.2f)|SA: %.1f %.1f %.1f %.1f|Lng: %i|Lat: %i %i|Spng: %i|Velo: %.2f\r\n",
         (int)vehicle.getEngine().getRpm(),
         vehicle.getDriveWheel(0).getAngularVelocity(),
         vehicle.getDriveWheel(0).getSlipRatio().value,
         vehicle.getDriveWheel(0).getSlipRatio().drivenVelocity,
         vehicle.getDriveWheel(0).getSlipRatio().linearVelocity,
+        vehicle.getNonDriveWheel(0).getSlipRatio().value,
+        vehicle.getNonDriveWheel(0).getSlipRatio().drivenVelocity,
+        vehicle.getNonDriveWheel(0).getSlipRatio().linearVelocity,
         UnitConverter::radiansToDegrees(vehicle.getNonDriveWheel(0).getSlipAngle()),
         UnitConverter::radiansToDegrees(vehicle.getNonDriveWheel(1).getSlipAngle()),
         UnitConverter::radiansToDegrees(vehicle.getDriveWheel(0).getSlipAngle()),

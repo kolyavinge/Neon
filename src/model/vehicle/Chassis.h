@@ -1,15 +1,17 @@
 #pragma once
 
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/Angles.h>
 
 class Chassis : public Object {
 
     Vector3 _frontNormal;
     Vector3 _rightNormal;
     Vector3 _topNormal;
-    Angles _angles;
+    float _rotateAngle;
+    Vector3 _rotateAxis;
+    TransformMatrix4 _transformMatrix;
 
 public:
     Chassis();
@@ -20,5 +22,8 @@ public:
     void setRightNormal(Vector3& rightNormal);
     Vector3& getTopNormal();
     void setTopNormal(Vector3& topNormal);
-    Angles& getAngles();
+    void calculateRotateAngleAndAxis();
+    float getRotateAngle();
+    Vector3& getRotateAxis();
+    TransformMatrix4& getTransformMatrix();
 };

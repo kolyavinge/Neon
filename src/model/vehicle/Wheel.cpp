@@ -9,7 +9,7 @@
 WheelData::WheelData() {
     radius = 0.3f;
     roadFrictionCoeff = 0.001f;
-    brakingForceCoeff = 20.0f;
+    brakingForceCoeff = 40.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
 }
 
@@ -23,7 +23,7 @@ Wheel::Wheel() {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 0.0f;
-    _prevAngularVelocity = 0.0f;
+    //_prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
     _position = (WheelPosition)-1; // unset position
 }
@@ -33,7 +33,7 @@ void Wheel::init(WheelPosition position) {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
-    _prevAngularVelocity = 0.0f;
+    //_prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
     _frontNormal.set(0.0f, 1.0f, 0.0f);
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
@@ -115,23 +115,27 @@ void Wheel::setAngularVelocityToZero() {
 }
 
 void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
-    _prevAngularVelocity = _angularVelocity;
+    //_prevAngularVelocity = _angularVelocity;
     _angularVelocity += 0.0005f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
     if (brakingRatio > 0.0f) {
-        float brakingValue = _data.brakingForceCoeff * brakingRatio * dt;
-        if (_angularVelocity > 0.0f) {
-            _angularVelocity -= brakingValue;
-            if (_angularVelocity < 0.0f) {
-                _angularVelocity = 0.0f;
-            }
-        } else if (_angularVelocity < 0.0f) {
-            _angularVelocity += brakingValue;
-            if (_angularVelocity > 0.0f) {
-                _angularVelocity = 0.0f;
-            }
-        }
+        brake(brakingRatio, dt);
     }
     _angularVelocity *= 1.0f - _data.roadFrictionCoeff;
+}
+
+void Wheel::brake(float brakingRatio, float dt) {
+    float brakingValue = _data.brakingForceCoeff * brakingRatio * dt;
+    if (_angularVelocity > 0.0f) {
+        _angularVelocity -= brakingValue;
+        if (_angularVelocity < 0.0f) {
+            _angularVelocity = 0.0f;
+        }
+    } else if (_angularVelocity < 0.0f) {
+        _angularVelocity += brakingValue;
+        if (_angularVelocity > 0.0f) {
+            _angularVelocity = 0.0f;
+        }
+    }
 }
 
 void Wheel::updateRotateAngle(float dt) {
@@ -145,7 +149,7 @@ void Wheel::updateRotateAngle(float dt) {
 SlipRatio Wheel::getSlipRatio() {
     // угловую скорость берем из пред шага, ей соответствует текущая линейная скорость
     // для текущей угловой скорости, линейная будет посчитана в конце текущего шага
-    float drivenVelocity = _prevAngularVelocity * _data.radius;
+    float drivenVelocity = _angularVelocity * _data.radius;
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
@@ -153,7 +157,7 @@ SlipRatio Wheel::getSlipRatio() {
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-5f;
     bool isLinearVelocityOppositeDirection = _frontNormal.dotProduct(_linearVelocity) < 0.0f;
     if (isLinearVelocityOppositeDirection) linearVelocity *= -1.0f;
-    float slipRatio = drivenVelocity / linearVelocity - 1.0f;
+    float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
 
     return SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
@@ -212,6 +216,6 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear() {
-    _prevAngularVelocity = _angularVelocity;
+    //_prevAngularVelocity = _angularVelocity;
     _angularVelocity = _linearVelocity.getLength() / _data.radius;
 }

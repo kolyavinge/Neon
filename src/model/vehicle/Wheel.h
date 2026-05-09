@@ -38,7 +38,7 @@ class Wheel : public Object {
     float _rotateAngle;
     float _steeringAngle;
     float _loadWeight;
-    float _prevAngularVelocity;
+    //float _prevAngularVelocity;
     float _angularVelocity;
     Vector3 _frontNormal;
     Vector3 _outsideNormal;
@@ -69,6 +69,7 @@ public:
     float getAngularVelocity();
     void setAngularVelocityToZero();
     void calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt);
+    void brake(float brakingRatio, float dt);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
     float getSlipAngle();

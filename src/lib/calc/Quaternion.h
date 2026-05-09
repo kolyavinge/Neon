@@ -8,17 +8,19 @@ class Quaternion : public Object {
     float _w, _x, _y, _z;
 
 public:
+    static Quaternion rotateCoordinateSystem(Vector3& axis1From, Vector3& axis1To, Vector3& axis2From, Vector3& axis2To);
+
     Quaternion();
     Quaternion(float w, float x, float y, float z);
     Quaternion(Vector3& from, Vector3& to);
-    Quaternion(float angle, Vector3 pivot);
+    Quaternion(float angle, Vector3 axis);
 
     float getMagnitude();
-    void getAngleAndPivot(float& angle, Vector3& pivot);
+    void getAngleAndAxis(float& angle, Vector3& axis);
     void setIdentity();
     void setComponents(float w, float x, float y, float z);
     void setVectors(Vector3& from, Vector3& to);
-    void setAngleAndPivot(float angle, Vector3 pivot);
+    void setAngleAndAxis(float angle, Vector3 axis);
     void normalize();
     void inverse();
     void mul(Quaternion& q2);

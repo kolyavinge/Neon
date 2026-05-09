@@ -92,12 +92,15 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glPushMatrix();
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
+        glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
         glDrawCircleYZ(wheel.getData().radius, 16);
         glPopMatrix();
         // angle line
         glPushMatrix();
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsdteNormal());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
+        glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
         glVertex3f(0.0f, wheel.getData().radius, 0.0f);
@@ -216,7 +219,7 @@ void DebugScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
 }
 
 void DebugScreenRenderer::renderGrid() {
-    const float length = CommonConstants::zFar;
+    const float length = 10.0f * CommonConstants::zFar;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
     for (float step = -length; step < length; step += 1.0f) {

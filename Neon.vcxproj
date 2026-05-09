@@ -32,6 +32,7 @@
     <ClCompile Include="src\debug\stat.cpp" />
     <ClCompile Include="src\engine\GameState.cpp" />
     <ClCompile Include="src\engine\GameUpdater.cpp" />
+    <ClCompile Include="src\engine\vehicle\GearboxLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\SteeringLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\ForceLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\PositionLogic.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="src\debug\stat.h" />
     <ClInclude Include="src\engine\GameState.h" />
     <ClInclude Include="src\engine\GameUpdater.h" />
+    <ClInclude Include="src\engine\vehicle\GearboxLogic.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
     <ClInclude Include="src\lib\calc\Quaternion.h" />

@@ -11,5 +11,5 @@ protected:
     void updatePressedKeys();
 
 private:
-    bool isKeyPressed(unsigned char keyState);
+    bool isKeyboardKeyPressed(unsigned char keyState);
 };

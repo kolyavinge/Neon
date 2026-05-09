@@ -19,4 +19,10 @@ void DrivingInputManager::update(DrivingInputData& inputData) {
     } else if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::s)) {
         inputData.setBrakeRatio(1.0f);
     }
+
+    if (_inputManager.keyboard.isKeyPressed(Keys::up)) {
+        inputData.shiftUp();
+    } else if (_inputManager.keyboard.isKeyPressed(Keys::down)) {
+        inputData.shiftDown();
+    }
 }

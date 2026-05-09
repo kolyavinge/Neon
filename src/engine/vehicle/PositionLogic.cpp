@@ -33,6 +33,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
 
     chassis.setFrontNormal(chassisFrontNormal);
     chassis.setRightNormal(chassisRightNormal);
+    chassis.calculateRotateAngleAndAxis();
     body.updateAngles();
 
     Vector3 lengthBetweenAxleCenters = chassisFrontNormal;
@@ -57,7 +58,8 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle();
     Vector3 nonDriveWheelFrontNormal, leftNonDriveWheelOutsideNormal, rightNonDriveWheelOutsideNormal;
     _wheelLogic.calculateNormalsBySteeringAngle(
-        steeringAngle, chassisFrontNormal, chassis.getTopNormal(), nonDriveWheelFrontNormal, leftNonDriveWheelOutsideNormal, rightNonDriveWheelOutsideNormal);
+        steeringAngle, chassisFrontNormal, chassis.getTopNormal(),
+        output nonDriveWheelFrontNormal, output leftNonDriveWheelOutsideNormal, output rightNonDriveWheelOutsideNormal);
 
     frontLeftWheel.setFrontNormal(nonDriveWheelFrontNormal);
     frontRightWheel.setFrontNormal(nonDriveWheelFrontNormal);

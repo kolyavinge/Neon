@@ -4,6 +4,16 @@
 #include <lib/calc/Quaternion.h>
 #include <lib/calc/Vector3.h>
 
+Quaternion Quaternion::rotateCoordinateSystem(Vector3& axis1From, Vector3& axis1To, Vector3& axis2From, Vector3& axis2To) {
+    Quaternion q1(axis1From, axis1To);
+    Vector3 axis2FromRotated(axis2From);
+    q1.rotatePoint(axis2FromRotated);
+    Quaternion q2(axis2FromRotated, axis2To);
+    q2.mul(q1);
+
+    return q2;
+}
+
 Quaternion::Quaternion() {
     setIdentity();
 }
@@ -16,24 +26,24 @@ Quaternion::Quaternion(Vector3& from, Vector3& to) {
     setVectors(from, to);
 }
 
-Quaternion::Quaternion(float angle, Vector3 pivot) {
-    setAngleAndPivot(angle, pivot);
+Quaternion::Quaternion(float angle, Vector3 axis) {
+    setAngleAndAxis(angle, axis);
 }
 
 float Quaternion::getMagnitude() {
     return Math::sqrt(_w * _w + _x * _x + _y * _y + _z * _z);
 }
 
-void Quaternion::getAngleAndPivot(float& angle, Vector3& pivot) {
+void Quaternion::getAngleAndAxis(float& angle, Vector3& axis) {
     float alphaHalf = Math::arccos(_w);
     angle = 2.0f * alphaHalf;
-    pivot.set(_x, _y, _z);
+    axis.set(_x, _y, _z);
     float sinHalf = Math::sin(alphaHalf);
     if (!Numeric::floatEquals(sinHalf, 0.0f)) {
-        pivot.div(sinHalf);
+        axis.div(sinHalf);
     }
-    if (pivot.isZero()) {
-        pivot.set(0.0f, 0.0f, 1.0f);
+    if (axis.isZero()) {
+        axis.set(0.0f, 0.0f, 1.0f);
     }
 }
 
@@ -57,21 +67,21 @@ void Quaternion::setVectors(Vector3& from, Vector3& to) {
     float cosAlpha = dotProduct / (from.getLength() * to.getLength()); // normalized vectors
     cosAlpha = Numeric::clamp(cosAlpha, -1.0f, 1.0f);
     float alpha = Math::arccos(cosAlpha);
-    Vector3 pivot(from);
-    pivot.vectorProduct(to);
-    if (!pivot.isZero()) {
-        setAngleAndPivot(alpha, pivot);
+    Vector3 axis(from);
+    axis.vectorProduct(to);
+    if (!axis.isZero()) {
+        setAngleAndAxis(alpha, axis);
     } else {
         setIdentity();
     }
 }
 
-void Quaternion::setAngleAndPivot(float angle, Vector3 pivot) {
+void Quaternion::setAngleAndAxis(float angle, Vector3 axis) {
     float sinHalf = Math::sin(angle / 2.0f);
     float cosHalf = Math::cos(angle / 2.0f);
-    pivot.normalize();
-    pivot.mul(sinHalf);
-    setComponents(cosHalf, pivot.x, pivot.y, pivot.z);
+    axis.normalize();
+    axis.mul(sinHalf);
+    setComponents(cosHalf, axis.x, axis.y, axis.z);
 }
 
 void Quaternion::normalize() {

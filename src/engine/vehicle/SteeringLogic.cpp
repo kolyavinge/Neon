@@ -10,10 +10,15 @@ SteeringLogic::SteeringLogic(
 void SteeringLogic::steer(Vehicle& vehicle, float steeringRatio) {
     float steeringAngle = -steeringRatio * vehicle.getNonDriveWheel(0).getData().maxSteeringAngle;
     Chassis& chassis = vehicle.getChassis();
+
     Vector3 wheelFrontNormal, leftWheelOutsideNormal, rightWheelOutsideNormal;
-    _wheelLogic.calculateNormalsBySteeringAngle(steeringAngle, chassis.getFrontNormal(), chassis.getTopNormal(), wheelFrontNormal, leftWheelOutsideNormal, rightWheelOutsideNormal);
+    _wheelLogic.calculateNormalsBySteeringAngle(
+        steeringAngle, chassis.getFrontNormal(), chassis.getTopNormal(),
+        output wheelFrontNormal, output leftWheelOutsideNormal, output rightWheelOutsideNormal);
+
     Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);
     Wheel& frontRightWheel = vehicle.getWheel(WheelPosition::frontRight);
+
     frontLeftWheel.setSteeringAngle(steeringAngle);
     frontRightWheel.setSteeringAngle(steeringAngle);
     frontLeftWheel.setFrontNormal(wheelFrontNormal);

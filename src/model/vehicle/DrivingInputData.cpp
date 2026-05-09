@@ -32,8 +32,26 @@ void DrivingInputData::setSteeringRatio(float steeringRatio) {
     _steeringRatio = steeringRatio;
 }
 
+bool DrivingInputData::isShiftedUp() {
+    return _shiftUp;
+}
+
+void DrivingInputData::shiftUp() {
+    _shiftUp = true;
+}
+
+bool DrivingInputData::isShiftedDown() {
+    return _shiftDown;
+}
+
+void DrivingInputData::shiftDown() {
+    _shiftDown = true;
+}
+
 void DrivingInputData::reset() {
     _throttleRatio = 0.0f;
     _brakeRatio = 0.0f;
     _steeringRatio = 0.0f;
+    _shiftUp = false;
+    _shiftDown = false;
 }
