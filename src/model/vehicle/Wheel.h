@@ -38,7 +38,6 @@ class Wheel : public Object {
     float _rotateAngle;
     float _steeringAngle;
     float _loadWeight;
-    //float _prevAngularVelocity;
     float _angularVelocity;
     Vector3 _frontNormal;
     Vector3 _outsideNormal;

@@ -1,5 +1,6 @@
 #include <core/di/EngineInjectModule.h>
 #include <engine/GameUpdater.h>
+#include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
 #include <engine/vehicle/PositionLogic.h>
@@ -11,6 +12,7 @@
 
 void EngineInjectModule::init(Binder& binder) {
     binder.bindSingleton<GameUpdater>(GameUpdater::resolve);
+    binder.bindSingleton<EngineLogic>();
     binder.bindSingleton<ForceLogic>();
     binder.bindSingleton<GearboxLogic>();
     binder.bindSingleton<PositionLogic>(PositionLogic::resolve);

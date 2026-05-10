@@ -1,5 +1,6 @@
 #pragma once
 
+#include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
 #include <engine/vehicle/PositionLogic.h>
@@ -13,6 +14,7 @@
 
 class VehicleUpdater : public Object {
 
+    EngineLogic& _engineLogic;
     ForceLogic& _forceLogic;
     GearboxLogic& _gearboxLogic;
     PositionLogic& _positionLogic;
@@ -23,6 +25,7 @@ class VehicleUpdater : public Object {
 public:
     static VehicleUpdater* resolve(Resolver& resolver) {
         return new VehicleUpdater(
+            resolver.resolve<EngineLogic>(),
             resolver.resolve<ForceLogic>(),
             resolver.resolve<GearboxLogic>(),
             resolver.resolve<PositionLogic>(),
@@ -32,6 +35,7 @@ public:
     }
 
     VehicleUpdater(
+        EngineLogic& engineLogic,
         ForceLogic& forceLogic,
         GearboxLogic& gearboxLogic,
         PositionLogic& positionLogic,

@@ -3,12 +3,14 @@
 #include <stdio.h>
 
 VehicleUpdater::VehicleUpdater(
+    EngineLogic& engineLogic,
     ForceLogic& forceLogic,
     GearboxLogic& gearboxLogic,
     PositionLogic& positionLogic,
     SteeringLogic& steeringLogic,
     VelocityLogic& velocityLogic,
     WeightTransferLogic& weightTransferLogic) :
+    _engineLogic(engineLogic),
     _forceLogic(forceLogic),
     _gearboxLogic(gearboxLogic),
     _positionLogic(positionLogic),
@@ -28,7 +30,8 @@ void VehicleUpdater::updateVehicles(VehiclesArray& vehicles, DrivingInputData& d
 void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& drivingInputData) {
     _steeringLogic.steer(vehicle, drivingInputData.getSteeringRatio());
     _gearboxLogic.shift(vehicle.getGearbox(), drivingInputData.isShiftedUp(), drivingInputData.isShiftedDown());
-    _forceLogic.calculateForces(vehicle, drivingInputData.getThrottleRatio(), drivingInputData.getBrakeRatio());
+    _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle, drivingInputData.getThrottleRatio(), drivingInputData.getBrakeRatio());
+    _forceLogic.calculateForces(vehicle);
     _weightTransferLogic.transferWeight(vehicle);
     _velocityLogic.calculateVelocity(vehicle);
     _positionLogic.updatePosition(vehicle);

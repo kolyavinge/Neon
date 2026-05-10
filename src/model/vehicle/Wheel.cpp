@@ -23,7 +23,6 @@ Wheel::Wheel() {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 0.0f;
-    //_prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
     _position = (WheelPosition)-1; // unset position
 }
@@ -33,7 +32,6 @@ void Wheel::init(WheelPosition position) {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
-    //_prevAngularVelocity = 0.0f;
     _angularVelocity = 0.0f;
     _frontNormal.set(0.0f, 1.0f, 0.0f);
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
@@ -115,7 +113,6 @@ void Wheel::setAngularVelocityToZero() {
 }
 
 void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
-    //_prevAngularVelocity = _angularVelocity;
     _angularVelocity += 0.0005f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
@@ -147,8 +144,6 @@ void Wheel::updateRotateAngle(float dt) {
 }
 
 SlipRatio Wheel::getSlipRatio() {
-    // угловую скорость берем из пред шага, ей соответствует текущая линейная скорость
-    // для текущей угловой скорости, линейная будет посчитана в конце текущего шага
     float drivenVelocity = _angularVelocity * _data.radius;
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
@@ -216,6 +211,5 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear() {
-    //_prevAngularVelocity = _angularVelocity;
     _angularVelocity = _linearVelocity.getLength() / _data.radius;
 }

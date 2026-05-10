@@ -30,7 +30,7 @@ float Gearbox::getGearRatio() {
 }
 
 bool Gearbox::shiftUp() {
-    if (_currentGearIndex < _maxGearsCount) {
+    if (_currentGearIndex < _gearRatios.getCount() - 1) {
         _currentGearIndex++;
         return true;
     } else {
