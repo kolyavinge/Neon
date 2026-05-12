@@ -7,13 +7,13 @@ BodyData::BodyData() {
     measures.yLength = 4.0f;
     measures.zLength = 1.5f;
     massCenter.set(0.0f, measures.yLength / 2.0f, measures.zLength / 2.0f);
-    massCenterHeight = 0.75f;
+    massCenterHeight = 1.0f;
     wheelbaseLength = 3.6f;
     frontWheelLengthToMassCenter = 1.8f;
     rearWheelLengthToMassCenter = 1.8f;
     trackWidth = 2.0f;
-    maxPitch = UnitConverter::degreesToRadians(20.0f);
-    maxRoll = UnitConverter::degreesToRadians(20.0f);
+    maxPitch = UnitConverter::degreesToRadians(10.0f);
+    maxRoll = UnitConverter::degreesToRadians(10.0f);
     airDragCoeff = 5.0f;
 }
 

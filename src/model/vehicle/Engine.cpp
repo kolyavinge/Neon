@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lib/Numeric.h>
 #include <model/vehicle/Engine.h>
 
 EngineData::EngineData() {

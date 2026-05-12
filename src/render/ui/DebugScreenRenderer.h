@@ -6,7 +6,7 @@
 
 class DebugScreenRenderer : public ScreenRenderer {
 
-    inline static const float _forceDivider = 500.0f;
+    inline static const float _forceDivider = 1000.0f;
     DebugScreen* _screen;
 
 public:

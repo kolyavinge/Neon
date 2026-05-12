@@ -7,7 +7,9 @@ class SpringData : public Object {
 public:
     float stiffness;
     float damper;
+    float minLength;
     float maxLength;
+    float maxWeight;
 
     SpringData();
 };
@@ -24,5 +26,6 @@ public:
     Spring();
     void init();
     float getForce();
+    void calculateLength(float wheelLoadWeight);
     void calculateForce(float dt);
 };

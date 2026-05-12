@@ -1,7 +1,6 @@
 #pragma once
 
 #include <common/constants.h>
-#include <lib/Numeric.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Wheel.h>
@@ -23,6 +22,7 @@ Wheel::Wheel() {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 0.0f;
+    _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
     _position = (WheelPosition)-1; // unset position
 }
@@ -32,6 +32,7 @@ void Wheel::init(WheelPosition position) {
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
+    _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
     _frontNormal.set(0.0f, 1.0f, 0.0f);
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
@@ -96,10 +97,16 @@ float Wheel::getLoadWeight() {
 }
 
 void Wheel::setLoadWeight(float weight) {
+    _transferedWeight = 0.0f;
     _loadWeight = weight;
 }
 
+float Wheel::getTransferedWeight() {
+    return _transferedWeight;
+}
+
 void Wheel::transferWeight(float weight) {
+    _transferedWeight = weight;
     _loadWeight += weight;
     Assert::isTrue(_loadWeight > 0.0f);
 }

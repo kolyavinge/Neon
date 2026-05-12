@@ -1,5 +1,4 @@
 #include <lib/Exceptions.h>
-#include <lib/Numeric.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Quaternion.h>
 #include <lib/calc/Vector3.h>

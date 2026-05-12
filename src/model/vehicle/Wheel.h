@@ -38,6 +38,7 @@ class Wheel : public Object {
     float _rotateAngle;
     float _steeringAngle;
     float _loadWeight;
+    float _transferedWeight;
     float _angularVelocity;
     Vector3 _frontNormal;
     Vector3 _outsideNormal;
@@ -64,6 +65,7 @@ public:
     void setPosition(Vector3& position);
     float getLoadWeight();
     void setLoadWeight(float weight);
+    float getTransferedWeight();
     void transferWeight(float weight);
     float getAngularVelocity();
     void setAngularVelocityToZero();

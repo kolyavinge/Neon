@@ -2,6 +2,8 @@
 #include <engine/vehicle/WeightTransferLogic.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Spring.h>
+#include <model/vehicle/Wheel.h>
 
 void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
     transferWeightInStatic(vehicle);
@@ -13,6 +15,7 @@ void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
     if (!lateralAcceleration.isZero()) {
         transferWeightAfterSteering(vehicle);
     }
+    calculateSpringLengths(vehicle);
 }
 
 void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
@@ -79,4 +82,12 @@ void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::rearLeft).transferWeight(rearLeftWeight);
     vehicle.getWheel(WheelPosition::rearRight).transferWeight(rearRightWeight);
     body.transferWeightOnRight(frontRightWeight + rearRightWeight);
+}
+
+void WeightTransferLogic::calculateSpringLengths(Vehicle& vehicle) {
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Spring& spring = vehicle.getSpring(i);
+        Wheel& wheel = vehicle.getWheel(i);
+        spring.calculateLength(wheel.getLoadWeight());
+    }
 }

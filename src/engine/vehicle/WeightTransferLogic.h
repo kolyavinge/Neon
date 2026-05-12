@@ -12,4 +12,5 @@ private:
     void transferWeightInStatic(Vehicle& vehicle);
     void transferWeightAfterAccelerationOrBraking(Vehicle& vehicle);
     void transferWeightAfterSteering(Vehicle& vehicle);
+    void calculateSpringLengths(Vehicle& vehicle);
 };

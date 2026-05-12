@@ -1,6 +1,5 @@
 #include <common/constants.h>
 #include <engine/vehicle/VelocityLogic.h>
-#include <lib/Numeric.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>

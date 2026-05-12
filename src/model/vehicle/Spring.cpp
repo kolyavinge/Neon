@@ -3,8 +3,10 @@
 
 SpringData::SpringData() {
     stiffness = 5000.0f;
-    damper = 0.1f;
-    maxLength = 0.3f;
+    damper = 0.2f;
+    minLength = 0.1f;
+    maxLength = 0.4f;
+    maxWeight = 800.0f;
 }
 
 Spring::Spring() {
@@ -19,6 +21,12 @@ void Spring::init() {
 
 float Spring::getForce() {
     return _force;
+}
+
+void Spring::calculateLength(float wheelLoadWeight) {
+    _prevLength = _currentLength;
+    _currentLength = _data.maxLength - _data.maxLength * (wheelLoadWeight / _data.maxWeight);
+    _currentLength = Numeric::clamp(_currentLength, _data.minLength, _data.maxLength);
 }
 
 void Spring::calculateForce(float dt) {

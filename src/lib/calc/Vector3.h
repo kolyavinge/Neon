@@ -1,8 +1,6 @@
 #pragma once
 
-#include <lib/Numeric.h>
-#include <lib/Object.h>
-#include <lib/exceptions.h>
+#include <lib/system.h>
 
 class InvalidVectorLengthException : public Exception {};
 

@@ -1,4 +1,3 @@
-#include <lib/Numeric.h>
 #include <model/vehicle/DrivingInputData.h>
 
 DrivingInputData::DrivingInputData() {

@@ -9,7 +9,7 @@ VehicleData::VehicleData() {
 }
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(2.0f, 1.0f, 0.5f);
+    _longitudinalForceCurve.set(2.0f, 5.0f, 0.5f);
     _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
     init();
 }
@@ -95,22 +95,20 @@ Vector3& Vehicle::getLinearVelocity() {
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
     Vector3 acceleration;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = getDriveWheel(i);
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Wheel& wheel = getWheel(i);
         acceleration.add(wheel.getLongitudinalAcceleration());
     }
-    acceleration.div(Vehicle::driveWheelsCount);
 
     return acceleration;
 }
 
 Vector3 Vehicle::getLateralAcceleration() {
     Vector3 acceleration;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = getDriveWheel(i);
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Wheel& wheel = getWheel(i);
         acceleration.add(wheel.getLateralAcceleration());
     }
-    acceleration.div(Vehicle::driveWheelsCount);
 
     return acceleration;
 }
