@@ -189,6 +189,9 @@
     <ClCompile Include="src\engine\vehicle\EngineLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\debug\VehicleDebuger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -429,6 +432,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\vehicle\EngineLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\VehicleDebuger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -47,5 +47,4 @@ public:
 
 private:
     void updateVehicle(Vehicle& vehicle, DrivingInputData& drivingInputData);
-    void printDebugInfo(Vehicle& vehicle);
 };

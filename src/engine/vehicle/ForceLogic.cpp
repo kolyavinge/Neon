@@ -29,6 +29,8 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
         float lateralForceCoeff = vehicle.getLateralForceCoeff(slipAngle);
         wheel.calculateLongitudinalForce(longitudinalForceCoeff, spring.getForce());
         wheel.calculateLateralForce(lateralForceCoeff, spring.getForce());
+        wheel.calculateLongitudinalAcceleration(vehicle.getData().mass);
+        wheel.calculateLateralAcceleration(vehicle.getData().mass);
     }
 }
 
