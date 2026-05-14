@@ -62,6 +62,14 @@ Vector3 Vector3::getDirectionTo(Vector3 v) {
     return v;
 }
 
+Vector3 Vector3::getMiddleTo(Vector3& v) {
+    Vector3 middle = getDirectionTo(v);
+    middle.div(2.0f);
+    middle.add(*this);
+
+    return middle;
+}
+
 void Vector3::setLength(float newLength) {
     if (newLength < 0.0f) throw InvalidVectorLengthException();
     float currentLength = getLength();

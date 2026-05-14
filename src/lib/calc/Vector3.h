@@ -20,6 +20,7 @@ public:
     float getLength();
     float getLengthTo(Vector3& v);
     Vector3 getDirectionTo(Vector3 v);
+    Vector3 getMiddleTo(Vector3& v);
     void setLength(float newLength);
     void add(Vector3& v);
     void addMultiplied(Vector3& v, float multipliedBy);

@@ -49,7 +49,7 @@ private:
                 j--;
             }
         }
-        if (j > startIndex) Sort(startIndex, j, comparator);
-        if (i < endIndex) Sort(i, endIndex, comparator);
+        if (j > startIndex) sort(startIndex, j, comparator);
+        if (i < endIndex) sort(i, endIndex, comparator);
     }
 };

@@ -44,7 +44,9 @@
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
     <ClCompile Include="src\lib\calc\Geometry.cpp" />
+    <ClCompile Include="src\lib\calc\Plane.cpp" />
     <ClCompile Include="src\lib\calc\Quaternion.cpp" />
+    <ClCompile Include="src\lib\calc\RectPlane.cpp" />
     <ClCompile Include="src\lib\calc\TransformMatrix4.cpp" />
     <ClCompile Include="src\lib\calc\UnitConverter.cpp" />
     <ClCompile Include="src\lib\calc\Vector3.cpp" />
@@ -92,7 +94,10 @@
     <ClInclude Include="src\engine\vehicle\GearboxLogic.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\lib\collections\BSPTree.h" />
+    <ClInclude Include="src\lib\calc\Plane.h" />
     <ClInclude Include="src\lib\calc\Quaternion.h" />
+    <ClInclude Include="src\lib\calc\RectPlane.h" />
     <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\render\gl\opengl.h" />

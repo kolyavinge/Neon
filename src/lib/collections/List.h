@@ -58,10 +58,10 @@ public:
         _count++;
     }
 
-    void addRange(Collection<T>& range) {
-        resizeIfNeeded(range.GetCount());
-        Memory::copy<T>(range._items, _items + _count, range.GetCount());
-        _count += range.GetCount();
+    void addRange(List<T>& range) {
+        resizeIfNeeded(range.getCount());
+        Memory::copy<T>(range._items, _items + _count, range.getCount());
+        _count += range.getCount();
     }
 
     T& addNew() {
