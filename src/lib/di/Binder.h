@@ -6,7 +6,12 @@
 #include <lib/di/SingletonInstanceHolder.h>
 #include <lib/system.h>
 
-class BindException : public Exception {};
+class BindException : public Exception {
+
+public:
+    BindException() {}
+    BindException(const wchar_t* msg) : Exception(msg) {}
+};
 
 class Binder : public Object {
 
@@ -22,7 +27,7 @@ public:
         if (!_instances.containsType(typeid(TInstance))) {
             _instances.add(typeid(TInstance), new SingletonInstanceHolder(new FunctionInstanceHolder<TInstance>(func)));
         } else {
-            throw BindException();
+            throw BindException(L"type has been binded.");
         }
     }
 
@@ -31,7 +36,7 @@ public:
         if (!_instances.containsType(typeid(TInstance))) {
             _instances.add(typeid(TInstance), new SingletonInstanceHolder(new SimpleInstanceHolder<TInstance>()));
         } else {
-            throw BindException();
+            throw BindException(L"type has been binded.");
         }
     }
 };

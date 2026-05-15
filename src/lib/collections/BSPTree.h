@@ -49,7 +49,7 @@ public:
     }
 
     void build(IBSPTreeBuilder<TNodeData>& builder, Collection<Plane>& splitPlanes) {
-        if (splitPlanes.getCount() == 0) throw ArgumentException();
+        if (splitPlanes.getCount() == 0) throw ArgumentException(L"splitPlanes cannot be empty.");
         releaseAllNodes();
         builder.initRoot(_root.data);
         buildRec(builder, _root, splitPlanes);

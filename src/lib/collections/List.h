@@ -118,7 +118,7 @@ public:
     }
 
     void prepareEnoughCapacity(int enoughCapacity) {
-        if (enoughCapacity <= 0) throw ArgumentException();
+        if (enoughCapacity <= 0) throw ArgumentException(L"enoughCapacity must be greater than zero.");
         if (_capacity > enoughCapacity) return;
         _capacity = enoughCapacity;
         Memory::resize<T>(_items, _count, _capacity);

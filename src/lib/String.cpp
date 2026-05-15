@@ -120,7 +120,7 @@ int String::lastIndexOf(const wchar_t ch) {
 }
 
 String String::substring(int startIndex, int count) {
-    if (startIndex + count > _count) throw ArgumentException();
+    if (startIndex + count > _count) throw ArgumentException(L"startIndex and count must be inside string bounds.");
     String result(count + 1); // +1 - zero terminated
     result._count = count;
     Memory::copy<wchar_t>(&_symb[startIndex], result._symb, count);

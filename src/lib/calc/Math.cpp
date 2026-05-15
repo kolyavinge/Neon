@@ -35,12 +35,12 @@ float Math::tan(float angle) {
 }
 
 float Math::arcsin(float x) {
-    if (x > 1.0f || x < -1.0f) throw ArgumentException();
+    if (x > 1.0f || x < -1.0f) throw ArgumentException(L"x must be between [-1;+1].");
     return asinf(x);
 }
 
 float Math::arccos(float x) {
-    if (x > 1.0f || x < -1.0f) throw ArgumentException();
+    if (x > 1.0f || x < -1.0f) throw ArgumentException(L"x must be between [-1;+1].");
     return acosf(x);
 }
 

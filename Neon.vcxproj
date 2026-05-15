@@ -53,6 +53,7 @@
     <ClCompile Include="src\lib\calc\Vector4.cpp" />
     <ClCompile Include="src\lib\di\InstanceCollection.cpp" />
     <ClCompile Include="src\lib\di\SingletonInstanceHolder.cpp" />
+    <ClCompile Include="src\lib\exceptions.cpp" />
     <ClCompile Include="src\lib\HashCode.cpp" />
     <ClCompile Include="src\lib\calc\Math.cpp" />
     <ClCompile Include="src\lib\input\InputDevice.cpp" />

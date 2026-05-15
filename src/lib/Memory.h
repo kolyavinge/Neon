@@ -11,7 +11,7 @@ class Memory {
 public:
     template<class T>
     static T* allocate(int itemsCount) {
-        if (itemsCount <= 0) throw ArgumentException();
+        if (itemsCount <= 0) throw ArgumentException(L"itemsCount must be greater than zero.");
         T* result = (T*)malloc(itemsCount * sizeof(T));
         if (result == nullptr) throw MemoryAllocationException();
         zero<T>(result, itemsCount);
@@ -21,13 +21,13 @@ public:
 
     template<class T>
     static void zero(T* source, int itemsCount) {
-        if (itemsCount <= 0) throw ArgumentException();
+        if (itemsCount <= 0) throw ArgumentException(L"itemsCount must be greater than zero.");
         memset(source, 0, itemsCount * sizeof(T));
     }
 
     template<class T>
     static void copy(const T* source, T* dest, int itemsCount) {
-        if (itemsCount < 0) throw ArgumentException();
+        if (itemsCount < 0) throw ArgumentException(L"itemsCount must be greater than zero.");
         memcpy(dest, source, itemsCount * sizeof(T));
     }
 

@@ -38,7 +38,7 @@ public:
     }
 
     void copyFrom(T* range, int count) {
-        if (Count < count) throw ArgumentException();
+        if (Count < count) throw ArgumentException(L"count must be greater or equal than source array count.");
         Memory::copy<T>(range, _items, count);
     }
 

@@ -2,10 +2,32 @@
 
 #include <lib/Object.h>
 
-class Exception : public Object {};
+class Exception : public Object {
 
-class ArgumentException : public Exception {};
+public:
+    wchar_t message[256];
 
-class ObjectStateException : public Exception {};
+    Exception();
+    Exception(const wchar_t* msg);
+};
 
-class IndexOutOfBoundsException : public Exception {};
+class ArgumentException : public Exception {
+
+public:
+    ArgumentException();
+    ArgumentException(const wchar_t* msg);
+};
+
+class ObjectStateException : public Exception {
+
+public:
+    ObjectStateException();
+    ObjectStateException(const wchar_t* msg);
+};
+
+class IndexOutOfBoundsException : public Exception {
+
+public:
+    IndexOutOfBoundsException();
+    IndexOutOfBoundsException(const wchar_t* msg);
+};

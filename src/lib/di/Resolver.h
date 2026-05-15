@@ -4,7 +4,12 @@
 #include <lib/system.h>
 #include <typeinfo>
 
-class ResolveException : public Exception {};
+class ResolveException : public Exception {
+
+public:
+    ResolveException() {}
+    ResolveException(const wchar_t* msg) : Exception(msg) {}
+};
 
 class Resolver : public Object {
 
@@ -19,7 +24,7 @@ public:
     template<class TInstance>
     TInstance& resolve() {
         const type_info& type = typeid(TInstance);
-        if (!_instances.containsType(type)) throw ResolveException();
+        if (!_instances.containsType(type)) throw ResolveException(L"cannot find type");
         unsigned int key = _instances.getTypeHashKey(type);
         if (!_resolved.containsKey(key)) _resolved.add(key, &type);
         TInstance* instance = (TInstance*)_instances[type]->getInstance(*this);

@@ -85,7 +85,7 @@ void Quaternion::setAngleAndAxis(float angle, Vector3 axis) {
 
 void Quaternion::normalize() {
     float mg = getMagnitude();
-    if (Numeric::floatEquals(mg, 0.0f)) throw ObjectStateException();
+    if (Numeric::floatEquals(mg, 0.0f)) throw ObjectStateException(L"magnitude cannot be zero.");
     _w /= mg;
     _x /= mg;
     _y /= mg;
