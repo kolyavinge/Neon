@@ -37,7 +37,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     body.updateAngles();
 
     Vector3 lengthBetweenAxleCenters = chassisFrontNormal;
-    lengthBetweenAxleCenters.setLength(vehicle.getData().lengthBetweenAxleCenters);
+    lengthBetweenAxleCenters.setLength(vehicle.getData().wheelbaseLength);
     Vector3 correctedNonDriveAxleCenter = diveAxle.getCenter();
     correctedNonDriveAxleCenter.add(lengthBetweenAxleCenters);
     nonDriveAxle.setCenter(correctedNonDriveAxleCenter);

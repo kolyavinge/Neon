@@ -2,17 +2,7 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-
-class WheelData : public Object {
-
-public:
-    float radius;
-    float roadFrictionCoeff;
-    float brakingForceCoeff;
-    float maxSteeringAngle;
-
-    WheelData();
-};
+#include <model/vehicle/VehicleData.h>
 
 enum class WheelPosition {
     frontLeft = 0,
@@ -33,7 +23,7 @@ public:
 
 class Wheel : public Object {
 
-    WheelData _data;
+    VehicleData _data;
     WheelPosition _position;
     float _rotateAngle;
     float _steeringAngle;
@@ -52,7 +42,6 @@ class Wheel : public Object {
 public:
     Wheel();
     void init(WheelPosition position);
-    WheelData& getData();
     WheelPosition getPosition();
     float getRotateAngle();
     float getSteeringAngle();

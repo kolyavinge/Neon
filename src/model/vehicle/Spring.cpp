@@ -1,14 +1,6 @@
 #include <lib/calc/Math.h>
 #include <model/vehicle/Spring.h>
 
-SpringData::SpringData() {
-    stiffness = 5000.0f;
-    damper = 0.2f;
-    minLength = 0.1f;
-    maxLength = 0.4f;
-    maxWeight = 800.0f;
-}
-
 Spring::Spring() {
     init();
 }

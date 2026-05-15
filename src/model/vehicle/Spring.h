@@ -1,22 +1,11 @@
 #pragma once
 
 #include <lib/system.h>
-
-class SpringData : public Object {
-
-public:
-    float stiffness;
-    float damper;
-    float minLength;
-    float maxLength;
-    float maxWeight;
-
-    SpringData();
-};
+#include <model/vehicle/VehicleData.h>
 
 class Spring : public Object {
 
-    SpringData _data;
+    VehicleData _data;
     float _maxLength;
     float _prevLength;
     float _currentLength;

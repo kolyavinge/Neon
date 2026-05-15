@@ -2,19 +2,6 @@
 
 #include <model/vehicle/Engine.h>
 
-EngineData::EngineData() {
-    // TODO move to init logic
-    torqueCurve.a = 200.0f;
-    torqueCurve.b = 100.0f;
-    torqueCurve.c = 1.0f;
-    torqueCurve.d = 6000.0f;
-    torqueCurve.f = 3000.0f;
-    minRpm = 0.0;
-    maxRpm = 8000.0;
-    //innerFrictionCoeff = 0.001f;
-    brakingForce = 0.1f;
-}
-
 Engine::Engine() {
     init();
 }

@@ -3,28 +3,11 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/Angles.h>
-#include <model/common/Measures.h>
-
-class BodyData : public Object {
-
-public:
-    Measures measures;
-    Vector3 massCenter;
-    float massCenterHeight;
-    float wheelbaseLength;
-    float frontWheelLengthToMassCenter;
-    float rearWheelLengthToMassCenter;
-    float trackWidth;
-    float maxPitch;
-    float maxRoll;
-    float airDragCoeff;
-
-    BodyData();
-};
+#include <model/vehicle/VehicleData.h>
 
 class Body : public Object {
 
-    BodyData _data;
+    VehicleData _data;
     Vector3 _airDragForce;
     Angles _angles;
     float _vehicleMass;
@@ -34,7 +17,6 @@ class Body : public Object {
 public:
     Body();
     void init();
-    BodyData& getData();
     Angles& getAngles();
     void setVehicleMass(float mass);
     void transferWeightOnRear(float onRear);

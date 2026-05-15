@@ -1,23 +1,11 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/vehicle/EngineTorqueCurve.h>
-
-class EngineData : public Object {
-
-public:
-    EngineTorqueCurve torqueCurve;
-    float minRpm;
-    float maxRpm;
-    //float innerFrictionCoeff;
-    float brakingForce;
-
-    EngineData();
-};
+#include <model/vehicle/VehicleData.h>
 
 class Engine : public Object {
 
-    EngineData _data;
+    VehicleData _data;
     float _rpm;
     float _torque;
 

@@ -8,7 +8,7 @@ SteeringLogic::SteeringLogic(
 }
 
 void SteeringLogic::steer(Vehicle& vehicle, float steeringRatio) {
-    float steeringAngle = -steeringRatio * vehicle.getNonDriveWheel(0).getData().maxSteeringAngle;
+    float steeringAngle = -steeringRatio * vehicle.getData().maxSteeringAngle;
     Chassis& chassis = vehicle.getChassis();
 
     Vector3 wheelFrontNormal, leftWheelOutsideNormal, rightWheelOutsideNormal;

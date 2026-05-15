@@ -3,6 +3,7 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Spring.h>
+#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
 void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
@@ -20,8 +21,7 @@ void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
 
 void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
-    BodyData& bodyData = vehicle.getBody().getData();
-    float frontWheelsWeight = (bodyData.rearWheelLengthToMassCenter / bodyData.wheelbaseLength) * vehicleData.mass;
+    float frontWheelsWeight = (vehicleData.rearWheelLengthToMassCenter / vehicleData.wheelbaseLength) * vehicleData.mass;
     float rearWheelsWeight = vehicleData.mass - frontWheelsWeight;
     float frontWheelWeight = frontWheelsWeight / Vehicle::nonDriveWheelsCount;
     float rearWheelWeight = rearWheelsWeight / Vehicle::driveWheelsCount;
@@ -34,10 +34,9 @@ void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
 void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
-    BodyData& bodyData = body.getData();
     Vector3 acceleration = vehicle.getLongitudinalAcceleration();
     float accelerationInG = acceleration.getLength() / CommonConstants::g;
-    float transferedWeight = accelerationInG * bodyData.massCenterHeight * vehicleData.mass / bodyData.wheelbaseLength;
+    float transferedWeight = accelerationInG * vehicleData.massCenterHeight * vehicleData.mass / vehicleData.wheelbaseLength;
     float transferedWeightOneWheel = transferedWeight / Vehicle::driveWheelsCount;
     float frontWheelWeight, rearWheelWeight;
     bool onRearWheels = vehicle.isAccelerating();
@@ -56,12 +55,12 @@ void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehi
 }
 
 void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
+    VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
-    BodyData& bodyData = body.getData();
     Vector3 acceleration = vehicle.getLateralAcceleration();
     float accelerationInG = acceleration.getLength() / CommonConstants::g;
-    float frontTransferedWeight = accelerationInG * vehicle.getFrontWheelsWeight() * bodyData.massCenterHeight / bodyData.trackWidth;
-    float rearTransferedWeight = accelerationInG * vehicle.getRearWheelsWeight() * bodyData.massCenterHeight / bodyData.trackWidth;
+    float frontTransferedWeight = accelerationInG * vehicle.getFrontWheelsWeight() * vehicleData.massCenterHeight / vehicleData.trackWidth;
+    float rearTransferedWeight = accelerationInG * vehicle.getRearWheelsWeight() * vehicleData.massCenterHeight / vehicleData.trackWidth;
     float frontTransferedWeightOneWheel = frontTransferedWeight;
     float rearTransferedWeightOneWheel = rearTransferedWeight;
     float frontLeftWeight, frontRightWeight, rearLeftWeight, rearRightWeight;

@@ -2,18 +2,11 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-
-class AxleData : public Object {
-
-public:
-    float wheelShift;
-
-    AxleData();
-};
+#include <model/vehicle/VehicleData.h>
 
 class Axle : public Object {
 
-    AxleData _data;
+    VehicleData _data;
     Vector3 _acceleration;
     Vector3 _velocity;
     Vector3 _center;

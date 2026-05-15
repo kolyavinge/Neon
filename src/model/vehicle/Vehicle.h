@@ -5,21 +5,13 @@
 #include <lib/system.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Chassis.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/PacejkaFormula.h>
 #include <model/vehicle/Spring.h>
+#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
-#include <model/vehicle/Chassis.h>
-
-class VehicleData : public Object {
-
-public:
-    float mass;
-    float lengthBetweenAxleCenters;
-
-    VehicleData();
-};
 
 class Vehicle : public Object {
 

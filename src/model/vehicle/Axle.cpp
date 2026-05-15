@@ -1,9 +1,5 @@
 #include <model/vehicle/Axle.h>
 
-AxleData::AxleData() {
-    wheelShift = 1.0f;
-}
-
 void Axle::init() {
     _acceleration.setZero();
     _velocity.setZero();
@@ -48,7 +44,7 @@ void Axle::calculateNewPosition(float deltaTime) {
 
 void Axle::calculateWheelPositions(Vector3& vehicleRightNormal) {
     Vector3 shift = vehicleRightNormal;
-    shift.setLength(_data.wheelShift);
+    shift.setLength(_data.trackWidth / 2.0f);
     _leftWheelPosition = _center;
     _rightWheelPosition = _center;
     _leftWheelPosition.sub(shift);

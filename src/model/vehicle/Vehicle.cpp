@@ -3,11 +3,6 @@
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Vehicle.h>
 
-VehicleData::VehicleData() {
-    mass = 1000.0f;
-    lengthBetweenAxleCenters = 2.0f;
-}
-
 Vehicle::Vehicle() {
     _longitudinalForceCurve.set(2.0f, 5.0f, 0.5f);
     _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
@@ -26,7 +21,7 @@ void Vehicle::init() {
     _body.init();
     _chassis.init();
     _body.setVehicleMass(_data.mass);
-    getNonDriveAxle().getCenter().y += _data.lengthBetweenAxleCenters;
+    getNonDriveAxle().getCenter().y += _data.wheelbaseLength;
     _gearbox.shiftUp();
 }
 

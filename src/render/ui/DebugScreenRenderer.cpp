@@ -5,6 +5,7 @@
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
 #include <model/vehicle/Spring.h>
+#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 #include <render/gl/opengl.h>
 #include <render/ui/DebugScreenRenderer.h>
@@ -83,6 +84,7 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
 }
 
 void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
+    VehicleData& vehicleData = vehicle.getData();
     Chassis& chassis = vehicle.getChassis();
     for (int i = 0; i < vehicle.wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
@@ -93,7 +95,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
-        glDrawCircleYZ(wheel.getData().radius, 16);
+        glDrawCircleYZ(vehicleData.radius, 16);
         glPopMatrix();
         // angle line
         glPushMatrix();
@@ -103,7 +105,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(0.0f, wheel.getData().radius, 0.0f);
+        glVertex3f(0.0f, vehicleData.radius, 0.0f);
         glEnd();
         glPopMatrix();
         // front normal

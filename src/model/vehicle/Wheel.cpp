@@ -2,15 +2,7 @@
 
 #include <common/constants.h>
 #include <lib/calc/Math.h>
-#include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Wheel.h>
-
-WheelData::WheelData() {
-    radius = 0.3f;
-    roadFrictionCoeff = 0.001f;
-    brakingForceCoeff = 40.0f;
-    maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-}
 
 SlipRatio::SlipRatio(float driven, float linear, float slipRatio) {
     drivenVelocity = driven;
@@ -46,10 +38,6 @@ void Wheel::init(WheelPosition position) {
     _longitudinalAcceleration.setZero();
     _lateralAcceleration.setZero();
     _linearVelocity.setZero();
-}
-
-WheelData& Wheel::getData() {
-    return _data;
 }
 
 WheelPosition Wheel::getPosition() {
