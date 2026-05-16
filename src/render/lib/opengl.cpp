@@ -1,5 +1,5 @@
 #include <lib/calc/Math.h>
-#include <render/gl/opengl.h>
+#include <render/lib/opengl.h>
 
 void glTranslatef(Vector3& v) {
     glTranslatef(v.x, v.y, v.z);

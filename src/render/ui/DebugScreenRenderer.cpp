@@ -7,7 +7,7 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
-#include <render/gl/opengl.h>
+#include <render/lib/opengl.h>
 #include <render/ui/DebugScreenRenderer.h>
 
 void DebugScreenRenderer::setScreen(DebugScreen& screen) {

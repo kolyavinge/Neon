@@ -156,7 +156,7 @@
     <ClCompile Include="src\debug\stat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\gl\opengl.cpp">
+    <ClCompile Include="src\render\lib\opengl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\GameFactory.cpp">
@@ -192,7 +192,7 @@
     <ClCompile Include="src\debug\VehicleDebuger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lib\calc\RectPlane.cpp">
+    <ClCompile Include="src\lib\calc\TruncatedPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\calc\Plane.cpp">
@@ -386,7 +386,7 @@
     <ClInclude Include="src\model\vehicle\DrivingInputData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\gl\opengl.h">
+    <ClInclude Include="src\render\lib\opengl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\common\DrivingInputManager.h">
@@ -449,7 +449,7 @@
     <ClInclude Include="src\debug\VehicleDebuger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\lib\calc\RectPlane.h">
+    <ClInclude Include="src\lib\calc\TruncatedPlane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\calc\Plane.h">
