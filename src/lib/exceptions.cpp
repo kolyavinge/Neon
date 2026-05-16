@@ -20,3 +20,7 @@ ObjectStateException::ObjectStateException(const wchar_t* msg) :Exception(msg) {
 IndexOutOfBoundsException::IndexOutOfBoundsException() {}
 
 IndexOutOfBoundsException::IndexOutOfBoundsException(const wchar_t* msg) :Exception(msg) {}
+
+IOException::IOException() {}
+
+IOException::IOException(const wchar_t* msg) :Exception(msg) {}

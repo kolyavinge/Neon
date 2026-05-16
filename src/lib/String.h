@@ -12,6 +12,8 @@ class String : public Object {
     char _tmp[1024];
 
 public:
+    static String empty;
+
     String();
     String(int capacity);
     String(const wchar_t* str);
@@ -30,8 +32,13 @@ public:
     int indexOf(const wchar_t ch);
     int lastIndexOf(const wchar_t ch);
     String substring(int startIndex, int count);
+    bool startsWith(const wchar_t* str);
+    bool startsWith(String& str);
+    bool endsWith(const wchar_t* str);
+    bool endsWith(String& str);
     void invert();
     void clear();
+    void prepareEnoughCapacity(int enoughCapacity);
     char* getCharBuf();
     wchar_t* getWCharBuf();
 

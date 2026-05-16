@@ -7,6 +7,8 @@
 #include <lib/Memory.h>
 #include <lib/String.h>
 
+String String::empty = String();
+
 String::String() : String(_initCapacity) {}
 
 String::String(int capacity) {
@@ -19,6 +21,9 @@ String::String(int capacity) {
 String::String(const wchar_t* str) {
     _count = getLength(str);
     _capacity = 2 * _count;
+    if (_capacity == 0) {
+        _capacity = _initCapacity;
+    }
     _symb = Memory::allocate<wchar_t>(_capacity);
     Memory::copy<wchar_t>(str, _symb, _count);
 }
@@ -26,6 +31,9 @@ String::String(const wchar_t* str) {
 String::String(const char* str) {
     _count = getLength(str);
     _capacity = 2 * _count;
+    if (_capacity == 0) {
+        _capacity = _initCapacity;
+    }
     _symb = Memory::allocate<wchar_t>(_capacity);
     size_t outSize;
     mbstowcs_s(&outSize, _symb, (size_t)(_count + 1), str, (size_t)_count);
@@ -128,6 +136,34 @@ String String::substring(int startIndex, int count) {
     return result;
 }
 
+bool String::startsWith(const wchar_t* str) {
+    int strLength = getLength(str);
+    if (_count < strLength) throw ArgumentException(L"str is too long string.");
+    for (int i = 0; i < strLength; i++) {
+        if (_symb[i] != str[i]) return false;
+    }
+
+    return true;
+}
+
+bool String::startsWith(String& str) {
+    return startsWith(str.getWCharBuf());
+}
+
+bool String::endsWith(const wchar_t* str) {
+    int strLength = getLength(str);
+    if (_count < strLength) throw ArgumentException(L"str is too long string.");
+    for (int i = _count - 1, j = strLength - 1; j >= 0; i--, j--) {
+        if (_symb[i] != str[j]) return false;
+    }
+
+    return true;
+}
+
+bool String::endsWith(String& str) {
+    return endsWith(str.getWCharBuf());
+}
+
 void String::invert() {
     for (int i = 0; i < _count / 2; i++) {
         wchar_t tmp = _symb[i];
@@ -139,6 +175,13 @@ void String::invert() {
 void String::clear() {
     _count = 0;
     Memory::zero<wchar_t>(_symb, _capacity);
+}
+
+void String::prepareEnoughCapacity(int enoughCapacity) {
+    if (enoughCapacity <= 0) throw ArgumentException(L"enoughCapacity must be greater than zero.");
+    if (_capacity > enoughCapacity) return;
+    _capacity = enoughCapacity;
+    Memory::resize<wchar_t>(_symb, _count, _capacity);
 }
 
 char* String::getCharBuf() {

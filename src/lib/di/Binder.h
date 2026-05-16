@@ -27,7 +27,7 @@ public:
         if (!_instances.containsType(typeid(TInstance))) {
             _instances.add(typeid(TInstance), new SingletonInstanceHolder(new FunctionInstanceHolder<TInstance>(func)));
         } else {
-            throw BindException(L"type has been binded.");
+            throw BindException(L"Type has been binded.");
         }
     }
 
@@ -36,7 +36,7 @@ public:
         if (!_instances.containsType(typeid(TInstance))) {
             _instances.add(typeid(TInstance), new SingletonInstanceHolder(new SimpleInstanceHolder<TInstance>()));
         } else {
-            throw BindException(L"type has been binded.");
+            throw BindException(L"Type has been binded.");
         }
     }
 };

@@ -31,3 +31,10 @@ public:
     IndexOutOfBoundsException();
     IndexOutOfBoundsException(const wchar_t* msg);
 };
+
+class IOException : public Exception {
+
+public:
+    IOException();
+    IOException(const wchar_t* msg);
+};
