@@ -37,3 +37,7 @@ void glDrawCircleYZ(float radius, int edgesCount) {
     glEnd();
     glPopMatrix();
 }
+
+OpenGLException::OpenGLException(const wchar_t* msg) :
+    Exception(msg) {
+}

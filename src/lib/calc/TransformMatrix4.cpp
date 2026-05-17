@@ -11,6 +11,10 @@ TransformMatrix4::TransformMatrix4(float items[16]) {
     Memory::copy<float>(items, _items, 16);
 }
 
+float* TransformMatrix4::getItems() {
+    return _items;
+}
+
 void TransformMatrix4::setIdentity() {
     setZero();
     _items[0] = 1.0f;

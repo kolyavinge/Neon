@@ -9,13 +9,13 @@ FileNotFoundException::FileNotFoundException(const wchar_t* fileName) :
 }
 
 bool FileSystem::fileExists(String& filePath) {
-    DWORD attrib = GetFileAttributes(filePath.getWCharBuf());
+    DWORD attrib = GetFileAttributes(filePath.getWCharPointer());
     return attrib != INVALID_FILE_ATTRIBUTES && !(attrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 void FileSystem::readByteFile(String& filePath, output List<char>& fileContent) {
-    HANDLE file = CreateFileW(filePath.getWCharBuf(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (file == INVALID_HANDLE_VALUE) throw FileNotFoundException(filePath.getWCharBuf());
+    HANDLE file = CreateFileW(filePath.getWCharPointer(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file == INVALID_HANDLE_VALUE) throw FileNotFoundException(filePath.getWCharPointer());
     int fileSize = (int)GetFileSize(file, NULL);
     fileContent.prepareEnoughCapacity(fileSize);
     DWORD bytesRead;
@@ -27,15 +27,16 @@ void FileSystem::readByteFile(String& filePath, output List<char>& fileContent) 
 }
 
 void FileSystem::readTextFile(String& filePath, output String& fileContent) {
-    HANDLE file = CreateFileW(filePath.getWCharBuf(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (file == INVALID_HANDLE_VALUE) throw FileNotFoundException(filePath.getWCharBuf());
+    HANDLE file = CreateFileW(filePath.getWCharPointer(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file == INVALID_HANDLE_VALUE) throw FileNotFoundException(filePath.getWCharPointer());
     int fileSize = (int)GetFileSize(file, NULL);
-    fileContent.prepareEnoughCapacity(fileSize);
+    fileContent.prepareEnoughCapacity(fileSize + 1);
     List<char> buffer(fileSize);
     DWORD bytesRead;
     if (ReadFile(file, buffer.getItemsPointer(), (DWORD)fileSize, &bytesRead, NULL)) {
         int wcharCount = MultiByteToWideChar(CP_UTF8, 0, buffer.getItemsPointer(), (int)bytesRead, NULL, 0);
-        MultiByteToWideChar(CP_UTF8, 0, buffer.getItemsPointer(), (int)bytesRead, fileContent.getWCharBuf(), wcharCount);
+        MultiByteToWideChar(CP_UTF8, 0, buffer.getItemsPointer(), (int)bytesRead, fileContent.getWCharPointer(), wcharCount);
+        fileContent.append(L"\0");
         CloseHandle(file);
     } else {
         throw IOException(L"Cannot read the file.");
@@ -54,7 +55,7 @@ void FileSystem::getFilesInDirectoryByFilter(String& directoryPath, String& filt
     }
     directoryPathAndFilter.append(filter);
     WIN32_FIND_DATAW findData;
-    HANDLE find = FindFirstFileW(directoryPathAndFilter.getWCharBuf(), &findData);
+    HANDLE find = FindFirstFileW(directoryPathAndFilter.getWCharPointer(), &findData);
     if (find == INVALID_HANDLE_VALUE) return;
     do {
         if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&

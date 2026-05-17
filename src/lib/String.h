@@ -39,8 +39,8 @@ public:
     void invert();
     void clear();
     void prepareEnoughCapacity(int enoughCapacity);
-    char* getCharBuf();
-    wchar_t* getWCharBuf();
+    const char* getCharPointer();
+    wchar_t* getWCharPointer();
 
 private:
     void set(const String& copy);

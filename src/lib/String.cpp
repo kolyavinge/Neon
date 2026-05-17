@@ -147,7 +147,7 @@ bool String::startsWith(const wchar_t* str) {
 }
 
 bool String::startsWith(String& str) {
-    return startsWith(str.getWCharBuf());
+    return startsWith(str.getWCharPointer());
 }
 
 bool String::endsWith(const wchar_t* str) {
@@ -161,7 +161,7 @@ bool String::endsWith(const wchar_t* str) {
 }
 
 bool String::endsWith(String& str) {
-    return endsWith(str.getWCharBuf());
+    return endsWith(str.getWCharPointer());
 }
 
 void String::invert() {
@@ -184,14 +184,14 @@ void String::prepareEnoughCapacity(int enoughCapacity) {
     Memory::resize<wchar_t>(_symb, _count, _capacity);
 }
 
-char* String::getCharBuf() {
+const char* String::getCharPointer() {
     _bstr_t bstr = _symb; // convert wchar_t -> char
     strcpy_s(_tmp, bstr);
 
     return _tmp;
 }
 
-wchar_t* String::getWCharBuf() {
+wchar_t* String::getWCharPointer() {
     return _symb;
 }
 
