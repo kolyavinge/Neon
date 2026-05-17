@@ -277,7 +277,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;$(ProjectDir)\external\assimp\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
