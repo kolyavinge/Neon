@@ -10,7 +10,8 @@ class ShaderProgram : public Object {
     GLuint _id;
 
 public:
-    ShaderProgram(Collection<Shader>& shaders);
+    ShaderProgram();
+    void init(Collection<Shader>& shaders);
     void use();
     void unuse();
 

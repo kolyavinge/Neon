@@ -10,6 +10,7 @@ class DebugScreenRenderer : public ScreenRenderer {
     DebugScreen* _screen;
 
 public:
+    DebugScreenRenderer();
     void setScreen(DebugScreen& screen);
     void render();
 

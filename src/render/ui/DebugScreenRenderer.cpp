@@ -10,6 +10,10 @@
 #include <render/lib/opengl.h>
 #include <render/ui/DebugScreenRenderer.h>
 
+DebugScreenRenderer::DebugScreenRenderer() {
+    _screen = nullptr;
+}
+
 void DebugScreenRenderer::setScreen(DebugScreen& screen) {
     _screen = &screen;
 }
@@ -224,7 +228,7 @@ void DebugScreenRenderer::renderGrid() {
     const float length = 10.0f * CommonConstants::zFar;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
-    for (float step = -length; step < length; step += 1.0f) {
+    for (float step = -length; step < length; step += 10.0f) {
         glVertex3f(step, -length, 0.0f);
         glVertex3f(step, length, 0.0f);
         glVertex3f(-length, step, 0.0f);

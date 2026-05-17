@@ -1,7 +1,11 @@
 #include <render/lib/ShaderProgram.h>
 #include <render/lib/opengl.h>
 
-ShaderProgram::ShaderProgram(Collection<Shader>& shaders) {
+ShaderProgram::ShaderProgram() {
+    _id = 0;
+}
+
+void ShaderProgram::init(Collection<Shader>& shaders) {
     _id = glCreateProgram();
     for (int i = 0; i < shaders.getCount(); i++) {
         glAttachShader(_id, shaders[i].getId());

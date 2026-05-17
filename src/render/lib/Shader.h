@@ -12,6 +12,7 @@ public:
 
 // GL constants
 enum class ShaderType : unsigned int {
+    unset = 0,
     vertex = 0x8B31,
     tessControl = 0x8E88,
     tessEvaluation = 0x8E87,
@@ -25,6 +26,7 @@ class Shader : public Object {
     ShaderType _type;
 
 public:
+    Shader();
     Shader(GLuint id, ShaderType type);
     GLuint getId();
     ShaderType getType();
