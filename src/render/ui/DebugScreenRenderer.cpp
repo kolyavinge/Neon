@@ -70,7 +70,7 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
     glBegin(GL_LINES);
     glVertex3f(0.0f, 0.0f, 0.0f);
     Vector3 velocity = driveAxle.getVelocity();
-    velocity.div(10.0f);
+    velocity.div(50.0f);
     glVertex3f(velocity);
     glEnd();
     glPopMatrix();
@@ -81,7 +81,7 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
     glBegin(GL_LINES);
     glVertex3f(0.0f, 0.0f, 0.0f);
     velocity = nonDriveAxle.getVelocity();
-    velocity.div(10.0f);
+    velocity.div(50.0f);
     glVertex3f(velocity);
     glEnd();
     glPopMatrix();
@@ -99,7 +99,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
-        glDrawCircleYZ(vehicleData.radius, 16);
+        glDrawCircleYZ(vehicleData.wheelRadius, 16);
         glPopMatrix();
         // angle line
         glPushMatrix();
@@ -109,7 +109,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(0.0f, vehicleData.radius, 0.0f);
+        glVertex3f(0.0f, vehicleData.wheelRadius, 0.0f);
         glEnd();
         glPopMatrix();
         // front normal

@@ -11,8 +11,7 @@ enum class Gear {
     fourth = 4,
     fifth = 5,
     sixth = 6,
-    seventh = 7,
-    _count = 9
+    _count = 8
 };
 
 class Gearbox : public Object {
@@ -20,14 +19,16 @@ class Gearbox : public Object {
     inline static const int _maxGearsCount = (int)Gear::_count;
 
     Array<float, (int)Gear::_count> _gearRatios;
+    int _prevGearIndex;
     int _currentGearIndex;
     bool _isClutchActive;
 
 public:
     Gearbox();
     void init();
-    Gear getGear();
-    float getGearRatio();
+    Gear getPrevGear();
+    Gear getCurrentGear();
+    float getCurrentGearRatio();
     bool shiftUp();
     bool shiftDown();
     bool isClutchActive();

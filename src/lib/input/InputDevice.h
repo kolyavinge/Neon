@@ -11,6 +11,8 @@ enum class Keys {
     a,
     s,
     d,
+    q,
+    e,
     space,
     enter,
     escape,

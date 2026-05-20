@@ -4,19 +4,38 @@
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Wheel.h>
 
+void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle, float throttleRatio) {
+    const float dt = CommonConstants::deltaTimeSec;
+    Engine& engine = vehicle.getEngine();
+    Gearbox& gearbox = vehicle.getGearbox();
+    float gearRatio = gearbox.getCurrentGearRatio();
+    if (!gearbox.isEngineAndWheelsConnected()) return;
+    if (gearbox.getCurrentGear() > gearbox.getPrevGear()) {
+        float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
+        engine.setRpm(expectedRpmByWheels, throttleRatio);
+    } else if (gearbox.getCurrentGear() < gearbox.getPrevGear()) {
+        float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
+        for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+            Wheel& driveWheel = vehicle.getDriveWheel(i);
+            driveWheel.setAngularVelocity(expectedAngularVelocityByEngine);
+            driveWheel.updateRotateAngle(dt);
+        }
+    }
+}
+
 void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
     const float dt = CommonConstants::deltaTimeSec;
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
-    float gearRatio = gearbox.getGearRatio();
-    float averageWheelsRpmWithGearRatio = getAverageWheelsRpm(vehicle) * gearRatio;
-    engine.calculateNewRpm(throttleRatio, averageWheelsRpmWithGearRatio, gearRatio, dt);
-    float engineAngularVelocityWithGearRatio = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
+    float gearRatio = gearbox.getCurrentGearRatio();
+    float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
+    float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
+    engine.calculateNewRpm(throttleRatio, expectedRpmByWheels, gearRatio, dt);
     float wheelTorque = engine.getTorque() * gearRatio;
     if (gearbox.isEngineAndWheelsConnected()) {
         for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
-            driveWheel.calculateNewAngularVelocity(brakingRatio, engineAngularVelocityWithGearRatio, wheelTorque, dt);
+            driveWheel.calculateNewAngularVelocity(brakingRatio, expectedAngularVelocityByEngine, wheelTorque, dt);
             driveWheel.updateRotateAngle(dt);
         }
     }
@@ -26,15 +45,4 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
             nonDriveWheel.brake(brakingRatio, dt);
         }
     }
-}
-
-float EngineLogic::getAverageWheelsRpm(Vehicle& vehicle) {
-    float wheelsAngularVelocity = 0.0f;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = vehicle.getDriveWheel(i);
-        wheelsAngularVelocity += wheel.getAngularVelocity();
-    }
-    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / Vehicle::driveWheelsCount;
-
-    return averageWheelsRpm;
 }

@@ -4,6 +4,8 @@
 VehicleData::VehicleData() {
     mass = 1000.0f;
     //lengthBetweenAxleCenters = 2.0f;
+
+    /* body */
     measures.xLength = 2.0f;
     measures.yLength = 4.0f;
     measures.zLength = 1.5f;
@@ -15,7 +17,9 @@ VehicleData::VehicleData() {
     trackWidth = 2.0f;
     maxPitch = UnitConverter::degreesToRadians(10.0f);
     maxRoll = UnitConverter::degreesToRadians(10.0f);
-    airDragCoeff = 5.0f;
+    airDragCoeff = 0.0f;
+
+    /* engine */
     torqueCurve.a = 200.0f;
     torqueCurve.b = 100.0f;
     torqueCurve.c = 1.0f;
@@ -24,13 +28,17 @@ VehicleData::VehicleData() {
     minRpm = 0.0;
     maxRpm = 8000.0;
     //innerFrictionCoeff = 0.001f;
-    brakingForce = 0.1f;
-    radius = 0.3f;
-    roadFrictionCoeff = 0.001f;
-    brakingForceCoeff = 40.0f;
+    brakingForce = 0.5f;
+
+    /* wheel */
+    wheelRadius = 0.3f;
+    roadFrictionCoeff = 0.25f;
+    brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     //wheelShift = 1.0f;
-    stiffness = 5000.0f;
+
+    /* spring */
+    stiffness = 10000.0f;
     damper = 0.2f;
     minLength = 0.1f;
     maxLength = 0.4f;

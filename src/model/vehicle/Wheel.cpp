@@ -107,12 +107,17 @@ void Wheel::setAngularVelocityToZero() {
     _angularVelocity = 0.0f;
 }
 
-void Wheel::calculateNewAngularVelocity(float brakingRatio, float engineAngularVelocityWithGearRatio, float wheelTorque, float dt) {
-    _angularVelocity += 0.0005f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
+void Wheel::setAngularVelocity(float angularVelocity) {
+    _angularVelocity = angularVelocity;
+}
+
+void Wheel::calculateNewAngularVelocity(float brakingRatio, float expectedAngularVelocityByEngine, float wheelTorque, float dt) {
+    //_angularVelocity += 0.0005f * dt * wheelTorque * (engineAngularVelocityWithGearRatio - _angularVelocity);
+    _angularVelocity += (expectedAngularVelocityByEngine - _angularVelocity);
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
     }
-    _angularVelocity *= 1.0f - _data.roadFrictionCoeff;
+    _angularVelocity -= dt * _angularVelocity * _data.roadFrictionCoeff;
 }
 
 void Wheel::brake(float brakingRatio, float dt) {
@@ -139,7 +144,7 @@ void Wheel::updateRotateAngle(float dt) {
 }
 
 SlipRatio Wheel::getSlipRatio() {
-    float drivenVelocity = _angularVelocity * _data.radius;
+    float drivenVelocity = _angularVelocity * _data.wheelRadius;
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
@@ -206,5 +211,5 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear() {
-    _angularVelocity = _linearVelocity.getLength() / _data.radius;
+    _angularVelocity = _linearVelocity.getLength() / _data.wheelRadius;
 }

@@ -43,8 +43,8 @@ public:
         VelocityLogic& velocityLogic,
         WeightTransferLogic& weightTransferLogic);
 
-    void updateVehicles(VehiclesArray& vehicles, DrivingInputData& drivingInputData);
+    void updateVehicles(VehiclesArray& vehicles, DrivingInputData& inputData);
 
 private:
-    void updateVehicle(Vehicle& vehicle, DrivingInputData& drivingInputData);
+    void updateVehicle(Vehicle& vehicle, DrivingInputData& inputData);
 };

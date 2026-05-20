@@ -13,6 +13,7 @@ class DrivingInputData : public Object {
 public:
     DrivingInputData();
     float getThrottleRatio();
+    void addThrottleRatio(float throttleRatio);
     void setThrottleRatio(float throttleRatio);
     float getBrakeRatio();
     void setBrakeRatio(float brakeRatio);
@@ -22,5 +23,5 @@ public:
     void shiftUp();
     bool isShiftedDown();
     void shiftDown();
-    void reset();
+    void resetShifting();
 };

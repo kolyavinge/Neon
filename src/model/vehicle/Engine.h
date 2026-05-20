@@ -14,6 +14,7 @@ public:
     void init();
     float getRpm();
     float getTorque();
-    void calculateNewRpm(float throttleRatio, float wheelsRpmWithGearRatio, float gearRatio, float dt);
+    void setRpm(float rpm, float throttleRatio);
+    void calculateNewRpm(float throttleRatio, float expectedRpmByWheels, float gearRatio, float dt);
     String getEngineStat(float rpmStep = 1000.0f);
 };

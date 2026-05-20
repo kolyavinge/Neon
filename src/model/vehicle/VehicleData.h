@@ -10,6 +10,8 @@ class VehicleData : public Object {
 public:
     float mass;
     //float lengthBetweenAxleCenters;
+
+    /* body */
     Measures measures;
     Vector3 massCenter;
     float massCenterHeight;
@@ -20,16 +22,22 @@ public:
     float maxPitch;
     float maxRoll;
     float airDragCoeff;
+
+    /* engine */
     EngineTorqueCurve torqueCurve;
     float minRpm;
     float maxRpm;
     //float innerFrictionCoeff;
     float brakingForce;
-    float radius;
+
+    /* wheel */
+    float wheelRadius;
     float roadFrictionCoeff;
     float brakingForceCoeff;
     float maxSteeringAngle;
     //float wheelShift;
+
+    /* spring */
     float stiffness;
     float damper;
     float minLength;

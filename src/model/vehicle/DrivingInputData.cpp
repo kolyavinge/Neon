@@ -1,11 +1,15 @@
 #include <model/vehicle/DrivingInputData.h>
 
 DrivingInputData::DrivingInputData() {
-    reset();
+    resetShifting();
 }
 
 float DrivingInputData::getThrottleRatio() {
     return _throttleRatio;
+}
+
+void DrivingInputData::addThrottleRatio(float throttleRatio) {
+    _throttleRatio += throttleRatio;
 }
 
 void DrivingInputData::setThrottleRatio(float throttleRatio) {
@@ -47,10 +51,7 @@ void DrivingInputData::shiftDown() {
     _shiftDown = true;
 }
 
-void DrivingInputData::reset() {
-    _throttleRatio = 0.0f;
-    _brakeRatio = 0.0f;
-    _steeringRatio = 0.0f;
+void DrivingInputData::resetShifting() {
     _shiftUp = false;
     _shiftDown = false;
 }

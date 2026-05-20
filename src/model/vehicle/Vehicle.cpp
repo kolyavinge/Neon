@@ -4,7 +4,7 @@
 #include <model/vehicle/Vehicle.h>
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(2.0f, 5.0f, 0.5f);
+    _longitudinalForceCurve.set(1.5f, 1.0f, 0.5f);
     _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
     init();
 }
@@ -76,7 +76,7 @@ Chassis& Vehicle::getChassis() {
 }
 
 float Vehicle::getLongitudinalForceCoeff(float slipRatio) {
-    return _longitudinalForceCurve.getValue(slipRatio);
+    return _longitudinalForceCurve.getValue(10.0f * slipRatio);
 }
 
 float Vehicle::getLateralForceCoeff(float slipAngle) {
@@ -148,4 +148,15 @@ float Vehicle::getFrontWheelsWeight() {
 
 float Vehicle::getRearWheelsWeight() {
     return getWheel(WheelPosition::rearLeft).getLoadWeight() + getWheel(WheelPosition::rearRight).getLoadWeight();
+}
+
+float Vehicle::getAverageDriveWheelsRpm() {
+    float wheelsAngularVelocity = 0.0f;
+    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+        Wheel& wheel = getDriveWheel(i);
+        wheelsAngularVelocity += wheel.getAngularVelocity();
+    }
+    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / Vehicle::driveWheelsCount;
+
+    return averageWheelsRpm;
 }

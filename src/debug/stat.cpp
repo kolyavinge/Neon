@@ -21,7 +21,7 @@ void showStat(int timeSec, Vehicle& vehicle) {
         << std::fixed << std::setprecision(0)
         << timeSec << "\t"
         << engine.getRpm() << "\t\t"
-        << UnitConverter::angularVelocityToRpm(wheel.getAngularVelocity()) * gearbox.getGearRatio() << "\t\t"
+        << UnitConverter::angularVelocityToRpm(wheel.getAngularVelocity()) * gearbox.getCurrentGearRatio() << "\t\t"
         << UnitConverter::angularVelocityToRpm(wheel.getAngularVelocity()) << "\t\t"
         << engine.getTorque() << "\t\t"
         << std::setprecision(2)
@@ -38,24 +38,24 @@ void showDebugInfo() {
     Vehicle& vehicle = vehicles[0];
     vehicle.init();
     Gearbox& gearbox = vehicle.getGearbox();
-    DrivingInputData drivingInputData;
+    DrivingInputData inputData;
 
     //std::cout << engine.getEngineStat().getCharBuf() << "\r\n\r\n";
 
     std::cout << "\t" << "Rpm engine\t" << "Rpm wheel+gear\t" << "Rpm wheel\t" << "Torque engine\t" << "Slip ratio\t" << "Kmh\t" << "\r\n\r\n";
 
     gearbox.shiftUp();
-    std::cout << "\tGear: " << (int)gearbox.getGear() << "\r\n\r\n";
+    std::cout << "\tGear: " << (int)gearbox.getCurrentGear() << "\r\n\r\n";
     int timeSec;
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
     }
     showStat(timeSec, vehicle);
@@ -65,17 +65,17 @@ void showDebugInfo() {
     vehicle.init();
     gearbox.shiftUp();
     gearbox.shiftUp();
-    std::cout << "\tGear: " << (int)gearbox.getGear() << "\r\n\r\n";
+    std::cout << "\tGear: " << (int)gearbox.getCurrentGear() << "\r\n\r\n";
     showStat(0, vehicle);
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
     }
     showStat(timeSec, vehicle);
@@ -86,17 +86,17 @@ void showDebugInfo() {
     gearbox.shiftUp();
     gearbox.shiftUp();
     gearbox.shiftUp();
-    std::cout << "\tGear: " << (int)gearbox.getGear() << "\r\n\r\n";
+    std::cout << "\tGear: " << (int)gearbox.getCurrentGear() << "\r\n\r\n";
     showStat(0, vehicle);
     for (timeSec = 1; timeSec <= 10; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
         showStat(timeSec, vehicle);
     }
     for (; timeSec < 1000; timeSec++) {
         for (int frame = 0; frame < (int)CommonConstants::frameRate; frame++) {
-            vehicleUpdater.updateVehicles(vehicles, drivingInputData);
+            vehicleUpdater.updateVehicles(vehicles, inputData);
         }
     }
     showStat(timeSec, vehicle);
