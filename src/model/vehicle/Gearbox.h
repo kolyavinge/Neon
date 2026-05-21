@@ -18,6 +18,7 @@ class Gearbox : public Object {
 
     inline static const int _maxGearsCount = (int)Gear::_count;
 
+    float _finalGearRatio;
     Array<float, (int)Gear::_count> _gearRatios;
     int _prevGearIndex;
     int _currentGearIndex;

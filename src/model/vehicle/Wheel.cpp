@@ -103,10 +103,6 @@ float Wheel::getAngularVelocity() {
     return _angularVelocity;
 }
 
-void Wheel::setAngularVelocityToZero() {
-    _angularVelocity = 0.0f;
-}
-
 void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }

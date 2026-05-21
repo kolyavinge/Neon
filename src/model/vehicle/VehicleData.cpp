@@ -17,7 +17,7 @@ VehicleData::VehicleData() {
     trackWidth = 2.0f;
     maxPitch = UnitConverter::degreesToRadians(10.0f);
     maxRoll = UnitConverter::degreesToRadians(10.0f);
-    airDragCoeff = 0.0f;
+    airDragCoeff = 0.2f;
 
     /* engine */
     torqueCurve.a = 200.0f;
@@ -27,7 +27,6 @@ VehicleData::VehicleData() {
     torqueCurve.f = 3000.0f;
     minRpm = 0.0;
     maxRpm = 8000.0;
-    //innerFrictionCoeff = 0.001f;
     brakingForce = 0.5f;
 
     /* wheel */
@@ -35,7 +34,6 @@ VehicleData::VehicleData() {
     roadFrictionCoeff = 0.25f;
     brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    //wheelShift = 1.0f;
 
     /* spring */
     stiffness = 10000.0f;

@@ -57,7 +57,6 @@ public:
     float getTransferedWeight();
     void transferWeight(float weight);
     float getAngularVelocity();
-    void setAngularVelocityToZero();
     void setAngularVelocity(float angularVelocity);
     void calculateNewAngularVelocity(float brakingRatio, float expectedAngularVelocityByEngine, float wheelTorque, float dt);
     void brake(float brakingRatio, float dt);

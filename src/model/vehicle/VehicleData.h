@@ -27,7 +27,6 @@ public:
     EngineTorqueCurve torqueCurve;
     float minRpm;
     float maxRpm;
-    //float innerFrictionCoeff;
     float brakingForce;
 
     /* wheel */
@@ -35,7 +34,6 @@ public:
     float roadFrictionCoeff;
     float brakingForceCoeff;
     float maxSteeringAngle;
-    //float wheelShift;
 
     /* spring */
     float stiffness;

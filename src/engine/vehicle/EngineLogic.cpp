@@ -36,7 +36,6 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
         for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
             driveWheel.calculateNewAngularVelocity(brakingRatio, expectedAngularVelocityByEngine, wheelTorque, dt);
-            driveWheel.updateRotateAngle(dt);
         }
     }
     if (brakingRatio > 0.0f) {
@@ -44,5 +43,9 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
             Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
             nonDriveWheel.brake(brakingRatio, dt);
         }
+    }
+    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+        Wheel& driveWheel = vehicle.getDriveWheel(i);
+        driveWheel.updateRotateAngle(dt);
     }
 }
