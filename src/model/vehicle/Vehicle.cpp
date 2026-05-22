@@ -4,8 +4,6 @@
 #include <model/vehicle/Vehicle.h>
 
 Vehicle::Vehicle() {
-    _longitudinalForceCurve.set(1.5f, 1.0f, 0.5f);
-    _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
     init();
 }
 
@@ -20,7 +18,7 @@ void Vehicle::init() {
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
     _chassis.init();
-    _body.setVehicleMass(_data.mass);
+    _body.setVehicleMass(_data.vehicleMass);
     getNonDriveAxle().getCenter().y += _data.wheelbaseLength;
     _gearbox.shiftUp();
 }
@@ -73,15 +71,6 @@ Body& Vehicle::getBody() {
 
 Chassis& Vehicle::getChassis() {
     return _chassis;
-}
-
-float Vehicle::getLongitudinalForceCoeff(float slipRatio) {
-    return _longitudinalForceCurve.getValue(10.0f * slipRatio);
-}
-
-float Vehicle::getLateralForceCoeff(float slipAngle) {
-    slipAngle = UnitConverter::radiansToDegrees(slipAngle);
-    return _lateralForceCurve.getValue(slipAngle);
 }
 
 Vector3& Vehicle::getLinearVelocity() {

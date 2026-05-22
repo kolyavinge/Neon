@@ -1,24 +1,14 @@
 #pragma once
 
 #include <lib/system.h>
-
-enum class Gear {
-    reverse = -1,
-    neutral = 0,
-    first = 1,
-    second = 2,
-    third = 3,
-    fourth = 4,
-    fifth = 5,
-    sixth = 6,
-    _count = 8
-};
+#include <model/vehicle/Gear.h>
+#include <model/vehicle/VehicleData.h>
 
 class Gearbox : public Object {
 
     inline static const int _maxGearsCount = (int)Gear::_count;
 
-    float _finalGearRatio;
+    VehicleData _data;
     Array<float, (int)Gear::_count> _gearRatios;
     int _prevGearIndex;
     int _currentGearIndex;

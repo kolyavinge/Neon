@@ -42,6 +42,6 @@ void Body::calculateAirDragForce(Vector3& vehicleVelocity) {
 }
 
 void Body::updateAngles() {
-    _angles.pitch = (_transferedWeightOnRear / _vehicleMass) * _data.maxPitch;
-    _angles.roll = (_transferedWeightOnRight / _vehicleMass) * _data.maxRoll;
+    _angles.pitch = (_transferedWeightOnRear / _vehicleMass) * _data.bodyMaxPitch;
+    _angles.roll = (_transferedWeightOnRight / _vehicleMass) * _data.bodyMaxRoll;
 }

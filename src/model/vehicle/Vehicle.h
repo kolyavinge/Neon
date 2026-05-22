@@ -8,7 +8,6 @@
 #include <model/vehicle/Chassis.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
-#include <model/vehicle/PacejkaFormula.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
@@ -30,8 +29,6 @@ private:
     Array<Axle, Vehicle::axlesCount> _axles;
     Body _body;
     Chassis _chassis;
-    PacejkaFormula _longitudinalForceCurve;
-    PacejkaFormula _lateralForceCurve;
 
 public:
     Vehicle();
@@ -48,8 +45,6 @@ public:
     Axle& getDriveAxle();
     Body& getBody();
     Chassis& getChassis();
-    float getLongitudinalForceCoeff(float slipRatio);
-    float getLateralForceCoeff(float slipAngle);
     Vector3& getLinearVelocity();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();

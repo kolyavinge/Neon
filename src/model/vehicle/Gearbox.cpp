@@ -3,16 +3,7 @@
 #include <model/vehicle/Gearbox.h>
 
 Gearbox::Gearbox() {
-    // TODO move to init logic
-    _finalGearRatio = 3.5f;
-    _gearRatios[0] = _finalGearRatio * -2.5f;
-    _gearRatios[1] = _finalGearRatio * 0.0f;
-    _gearRatios[2] = _finalGearRatio * 3.5f;
-    _gearRatios[3] = _finalGearRatio * 2.8f;
-    _gearRatios[4] = _finalGearRatio * 2.2f;
-    _gearRatios[5] = _finalGearRatio * 1.5f;
-    _gearRatios[6] = _finalGearRatio * 1.0f;
-    _gearRatios[7] = _finalGearRatio * 0.8f;
+    _gearRatios = _data.gearRatios;
     init();
 }
 

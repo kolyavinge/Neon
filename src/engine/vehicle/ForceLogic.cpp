@@ -20,17 +20,18 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
+    VehicleData& data = vehicle.getData();
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
         float slipRatio = wheel.getSlipRatio().value;
         float slipAngle = wheel.getSlipAngle();
-        float longitudinalForceCoeff = vehicle.getLongitudinalForceCoeff(slipRatio);
-        float lateralForceCoeff = vehicle.getLateralForceCoeff(slipAngle);
+        float longitudinalForceCoeff = data.getLongitudinalForceCoeff(slipRatio);
+        float lateralForceCoeff = data.getLateralForceCoeff(slipAngle);
         wheel.calculateLongitudinalForce(longitudinalForceCoeff, spring.getForce());
         wheel.calculateLateralForce(lateralForceCoeff, spring.getForce());
-        wheel.calculateLongitudinalAcceleration(vehicle.getData().mass);
-        wheel.calculateLateralAcceleration(vehicle.getData().mass);
+        wheel.calculateLongitudinalAcceleration(vehicle.getData().vehicleMass);
+        wheel.calculateLateralAcceleration(vehicle.getData().vehicleMass);
     }
 }
 

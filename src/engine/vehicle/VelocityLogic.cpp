@@ -33,8 +33,8 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
 
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     Axle& driveAxle = vehicle.getDriveAxle();
-    nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().mass, dt);
-    driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().mass, dt);
+    nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().vehicleMass, dt);
+    driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().vehicleMass, dt);
 
     if (isVelocityZero(vehicle)) {
         setVelocityToZero(vehicle);

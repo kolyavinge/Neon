@@ -6,8 +6,8 @@ Spring::Spring() {
 }
 
 void Spring::init() {
-    _maxLength = _data.maxLength;
-    _prevLength = _data.maxLength / 2.0f;
+    _maxLength = _data.springMaxLength;
+    _prevLength = _data.springMaxLength / 2.0f;
     _currentLength = _prevLength;
 }
 
@@ -17,13 +17,13 @@ float Spring::getForce() {
 
 void Spring::calculateLength(float wheelLoadWeight) {
     _prevLength = _currentLength;
-    _currentLength = _data.maxLength - _data.maxLength * (wheelLoadWeight / _data.maxWeight);
-    _currentLength = Numeric::clamp(_currentLength, _data.minLength, _data.maxLength);
+    _currentLength = _data.springMaxLength - _data.springMaxLength * (wheelLoadWeight / _data.springMaxWeight);
+    _currentLength = Numeric::clamp(_currentLength, _data.springMinLength, _data.springMaxLength);
 }
 
 void Spring::calculateForce(float dt) {
     float depth = _maxLength - _currentLength;
     float speed = (_prevLength - _currentLength) / dt;
-    _force = _data.stiffness * depth + _data.damper * speed;
+    _force = _data.springStiffness * depth + _data.springDamper * speed;
     _force = Math::max(_force, 0.0f);
 }

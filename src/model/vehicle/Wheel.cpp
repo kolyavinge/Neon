@@ -113,7 +113,7 @@ void Wheel::calculateNewAngularVelocity(float brakingRatio, float expectedAngula
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
     }
-    _angularVelocity -= dt * _angularVelocity * _data.roadFrictionCoeff;
+    _angularVelocity -= dt * _angularVelocity * _data.getRoadFrictionCoeff(getSlipAngle());
 }
 
 void Wheel::brake(float brakingRatio, float dt) {

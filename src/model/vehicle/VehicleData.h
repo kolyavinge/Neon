@@ -4,43 +4,54 @@
 #include <lib/system.h>
 #include <model/common/Measures.h>
 #include <model/vehicle/EngineTorqueCurve.h>
+#include <model/vehicle/Gear.h>
+#include <model/vehicle/PacejkaFormula.h>
 
 class VehicleData : public Object {
 
+    PacejkaFormula _longitudinalForceCurve;
+    PacejkaFormula _lateralForceCurve;
+
 public:
-    float mass;
+    float vehicleMass;
     //float lengthBetweenAxleCenters;
 
+    /* gearbox */
+    float finalGearRatio;
+    Array<float, (int)Gear::_count> gearRatios;
+
     /* body */
-    Measures measures;
+    Measures bodyMeasures;
     Vector3 massCenter;
     float massCenterHeight;
     float wheelbaseLength;
     float frontWheelLengthToMassCenter;
     float rearWheelLengthToMassCenter;
     float trackWidth;
-    float maxPitch;
-    float maxRoll;
+    float bodyMaxPitch;
+    float bodyMaxRoll;
     float airDragCoeff;
 
     /* engine */
-    EngineTorqueCurve torqueCurve;
-    float minRpm;
-    float maxRpm;
-    float brakingForce;
+    EngineTorqueCurve engineTorqueCurve;
+    float engineMinRpm;
+    float engineMaxRpm;
+    float engineBrakingForce;
 
     /* wheel */
     float wheelRadius;
-    float roadFrictionCoeff;
     float brakingForceCoeff;
     float maxSteeringAngle;
 
     /* spring */
-    float stiffness;
-    float damper;
-    float minLength;
-    float maxLength;
-    float maxWeight;
+    float springStiffness;
+    float springDamper;
+    float springMinLength;
+    float springMaxLength;
+    float springMaxWeight;
 
     VehicleData();
+    float getRoadFrictionCoeff(float slipAngle);
+    float getLongitudinalForceCoeff(float slipRatio);
+    float getLateralForceCoeff(float slipAngle);
 };
