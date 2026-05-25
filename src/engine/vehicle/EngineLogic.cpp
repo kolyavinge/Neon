@@ -31,11 +31,10 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
     float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
     float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
     engine.calculateNewRpm(throttleRatio, expectedRpmByWheels, gearRatio, dt);
-    float wheelTorque = engine.getTorque() * gearRatio;
     if (gearbox.isEngineAndWheelsConnected()) {
         for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
-            driveWheel.calculateNewAngularVelocity(brakingRatio, expectedAngularVelocityByEngine, wheelTorque, dt);
+            driveWheel.calculateNewAngularVelocity(brakingRatio, expectedAngularVelocityByEngine, dt);
         }
     }
     if (brakingRatio > 0.0f) {

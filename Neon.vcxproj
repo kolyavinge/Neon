@@ -51,6 +51,7 @@
     <ClCompile Include="src\lib\calc\TruncatedPlane.cpp" />
     <ClCompile Include="src\lib\calc\TransformMatrix4.cpp" />
     <ClCompile Include="src\lib\calc\UnitConverter.cpp" />
+    <ClCompile Include="src\lib\calc\Vector2.cpp" />
     <ClCompile Include="src\lib\calc\Vector3.cpp" />
     <ClCompile Include="src\lib\calc\Vector4.cpp" />
     <ClCompile Include="src\lib\di\InstanceCollection.cpp" />
@@ -82,10 +83,14 @@
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
+    <ClCompile Include="src\render\lib\TextureLoader.cpp" />
+    <ClCompile Include="src\render\lib\model3d\Model3d.cpp" />
+    <ClCompile Include="src\render\lib\model3d\Model3dLoader.cpp" />
     <ClCompile Include="src\render\lib\opengl.cpp" />
     <ClCompile Include="src\render\lib\Shader.cpp" />
     <ClCompile Include="src\render\lib\ShaderCompiler.cpp" />
     <ClCompile Include="src\render\lib\ShaderProgram.cpp" />
+    <ClCompile Include="src\render\lib\Texture.cpp" />
     <ClCompile Include="src\render\RenderInitializer.cpp" />
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp" />
     <ClCompile Include="src\ui\DebugScreen.cpp" />
@@ -106,6 +111,7 @@
     <ClInclude Include="src\engine\vehicle\GearboxLogic.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\lib\calc\Vector2.h" />
     <ClInclude Include="src\lib\collections\BSPTree.h" />
     <ClInclude Include="src\lib\calc\Plane.h" />
     <ClInclude Include="src\lib\calc\Quaternion.h" />
@@ -117,11 +123,15 @@
     <ClInclude Include="src\model\vehicle\VehicleData.h" />
     <ClInclude Include="src\render\common\ShaderCollection.h" />
     <ClInclude Include="src\render\common\ShaderProgramCollection.h" />
+    <ClInclude Include="src\render\lib\model3d\Model3d.h" />
+    <ClInclude Include="src\render\lib\model3d\Model3dLoader.h" />
     <ClInclude Include="src\render\lib\opengl.h" />
     <ClInclude Include="src\render\lib\Shader.h" />
     <ClInclude Include="src\render\lib\ShaderCompiler.h" />
     <ClInclude Include="src\render\lib\ShaderProgram.h" />
+    <ClInclude Include="src\render\lib\Texture.h" />
     <ClInclude Include="src\render\RenderInitializer.h" />
+    <ClInclude Include="src\render\lib\TextureLoader.h" />
     <ClInclude Include="src\render\ui\DebugScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
     <ClInclude Include="src\ui\DebugScreen.h" />
@@ -284,13 +294,14 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;$(ProjectDir)\external\assimp\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;$(ProjectDir)\external\assimp\assimp-vc143-mt.lib;$(ProjectDir)\external\soil\SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutputPath)glfw3.dll" copy "$(SolutionDir)external\glfw\glfw3.dll" "$(OutputPath)"
 if not exist "$(OutputPath)glew32.dll" copy "$(SolutionDir)external\glew\glew32.dll" "$(OutputPath)"
-if not exist "$(OutputPath)assimp-vc143-mt.dll" copy "$(SolutionDir)external\assimp\assimp-vc143-mt.dll" "$(OutputPath)"</Command>
+if not exist "$(OutputPath)assimp-vc143-mt.dll" copy "$(SolutionDir)external\assimp\assimp-vc143-mt.dll" "$(OutputPath)"
+if not exist "$(OutputPath)SOIL.dll" copy "$(SolutionDir)external\soil\SOIL.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
