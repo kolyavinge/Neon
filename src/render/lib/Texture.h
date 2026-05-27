@@ -5,16 +5,16 @@
 
 class Texture : public Object {
 
-    unsigned int _id;
-    int _width;
-    int _height;
+    GLuint _id;
+    GLint _width;
+    GLint _height;
 
 public:
     static Texture empty;
 
     Texture();
     ~Texture();
-    void init(GLuint id, int width, int height);
+    void init(GLuint id, GLint width, GLint height);
     int getWidth();
     int getHeight();
     void bind(GLenum textureIndex);

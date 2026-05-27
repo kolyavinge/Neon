@@ -107,10 +107,22 @@ void Vector3::mul(float a) {
     z *= a;
 }
 
+void Vector3::mul(Vector3& v) {
+    x *= v.x;
+    y *= v.y;
+    z *= v.z;
+}
+
 void Vector3::div(float a) {
     x /= a;
     y /= a;
     z /= a;
+}
+
+void Vector3::div(Vector3& v) {
+    x /= v.x;
+    y /= v.y;
+    z /= v.z;
 }
 
 bool Vector3::isCollinear(Vector3& v, float eps) {

@@ -2,6 +2,7 @@
 #pragma warning(disable : 4061 4365 4018)
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+#include <assimp/scene.h>
 #pragma warning(pop)
 
 #include <render/lib/Texture.h>
@@ -36,27 +37,31 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
         aiMesh& aiMesh = *aiScene.mMeshes[meshIndex];
         Mesh& mesh = model3d.createNewMesh();
         mesh.id = meshIndex;
-        mesh.vertices.prepareEnoughCapacity((int)aiMesh.mNumVertices);
-        mesh.normals.prepareEnoughCapacity((int)aiMesh.mNumVertices);
-        mesh.texCoords.prepareEnoughCapacity((int)aiMesh.mNumVertices);
-        for (int vertexIndex = 0; vertexIndex < (int)aiMesh.mNumVertices; vertexIndex++) {
-            mesh.vertices[vertexIndex].x = aiMesh.mVertices[vertexIndex].x;
-            mesh.vertices[vertexIndex].y = aiMesh.mVertices[vertexIndex].y;
-            mesh.vertices[vertexIndex].z = aiMesh.mVertices[vertexIndex].z;
-            mesh.normals[vertexIndex].x = aiMesh.mNormals[vertexIndex].x;
-            mesh.normals[vertexIndex].y = aiMesh.mNormals[vertexIndex].y;
-            mesh.normals[vertexIndex].z = aiMesh.mNormals[vertexIndex].z;
-            mesh.normals[vertexIndex].normalize();
-            mesh.texCoords[vertexIndex].x = aiMesh.mTextureCoords[0][vertexIndex].x;
-            mesh.texCoords[vertexIndex].y = aiMesh.mTextureCoords[0][vertexIndex].y;
+        mesh.vertices.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
+        mesh.normals.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
+        mesh.texCoords.prepareEnoughCapacity(2 * (int)aiMesh.mNumVertices);
+        int vertexIndex = 0, texCoordIndex = 0;
+        for (int aiVertexIndex = 0; aiVertexIndex < (int)aiMesh.mNumVertices; aiVertexIndex++) {
+            mesh.vertices[vertexIndex] = aiMesh.mVertices[aiVertexIndex].x;
+            mesh.vertices[vertexIndex + 1] = aiMesh.mVertices[aiVertexIndex].y;
+            mesh.vertices[vertexIndex + 2] = aiMesh.mVertices[aiVertexIndex].z;
+            mesh.normals[vertexIndex] = aiMesh.mNormals[aiVertexIndex].x;
+            mesh.normals[vertexIndex + 1] = aiMesh.mNormals[aiVertexIndex].y;
+            mesh.normals[vertexIndex + 2] = aiMesh.mNormals[aiVertexIndex].z;
+            mesh.texCoords[texCoordIndex] = aiMesh.mTextureCoords[0][aiVertexIndex].x;
+            mesh.texCoords[texCoordIndex + 1] = aiMesh.mTextureCoords[0][aiVertexIndex].y;
+            vertexIndex += 3;
+            texCoordIndex += 2;
         }
-        mesh.faces.prepareEnoughCapacity((int)aiMesh.mNumFaces);
-        for (int faceIndex = 0; faceIndex < (int)aiMesh.mNumFaces; faceIndex++) {
-            aiFace& face = aiMesh.mFaces[faceIndex];
+        mesh.faces.prepareEnoughCapacity(3 * (int)aiMesh.mNumFaces);
+        int faceIndex = 0;
+        for (int aiFaceIndex = 0; aiFaceIndex < (int)aiMesh.mNumFaces; aiFaceIndex++) {
+            aiFace& face = aiMesh.mFaces[aiFaceIndex];
             Assert::isTrue(face.mNumIndices == 3);
-            mesh.faces[faceIndex].i0 = face.mIndices[0];
-            mesh.faces[faceIndex].i1 = face.mIndices[1];
-            mesh.faces[faceIndex].i2 = face.mIndices[2];
+            mesh.faces[faceIndex] = face.mIndices[0];
+            mesh.faces[faceIndex + 1] = face.mIndices[1];
+            mesh.faces[faceIndex + 2] = face.mIndices[2];
+            faceIndex += 3;
         }
         mesh.texture = &model3d.getTextures().first();
     }

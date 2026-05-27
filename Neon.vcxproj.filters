@@ -243,6 +243,15 @@
     <ClCompile Include="src\render\lib\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\lib\vao\VAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\lib\model3d\Model3dVAOBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\lib\vao\VAORenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -540,6 +549,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\lib\TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lib\vao\VAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lib\model3d\Model3dVAOBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lib\vao\VAORenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

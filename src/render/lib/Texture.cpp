@@ -12,7 +12,7 @@ Texture::~Texture() {
     glDeleteTextures(1, &_id);
 }
 
-void Texture::init(GLuint id, int width, int height) {
+void Texture::init(GLuint id, GLint width, GLint height) {
     _id = id;
     _width = width;
     _height = height;

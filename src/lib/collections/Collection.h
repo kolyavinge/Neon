@@ -33,6 +33,10 @@ public:
         sort(0, getCount() - 1, comparator);
     }
 
+    int getSizeInBytes() {
+        return getCount() * (int)sizeof(T);
+    }
+
 private:
     void sort(int startIndex, int endIndex, IComparator<T>& comparator) {
         int i = startIndex;

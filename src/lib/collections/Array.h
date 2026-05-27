@@ -10,7 +10,9 @@ class Array : public Collection<T> {
     T _items[Count] = {};
 
 public:
-    Array() {}
+    Array() {
+        initZero();
+    }
 
     T& operator[](int index) override {
         checkBounds(index);
@@ -42,7 +44,7 @@ public:
         Memory::copy<T>(range, _items, count);
     }
 
-    T* getBuf() {
+    T* getItemsPointer() {
         return _items;
     }
 

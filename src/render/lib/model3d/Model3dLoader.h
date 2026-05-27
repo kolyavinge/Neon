@@ -1,15 +1,12 @@
 #pragma once
 
-#pragma warning(push)
-#pragma warning(disable : 4061 4365)
-#include <assimp/scene.h>
-#pragma warning(pop)
-
-#include <lib/system.h>
-#include <render/lib/model3d/Model3d.h>
 #include <lib/FileSystem.h>
-#include <render/lib/TextureLoader.h>
 #include <lib/di/Resolver.h>
+#include <lib/system.h>
+#include <render/lib/TextureLoader.h>
+#include <render/lib/model3d/Model3d.h>
+
+struct aiScene; // чтобы не инклудеть <assimp/scene.h>
 
 class Model3dLoader : public Object {
 

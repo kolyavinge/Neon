@@ -53,7 +53,7 @@ public:
     }
 
     void add(T value) {
-        resizeIfNeeded();
+        resizeIfNeeded(1);
         _items[_count] = value;
         _count++;
     }
@@ -65,7 +65,7 @@ public:
     }
 
     T& addNew() {
-        resizeIfNeeded();
+        resizeIfNeeded(1);
         _count++;
 
         return _items[_count - 1];
@@ -73,7 +73,7 @@ public:
 
     void insert(int index, T value) {
         checkBounds(index, _count + 1);
-        resizeIfNeeded();
+        resizeIfNeeded(1);
         for (int i = _count; i > index; i--) {
             _items[i] = _items[i - 1];
         }
@@ -139,7 +139,7 @@ private:
         Memory::copy<T>(copy._items, _items, _capacity);
     }
 
-    void resizeIfNeeded(int addedCount = 1) {
+    void resizeIfNeeded(int addedCount) {
         bool resize = false;
         while (_count + addedCount > _capacity) {
             _capacity *= 2;

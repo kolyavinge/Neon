@@ -4,6 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <render/lib/Shader.h>
+#include <render/lib/opengl.h>
 
 class ShaderProgram : public Object {
 
@@ -17,12 +18,12 @@ public:
 
 protected:
     virtual void initBeforeLink();
-    void setInt32(char* name, int value);
-    void setFloat32(char* name, float value);
-    void setBoolean(char* name, bool value);
-    void setVector2(char* name, float x, float y);
-    void setVector3(char* name, Vector3& v);
-    void setMatrix3(char* name, float* m);
-    void setTransformMatrix4(char* name, TransformMatrix4& m);
-    void setOutputNamesForTransformFeedback(int count, char** outputNames);
+    void setInt32(GLchar* name, GLint value);
+    void setFloat32(GLchar* name, GLfloat value);
+    void setBoolean(GLchar* name, bool value);
+    void setVector2(GLchar* name, GLfloat x, GLfloat y);
+    void setVector3(GLchar* name, Vector3& v);
+    void setMatrix3(GLchar* name, GLfloat* m);
+    void setTransformMatrix4(GLchar* name, TransformMatrix4& m);
+    void setOutputNamesForTransformFeedback(GLint count, GLchar** outputNames);
 };

@@ -17,7 +17,7 @@ void ShaderProgram::init(Collection<Shader>& shaders) {
     if (status == GL_FALSE) {
         GLint logLength = 0;
         glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
-        List<char> log(logLength);
+        List<GLchar> log(logLength);
         glGetProgramInfoLog(_id, logLength, &logLength, log.getItemsPointer());
         if (log.getCount() > 0) {
             String errorMessage(log.getItemsPointer());
@@ -36,34 +36,34 @@ void ShaderProgram::unuse() {
 
 void ShaderProgram::initBeforeLink() {}
 
-void ShaderProgram::setInt32(char* name, int value) {
+void ShaderProgram::setInt32(GLchar* name, GLint value) {
     glUniform1i(glGetUniformLocation(_id, name), value);
 }
 
-void ShaderProgram::setFloat32(char* name, float value) {
+void ShaderProgram::setFloat32(GLchar* name, GLfloat value) {
     glUniform1f(glGetUniformLocation(_id, name), value);
 }
 
-void ShaderProgram::setBoolean(char* name, bool value) {
+void ShaderProgram::setBoolean(GLchar* name, bool value) {
     setInt32(name, value ? 1 : 0);
 }
 
-void ShaderProgram::setVector2(char* name, float x, float y) {
+void ShaderProgram::setVector2(GLchar* name, GLfloat x, GLfloat y) {
     glUniform2f(glGetUniformLocation(_id, name), x, y);
 }
 
-void ShaderProgram::setVector3(char* name, Vector3& v) {
+void ShaderProgram::setVector3(GLchar* name, Vector3& v) {
     glUniform3f(glGetUniformLocation(_id, name), v.x, v.y, v.z);
 }
 
-void ShaderProgram::setMatrix3(char* name, float* m) {
+void ShaderProgram::setMatrix3(GLchar* name, GLfloat* m) {
     glUniformMatrix3fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m);
 }
 
-void ShaderProgram::setTransformMatrix4(char* name, TransformMatrix4& m) {
+void ShaderProgram::setTransformMatrix4(GLchar* name, TransformMatrix4& m) {
     glUniformMatrix4fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m.getItems());
 }
 
-void ShaderProgram::setOutputNamesForTransformFeedback(int count, char** outputNames) {
+void ShaderProgram::setOutputNamesForTransformFeedback(GLint count, GLchar** outputNames) {
     glTransformFeedbackVaryings(_id, count, outputNames, GL_SEPARATE_ATTRIBS);
 }

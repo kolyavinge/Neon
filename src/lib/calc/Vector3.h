@@ -27,7 +27,9 @@ public:
     void sub(Vector3& v);
     void subMultiplied(Vector3& v, float multipliedBy);
     void mul(float a);
+    void mul(Vector3& v);
     void div(float a);
+    void div(Vector3& v);
     bool isCollinear(Vector3& v, float eps = Numeric::epsilonFloat);
     float dotProduct(Vector3& v);
     void vectorProduct(Vector3& v);

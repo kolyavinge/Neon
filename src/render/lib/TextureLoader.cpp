@@ -14,7 +14,7 @@ void TextureLoader::loadTexture(String& filePath, output Texture& texture) {
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y
     );
-    int width, height;
+    GLint width, height;
     glBindTexture(GL_TEXTURE_2D, textureId);
     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
