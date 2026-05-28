@@ -81,8 +81,12 @@
     <ClCompile Include="src\model\vehicle\VehicleData.cpp" />
     <ClCompile Include="src\model\vehicle\Wheel.cpp" />
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
+    <ClCompile Include="src\render\common\RenderModel3dCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
+    <ClCompile Include="src\render\lib\Material.cpp" />
+    <ClCompile Include="src\render\lib\model3d\RenderModel3d.cpp" />
+    <ClCompile Include="src\render\lib\model3d\RenderModel3dLoader.cpp" />
     <ClCompile Include="src\render\lib\TextureLoader.cpp" />
     <ClCompile Include="src\render\lib\model3d\Model3d.cpp" />
     <ClCompile Include="src\render\lib\model3d\Model3dLoader.cpp" />
@@ -124,10 +128,14 @@
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />
+    <ClInclude Include="src\render\common\RenderModel3dCollection.h" />
     <ClInclude Include="src\render\common\ShaderCollection.h" />
     <ClInclude Include="src\render\common\ShaderProgramCollection.h" />
+    <ClInclude Include="src\render\lib\Material.h" />
     <ClInclude Include="src\render\lib\model3d\Model3d.h" />
     <ClInclude Include="src\render\lib\model3d\Model3dLoader.h" />
+    <ClInclude Include="src\render\lib\model3d\RenderModel3d.h" />
+    <ClInclude Include="src\render\lib\model3d\RenderModel3dLoader.h" />
     <ClInclude Include="src\render\lib\opengl.h" />
     <ClInclude Include="src\render\lib\Shader.h" />
     <ClInclude Include="src\render\lib\ShaderCompiler.h" />

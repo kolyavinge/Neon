@@ -14,8 +14,7 @@ void Mesh::scale(float x, float y, float z) {
 }
 
 Mesh& Model3d::createNewMesh() {
-    _meshes.addNew();
-    return _meshes.last();
+    return _meshes.addNew();
 }
 
 Collection<Mesh>& Model3d::getMeshes() {
@@ -23,8 +22,7 @@ Collection<Mesh>& Model3d::getMeshes() {
 }
 
 Texture& Model3d::createNewTexture() {
-    _textures.addNew();
-    return _textures.last();
+    return _textures.addNew();
 }
 
 Collection<Texture>& Model3d::getTextures() {

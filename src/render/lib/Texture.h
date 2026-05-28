@@ -15,8 +15,8 @@ public:
     Texture();
     ~Texture();
     void init(GLuint id, GLint width, GLint height);
-    int getWidth();
-    int getHeight();
+    GLint getWidth();
+    GLint getHeight();
     void bind(GLenum textureIndex);
     void unbind();
 };

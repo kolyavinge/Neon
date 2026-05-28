@@ -7,5 +7,5 @@
 class Model3dVAOBuilder : public Object {
 
 public:
-    void build(Model3d& model3d, output List<VAO>& meshVAOList);
+    void build(Mesh& mesh, output VAO& vao);
 };

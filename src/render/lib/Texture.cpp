@@ -18,11 +18,11 @@ void Texture::init(GLuint id, GLint width, GLint height) {
     _height = height;
 }
 
-int Texture::getWidth() {
+GLint Texture::getWidth() {
     return _width;
 }
 
-int Texture::getHeight() {
+GLint Texture::getHeight() {
     return _height;
 }
 

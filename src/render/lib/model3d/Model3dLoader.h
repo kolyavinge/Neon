@@ -6,7 +6,7 @@
 #include <render/lib/TextureLoader.h>
 #include <render/lib/model3d/Model3d.h>
 
-struct aiScene; // чтобы не инклудеть <assimp/scene.h>
+struct aiScene; // чтобы не инклудить <assimp/scene.h>
 
 class Model3dLoader : public Object {
 
