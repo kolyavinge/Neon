@@ -11,6 +11,11 @@ TransformMatrix4::TransformMatrix4(float items[16]) {
     Memory::copy<float>(items, _items, 16);
 }
 
+TransformMatrix4& TransformMatrix4::operator=(const TransformMatrix4& other) {
+    Memory::copy<float>(other._items, _items, 16);
+    return *this;
+}
+
 float* TransformMatrix4::getItems() {
     return _items;
 }

@@ -9,8 +9,9 @@ public:
     Object(const Object&) = default;
     Object(Object&&) noexcept = default;
 
-    Object& operator=(const Object&) = default;
-    Object& operator=(Object&&) noexcept = default;
+    // копирование по умолчанию запрещено
+    Object& operator=(const Object&) = delete;
+    Object& operator=(Object&&) noexcept = delete;
 
     virtual ~Object() = default;
 

@@ -32,8 +32,8 @@ public:
         Memory::release(_items);
     }
 
-    List<T>& operator=(const List<T>& copy) {
-        set(copy);
+    List<T>& operator=(const List<T>& other) {
+        set(other);
         return *this;
     }
 

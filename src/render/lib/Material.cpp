@@ -14,6 +14,15 @@ Material::Material(float ambient, float diffuse, float specular, float shininess
     _shininess = shininess;
 }
 
+Material& Material::operator=(const Material& other) {
+    _ambient = other._ambient;
+    _diffuse = other._diffuse;
+    _specular = other._specular;
+    _shininess = other._shininess;
+
+    return *this;
+}
+
 float Material::getAmbient() {
     return _ambient;
 }

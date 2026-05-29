@@ -10,8 +10,9 @@ class Array : public Collection<T> {
     T _items[Count] = {};
 
 public:
-    Array() {
-        initZero();
+    Array<T, Count>& operator=(const Array<T, Count>& other) {
+        Memory::copy<T>(other._items, _items, Count);
+        return *this;
     }
 
     T& operator[](int index) override {

@@ -22,7 +22,7 @@ public:
     }
 
     ShaderCollection(
-        ProjectDirectories projectDirectories,
+        ProjectDirectories& projectDirectories,
         ShaderCompiler& shaderCompiler);
 
     void init();

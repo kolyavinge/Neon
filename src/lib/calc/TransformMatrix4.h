@@ -11,6 +11,8 @@ class TransformMatrix4 : public Object {
 public:
     TransformMatrix4();
     TransformMatrix4(float items[16]);
+    TransformMatrix4& operator=(const TransformMatrix4& other);
+    TransformMatrix4(const TransformMatrix4&) = default;
     float* getItems();
     void setIdentity();
     void setZero();

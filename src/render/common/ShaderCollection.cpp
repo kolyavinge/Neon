@@ -1,7 +1,7 @@
 #include <render/common/ShaderCollection.h>
 
 ShaderCollection::ShaderCollection(
-    ProjectDirectories projectDirectories,
+    ProjectDirectories& projectDirectories,
     ShaderCompiler& shaderCompiler) :
     _projectDirectories(projectDirectories),
     _shaderCompiler(shaderCompiler) {

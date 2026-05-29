@@ -9,6 +9,13 @@ Shader::Shader(GLuint id, ShaderType type) {
     _type = type;
 }
 
+Shader& Shader::operator=(const Shader& other) {
+    _id = other._id;
+    _type = other._type;
+
+    return *this;
+}
+
 GLuint Shader::getId() {
     return _id;
 }

@@ -11,6 +11,8 @@ class Plane : public Object {
 public:
     Plane();
     Plane(Vector3 frontNormal, Vector3 basePoint);
+    Plane& operator=(const Plane& other);
+    Plane(const Plane&) = default;
     Vector3& getFrontNormal();
     Vector3& getBasePoint();
     bool isPointInFront(Vector3& point);

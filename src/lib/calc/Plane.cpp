@@ -7,6 +7,13 @@ Plane::Plane(Vector3 frontNormal, Vector3 basePoint) {
     _basePoint = basePoint;
 }
 
+Plane& Plane::operator=(const Plane& other) {
+    _frontNormal = other._frontNormal;
+    _basePoint = other._basePoint;
+
+    return *this;
+}
+
 Vector3& Plane::getFrontNormal() {
     return _frontNormal;
 }

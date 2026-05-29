@@ -12,7 +12,9 @@ public:
     Vector3();
     Vector3(float valueX, float valueY, float valueZ);
     void set(float valueX, float valueY, float valueZ);
-    void set(Vector3& v);
+    void set(const Vector3& v);
+    Vector3& operator=(const Vector3& other);
+    Vector3(const Vector3&) = default;
     void setZero();
     bool isZero(float eps = Numeric::epsilonFloat);
     bool equals(Object& v) override;
