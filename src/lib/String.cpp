@@ -177,6 +177,12 @@ void String::clear() {
     Memory::zero<wchar_t>(_symb, _capacity);
 }
 
+void String::fillZero(int count) {
+    prepareEnoughCapacity(count);
+    _count = count;
+    Memory::zero<wchar_t>(_symb, count);
+}
+
 void String::prepareEnoughCapacity(int enoughCapacity) {
     if (enoughCapacity <= 0) throw ArgumentException(L"enoughCapacity must be greater than zero.");
     if (_capacity > enoughCapacity) return;

@@ -1,5 +1,8 @@
 #pragma once
 
+// в glfw3.h подключается gl.h, glew.h нужно подключить раньше
+#include <glew/glew.h>
+
 #include <glfw/glfw3.h>
 #include <lib/system.h>
 

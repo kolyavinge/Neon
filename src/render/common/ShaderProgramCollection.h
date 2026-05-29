@@ -20,5 +20,5 @@ public:
     ShaderProgramCollection(
         ShaderCollection& shaderCollection);
 
-    void init();
+    void initAllPrograms();
 };

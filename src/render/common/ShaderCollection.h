@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/ProjectDirectories.h>
+#include <lib/ResourceManager.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <render/lib/Shader.h>
@@ -8,22 +8,21 @@
 
 class ShaderCollection : public Object {
 
-    ProjectDirectories& _projectDirectories;
+    ResourceManager& _resourceManager;
     ShaderCompiler& _shaderCompiler;
 
 public:
-    Shader shader1;
-    Shader shader2;
+    Shader common;
 
     static ShaderCollection* resolve(Resolver& resolver) {
         return new ShaderCollection(
-            resolver.resolve<ProjectDirectories>(),
+            resolver.resolve<ResourceManager>(),
             resolver.resolve<ShaderCompiler>());
     }
 
     ShaderCollection(
-        ProjectDirectories& projectDirectories,
+        ResourceManager& resourceManager,
         ShaderCompiler& shaderCompiler);
 
-    void init();
+    void loadAllShaders();
 };

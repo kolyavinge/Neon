@@ -9,10 +9,12 @@
 class ShaderProgram : public Object {
 
     GLuint _id;
+    List<GLuint> _shaderIds;
 
 public:
     ShaderProgram();
-    void init(Collection<Shader>& shaders);
+    ~ShaderProgram();
+    void init(Collection<Shader*>& shaders);
     void use();
     void unuse();
 

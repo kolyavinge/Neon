@@ -18,6 +18,7 @@ void App::run() {
     glfwSetWindowPos(window, (mode->width - CommonConstants::screenWidth) / 2, (mode->height - CommonConstants::screenHeight) / 2);
     glfwSetKeyCallback(window, App::onKeyInput);
     glfwMakeContextCurrent(window);
+    if (glewInit() != GLEW_OK) throw AppException();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();
     double accumulator = 0.0;

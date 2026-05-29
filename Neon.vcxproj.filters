@@ -222,7 +222,7 @@
     <ClCompile Include="src\render\common\ShaderCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\ProjectDirectories.cpp">
+    <ClCompile Include="src\common\AssetsDirectory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp">
@@ -262,6 +262,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\lib\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\Path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\Environment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -539,7 +548,7 @@
     <ClInclude Include="src\render\common\ShaderCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\ProjectDirectories.h">
+    <ClInclude Include="src\common\AssetsDirectory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\ShaderProgramCollection.h">
@@ -584,5 +593,28 @@
     <ClInclude Include="src\render\lib\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\lib\Path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\Environment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\windows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\render\shaders\common.glsl" />
   </ItemGroup>
 </Project>

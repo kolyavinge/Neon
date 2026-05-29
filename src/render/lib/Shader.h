@@ -27,9 +27,8 @@ class Shader : public Object {
 
 public:
     Shader();
-    Shader(GLuint id, ShaderType type);
-    Shader& operator=(const Shader& other);
-    Shader(const Shader&) = default;
+    ~Shader();
+    void init(GLuint id, ShaderType type);
     GLuint getId();
     ShaderType getType();
 };

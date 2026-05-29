@@ -1,8 +1,5 @@
-#pragma warning(push)
-#pragma warning(disable : 5039 4668)
-#include <windows.h>
-#pragma warning(pop)
 #include <lib/input/Keyboard.h>
+#include <lib/windows.h>
 
 class KeyboardKeys {
 

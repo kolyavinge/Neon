@@ -38,6 +38,7 @@ public:
     bool endsWith(String& str);
     void invert();
     void clear();
+    void fillZero(int count);
     void prepareEnoughCapacity(int enoughCapacity);
     const char* getCharPointer();
     wchar_t* getWCharPointer();

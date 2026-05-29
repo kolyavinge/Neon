@@ -5,10 +5,21 @@ ShaderProgram::ShaderProgram() {
     _id = 0;
 }
 
-void ShaderProgram::init(Collection<Shader>& shaders) {
+ShaderProgram::~ShaderProgram() {
+    glUseProgram(0);
+    for (int i = 0; i < _shaderIds.getCount(); i++) {
+        glDetachShader(_id, _shaderIds[i]);
+    }
+    glDeleteProgram(_id);
+}
+
+void ShaderProgram::init(Collection<Shader*>& shaders) {
+    for (int i = 0; i < shaders.getCount(); i++) {
+        _shaderIds.add(shaders[i]->getId());
+    }
     _id = glCreateProgram();
     for (int i = 0; i < shaders.getCount(); i++) {
-        glAttachShader(_id, shaders[i].getId());
+        glAttachShader(_id, shaders[i]->getId());
     }
     initBeforeLink();
     glLinkProgram(_id);

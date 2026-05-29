@@ -1,19 +1,17 @@
 #include <render/lib/Shader.h>
 
-Shader::Shader() :
-    Shader(0, ShaderType::unset) {
+Shader::Shader() {
+    _id = 0;
+    _type = ShaderType::unset;
 }
 
-Shader::Shader(GLuint id, ShaderType type) {
+Shader::~Shader() {
+    glDeleteShader(_id);
+}
+
+void Shader::init(GLuint id, ShaderType type) {
     _id = id;
     _type = type;
-}
-
-Shader& Shader::operator=(const Shader& other) {
-    _id = other._id;
-    _type = other._type;
-
-    return *this;
 }
 
 GLuint Shader::getId() {

@@ -1,18 +1,14 @@
+#include <common/resource.h>
 #include <render/common/ShaderCollection.h>
 
 ShaderCollection::ShaderCollection(
-    ProjectDirectories& projectDirectories,
+    ResourceManager& resourceManager,
     ShaderCompiler& shaderCompiler) :
-    _projectDirectories(projectDirectories),
+    _resourceManager(resourceManager),
     _shaderCompiler(shaderCompiler) {
 }
 
-void ShaderCollection::init() {
-    String shaderFileFullPath(_projectDirectories.getShaders());
-    shaderFileFullPath.append(L"shader1.vert");
-    shader1 = _shaderCompiler.compile(shaderFileFullPath, ShaderType::vertex);
-
-    shaderFileFullPath = _projectDirectories.getShaders();
-    shaderFileFullPath.append(L"shader2.vert");
-    shader2 = _shaderCompiler.compile(shaderFileFullPath, ShaderType::vertex);
+void ShaderCollection::loadAllShaders() {
+    String source = _resourceManager.getTextFileContent(IDR_SHADER_COMMON);
+    _shaderCompiler.compile(source, ShaderType::vertex, output common);
 }
