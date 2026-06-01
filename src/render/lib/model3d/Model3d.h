@@ -7,6 +7,7 @@ class Mesh : public Object {
 
 public:
     int id;
+    String name;
     List<float> vertices;
     List<float> normals;
     List<float> texCoords;
@@ -14,7 +15,6 @@ public:
     Texture* texture;
 
     Mesh();
-    void scale(float x, float y, float z);
 };
 
 class Model3d : public Object {
@@ -23,8 +23,10 @@ class Model3d : public Object {
     List<Texture> _textures;
 
 public:
+    void prepareEnoughCapacityForMeshes(int meshesCount);
     Mesh& createNewMesh();
     Collection<Mesh>& getMeshes();
     Texture& createNewTexture();
     Collection<Texture>& getTextures();
+    void scale(float x, float y, float z);
 };

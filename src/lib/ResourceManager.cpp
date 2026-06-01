@@ -8,10 +8,7 @@ String ResourceManager::getTextFileContent(int resourceFileId) {
     HGLOBAL hData = LoadResource(nullptr, hRes);
     if (!hData) throw ResourceException();
     char* pBuffer = (char*)LockResource(hData);
-    int size = (int)SizeofResource(nullptr, hRes);
-    int sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, pBuffer, size, NULL, 0);
-    wchar_t buf[1024] = {};
-    MultiByteToWideChar(CP_UTF8, 0, pBuffer, size, buf, sizeNeeded);
+    String result(pBuffer, Encoding::utf8);
 
-    return String(buf);
+    return result;
 }

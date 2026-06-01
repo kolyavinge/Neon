@@ -25,6 +25,8 @@ class RenderModel3d : public Object {
     List<RenderMesh> _meshes;
 
 public:
+    RenderModel3d();
+    void prepareEnoughCapacityForMeshes(int meshesCount);
     RenderMesh& createNewMesh();
     Collection<RenderMesh>& getMeshes();
 };

@@ -1,16 +1,16 @@
 #include <render/lib/model3d/Model3d.h>
 
-Mesh::Mesh() {
+Mesh::Mesh() :
+    vertices(0),
+    normals(0),
+    texCoords(0),
+    faces(0) {
     id = 0;
     texture = &Texture::empty;
 }
 
-void Mesh::scale(float x, float y, float z) {
-    for (int i = 0; i < vertices.getCount(); i += 3) {
-        vertices[i] *= x;
-        vertices[i + 1] *= y;
-        vertices[i + 2] *= z;
-    }
+void Model3d::prepareEnoughCapacityForMeshes(int meshesCount) {
+    _meshes.prepareEnoughCapacity(meshesCount);
 }
 
 Mesh& Model3d::createNewMesh() {
@@ -27,4 +27,15 @@ Texture& Model3d::createNewTexture() {
 
 Collection<Texture>& Model3d::getTextures() {
     return _textures;
+}
+
+void Model3d::scale(float x, float y, float z) {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        Mesh& mesh = _meshes[i];
+        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
+            mesh.vertices[j] *= x;
+            mesh.vertices[j + 1] *= y;
+            mesh.vertices[j + 2] *= z;
+        }
+    }
 }
