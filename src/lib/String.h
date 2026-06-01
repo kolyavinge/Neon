@@ -2,6 +2,12 @@
 
 #include <lib/Object.h>
 
+// from WinNls.h
+enum class Encoding {
+    utf7 = 65000,
+    utf8 = 65001
+};
+
 class String : public Object {
 
     static const int _initCapacity = 16;
@@ -17,18 +23,18 @@ public:
     String();
     String(int capacity);
     String(const wchar_t* str);
-    String(const char* str);
+    String(const char* str, Encoding encoding = Encoding::utf8);
     String(const String& copy);
     ~String() override;
 
     bool equals(Object& x) override;
     int getHashCode() override;
     String& operator=(const String& copy);
-    int getLength();
+    int getLength() const;
     wchar_t& operator[](int index);
     String& append(const wchar_t* appended);
     String& append(const wchar_t appended);
-    String& append(String& appended);
+    String& append(const String& appended);
     int indexOf(const wchar_t ch);
     int lastIndexOf(const wchar_t ch);
     String substring(int startIndex, int count);

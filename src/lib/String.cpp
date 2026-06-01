@@ -28,15 +28,14 @@ String::String(const wchar_t* str) {
     Memory::copy<wchar_t>(str, _symb, _count);
 }
 
-String::String(const char* str) {
+String::String(const char* str, Encoding encoding) {
     _count = getLength(str);
     _capacity = 2 * _count;
     if (_capacity == 0) {
         _capacity = _initCapacity;
     }
     _symb = Memory::allocate<wchar_t>(_capacity);
-    size_t outSize;
-    mbstowcs_s(&outSize, _symb, (size_t)(_count + 1), str, (size_t)_count);
+    MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);
 }
 
 String::String(const String& copy) {
@@ -71,11 +70,16 @@ int String::getHashCode() {
 }
 
 String& String::operator=(const String& copy) {
-    set(copy);
+    clear();
+    if (copy._count > 0) {
+        prepareEnoughCapacity(copy._count);
+    }
+    append(copy);
+
     return *this;
 }
 
-int String::getLength() {
+int String::getLength() const {
     return _count;
 }
 
@@ -102,7 +106,7 @@ String& String::append(const wchar_t appended) {
     return *this;
 }
 
-String& String::append(String& appended) {
+String& String::append(const String& appended) {
     int newCount = _count + appended._count + 1; // +1 - zero terminated
     resizeIfNeeded(newCount);
     Memory::copy<wchar_t>(appended._symb, &_symb[_count], appended._count);
@@ -174,7 +178,9 @@ void String::invert() {
 
 void String::clear() {
     _count = 0;
-    Memory::zero<wchar_t>(_symb, _capacity);
+    if (_capacity > 0) {
+        Memory::zero<wchar_t>(_symb, _capacity);
+    }
 }
 
 void String::fillZero(int count) {

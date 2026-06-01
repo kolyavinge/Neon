@@ -20,7 +20,7 @@ public:
         return _items[index];
     }
 
-    int getCount() override {
+    int getCount() const override {
         return Count;
     }
 

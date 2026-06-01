@@ -9,7 +9,7 @@ class Collection : public Object {
 public:
     virtual T& operator[](int index) = 0;
 
-    virtual int getCount() = 0;
+    virtual int getCount() const = 0;
 
     T& first() {
         return (*this)[0];

@@ -17,10 +17,14 @@ public:
     List() : List(_initCapacity) {}
 
     List(int capacity) {
-        if (capacity <= 0) throw ArgumentException();
+        if (capacity < 0) throw ArgumentException();
         _count = 0;
         _capacity = capacity;
-        _items = Memory::allocate<T>(_capacity);
+        if (_capacity > 0) {
+            _items = new T[(size_t)_capacity];
+        } else {
+            _items = nullptr;
+        }
     }
 
     List(const List<T>& copy) {
@@ -29,7 +33,7 @@ public:
     }
 
     ~List() override {
-        Memory::release(_items);
+        delete[] _items;
     }
 
     List<T>& operator=(const List<T>& other) {
@@ -42,7 +46,7 @@ public:
         return _items[index];
     }
 
-    int getCount() override {
+    int getCount() const override {
         return _count;
     }
 
@@ -58,17 +62,17 @@ public:
         _count++;
     }
 
-    void addRange(List<T>& range) {
-        resizeIfNeeded(range.getCount());
-        Memory::copy<T>(range._items, _items + _count, range.getCount());
-        _count += range.getCount();
-    }
-
     T& addNew() {
         resizeIfNeeded(1);
         _count++;
 
         return _items[_count - 1];
+    }
+
+    void addRange(List<T>& range) {
+        resizeIfNeeded(range.getCount());
+        Memory::copy<T>(range._items, _items + _count, range.getCount());
+        _count += range.getCount();
     }
 
     void insert(int index, T value) {
@@ -121,7 +125,7 @@ public:
         if (enoughCapacity <= 0) throw ArgumentException(L"enoughCapacity must be greater than zero.");
         if (_capacity > enoughCapacity) return;
         _capacity = enoughCapacity;
-        Memory::resize<T>(_items, _count, _capacity);
+        resizeItems();
     }
 
     T* getItemsPointer() {
@@ -133,10 +137,12 @@ private:
         _count = copy._count;
         _capacity = copy._capacity;
         if (_items != nullptr) {
-            Memory::release(_items);
+            delete[] _items;
         }
-        _items = Memory::allocate<T>(_capacity);
-        Memory::copy<T>(copy._items, _items, _capacity);
+        if (_capacity > 0) {
+            _items = new T[(size_t)_capacity];
+            Memory::copy<T>(copy._items, _items, _count);
+        }
     }
 
     void resizeIfNeeded(int addedCount) {
@@ -146,12 +152,21 @@ private:
             resize = true;
         }
         if (resize) {
-            Memory::resize<T>(_items, _count, _capacity);
+            resizeItems();
         }
     }
 
     void checkBounds(int index, int count) {
         bool inBounds = 0 <= index && index < count;
         if (!inBounds) throw IndexOutOfBoundsException();
+    }
+
+    void resizeItems() {
+        T* newItems = new T[(size_t)_capacity];
+        if (_count > 0) {
+            Memory::copy<T>(_items, newItems, _count);
+            delete[] _items;
+        }
+        _items = newItems;
     }
 };
