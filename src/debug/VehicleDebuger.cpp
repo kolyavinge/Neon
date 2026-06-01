@@ -90,7 +90,7 @@ void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
-    float v = vehicle.getLinearVelocity().getLength() * (vehicle.getChassis().getFrontNormal().dotProduct(vehicle.getLinearVelocity()) > 0.0f ? 1.0f : -1.0f) / vehicle.getData().wheelRadius;
+    float v = vehicle.getLinearVelocity().getLength() * (vehicle.getChassis().getFrontNormal().dotProduct(vehicle.getLinearVelocity()) > 0.0f ? 1.0f : -1.0f) / vehicle.getDriveWheel(0).getRadius();
     printf("Angular V: %i|", (int)v);
 }
 

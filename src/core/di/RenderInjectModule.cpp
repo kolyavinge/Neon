@@ -10,6 +10,7 @@
 #include <render/lib/model3d/RenderModel3dLoader.h>
 #include <render/lib/vao/VAORenderer.h>
 #include <render/ui/DebugScreenRenderer.h>
+#include <render/vehicle/VehicleRenderer.h>
 
 void RenderInjectModule::init(Binder& binder) {
     binder.bindSingleton<RenderInitializer>(RenderInitializer::resolve);
@@ -23,4 +24,5 @@ void RenderInjectModule::init(Binder& binder) {
     binder.bindSingleton<RenderModel3dLoader>(RenderModel3dLoader::resolve);
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<DebugScreenRenderer>();
+    binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
 }

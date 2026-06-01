@@ -39,7 +39,8 @@ public:
     float engineBrakingForce;
 
     /* wheel */
-    float wheelRadius;
+    float frontWheelRadius;
+    float rearWheelRadius;
     float brakingForceCoeff;
     float maxSteeringAngle;
 

@@ -42,7 +42,7 @@ void Chassis::calculateRotateAngleAndAxis() {
         CommonConstants::rightVector, _rightNormal,
         CommonConstants::frontVector, _frontNormal);
     q.getAngleAndAxis(_rotateAngle, _rotateAxis);
-    _transformMatrix = q.getTransformMatrix4();
+    _modelMatrix = q.getTransformMatrix4();
 }
 
 float Chassis::getRotateAngle() {
@@ -53,6 +53,6 @@ Vector3& Chassis::getRotateAxis() {
     return _rotateAxis;
 }
 
-TransformMatrix4& Chassis::getTransformMatrix() {
-    return _transformMatrix;
+TransformMatrix4& Chassis::getModelMatrix() {
+    return _modelMatrix;
 }

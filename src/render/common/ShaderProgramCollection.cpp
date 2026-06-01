@@ -10,10 +10,10 @@ void ShaderProgramCollection::initAllPrograms() {
 
     shaders.add(&_shaderCollection.common);
     //shaders.add(&_shaderCollection.shader2);
-    shaderProgram1.init(shaders);
+    mainScene.init(shaders);
 
     shaders.clear();
-    shaders.add(&_shaderCollection.common);
+    //shaders.add(&_shaderCollection.common);
     //shaders.add(&_shaderCollection.shader2);
-    shaderProgram1.init(shaders);
+    //main.init(shaders);
 }

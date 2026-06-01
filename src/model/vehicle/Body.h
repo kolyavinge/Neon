@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/Angles.h>
@@ -24,4 +25,5 @@ public:
     Vector3& getAirDragForce();
     void calculateAirDragForce(Vector3& vehicleVelocity);
     void updateAngles();
+    TransformMatrix4 getModelMatrix(Vector3& chassisTopNormal, Vector3& chassisRightNormal);
 };

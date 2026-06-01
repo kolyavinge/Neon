@@ -102,7 +102,9 @@
     <ClCompile Include="src\render\lib\model3d\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\vao\VAORenderer.cpp" />
     <ClCompile Include="src\render\RenderInitializer.cpp" />
+    <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp" />
+    <ClCompile Include="src\render\vehicle\VehicleRenderer.cpp" />
     <ClCompile Include="src\ui\DebugScreen.cpp" />
     <ClCompile Include="src\ui\Screen.cpp" />
     <ClInclude Include="src\common\resource.h" />
@@ -154,8 +156,10 @@
     <ClInclude Include="src\render\lib\vao\VAORenderer.h" />
     <ClInclude Include="src\render\RenderInitializer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
+    <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
     <ClInclude Include="src\render\ui\DebugScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
+    <ClInclude Include="src\render\vehicle\VehicleRenderer.h" />
     <ClInclude Include="src\ui\DebugScreen.h" />
     <ClInclude Include="src\ui\IScreenSwitcher.h" />
     <ClInclude Include="src\ui\Screens.h" />

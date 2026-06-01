@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/vehicle/VehicleData.h>
@@ -43,6 +44,7 @@ public:
     Wheel();
     void init(WheelPosition position);
     WheelPosition getPosition();
+    float getRadius();
     float getRotateAngle();
     float getSteeringAngle();
     void setSteeringAngle(float steeringAngle);
@@ -74,4 +76,5 @@ public:
     Vector3& getLinearVelocity();
     void setLinearVelocity(Vector3& velocity);
     void calculateAngularVelocityByLinear();
+    TransformMatrix4 getModelMatrix(Vector3& chassisTopNormal);
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <lib/Hasher.h>
-#include <lib/Memory.h>
 #include <lib/Object.h>
 #include <lib/exceptions.h>
 
@@ -16,7 +15,7 @@ public:
     LookupTable(int capacity) {
         if (capacity <= 0) throw ArgumentException();
         _capacity = capacity;
-        _entries = Memory::allocate<TEntry>(_capacity);
+        _entries = new TEntry[(size_t)_capacity];
     }
 
     ~LookupTable() override {
@@ -91,7 +90,7 @@ private:
                 releaseLinkedEntries(_entries[i].next);
             }
         }
-        Memory::release(_entries);
+        delete[] _entries;
     }
 
     void releaseLinkedEntries(TEntry* entry) {

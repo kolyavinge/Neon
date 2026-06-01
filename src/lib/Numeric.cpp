@@ -22,7 +22,7 @@ float Numeric::clamp(float x, float left, float right) {
 }
 
 String Numeric::intToString(const int value) {
-    String result(8);
+    String result;
     intToString(value, result);
 
     return result;

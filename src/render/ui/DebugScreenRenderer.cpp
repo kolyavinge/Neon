@@ -99,7 +99,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
-        glDrawCircleYZ(vehicleData.wheelRadius, 16);
+        glDrawCircleYZ(wheel.getRadius(), 16);
         glPopMatrix();
         // angle line
         glPushMatrix();
@@ -109,7 +109,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(0.0f, vehicleData.wheelRadius, 0.0f);
+        glVertex3f(0.0f, wheel.getRadius(), 0.0f);
         glEnd();
         glPopMatrix();
         // front normal

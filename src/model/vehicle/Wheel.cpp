@@ -44,6 +44,14 @@ WheelPosition Wheel::getPosition() {
     return _position;
 }
 
+float Wheel::getRadius() {
+    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
+        return _data.frontWheelRadius;
+    } else {
+        return _data.rearWheelRadius;
+    }
+}
+
 float Wheel::getRotateAngle() {
     return _rotateAngle;
 }
@@ -139,7 +147,7 @@ void Wheel::updateRotateAngle(float dt) {
 }
 
 SlipRatio Wheel::getSlipRatio() {
-    float drivenVelocity = _angularVelocity * _data.wheelRadius;
+    float drivenVelocity = _angularVelocity * getRadius();
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
@@ -206,5 +214,17 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear() {
-    _angularVelocity = _linearVelocity.getLength() / _data.wheelRadius;
+    _angularVelocity = _linearVelocity.getLength() / getRadius();
+}
+
+TransformMatrix4 Wheel::getModelMatrix(Vector3& chassisTopNormal) {
+    TransformMatrix4 m1;
+    m1.translate(_center.x, _center.y, _center.z);
+
+    TransformMatrix4 m2;
+    m2.rotate(_steeringAngle, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
+
+    m2.mul(m1);
+
+    return m2;
 }

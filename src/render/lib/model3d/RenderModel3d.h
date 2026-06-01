@@ -7,17 +7,13 @@
 
 class RenderMesh : public Object {
 
-    VAO _vao;
-    Texture* _texture;
-    Material _material;
-
 public:
+    String name;
+    VAO vao;
+    Texture* texture;
+    Material material;
+
     RenderMesh();
-    VAO& getVAO();
-    Texture& getTexture();
-    void setTexture(Texture* texture);
-    Material& getMaterial();
-    void setMaterial(Material& material);
 };
 
 class RenderModel3d : public Object {

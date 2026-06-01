@@ -42,7 +42,8 @@ VehicleData::VehicleData() {
     engineBrakingForce = 0.5f;
 
     /* wheel */
-    wheelRadius = 0.3f;
+    frontWheelRadius = 0.3f;
+    rearWheelRadius = 0.4f;
     brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
 

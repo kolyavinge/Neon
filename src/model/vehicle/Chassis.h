@@ -11,7 +11,7 @@ class Chassis : public Object {
     Vector3 _topNormal;
     float _rotateAngle;
     Vector3 _rotateAxis;
-    TransformMatrix4 _transformMatrix;
+    TransformMatrix4 _modelMatrix;
 
 public:
     Chassis();
@@ -25,5 +25,5 @@ public:
     void calculateRotateAngleAndAxis();
     float getRotateAngle();
     Vector3& getRotateAxis();
-    TransformMatrix4& getTransformMatrix();
+    TransformMatrix4& getModelMatrix();
 };

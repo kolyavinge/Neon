@@ -10,8 +10,6 @@ enum class Encoding {
 
 class String : public Object {
 
-    static const int _initCapacity = 16;
-
     wchar_t* _symb;
     int _count;
     int _capacity;
@@ -21,7 +19,6 @@ public:
     static String empty;
 
     String();
-    String(int capacity);
     String(const wchar_t* str);
     String(const char* str, Encoding encoding = Encoding::utf8);
     String(const String& copy);

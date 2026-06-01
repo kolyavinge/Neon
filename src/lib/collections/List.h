@@ -162,11 +162,6 @@ private:
     }
 
     void resizeItems() {
-        T* newItems = new T[(size_t)_capacity];
-        if (_count > 0) {
-            Memory::copy<T>(_items, newItems, _count);
-            delete[] _items;
-        }
-        _items = newItems;
+        Memory::resize<T>(_items, _count, _capacity);
     }
 };
