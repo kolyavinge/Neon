@@ -1,5 +1,5 @@
 #include <render/lib/opengl.h>
-#include <render/lib/vao/VAORenderer.h>
+#include <render/lib/VAORenderer.h>
 
 void VAORenderer::render(VAO& vao) {
     glBindVertexArray(vao.getId());

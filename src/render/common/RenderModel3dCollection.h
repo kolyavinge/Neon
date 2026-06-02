@@ -3,9 +3,9 @@
 #include <common/AssetsDirectory.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <render/lib/model3d/Model3dLoader.h>
-#include <render/lib/model3d/RenderModel3d.h>
-#include <render/lib/model3d/RenderModel3dLoader.h>
+#include <render/lib/Model3dLoader.h>
+#include <render/lib/RenderModel3d.h>
+#include <render/lib/RenderModel3dLoader.h>
 
 class RenderModel3dCollection : public Object {
 

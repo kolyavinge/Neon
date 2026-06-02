@@ -1,5 +1,5 @@
 #include <render/common/RenderModel3dCollection.h>
-#include <render/lib/model3d/Model3d.h>
+#include <render/lib/Model3d.h>
 
 RenderModel3dCollection::RenderModel3dCollection(
     AssetsDirectory& assetsDirectory,

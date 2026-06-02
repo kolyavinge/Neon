@@ -1,4 +1,4 @@
-#include <render/lib/model3d/Model3dVAOBuilder.h>
+#include <render/lib/Model3dVAOBuilder.h>
 
 void Model3dVAOBuilder::build(Mesh& mesh, output VAO& vao) {
     GLuint vaoId;

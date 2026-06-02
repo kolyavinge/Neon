@@ -228,13 +228,13 @@
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\model3d\Model3d.cpp">
+    <ClCompile Include="src\render\lib\Model3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\lib\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\model3d\Model3dLoader.cpp">
+    <ClCompile Include="src\render\lib\Model3dLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\calc\Vector2.cpp">
@@ -243,19 +243,19 @@
     <ClCompile Include="src\render\lib\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\vao\VAO.cpp">
+    <ClCompile Include="src\render\lib\VAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\model3d\Model3dVAOBuilder.cpp">
+    <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\vao\VAORenderer.cpp">
+    <ClCompile Include="src\render\lib\VAORenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\model3d\RenderModel3dLoader.cpp">
+    <ClCompile Include="src\render\lib\RenderModel3dLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\lib\model3d\RenderModel3d.cpp">
+    <ClCompile Include="src\render\lib\RenderModel3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\RenderModel3dCollection.cpp">
@@ -563,13 +563,13 @@
     <ClInclude Include="src\model\vehicle\Gear.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\model3d\Model3d.h">
+    <ClInclude Include="src\render\lib\Model3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\lib\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\model3d\Model3dLoader.h">
+    <ClInclude Include="src\render\lib\Model3dLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\calc\Vector2.h">
@@ -578,19 +578,19 @@
     <ClInclude Include="src\render\lib\TextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\vao\VAO.h">
+    <ClInclude Include="src\render\lib\VAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\model3d\Model3dVAOBuilder.h">
+    <ClInclude Include="src\render\lib\Model3dVAOBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\vao\VAORenderer.h">
+    <ClInclude Include="src\render\lib\VAORenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\model3d\RenderModel3d.h">
+    <ClInclude Include="src\render\lib\RenderModel3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\lib\model3d\RenderModel3dLoader.h">
+    <ClInclude Include="src\render\lib\RenderModel3dLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\RenderModel3dCollection.h">

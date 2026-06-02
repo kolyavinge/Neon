@@ -1,4 +1,4 @@
-#include <render/lib/vao/VAO.h>
+#include <render/lib/VAO.h>
 
 VAO::VAO() {
     _id = 0;

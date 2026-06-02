@@ -1,4 +1,4 @@
-#include <render/lib/model3d/RenderModel3d.h>
+#include <render/lib/RenderModel3d.h>
 
 RenderMesh::RenderMesh() {
     texture = nullptr;

@@ -3,8 +3,8 @@
 #include <lib/FileSystem.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <render/lib/Model3d.h>
 #include <render/lib/TextureLoader.h>
-#include <render/lib/model3d/Model3d.h>
 
 struct aiScene; // чтобы не инклудить <assimp/scene.h>
 

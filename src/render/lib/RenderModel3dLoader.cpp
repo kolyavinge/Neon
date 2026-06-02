@@ -1,4 +1,4 @@
-#include <render/lib/model3d/RenderModel3dLoader.h>
+#include <render/lib/RenderModel3dLoader.h>
 
 RenderModel3dLoader::RenderModel3dLoader(
     Model3dVAOBuilder& model3dVAOBuilder) :

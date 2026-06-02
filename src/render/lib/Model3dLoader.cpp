@@ -6,7 +6,7 @@
 #pragma warning(pop)
 
 #include <render/lib/Texture.h>
-#include <render/lib/model3d/Model3dLoader.h>
+#include <render/lib/Model3dLoader.h>
 
 Model3dLoader::Model3dLoader(
     FileSystem& fileSystem,

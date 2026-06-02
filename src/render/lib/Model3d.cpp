@@ -1,4 +1,4 @@
-#include <render/lib/model3d/Model3d.h>
+#include <render/lib/Model3d.h>
 
 Mesh::Mesh() :
     vertices(0),

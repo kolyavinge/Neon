@@ -5,7 +5,7 @@
 #include <model/vehicle/Vehicle.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderProgramCollection.h>
-#include <render/lib/vao/VAORenderer.h>
+#include <render/lib/VAORenderer.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class VehicleRenderer : public Object {

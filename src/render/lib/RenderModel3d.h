@@ -3,7 +3,7 @@
 #include <lib/system.h>
 #include <render/lib/Material.h>
 #include <render/lib/Texture.h>
-#include <render/lib/vao/VAO.h>
+#include <render/lib/VAO.h>
 
 class RenderMesh : public Object {
 

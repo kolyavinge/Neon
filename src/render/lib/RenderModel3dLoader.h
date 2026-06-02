@@ -2,9 +2,9 @@
 
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <render/lib/model3d/Model3d.h>
-#include <render/lib/model3d/Model3dVAOBuilder.h>
-#include <render/lib/model3d/RenderModel3d.h>
+#include <render/lib/Model3d.h>
+#include <render/lib/Model3dVAOBuilder.h>
+#include <render/lib/RenderModel3d.h>
 
 class RenderModel3dLoader : public Object {
 

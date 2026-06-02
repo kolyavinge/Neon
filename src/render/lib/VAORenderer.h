@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lib/system.h>
-#include <render/lib/vao/VAO.h>
+#include <render/lib/VAO.h>
 
 class VAORenderer : public Object {
 

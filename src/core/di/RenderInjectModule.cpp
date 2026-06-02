@@ -3,12 +3,12 @@
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
+#include <render/lib/Model3dLoader.h>
+#include <render/lib/Model3dVAOBuilder.h>
+#include <render/lib/RenderModel3dLoader.h>
 #include <render/lib/ShaderCompiler.h>
 #include <render/lib/TextureLoader.h>
-#include <render/lib/model3d/Model3dLoader.h>
-#include <render/lib/model3d/Model3dVAOBuilder.h>
-#include <render/lib/model3d/RenderModel3dLoader.h>
-#include <render/lib/vao/VAORenderer.h>
+#include <render/lib/VAORenderer.h>
 #include <render/ui/DebugScreenRenderer.h>
 #include <render/vehicle/VehicleRenderer.h>
 
