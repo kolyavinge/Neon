@@ -1,8 +1,8 @@
 #include <common/AssetsDirectory.h>
-#include <common/DrivingInputManager.h>
-#include <common/InputManager.h>
+#include <core/DrivingInputManager.h>
 #include <core/Game.h>
 #include <core/GameInitializer.h>
+#include <core/InputManager.h>
 #include <core/MainInjectModule.h>
 #include <core/ScreenManager.h>
 #include <engine/CameraUpdater.h>
@@ -64,8 +64,8 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<DebugScreenRenderer>();
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
 
-    binder.bindSingleton<InputManager>();
     binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);
+    binder.bindSingleton<InputManager>();
 
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<DebugScreen>(DebugScreen::resolve);

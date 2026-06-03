@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/DrivingInputManager.h>
+#include <core/DrivingInputManager.h>
 #include <engine/CameraUpdater.h>
 #include <engine/GameState.h>
 #include <engine/vehicle/VehicleUpdater.h>

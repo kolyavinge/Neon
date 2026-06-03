@@ -1,4 +1,4 @@
-#include <common/InputManager.h>
+#include <core/InputManager.h>
 
 void InputManager::updateInputDevices() {
     keyboard.update();

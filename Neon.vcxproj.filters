@@ -114,7 +114,7 @@
     <ClCompile Include="src\lib\input\Keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\InputManager.cpp">
+    <ClCompile Include="src\core\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\MainInjectModule.cpp">
@@ -123,7 +123,7 @@
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\DrivingInputManager.cpp">
+    <ClCompile Include="src\core\DrivingInputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\DebugScreen.cpp">
@@ -422,7 +422,7 @@
     <ClInclude Include="src\lib\input\Keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\InputManager.h">
+    <ClInclude Include="src\core\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\MainInjectModule.h">
@@ -449,7 +449,7 @@
     <ClInclude Include="src\render\lib\opengl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\DrivingInputManager.h">
+    <ClInclude Include="src\core\DrivingInputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\DebugScreen.h">

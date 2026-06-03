@@ -1,7 +1,7 @@
 #pragma once
 
-#include <common/InputManager.h>
 #include <core/GameInitializer.h>
+#include <core/InputManager.h>
 #include <core/ScreenManager.h>
 #include <engine/GameState.h>
 #include <lib/di/Resolver.h>
