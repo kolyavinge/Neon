@@ -24,7 +24,7 @@ void DebugScreenRenderer::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(CommonConstants::verticalFieldOfViewDegrees, CommonConstants::screenAspect, CommonConstants::zNear, CommonConstants::zFar);
+    gluPerspective(CommonConstants::verticalFieldOfViewDegrees, CommonConstants::screenAspect, CommonConstants::minPerspectiveDepth, CommonConstants::maxPerspectiveDepth);
     Vector3 eyePosition = vehicle.getDriveAxle().getCenter();
     eyePosition.subMultiplied(vehicle.getChassis().getFrontNormal(), 5.0f);
     eyePosition.addMultiplied(vehicle.getChassis().getRightNormal(), 3.0f);
@@ -88,7 +88,6 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
 }
 
 void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
-    VehicleData& vehicleData = vehicle.getData();
     Chassis& chassis = vehicle.getChassis();
     for (int i = 0; i < vehicle.wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
@@ -225,7 +224,7 @@ void DebugScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
 }
 
 void DebugScreenRenderer::renderGrid() {
-    const float length = 10.0f * CommonConstants::zFar;
+    const float length = 10.0f * CommonConstants::maxPerspectiveDepth;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
     for (float step = -length; step < length; step += 10.0f) {

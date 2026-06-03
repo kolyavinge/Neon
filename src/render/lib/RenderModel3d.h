@@ -25,4 +25,5 @@ public:
     void prepareEnoughCapacityForMeshes(int meshesCount);
     RenderMesh& createNewMesh();
     Collection<RenderMesh>& getMeshes();
+    RenderMesh& getMeshByName(String meshName);
 };

@@ -38,3 +38,6 @@ public:
     IOException();
     IOException(const wchar_t* msg);
 };
+
+class NotImplementedException : public Exception {
+};

@@ -5,49 +5,50 @@
 
 VehicleRenderer::VehicleRenderer(
     ShaderProgramCollection& shaderProgramCollection,
-    RenderModel3dCollection& renderModel3dCollection,
     VAORenderer& vaoRenderer) :
-    _shaderProgramCollection(shaderProgramCollection),
-    _renderModel3dCollection(renderModel3dCollection),
+    _mainSceneShader(shaderProgramCollection.mainScene),
     _vaoRenderer(vaoRenderer) {
-
+    _vehicleBodyMesh = nullptr;
 }
 
-void VehicleRenderer::render(Vehicle& vehicle) {
-    MainSceneShaderProgram& shader = _shaderProgramCollection.mainScene;
-    shader.use();
-    shader.setViewMatrix();
-    shader.setProjectionMatrix();
-    renderChassis(vehicle, shader);
-    renderBody(vehicle, shader);
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        renderWheel(vehicle, wheel, shader);
-    }
-    shader.unuse();
+void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
+    RenderModel3d& vehicle = renderModel3dCollection.vehicle;
+    _vehicleBodyMesh = &vehicle.getMeshByName("body");
+    _wheelMeshes[(int)WheelPosition::frontLeft] = &vehicle.getMeshByName("frontLeftWheel");
+    _wheelMeshes[(int)WheelPosition::frontRight] = &vehicle.getMeshByName("frontRightWheel");
+    _wheelMeshes[(int)WheelPosition::rearLeft] = &vehicle.getMeshByName("rearLeftWheel");
+    _wheelMeshes[(int)WheelPosition::rearRight] = &vehicle.getMeshByName("rearRightWheel");
 }
 
-void VehicleRenderer::renderChassis(Vehicle& vehicle, MainSceneShaderProgram& shader) {
-    Chassis& chassis = vehicle.getChassis();
-    TransformMatrix4& modelMatrix = chassis.getModelMatrix();
-    shader.setModelMatrix(modelMatrix);
-    shader.setMaterial();
-    _vaoRenderer.render();
+void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
+    _mainSceneShader.use();
+    _mainSceneShader.setViewMatrix(camera.getViewMatrix());
+    _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
+    renderBody(vehicle);
+    renderWheel(vehicle, WheelPosition::frontLeft);
+    renderWheel(vehicle, WheelPosition::frontRight);
+    renderWheel(vehicle, WheelPosition::rearLeft);
+    renderWheel(vehicle, WheelPosition::rearRight);
+    _mainSceneShader.unuse();
 }
 
-void VehicleRenderer::renderBody(Vehicle& vehicle, MainSceneShaderProgram& shader) {
+void VehicleRenderer::renderBody(Vehicle& vehicle) {
     Chassis& chassis = vehicle.getChassis();
     Body& body = vehicle.getBody();
     TransformMatrix4 modelMatrix = body.getModelMatrix(chassis.getTopNormal(), chassis.getRightNormal());
-    shader.setModelMatrix(modelMatrix);
-    shader.setMaterial();
-    _vaoRenderer.render();
+    modelMatrix.mul(chassis.getModelMatrix());
+    _mainSceneShader.setModelMatrix(modelMatrix);
+    _mainSceneShader.setMaterial(_vehicleBodyMesh->material);
+    _vaoRenderer.render(_vehicleBodyMesh->vao);
 }
 
-void VehicleRenderer::renderWheel(Vehicle& vehicle, Wheel& wheel, MainSceneShaderProgram& shader) {
+void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
     Chassis& chassis = vehicle.getChassis();
+    Wheel& wheel = vehicle.getWheel(wheelPosition);
+    RenderMesh* wheelMesh = _wheelMeshes[(int)wheelPosition];
     TransformMatrix4 modelMatrix = wheel.getModelMatrix(chassis.getTopNormal());
-    shader.setModelMatrix(modelMatrix);
-    shader.setMaterial();
-    _vaoRenderer.render();
+    modelMatrix.mul(chassis.getModelMatrix());
+    _mainSceneShader.setModelMatrix(modelMatrix);
+    _mainSceneShader.setMaterial(wheelMesh->material);
+    _vaoRenderer.render(wheelMesh->vao);
 }

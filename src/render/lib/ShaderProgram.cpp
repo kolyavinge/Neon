@@ -47,34 +47,34 @@ void ShaderProgram::unuse() {
 
 void ShaderProgram::initBeforeLink() {}
 
-void ShaderProgram::setInt32(GLchar* name, GLint value) {
+void ShaderProgram::setInt32(const char* name, GLint value) {
     glUniform1i(glGetUniformLocation(_id, name), value);
 }
 
-void ShaderProgram::setFloat32(GLchar* name, GLfloat value) {
+void ShaderProgram::setFloat32(const char* name, GLfloat value) {
     glUniform1f(glGetUniformLocation(_id, name), value);
 }
 
-void ShaderProgram::setBoolean(GLchar* name, bool value) {
+void ShaderProgram::setBoolean(const char* name, bool value) {
     setInt32(name, value ? 1 : 0);
 }
 
-void ShaderProgram::setVector2(GLchar* name, GLfloat x, GLfloat y) {
+void ShaderProgram::setVector2(const char* name, GLfloat x, GLfloat y) {
     glUniform2f(glGetUniformLocation(_id, name), x, y);
 }
 
-void ShaderProgram::setVector3(GLchar* name, Vector3& v) {
+void ShaderProgram::setVector3(const char* name, Vector3& v) {
     glUniform3f(glGetUniformLocation(_id, name), v.x, v.y, v.z);
 }
 
-void ShaderProgram::setMatrix3(GLchar* name, GLfloat* m) {
+void ShaderProgram::setMatrix3(const char* name, GLfloat* m) {
     glUniformMatrix3fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m);
 }
 
-void ShaderProgram::setTransformMatrix4(GLchar* name, TransformMatrix4& m) {
+void ShaderProgram::setTransformMatrix4(const char* name, TransformMatrix4& m) {
     glUniformMatrix4fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m.getItems());
 }
 
-void ShaderProgram::setOutputNamesForTransformFeedback(GLint count, GLchar** outputNames) {
+void ShaderProgram::setOutputNamesForTransformFeedback(GLint count, const char** outputNames) {
     glTransformFeedbackVaryings(_id, count, outputNames, GL_SEPARATE_ATTRIBS);
 }

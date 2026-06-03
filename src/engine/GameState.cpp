@@ -11,6 +11,10 @@ void GameState::init() {
     }
 }
 
+Camera& GameState::getCamera() {
+    return _camera;
+}
+
 VehiclesArray& GameState::getVehicles() {
     return _vehicles;
 }

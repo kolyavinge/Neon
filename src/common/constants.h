@@ -19,8 +19,8 @@ public:
     inline static Vector3 upVector = Vector3(0.0f, 0.0f, 1.0f);
     inline static const float verticalFieldOfViewDegrees = 45.0f;
     inline static const float verticalFieldOfView = UnitConverter::degreesToRadians(verticalFieldOfViewDegrees);
-    inline static const float zNear = 0.01f;
-    inline static const float zFar = 1000.0f;
+    inline static const float minPerspectiveDepth = 0.01f;
+    inline static const float maxPerspectiveDepth = 1000.0f;
 };
 
 class GameConstants {

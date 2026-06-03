@@ -19,3 +19,14 @@ RenderMesh& RenderModel3d::createNewMesh() {
 Collection<RenderMesh>& RenderModel3d::getMeshes() {
     return _meshes;
 }
+
+RenderMesh& RenderModel3d::getMeshByName(String meshName) {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        RenderMesh& mesh = _meshes[i];
+        if (mesh.name == meshName) {
+            return mesh;
+        }
+    }
+
+    throw ArgumentException(L"Mesh was not found.");
+}

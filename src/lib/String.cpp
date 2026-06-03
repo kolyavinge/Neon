@@ -12,23 +12,25 @@ String String::empty = String();
 String::String() : String(L"") {}
 
 String::String(const wchar_t* str) {
+    _symb = nullptr;
+    _capacity = 0;
     _count = getLength(str);
-    _capacity = _count;
-    if (_capacity > 0) {
-        _symb = new wchar_t[(size_t)_capacity];
-        Memory::zero<wchar_t>(_symb, _capacity);
-        Memory::copy<wchar_t>(str, _symb, _count);
-    }
+    if (_count == 0) return;
+    _capacity = _count + 1; // +1 - zero terminated
+    _symb = new wchar_t[(size_t)_capacity];
+    Memory::zero<wchar_t>(_symb, _capacity);
+    Memory::copy<wchar_t>(str, _symb, _count);
 }
 
 String::String(const char* str, Encoding encoding) {
+    _symb = nullptr;
+    _capacity = 0;
     _count = getLength(str);
-    _capacity = _count;
-    if (_capacity > 0) {
-        _symb = new wchar_t[(size_t)_capacity];
-        Memory::zero<wchar_t>(_symb, _capacity);
-        MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);
-    }
+    if (_count == 0) return;
+    _capacity = _count + 1; // +1 - zero terminated
+    _symb = new wchar_t[(size_t)_capacity];
+    Memory::zero<wchar_t>(_symb, _capacity);
+    MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);
 }
 
 String::String(const String& copy) {
@@ -37,7 +39,9 @@ String::String(const String& copy) {
 }
 
 String::~String() {
-    delete[] _symb;
+    if (_symb != nullptr) {
+        delete[] _symb;
+    }
 }
 
 bool String::equals(Object& x) {
@@ -127,8 +131,8 @@ int String::lastIndexOf(const wchar_t ch) {
 String String::substring(int startIndex, int count) {
     if (startIndex + count > _count) throw ArgumentException(L"startIndex and count must be inside string bounds.");
     String result;
-    result._count = count + 1; // +1 - zero terminated
-    result._capacity = result._count;
+    result._count = count;
+    result._capacity = result._count + 1; // +1 - zero terminated
     result._symb = new wchar_t[(size_t)result._capacity];
     Memory::zero<wchar_t>(result._symb, result._capacity);
     Memory::copy<wchar_t>(&_symb[startIndex], result._symb, count);
