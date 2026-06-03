@@ -1,17 +1,18 @@
 #include <common/constants.h>
 #include <conio.h>
-#include <core/di/MainDependencyContainer.h>
+#include <core/MainInjectModule.h>
 #include <debug/stat.h>
 #include <engine/vehicle/VehicleUpdater.h>
 #include <iomanip>
 #include <iostream>
 #include <lib/calc/UnitConverter.h>
+#include <lib/di/DependencyContainer.h>
 #include <lib/system.h>
+#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
-#include <model/vehicle/DrivingInputData.h>
 
 void showStat(int timeSec, Vehicle& vehicle) {
     Engine& engine = vehicle.getEngine();
@@ -32,7 +33,8 @@ void showStat(int timeSec, Vehicle& vehicle) {
 }
 
 void showDebugInfo() {
-    MainDependencyContainer container;
+    DependencyContainer container;
+    container.initFrom<MainInjectModule>();
     VehicleUpdater& vehicleUpdater = container.resolve<VehicleUpdater>();
     VehiclesArray vehicles;
     Vehicle& vehicle = vehicles[0];

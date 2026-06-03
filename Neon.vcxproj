@@ -20,11 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\common\AssetsDirectory.cpp" />
-    <ClCompile Include="src\core\di\CommonInjectModule.cpp" />
-    <ClCompile Include="src\core\di\GameInjectModule.cpp" />
-    <ClCompile Include="src\core\di\EngineInjectModule.cpp" />
-    <ClCompile Include="src\core\di\MainDependencyContainer.cpp" />
-    <ClCompile Include="src\core\di\RenderInjectModule.cpp" />
+    <ClCompile Include="src\core\MainInjectModule.cpp" />
     <ClCompile Include="src\common\DrivingInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\common\InputManager.cpp" />
@@ -110,8 +106,6 @@
     <ClInclude Include="src\common\resource.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\common\AssetsDirectory.h" />
-    <ClInclude Include="src\core\di\CommonInjectModule.h" />
-    <ClInclude Include="src\core\di\RenderInjectModule.h" />
     <ClInclude Include="src\common\DrivingInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\GameFactory.h" />
@@ -166,9 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\constants.h" />
-    <ClInclude Include="src\core\di\GameInjectModule.h" />
-    <ClInclude Include="src\core\di\EngineInjectModule.h" />
-    <ClInclude Include="src\core\di\MainDependencyContainer.h" />
+    <ClInclude Include="src\core\MainInjectModule.h" />
     <ClInclude Include="src\common\InputManager.h" />
     <ClInclude Include="src\engine\vehicle\ForceLogic.h" />
     <ClInclude Include="src\engine\vehicle\PositionLogic.h" />

@@ -81,12 +81,6 @@
     <ClCompile Include="src\engine\vehicle\ForceLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\di\EngineInjectModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\di\MainDependencyContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\vehicle\PositionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,7 +117,7 @@
     <ClCompile Include="src\common\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\di\GameInjectModule.cpp">
+    <ClCompile Include="src\core\MainInjectModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp">
@@ -148,9 +142,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\di\RenderInjectModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\stat.cpp">
@@ -205,9 +196,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\FileSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\di\CommonInjectModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\lib\Shader.cpp">
@@ -398,12 +386,6 @@
     <ClInclude Include="src\engine\vehicle\ForceLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\di\EngineInjectModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\di\MainDependencyContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\vehicle\PositionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -440,7 +422,7 @@
     <ClInclude Include="src\common\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\di\GameInjectModule.h">
+    <ClInclude Include="src\core\MainInjectModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\ScreenManager.h">
@@ -483,9 +465,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\ui\DebugScreenRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\di\RenderInjectModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\stat.h">
@@ -537,9 +516,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\FileSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\di\CommonInjectModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\lib\Shader.h">
