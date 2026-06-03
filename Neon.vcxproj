@@ -24,7 +24,6 @@
     <ClCompile Include="src\common\DrivingInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\common\InputManager.cpp" />
-    <ClCompile Include="src\core\GameFactory.cpp" />
     <ClCompile Include="src\core\GameInitializer.cpp" />
     <ClCompile Include="src\core\ScreenManager.cpp" />
     <ClCompile Include="src\debug\stat.cpp" />
@@ -110,7 +109,6 @@
     <ClInclude Include="src\common\AssetsDirectory.h" />
     <ClInclude Include="src\common\DrivingInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
-    <ClInclude Include="src\core\GameFactory.h" />
     <ClInclude Include="src\core\GameInitializer.h" />
     <ClInclude Include="src\debug\stat.h" />
     <ClInclude Include="src\debug\VehicleDebuger.h" />

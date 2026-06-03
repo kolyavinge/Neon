@@ -1,4 +1,6 @@
 #include <core/Game.h>
+#include <core/MainInjectModule.h>
+#include <lib/di/DependencyContainer.h>
 
 Game::Game(
     InputManager& inputManager,
@@ -21,4 +23,14 @@ void Game::update() {
 
 void Game::render() {
     _screenManager.getCurrentScreenRenderer().render();
+}
+
+Game& GameFactory::make() {
+    DependencyContainer container;
+    container.initFrom<MainInjectModule>();
+
+    Game& game = container.resolve<Game>();
+    game.init();
+
+    return game;
 }

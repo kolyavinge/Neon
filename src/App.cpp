@@ -1,7 +1,6 @@
 #include <App.h>
 #include <common/constants.h>
 #include <core/Game.h>
-#include <core/GameFactory.h>
 #include <debug/stat.h>
 
 void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept {

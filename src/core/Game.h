@@ -31,3 +31,9 @@ public:
     void update();
     void render();
 };
+
+class GameFactory : public Object {
+
+public:
+    static Game& make();
+};
