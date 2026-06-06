@@ -67,12 +67,14 @@ void FileSystem::getFilesInDirectoryByFilter(String& directoryPath, String& filt
     directoryPathAndFilter.append(filter);
     WIN32_FIND_DATAW findData;
     HANDLE find = FindFirstFile(directoryPathAndFilter.getWCharPointer(), &findData);
+    String fileName;
     if (find == INVALID_HANDLE_VALUE) return;
     do {
         if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
             wcscmp(findData.cFileName, L".") != 0 &&
             wcscmp(findData.cFileName, L"..") != 0) {
-            files.add(String(findData.cFileName));
+            fileName = findData.cFileName;
+            files.add(fileName);
         }
     } while (FindNextFile(find, &findData) != 0);
     FindClose(find);

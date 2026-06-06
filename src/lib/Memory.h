@@ -23,6 +23,7 @@ public:
     template<class T>
     static void resize(T*& source, int currentItemsCount, int newItemsCount) {
         T* newSource = new T[(size_t)newItemsCount];
+        // _items нельзя инициализировать нулями, ибо в случае с обьектами мы перезапишем vptr
         if (currentItemsCount > 0) {
             copy<T>(source, newSource, currentItemsCount);
             delete[] source;

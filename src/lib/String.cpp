@@ -7,6 +7,8 @@
 #include <lib/Memory.h>
 #include <lib/String.h>
 
+#define ZERO_SYMB 1
+
 String String::empty = String();
 
 String::String() : String(L"") {}
@@ -16,7 +18,7 @@ String::String(const wchar_t* str) {
     _capacity = 0;
     _count = getLength(str);
     if (_count == 0) return;
-    _capacity = _count + 1; // +1 - zero terminated
+    _capacity = _count + ZERO_SYMB;
     _symb = new wchar_t[(size_t)_capacity];
     Memory::zero<wchar_t>(_symb, _capacity);
     Memory::copy<wchar_t>(str, _symb, _count);
@@ -27,7 +29,7 @@ String::String(const char* str, Encoding encoding) {
     _capacity = 0;
     _count = getLength(str);
     if (_count == 0) return;
-    _capacity = _count + 1; // +1 - zero terminated
+    _capacity = _count + ZERO_SYMB;
     _symb = new wchar_t[(size_t)_capacity];
     Memory::zero<wchar_t>(_symb, _capacity);
     MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);
@@ -86,7 +88,7 @@ wchar_t& String::operator[](int index) {
 
 String& String::append(const wchar_t* appended) {
     int appendedCount = getLength(appended);
-    int newCount = _count + appendedCount + 1; // +1 - zero terminated
+    int newCount = _count + appendedCount + ZERO_SYMB;
     resizeIfNeeded(newCount);
     Memory::copy<wchar_t>(appended, &_symb[_count], appendedCount);
     _count += appendedCount;
@@ -95,7 +97,7 @@ String& String::append(const wchar_t* appended) {
 }
 
 String& String::append(const wchar_t appended) {
-    int newCount = _count + 1 + 1; // +1 - zero terminated
+    int newCount = _count + 1 + ZERO_SYMB;
     resizeIfNeeded(newCount);
     _symb[_count] = appended;
     _count++;
@@ -104,7 +106,7 @@ String& String::append(const wchar_t appended) {
 }
 
 String& String::append(const String& appended) {
-    int newCount = _count + appended._count + 1; // +1 - zero terminated
+    int newCount = _count + appended._count + ZERO_SYMB;
     resizeIfNeeded(newCount);
     Memory::copy<wchar_t>(appended._symb, &_symb[_count], appended._count);
     _count += appended._count;
@@ -132,7 +134,7 @@ String String::substring(int startIndex, int count) {
     if (startIndex + count > _count) throw ArgumentException(L"startIndex and count must be inside string bounds.");
     String result;
     result._count = count;
-    result._capacity = result._count + 1; // +1 - zero terminated
+    result._capacity = result._count + ZERO_SYMB;
     result._symb = new wchar_t[(size_t)result._capacity];
     Memory::zero<wchar_t>(result._symb, result._capacity);
     Memory::copy<wchar_t>(&_symb[startIndex], result._symb, count);

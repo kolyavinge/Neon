@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <lib/Memory.h>
 #include <lib/collections/Collection.h>
 #include <lib/exceptions.h>
@@ -22,6 +23,7 @@ public:
         _capacity = capacity;
         if (_capacity > 0) {
             _items = new T[(size_t)_capacity];
+            // _items нельзя инициализировать нулями, ибо в случае с обьектами мы перезапишем vptr
         } else {
             _items = nullptr;
         }
@@ -56,10 +58,14 @@ public:
         }
     }
 
-    void add(T value) {
-        resizeIfNeeded(1);
-        _items[_count] = value;
-        _count++;
+    // для простых типов - передача по значению
+    void add(T value) requires std::is_scalar_v<T> {
+        addInternal(value);
+    }
+
+    // для обьектов - передача по ссылке
+    void add(T& value) requires !std::is_scalar_v<T> {
+        addInternal(value);
     }
 
     T& addNew() {
@@ -73,6 +79,12 @@ public:
         resizeIfNeeded(range.getCount());
         Memory::copy<T>(range._items, _items + _count, range.getCount());
         _count += range.getCount();
+    }
+
+    void addRange(T* range, int count) {
+        resizeIfNeeded(count);
+        Memory::copy<T>(range, _items + _count, count);
+        _count += count;
     }
 
     void insert(int index, T value) {
@@ -133,6 +145,12 @@ public:
     }
 
 private:
+    void addInternal(T& value) {
+        resizeIfNeeded(1);
+        _items[_count] = value;
+        _count++;
+    }
+
     void set(const List<T>& copy) {
         _count = copy._count;
         _capacity = copy._capacity;
@@ -141,7 +159,7 @@ private:
         }
         if (_capacity > 0) {
             _items = new T[(size_t)_capacity];
-            Memory::copy<T>(copy._items, _items, _count);
+            Memory::copy<T>(copy._items, _items, _capacity);
         }
     }
 

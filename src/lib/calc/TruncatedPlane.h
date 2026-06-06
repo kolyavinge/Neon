@@ -4,7 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
-// математическая плоскость ограниченная другими плоскостями
+// математическая плоскость ограниченная секущими плоскостями
 class TruncatedPlane : public Plane {
 
     // секущие плоскости
