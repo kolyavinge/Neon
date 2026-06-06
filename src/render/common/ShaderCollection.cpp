@@ -9,6 +9,12 @@ ShaderCollection::ShaderCollection(
 }
 
 void ShaderCollection::loadAllShaders() {
-    String source = _resourceManager.getTextFileContent(IDR_SHADER_COMMON);
-    _shaderCompiler.compile(source, ShaderType::vertex, output common);
+    loadShader(IDR_SHADER_COMMON, ShaderType::vertex, output common);
+    loadShader(IDR_SHADER_MESH_VERT, ShaderType::vertex, output meshVertex);
+    loadShader(IDR_SHADER_MESH_FRAG, ShaderType::fragment, output meshFragment);
+}
+
+void ShaderCollection::loadShader(int shaderResourceId, ShaderType shaderType, output Shader& shader) {
+    String source = _resourceManager.getTextFileContent(shaderResourceId);
+    _shaderCompiler.compile(source, shaderType, output shader);
 }

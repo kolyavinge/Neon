@@ -100,6 +100,7 @@
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
     <ClCompile Include="src\render\RenderInitializer.cpp" />
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
+    <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp" />
     <ClCompile Include="src\render\vehicle\VehicleRenderer.cpp" />
     <ClCompile Include="src\ui\DebugScreen.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\render\RenderInitializer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
+    <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h" />
     <ClInclude Include="src\render\ui\DebugScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
     <ClInclude Include="src\render\vehicle\VehicleRenderer.h" />
@@ -221,6 +223,8 @@
     <None Include="src\render\shaders\common.glsl">
       <FileType>Document</FileType>
     </None>
+    <None Include="src\render\shaders\mesh.frag" />
+    <None Include="src\render\shaders\mesh.vert" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\common\Resource.rc" />

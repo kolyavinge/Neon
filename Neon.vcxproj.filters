@@ -270,6 +270,9 @@
     <ClCompile Include="src\engine\CameraUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -602,6 +605,9 @@
     <ClInclude Include="src\engine\CameraUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\common\Resource.rc">
@@ -610,5 +616,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\render\shaders\common.glsl" />
+    <None Include="src\render\shaders\mesh.frag" />
+    <None Include="src\render\shaders\mesh.vert" />
   </ItemGroup>
 </Project>

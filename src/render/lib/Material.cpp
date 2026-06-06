@@ -1,5 +1,7 @@
 #include <render/lib/Material.h>
 
+Material Material::standard = Material(0.2f, 0.8f, 0.5f, 32.0f);
+
 Material::Material() {
     _ambient = 0.0f;
     _diffuse = 0.0f;

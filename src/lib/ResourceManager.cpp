@@ -8,7 +8,11 @@ String ResourceManager::getTextFileContent(int resourceFileId) {
     HGLOBAL hData = LoadResource(nullptr, hRes);
     if (!hData) throw ResourceException();
     char* pBuffer = (char*)LockResource(hData);
-    String result(pBuffer, Encoding::utf8);
+    int sizeInBytes = (int)SizeofResource(NULL, hRes);
+    _charBuf.clear();
+    _charBuf.addRange(pBuffer, sizeInBytes);
+    _charBuf.add('\0');
+    String result(_charBuf.getItemsPointer(), Encoding::utf8);
 
     return result;
 }

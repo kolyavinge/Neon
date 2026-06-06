@@ -4,6 +4,7 @@
 #include <lib/system.h>
 #include <render/common/ShaderCollection.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
+#include <render/shaderprograms/MeshShaderProgram.h>
 
 class ShaderProgramCollection : public Object {
 
@@ -11,6 +12,7 @@ class ShaderProgramCollection : public Object {
 
 public:
     MainSceneShaderProgram mainScene;
+    MeshShaderProgram mesh;
 
     static ShaderProgramCollection* resolve(Resolver& resolver) {
         return new ShaderProgramCollection(
@@ -21,4 +23,7 @@ public:
         ShaderCollection& shaderCollection);
 
     void initAllPrograms();
+
+private:
+    void initProgram(ShaderProgram& program, int shadersCount, Shader* shaders ...);
 };

@@ -13,6 +13,8 @@ class ShaderCollection : public Object {
 
 public:
     Shader common;
+    Shader meshVertex;
+    Shader meshFragment;
 
     static ShaderCollection* resolve(Resolver& resolver) {
         return new ShaderCollection(
@@ -25,4 +27,7 @@ public:
         ShaderCompiler& shaderCompiler);
 
     void loadAllShaders();
+
+private:
+    void loadShader(int shaderResourceId, ShaderType shaderType, output Shader& shader);
 };
