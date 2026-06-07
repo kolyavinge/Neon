@@ -24,7 +24,7 @@ public:
     ~VAO();
     void init(GLuint id, GLenum format, GLsizei elementsCount);
     GLuint getId();
-    void addVboId(BufferIndices bufferIndex, GLuint vboId);
+    void setVboIds(Array<GLuint, (int)BufferIndices::_count>& vboIds);
     GLenum getFormat();
     GLsizei getElementsCount();
 };

@@ -6,8 +6,9 @@ void Model3dVAOBuilder::build(Mesh& mesh, output VAO& vao) {
     vao.init(vaoId, GL_TRIANGLES, mesh.faces.getCount());
     glBindVertexArray(vao.getId());
 
-    GLuint vboIds[(int)BufferIndices::_count];
-    glGenBuffers((int)BufferIndices::_count, vboIds);
+    Array<GLuint, (int)BufferIndices::_count> vboIds;
+    glGenBuffers((int)BufferIndices::_count, vboIds.getItemsPointer());
+    vao.setVboIds(vboIds);
 
     GLuint bufferIndex = (GLuint)BufferIndices::vertices;
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[bufferIndex]);

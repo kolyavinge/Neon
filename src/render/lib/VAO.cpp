@@ -23,8 +23,8 @@ GLuint VAO::getId() {
     return _id;
 }
 
-void VAO::addVboId(BufferIndices bufferIndex, GLuint vboId) {
-    _vboIds[(int)bufferIndex] = vboId;
+void VAO::setVboIds(Array<GLuint, (int)BufferIndices::_count>& vboIds) {
+    _vboIds = vboIds;
 }
 
 GLenum VAO::getFormat() {
