@@ -1,19 +1,19 @@
-#include <ui/DebugScreen.h>
+#include <ui/RaceScreen.h>
 
-DebugScreen::DebugScreen(
+RaceScreen::RaceScreen(
     GameUpdater& gameUpdater) :
     _gameUpdater(gameUpdater) {
     _gameState = nullptr;
 }
 
-GameState& DebugScreen::getGameState() {
+GameState& RaceScreen::getGameState() {
     return *_gameState;
 }
 
-void DebugScreen::setGameState(GameState& gameState) {
+void RaceScreen::setGameState(GameState& gameState) {
     _gameState = &gameState;
 }
 
-void DebugScreen::update() {
+void RaceScreen::update() {
     _gameUpdater.update(*_gameState);
 }

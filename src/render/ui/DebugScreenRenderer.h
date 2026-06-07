@@ -2,16 +2,16 @@
 
 #include <model/vehicle/Vehicle.h>
 #include <render/ui/ScreenRenderer.h>
-#include <ui/DebugScreen.h>
+#include <ui/RaceScreen.h>
 
 class DebugScreenRenderer : public ScreenRenderer {
 
     inline static const float _forceDivider = 500.0f;
-    DebugScreen* _screen;
+    RaceScreen* _screen;
 
 public:
     DebugScreenRenderer();
-    void setScreen(DebugScreen& screen);
+    void setScreen(RaceScreen& screen);
     void render();
 
 private:

@@ -5,7 +5,6 @@
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
 #include <model/vehicle/Spring.h>
-#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 #include <render/lib/opengl.h>
 #include <render/ui/DebugScreenRenderer.h>
@@ -14,7 +13,7 @@ DebugScreenRenderer::DebugScreenRenderer() {
     _screen = nullptr;
 }
 
-void DebugScreenRenderer::setScreen(DebugScreen& screen) {
+void DebugScreenRenderer::setScreen(RaceScreen& screen) {
     _screen = &screen;
 }
 

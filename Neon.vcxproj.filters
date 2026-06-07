@@ -126,7 +126,7 @@
     <ClCompile Include="src\core\DrivingInputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\DebugScreen.cpp">
+    <ClCompile Include="src\ui\RaceScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Game.cpp">
@@ -455,7 +455,7 @@
     <ClInclude Include="src\core\DrivingInputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\DebugScreen.h">
+    <ClInclude Include="src\ui\RaceScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Game.h">

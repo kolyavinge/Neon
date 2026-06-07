@@ -5,18 +5,18 @@
 #include <ui/Screen.h>
 #include <engine/GameState.h>
 
-class DebugScreen : public Screen {
+class RaceScreen : public Screen {
 
     GameUpdater& _gameUpdater;
     GameState* _gameState;
 
 public:
-    static DebugScreen* resolve(Resolver& resolver) {
-        return new DebugScreen(
+    static RaceScreen* resolve(Resolver& resolver) {
+        return new RaceScreen(
             resolver.resolve<GameUpdater>());
     }
 
-    DebugScreen(
+    RaceScreen(
         GameUpdater& gameUpdater);
 
     GameState& getGameState();

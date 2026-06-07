@@ -31,7 +31,7 @@
 #include <render/lib/VAORenderer.h>
 #include <render/ui/DebugScreenRenderer.h>
 #include <render/vehicle/VehicleRenderer.h>
-#include <ui/DebugScreen.h>
+#include <ui/RaceScreen.h>
 
 void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<AssetsDirectory>(AssetsDirectory::resolve);
@@ -68,7 +68,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<InputManager>();
 
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
-    binder.bindSingleton<DebugScreen>(DebugScreen::resolve);
+    binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
 
     binder.bindSingleton<GameInitializer>(GameInitializer::resolve);
     binder.bindSingleton<Game>(Game::resolve);

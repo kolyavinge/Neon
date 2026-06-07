@@ -2,7 +2,7 @@
 
 GameInitializer::GameInitializer(
     GameUpdater& gameUpdater,
-    DebugScreen& debugScreen,
+    RaceScreen& debugScreen,
     RenderInitializer& renderInitializer) :
     _gameUpdater(gameUpdater),
     _debugScreen(debugScreen),

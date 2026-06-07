@@ -1,15 +1,13 @@
 #include <core/ScreenManager.h>
 
 ScreenManager::ScreenManager(
-    DebugScreen& debugScreen,
+    RaceScreen& debugScreen,
     DebugScreenRenderer& debugScreenRenderer) {
-    _screens[(int)Screens::debug] = &debugScreen;
+    _screens[(int)Screens::race] = &debugScreen;
     debugScreen.setScreenSwitcher(*this);
-
-    _screenRenderers[(int)Screens::debug] = &debugScreenRenderer;
+    _screenRenderers[(int)Screens::race] = &debugScreenRenderer;
     debugScreenRenderer.setScreen(debugScreen);
-
-    _currentScreen = Screens::debug;
+    _currentScreen = Screens::race;
 }
 
 Screen& ScreenManager::getCurrentScreen() {
