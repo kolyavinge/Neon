@@ -1,25 +1,26 @@
 #pragma once
 
-#include <model/vehicle/Vehicle.h>
+#include <debug/DebugRenderer.h>
+#include <lib/di/Resolver.h>
 #include <render/ui/ScreenRenderer.h>
 #include <ui/RaceScreen.h>
 
 class RaceScreenRenderer : public ScreenRenderer {
 
-    inline static const float _forceDivider = 500.0f;
     RaceScreen* _screen;
+    DebugRenderer& _debugRenderer;
 
 public:
-    RaceScreenRenderer();
+    static RaceScreenRenderer* resolve(Resolver& resolver) {
+        return new RaceScreenRenderer(
+            resolver.resolve<DebugRenderer>());
+    }
+
+    RaceScreenRenderer(
+        DebugRenderer& debugRenderer);
+
     void setScreen(RaceScreen& screen);
     void render();
 
 private:
-    void renderVehicle(Vehicle& vehicle);
-    void renderVehicleAxles(Vehicle& vehicle);
-    void renderVehicleWheels(Vehicle& vehicle);
-    void renderVehicleBody(Vehicle& vehicle);
-    void renderVehicleAxis(Vehicle& vehicle);
-    void renderGrid();
-    void renderGlobalAxis();
 };

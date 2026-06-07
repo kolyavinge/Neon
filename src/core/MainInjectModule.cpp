@@ -5,6 +5,7 @@
 #include <core/InputManager.h>
 #include <core/MainInjectModule.h>
 #include <core/ScreenManager.h>
+#include <debug/DebugRenderer.h>
 #include <engine/CameraUpdater.h>
 #include <engine/GameUpdater.h>
 #include <engine/vehicle/EngineLogic.h>
@@ -61,8 +62,10 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Model3dVAOBuilder>();
     binder.bindSingleton<RenderModel3dLoader>(RenderModel3dLoader::resolve);
     binder.bindSingleton<VAORenderer>();
-    binder.bindSingleton<RaceScreenRenderer>();
+    binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
+
+    binder.bindSingleton<DebugRenderer>();
 
     binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);
     binder.bindSingleton<InputManager>();
