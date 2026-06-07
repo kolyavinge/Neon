@@ -25,5 +25,5 @@ public:
     void initAllPrograms();
 
 private:
-    void initProgram(ShaderProgram& program, int shadersCount, Shader* shaders ...);
+    void initProgram(output ShaderProgram& program, int shadersCount, Shader* shaders ...);
 };

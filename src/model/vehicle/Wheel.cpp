@@ -217,14 +217,19 @@ void Wheel::calculateAngularVelocityByLinear() {
     _angularVelocity = _linearVelocity.getLength() / getRadius();
 }
 
-TransformMatrix4 Wheel::getModelMatrix(Vector3& chassisTopNormal) {
-    TransformMatrix4 m1;
-    m1.translate(_center.x, _center.y, _center.z);
+TransformMatrix4 Wheel::getModelMatrixRelateChassis(Vector3& chassisTopNormal) {
+    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
+        TransformMatrix4 steeringRotate;
+        steeringRotate.rotate(_steeringAngle, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
+        TransformMatrix4 angularRotate;
+        angularRotate.rotate(_rotateAngle, _outsideNormal.x, _outsideNormal.y, _outsideNormal.z);
+        steeringRotate.mul(angularRotate);
 
-    TransformMatrix4 m2;
-    m2.rotate(_steeringAngle, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
+        return steeringRotate;
+    } else {
+        TransformMatrix4 angularRotate;
+        angularRotate.rotate(_rotateAngle, _outsideNormal.x, _outsideNormal.y, _outsideNormal.z);
 
-    m2.mul(m1);
-
-    return m2;
+        return angularRotate;
+    }
 }

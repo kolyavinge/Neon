@@ -68,6 +68,11 @@ public:
         addInternal(value);
     }
 
+    // и по значению, если понадобится
+    void addByValue(T value) requires !std::is_scalar_v<T> {
+        addInternal(value);
+    }
+
     T& addNew() {
         resizeIfNeeded(1);
         _count++;

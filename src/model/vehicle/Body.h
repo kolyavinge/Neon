@@ -25,5 +25,5 @@ public:
     Vector3& getAirDragForce();
     void calculateAirDragForce(Vector3& vehicleVelocity);
     void updateAngles();
-    TransformMatrix4 getModelMatrix(Vector3& chassisTopNormal, Vector3& chassisRightNormal);
+    TransformMatrix4 getModelMatrixRelateChassis(Vector3& chassisTopNormal, Vector3& chassisRightNormal);
 };

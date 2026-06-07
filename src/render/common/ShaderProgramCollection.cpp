@@ -6,11 +6,11 @@ ShaderProgramCollection::ShaderProgramCollection(
 }
 
 void ShaderProgramCollection::initAllPrograms() {
-    initProgram(mainScene, 1, &_shaderCollection.common);
-    initProgram(mesh, 2, &_shaderCollection.meshVertex, &_shaderCollection.meshFragment);
+    initProgram(output mainScene, 1, &_shaderCollection.common);
+    initProgram(output mesh, 2, &_shaderCollection.meshVertex, &_shaderCollection.meshFragment);
 }
 
-void ShaderProgramCollection::initProgram(ShaderProgram& program, int shadersCount, Shader* shaders ...) {
+void ShaderProgramCollection::initProgram(output ShaderProgram& program, int shadersCount, Shader* shaders ...) {
     List<Shader*> shaderList;
     for (int i = 0; i < shadersCount; i++, shaders++) {
         shaderList.add(shaders);

@@ -46,14 +46,12 @@ void Body::updateAngles() {
     _angles.roll = (_transferedWeightOnRight / _vehicleMass) * _data.bodyMaxRoll;
 }
 
-TransformMatrix4 Body::getModelMatrix(Vector3& chassisTopNormal, Vector3& chassisRightNormal) {
-    TransformMatrix4 m1;
-    m1.rotate(_angles.pitch, chassisRightNormal.x, chassisRightNormal.y, chassisRightNormal.z);
+TransformMatrix4 Body::getModelMatrixRelateChassis(Vector3& chassisTopNormal, Vector3& chassisRightNormal) {
+    TransformMatrix4 pitchRotate;
+    pitchRotate.rotate(_angles.pitch, chassisRightNormal.x, chassisRightNormal.y, chassisRightNormal.z);
+    TransformMatrix4 rollRotate;
+    rollRotate.rotate(_angles.roll, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
+    pitchRotate.mul(rollRotate);
 
-    TransformMatrix4 m2;
-    m2.rotate(_angles.roll, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
-
-    m2.mul(m1);
-
-    return m2;
+    return rollRotate;
 }

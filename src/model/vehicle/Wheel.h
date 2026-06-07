@@ -76,5 +76,5 @@ public:
     Vector3& getLinearVelocity();
     void setLinearVelocity(Vector3& velocity);
     void calculateAngularVelocityByLinear();
-    TransformMatrix4 getModelMatrix(Vector3& chassisTopNormal);
+    TransformMatrix4 getModelMatrixRelateChassis(Vector3& chassisTopNormal);
 };
