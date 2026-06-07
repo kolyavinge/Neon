@@ -29,7 +29,7 @@
 #include <render/lib/ShaderCompiler.h>
 #include <render/lib/TextureLoader.h>
 #include <render/lib/VAORenderer.h>
-#include <render/ui/DebugScreenRenderer.h>
+#include <render/ui/RaceScreenRenderer.h>
 #include <render/vehicle/VehicleRenderer.h>
 #include <ui/RaceScreen.h>
 
@@ -61,7 +61,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Model3dVAOBuilder>();
     binder.bindSingleton<RenderModel3dLoader>(RenderModel3dLoader::resolve);
     binder.bindSingleton<VAORenderer>();
-    binder.bindSingleton<DebugScreenRenderer>();
+    binder.bindSingleton<RaceScreenRenderer>();
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
 
     binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);

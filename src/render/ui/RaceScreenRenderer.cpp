@@ -7,17 +7,17 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 #include <render/lib/opengl.h>
-#include <render/ui/DebugScreenRenderer.h>
+#include <render/ui/RaceScreenRenderer.h>
 
-DebugScreenRenderer::DebugScreenRenderer() {
+RaceScreenRenderer::RaceScreenRenderer() {
     _screen = nullptr;
 }
 
-void DebugScreenRenderer::setScreen(RaceScreen& screen) {
+void RaceScreenRenderer::setScreen(RaceScreen& screen) {
     _screen = &screen;
 }
 
-void DebugScreenRenderer::render() {
+void RaceScreenRenderer::render() {
     GameState& gameState = _screen->getGameState();
     Vehicle& vehicle = gameState.getPlayerVehicle();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -34,14 +34,14 @@ void DebugScreenRenderer::render() {
     renderVehicle(vehicle);
 }
 
-void DebugScreenRenderer::renderVehicle(Vehicle& vehicle) {
+void RaceScreenRenderer::renderVehicle(Vehicle& vehicle) {
     renderVehicleAxles(vehicle);
     renderVehicleWheels(vehicle);
     renderVehicleBody(vehicle);
     //renderVehicleAxis(vehicle);
 }
 
-void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
+void RaceScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
     Axle& driveAxle = vehicle.getDriveAxle();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     // axle axis
@@ -86,7 +86,7 @@ void DebugScreenRenderer::renderVehicleAxles(Vehicle& vehicle) {
     glPopMatrix();
 }
 
-void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
+void RaceScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
     Chassis& chassis = vehicle.getChassis();
     for (int i = 0; i < vehicle.wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
@@ -181,7 +181,7 @@ void DebugScreenRenderer::renderVehicleWheels(Vehicle& vehicle) {
     }
 }
 
-void DebugScreenRenderer::renderVehicleBody(Vehicle& vehicle) {
+void RaceScreenRenderer::renderVehicleBody(Vehicle& vehicle) {
     Body& body = vehicle.getBody();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     // air drag force
@@ -198,7 +198,7 @@ void DebugScreenRenderer::renderVehicleBody(Vehicle& vehicle) {
     glPopMatrix();
 }
 
-void DebugScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
+void RaceScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
     Chassis& chassis = vehicle.getChassis();
     Axle& driveAxle = vehicle.getDriveAxle();
 
@@ -222,7 +222,7 @@ void DebugScreenRenderer::renderVehicleAxis(Vehicle& vehicle) {
     glPopMatrix();
 }
 
-void DebugScreenRenderer::renderGrid() {
+void RaceScreenRenderer::renderGrid() {
     const float length = 10.0f * CommonConstants::maxPerspectiveDepth;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
@@ -235,7 +235,7 @@ void DebugScreenRenderer::renderGrid() {
     glEnd();
 }
 
-void DebugScreenRenderer::renderGlobalAxis() {
+void RaceScreenRenderer::renderGlobalAxis() {
     glBegin(GL_LINES);
 
     glColor3f(1.0f, 0.0f, 0.0f);

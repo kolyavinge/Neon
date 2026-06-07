@@ -2,11 +2,11 @@
 
 ScreenManager::ScreenManager(
     RaceScreen& debugScreen,
-    DebugScreenRenderer& debugScreenRenderer) {
+    RaceScreenRenderer& raceScreenRenderer) {
     _screens[(int)Screens::race] = &debugScreen;
     debugScreen.setScreenSwitcher(*this);
-    _screenRenderers[(int)Screens::race] = &debugScreenRenderer;
-    debugScreenRenderer.setScreen(debugScreen);
+    _screenRenderers[(int)Screens::race] = &raceScreenRenderer;
+    raceScreenRenderer.setScreen(debugScreen);
     _currentScreen = Screens::race;
 }
 

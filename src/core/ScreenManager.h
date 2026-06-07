@@ -2,10 +2,10 @@
 
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <render/ui/DebugScreenRenderer.h>
+#include <render/ui/RaceScreenRenderer.h>
 #include <render/ui/ScreenRenderer.h>
-#include <ui/RaceScreen.h>
 #include <ui/IScreenSwitcher.h>
+#include <ui/RaceScreen.h>
 #include <ui/Screen.h>
 
 class ScreenManager : public Object, public IScreenSwitcher {
@@ -18,12 +18,12 @@ public:
     static ScreenManager* resolve(Resolver& resolver) {
         return new ScreenManager(
             resolver.resolve<RaceScreen>(),
-            resolver.resolve<DebugScreenRenderer>());
+            resolver.resolve<RaceScreenRenderer>());
     }
 
     ScreenManager(
         RaceScreen& debugScreen,
-        DebugScreenRenderer& debugScreenRenderer);
+        RaceScreenRenderer& raceScreenRenderer);
 
     Screen& getCurrentScreen();
     ScreenRenderer& getCurrentScreenRenderer();

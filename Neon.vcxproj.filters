@@ -141,7 +141,7 @@
     <ClCompile Include="src\engine\GameUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\ui\DebugScreenRenderer.cpp">
+    <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\stat.cpp">
@@ -470,7 +470,7 @@
     <ClInclude Include="src\engine\GameUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\ui\DebugScreenRenderer.h">
+    <ClInclude Include="src\render\ui\RaceScreenRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\stat.h">
