@@ -3,6 +3,8 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 
+TransformMatrix4 TransformMatrix4::identity;
+
 TransformMatrix4::TransformMatrix4() {
     setIdentity();
 }

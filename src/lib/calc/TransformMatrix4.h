@@ -9,6 +9,8 @@ class TransformMatrix4 : public Object {
     float _items[16];
 
 public:
+    static TransformMatrix4 identity;
+
     TransformMatrix4();
     TransformMatrix4(float items[16]);
     TransformMatrix4& operator=(const TransformMatrix4& other);
