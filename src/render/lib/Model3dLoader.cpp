@@ -18,18 +18,8 @@ Model3dLoader::Model3dLoader(
 void Model3dLoader::load(String& modelFilePath, output Model3d& model3d) {
     Assimp::Importer importer;
     const aiScene& aiScene = *importer.ReadFile(modelFilePath.getCharPointer(), aiProcess_Triangulate);
-    loadTextures(modelFilePath, model3d);
+    loadTextures(modelFilePath, output model3d);
     loadMeshes(aiScene, output model3d);
-}
-
-void Model3dLoader::loadTextures(String& modelFilePath, Model3d& model3d) {
-    String filter(L".jpg");
-    List<String> files;
-    _fileSystem.getFilesInDirectoryByFilter(modelFilePath, filter, output files);
-    for (int i = 0; i < files.getCount(); i++) {
-        Texture& texture = model3d.createNewTexture();
-        _textureLoader.loadTexture(files[i], output texture);
-    }
 }
 
 void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) {
@@ -41,6 +31,7 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
         mesh.name = String(aiMesh.mName.C_Str());
         mesh.vertices.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
         mesh.normals.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
+        mesh.colors.prepareEnoughCapacity(4 * (int)aiMesh.mNumVertices);
         mesh.texCoords.prepareEnoughCapacity(2 * (int)aiMesh.mNumVertices);
         for (int aiVertexIndex = 0; aiVertexIndex < (int)aiMesh.mNumVertices; aiVertexIndex++) {
             mesh.vertices.add(aiMesh.mVertices[aiVertexIndex].x);
@@ -49,6 +40,14 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].x);
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].y);
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].z);
+            aiMaterial* aiMaterial = aiScene.mMaterials[aiMesh.mMaterialIndex];
+            aiColor4D diffuseColor;
+            if (aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, output & diffuseColor) == AI_SUCCESS) {
+                mesh.colors.add(diffuseColor.r);
+                mesh.colors.add(diffuseColor.g);
+                mesh.colors.add(diffuseColor.b);
+                mesh.colors.add(diffuseColor.a);
+            }
             mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].x);
             mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].y);
         }
@@ -63,5 +62,15 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
         if (model3d.getTextures().getCount() > 0) {
             mesh.texture = &model3d.getTextures().first();
         }
+    }
+}
+
+void Model3dLoader::loadTextures(String& modelFilePath, output Model3d& model3d) {
+    String filter(L".jpg");
+    List<String> files;
+    _fileSystem.getFilesInDirectoryByFilter(modelFilePath, filter, output files);
+    for (int i = 0; i < files.getCount(); i++) {
+        Texture& texture = model3d.createNewTexture();
+        _textureLoader.loadTexture(files[i], output texture);
     }
 }

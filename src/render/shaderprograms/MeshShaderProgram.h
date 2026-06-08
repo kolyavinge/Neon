@@ -12,4 +12,5 @@ public:
     void setProjectionMatrix(TransformMatrix4& projectionMatrix);
     void setColorFactor(float colorFactor);
     void setAlphaFactor(float alphaFactor);
+    void useTexture(bool useTexture);
 };

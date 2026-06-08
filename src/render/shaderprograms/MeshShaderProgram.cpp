@@ -19,3 +19,7 @@ void MeshShaderProgram::setColorFactor(float colorFactor) {
 void MeshShaderProgram::setAlphaFactor(float alphaFactor) {
     setFloat32("alphaFactor", alphaFactor);
 }
+
+void MeshShaderProgram::useTexture(bool useTexture) {
+    setBoolean("useTexture", useTexture);
+}

@@ -27,6 +27,6 @@ public:
     void load(String& modelFilePath, output Model3d& model3d);
 
 private:
-    void loadTextures(String& modelFilePath, Model3d& model3d);
     void loadMeshes(const aiScene& aiScene, output Model3d& model3d);
+    void loadTextures(String& modelFilePath, output Model3d& model3d);
 };

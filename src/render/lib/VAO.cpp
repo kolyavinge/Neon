@@ -13,18 +13,15 @@ VAO::~VAO() {
     glDeleteVertexArrays(1, &_id);
 }
 
-void VAO::init(GLuint id, GLenum format, GLsizei elementsCount) {
+void VAO::init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount) {
     _id = id;
+    _vboIds = vboIds;
     _format = format;
     _elementsCount = elementsCount;
 }
 
 GLuint VAO::getId() {
     return _id;
-}
-
-void VAO::setVboIds(Array<GLuint, (int)BufferIndices::_count>& vboIds) {
-    _vboIds = vboIds;
 }
 
 GLenum VAO::getFormat() {

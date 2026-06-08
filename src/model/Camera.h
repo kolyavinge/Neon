@@ -16,7 +16,9 @@ public:
     Camera();
     float getVerticalViewAngle();
     void setVerticalViewAngle(float verticalViewAngle);
+    Vector3& getPosition();
     void setPosition(Vector3& position);
+    Vector3& getLookDirection();
     void setLookDirection(Vector3& lookDirection);
     TransformMatrix4& getViewMatrix();
     TransformMatrix4& getProjectionMatrix();

@@ -8,13 +8,13 @@
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderProgramCollection.h>
 #include <render/lib/VAORenderer.h>
-#include <render/shaderprograms/MainSceneShaderProgram.h>
+#include <render/shaderprograms/MeshShaderProgram.h>
 
 class VehicleRenderer : public Object {
 
-    MainSceneShaderProgram& _mainSceneShader;
+    MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
-    RenderMesh* _vehicleBodyMesh;
+    RenderModel3d* _vehicleBody;
     Array<RenderMesh*, Vehicle::wheelsCount> _wheelMeshes;
 
 public:

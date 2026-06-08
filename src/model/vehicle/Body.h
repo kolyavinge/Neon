@@ -3,7 +3,7 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/Angles.h>
+#include <model/common.h>
 #include <model/vehicle/VehicleData.h>
 
 class Body : public Object {

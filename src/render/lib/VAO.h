@@ -6,9 +6,10 @@
 enum class BufferIndices {
     vertices = 0,
     normals = 1,
-    texCoords = 2,
-    faces = 3,
-    _count = 4
+    colors = 2,
+    texCoords = 3,
+    faces = 4,
+    _count = 5
 };
 
 // vertex array object
@@ -22,9 +23,8 @@ class VAO : public Object {
 public:
     VAO();
     ~VAO();
-    void init(GLuint id, GLenum format, GLsizei elementsCount);
+    void init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount);
     GLuint getId();
-    void setVboIds(Array<GLuint, (int)BufferIndices::_count>& vboIds);
     GLenum getFormat();
     GLsizei getElementsCount();
 };

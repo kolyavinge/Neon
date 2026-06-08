@@ -90,13 +90,7 @@
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\common\Measures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\vehicle\Spring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\model\common\Angles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\Random.cpp">
@@ -276,6 +270,9 @@
     <ClCompile Include="src\debug\DebugRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\model\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -404,13 +401,7 @@
     <ClInclude Include="src\model\vehicle\EngineTorqueCurve.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\common\Measures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\model\vehicle\Spring.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\common\Angles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\Random.h">
@@ -612,6 +603,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\DebugRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

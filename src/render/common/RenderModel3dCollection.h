@@ -14,7 +14,9 @@ class RenderModel3dCollection : public Object {
     RenderModel3dLoader& _renderModel3dLoader;
 
 public:
-    RenderModel3d vehicle;
+    RenderModel3d vehicleBody;
+    RenderModel3d vehicleFrontLeftWheel;
+    RenderModel3d vehicleRearLeftWheel;
 
     static RenderModel3dCollection* resolve(Resolver& resolver) {
         return new RenderModel3dCollection(

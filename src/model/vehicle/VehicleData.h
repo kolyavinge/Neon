@@ -2,7 +2,7 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/Measures.h>
+#include <model/common.h>
 #include <model/vehicle/EngineTorqueCurve.h>
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/PacejkaFormula.h>

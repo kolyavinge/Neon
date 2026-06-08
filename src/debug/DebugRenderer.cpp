@@ -10,19 +10,17 @@
 #include <render/lib/opengl.h>
 
 void DebugRenderer::renderDebugInfo(GameState& gameState) {
-    Vehicle& vehicle = gameState.getPlayerVehicle();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Camera& camera = gameState.getCamera();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(CommonConstants::verticalFieldOfViewDegrees, CommonConstants::screenAspect, CommonConstants::minPerspectiveDepth, CommonConstants::maxPerspectiveDepth);
-    Vector3 eyePosition = vehicle.getDriveAxle().getCenter();
-    eyePosition.subMultiplied(vehicle.getChassis().getFrontNormal(), 5.0f);
-    eyePosition.addMultiplied(vehicle.getChassis().getRightNormal(), 3.0f);
-    eyePosition.z += 4.0f;
-    gluLookAt(eyePosition, vehicle.getNonDriveAxle().getCenter(), CommonConstants::upVector);
+    gluPerspective(UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()), CommonConstants::screenAspect, CommonConstants::minPerspectiveDepth, CommonConstants::maxPerspectiveDepth);
+    Vector3 lookAtPosition = camera.getPosition();
+    lookAtPosition.add(camera.getLookDirection());
+    gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upVector);
     renderGrid();
-    //renderGlobalAxis();
-    renderVehicle(vehicle);
+    renderGlobalAxis();
+    Vehicle& vehicle = gameState.getPlayerVehicle();
+    //renderVehicle(vehicle);
 }
 
 void DebugRenderer::renderVehicle(Vehicle& vehicle) {
@@ -217,7 +215,7 @@ void DebugRenderer::renderGrid() {
     const float length = 10.0f * CommonConstants::maxPerspectiveDepth;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
-    for (float step = -length; step < length; step += 10.0f) {
+    for (float step = -length; step < length; step += 1.0f) {
         glVertex3f(step, -length, 0.0f);
         glVertex3f(step, length, 0.0f);
         glVertex3f(-length, step, 0.0f);
@@ -227,19 +225,21 @@ void DebugRenderer::renderGrid() {
 }
 
 void DebugRenderer::renderGlobalAxis() {
+    float axisLength = 10.0f;
+
     glBegin(GL_LINES);
 
     glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(axisLength, 0.0f, 0.0f);
 
     glColor3f(0.0f, 1.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, axisLength, 0.0f);
 
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, axisLength);
 
     glEnd();
 }

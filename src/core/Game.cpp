@@ -1,6 +1,7 @@
 #include <core/Game.h>
 #include <core/MainInjectModule.h>
 #include <lib/di/DependencyContainer.h>
+#include <render/lib/opengl.h>
 
 Game::Game(
     InputManager& inputManager,
@@ -23,6 +24,7 @@ void Game::update() {
 
 void Game::render() {
     _screenManager.getCurrentScreenRenderer().render();
+    if (glGetError() != GL_NO_ERROR) throw OpenGLException(L"");
 }
 
 Game& GameFactory::make() {

@@ -13,10 +13,14 @@ RenderModel3dCollection::RenderModel3dCollection(
 void RenderModel3dCollection::loadAllModels() {
     String models3dDirectory = _assetsDirectory.getModels3d();
 
-    String vehicleModelPath = models3dDirectory;
-    vehicleModelPath.append(L"vehicle\\model.fbx");
-    Model3d vehicleModel;
-    _model3dLoader.load(vehicleModelPath, output vehicleModel);
-    vehicleModel.scale(0.5f, 0.5f, 0.5f);
-    _renderModel3dLoader.load(vehicleModel, output vehicle);
+    // vehicle body
+    String modelPath = models3dDirectory;
+    modelPath.append("vehicle_body.glb");
+    Model3d vehicleBodyModel;
+    _model3dLoader.load(modelPath, output vehicleBodyModel);
+    vehicleBodyModel.scale(2.0f);
+    vehicleBodyModel.invertAxis((int)Model3d::Axis::x | (int)Model3d::Axis::z);
+    vehicleBodyModel.moveToOrigin();
+    //vehicleBodyModel.moveToCenter((int)Model3d::Axis::x | (int)Model3d::Axis::y | (int)Model3d::Axis::z);
+    _renderModel3dLoader.load(vehicleBodyModel, output vehicleBody);
 }

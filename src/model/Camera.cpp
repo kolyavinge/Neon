@@ -13,8 +13,16 @@ void Camera::setVerticalViewAngle(float verticalViewAngle) {
     _verticalViewAngle = verticalViewAngle;
 }
 
+Vector3& Camera::getPosition() {
+    return _position;
+}
+
 void Camera::setPosition(Vector3& position) {
     _position = position;
+}
+
+Vector3& Camera::getLookDirection() {
+    return _lookDirection;
 }
 
 void Camera::setLookDirection(Vector3& lookDirection) {

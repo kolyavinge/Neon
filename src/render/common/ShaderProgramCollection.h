@@ -3,6 +3,8 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <render/common/ShaderCollection.h>
+#include <render/lib/Shader.h>
+#include <render/lib/ShaderProgram.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 #include <render/shaderprograms/MeshShaderProgram.h>
 

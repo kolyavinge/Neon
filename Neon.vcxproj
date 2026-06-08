@@ -68,8 +68,7 @@
     <ClCompile Include="src\lib\String.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\model\Camera.cpp" />
-    <ClCompile Include="src\model\common\Angles.cpp" />
-    <ClCompile Include="src\model\common\Measures.cpp" />
+    <ClCompile Include="src\model\common.cpp" />
     <ClCompile Include="src\model\vehicle\Axle.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
     <ClCompile Include="src\model\vehicle\Chassis.cpp" />
@@ -133,6 +132,7 @@
     <ClInclude Include="src\lib\ResourceManager.h" />
     <ClInclude Include="src\lib\windows.h" />
     <ClInclude Include="src\model\Camera.h" />
+    <ClInclude Include="src\model\common.h" />
     <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
@@ -207,8 +207,6 @@
     <ClInclude Include="src\lib\Random.h" />
     <ClInclude Include="src\lib\String.h" />
     <ClInclude Include="src\lib\system.h" />
-    <ClInclude Include="src\model\common\Angles.h" />
-    <ClInclude Include="src\model\common\Measures.h" />
     <ClInclude Include="src\model\vehicle\Axle.h" />
     <ClInclude Include="src\model\vehicle\Body.h" />
     <ClInclude Include="src\model\vehicle\Engine.h" />
