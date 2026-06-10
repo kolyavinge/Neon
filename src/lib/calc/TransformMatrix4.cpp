@@ -124,35 +124,38 @@ void TransformMatrix4::scale(float x, float y, float z) {
     _items[15] = 1.0f;
 }
 
-void TransformMatrix4::lookAt(float eyeX, float eyeY, float eyeZ, float lookX, float lookY, float lookZ, float upX, float upY, float upZ) {
-    Vector3 eye, look, up;
+void TransformMatrix4::lookAt(
+    float eyeX, float eyeY, float eyeZ,
+    float lookDirectionX, float lookDirectionY, float lookDirectionZ,
+    float upX, float upY, float upZ) {
+    Vector3 eye, lookDirection, up;
     eye.set(eyeX, eyeY, eyeZ);
-    look.set(lookX, lookY, lookZ);
+    lookDirection.set(lookDirectionX, lookDirectionY, lookDirectionZ);
     up.set(upX, upY, upZ);
-    Vector3 s = look;
+    Vector3 s = lookDirection;
     s.vectorProduct(up);
     s.normalize();
     Vector3 u = s;
-    u.vectorProduct(look);
+    u.vectorProduct(lookDirection);
     // col 1
     _items[0] = s.x;
     _items[1] = u.x;
-    _items[2] = -lookX;
+    _items[2] = -lookDirectionX;
     _items[3] = 0.0f;
     // col 2
     _items[4] = s.y;
     _items[5] = u.y;
-    _items[6] = -lookY;
+    _items[6] = -lookDirectionY;
     _items[7] = 0.0f;
     // col 3
     _items[8] = s.z;
     _items[9] = u.z;
-    _items[10] = -lookZ;
+    _items[10] = -lookDirectionZ;
     _items[11] = 0.0f;
     // col 4
     _items[12] = -eye.dotProduct(s);
     _items[13] = -eye.dotProduct(u);
-    _items[14] = eye.dotProduct(look);
+    _items[14] = eye.dotProduct(lookDirection);
     _items[15] = 1.0f;
 }
 

@@ -34,10 +34,10 @@ void Model3d::moveToOrigin() {
     Vector3 min = getMinVertex();
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
-            mesh.vertices[i + 0] -= min.x;
-            mesh.vertices[i + 1] -= min.y;
-            mesh.vertices[i + 2] -= min.z;
+        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
+            mesh.vertices[j + 0] -= min.x;
+            mesh.vertices[j + 1] -= min.y;
+            mesh.vertices[j + 2] -= min.z;
         }
     }
 }
@@ -55,10 +55,10 @@ void Model3d::moveToCenter(int axis) {
     if ((axis & (int)Axis::z) == 0) delta.z = 0.0f;
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
-            mesh.vertices[i + 0] -= delta.x;
-            mesh.vertices[i + 1] -= delta.y;
-            mesh.vertices[i + 2] -= delta.z;
+        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
+            mesh.vertices[j + 0] -= delta.x;
+            mesh.vertices[j + 1] -= delta.y;
+            mesh.vertices[j + 2] -= delta.z;
         }
     }
 }
@@ -98,10 +98,10 @@ Vector3 Model3d::getMinVertex() {
     float minZ = _meshes[0].vertices[2];
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
-            if (mesh.vertices[i + 0] < minX) minX = mesh.vertices[i + 0];
-            if (mesh.vertices[i + 1] < minY) minY = mesh.vertices[i + 1];
-            if (mesh.vertices[i + 2] < minZ) minZ = mesh.vertices[i + 2];
+        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
+            if (mesh.vertices[j + 0] < minX) minX = mesh.vertices[j + 0];
+            if (mesh.vertices[j + 1] < minY) minY = mesh.vertices[j + 1];
+            if (mesh.vertices[j + 2] < minZ) minZ = mesh.vertices[j + 2];
         }
     }
 
@@ -114,10 +114,10 @@ Vector3 Model3d::getMaxVertex() {
     float maxZ = _meshes[0].vertices[2];
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
-            if (mesh.vertices[i + 0] > maxX) maxX = mesh.vertices[i + 0];
-            if (mesh.vertices[i + 1] > maxY) maxY = mesh.vertices[i + 1];
-            if (mesh.vertices[i + 2] > maxZ) maxZ = mesh.vertices[i + 2];
+        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
+            if (mesh.vertices[j + 0] > maxX) maxX = mesh.vertices[j + 0];
+            if (mesh.vertices[j + 1] > maxY) maxY = mesh.vertices[j + 1];
+            if (mesh.vertices[j + 2] > maxZ) maxZ = mesh.vertices[j + 2];
         }
     }
 

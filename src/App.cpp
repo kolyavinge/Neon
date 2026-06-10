@@ -3,6 +3,10 @@
 #include <core/Game.h>
 #include <debug/stat.h>
 
+void App::onResize(GLFWwindow* window, int width, int height) noexcept {
+    glViewport(0, 0, width, (int)(width / CommonConstants::screenAspect));
+}
+
 void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -15,8 +19,9 @@ void App::run() {
     if (window == nullptr) { glfwTerminate(); throw AppException(); }
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     glfwSetWindowPos(window, (mode->width - CommonConstants::screenWidth) / 2, (mode->height - CommonConstants::screenHeight) / 2);
-    glfwSetKeyCallback(window, App::onKeyInput);
+    glfwSetKeyCallback(window, onKeyInput);
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, onResize);
     if (glewInit() != GLEW_OK) throw AppException();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();

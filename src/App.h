@@ -11,6 +11,9 @@ class AppException : public Exception {};
 class App : public Object {
 
 public:
-    void static onKeyInput(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept;
     void static run();
+
+private:
+    void static onResize(GLFWwindow* window, int width, int height) noexcept;
+    void static onKeyInput(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept;
 };
