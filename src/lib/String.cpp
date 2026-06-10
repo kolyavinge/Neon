@@ -235,6 +235,5 @@ void String::resizeIfNeeded(int newCount) {
     if (newCount > _capacity) {
         _capacity = 2 * newCount;
         Memory::resize<wchar_t>(_symb, _count, _capacity);
-        Memory::zero<wchar_t>(&_symb[_count], (_capacity - _count));
     }
 }

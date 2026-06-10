@@ -23,7 +23,10 @@ public:
         _capacity = capacity;
         if (_capacity > 0) {
             _items = new T[(size_t)_capacity];
-            // _items нельзя инициализировать нулями, ибо в случае с обьектами мы перезапишем vptr
+            // если T обьект - нельзя инициализировать нулями, ибо мы перезапишем vptr
+            if (std::is_scalar_v<T>) {
+                Memory::zero<T>(_items, _capacity);
+            }
         } else {
             _items = nullptr;
         }
@@ -52,10 +55,8 @@ public:
         return _count;
     }
 
-    void initAll(T initValue) {
-        for (int i = 0; i < _count; i++) {
-            _items[i] = initValue;
-        }
+    void fillZero() {
+        Memory::zero<T>(_items, _count);
     }
 
     // для простых типов - передача по значению

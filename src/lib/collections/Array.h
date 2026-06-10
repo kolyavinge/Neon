@@ -24,19 +24,7 @@ public:
         return Count;
     }
 
-    void initAll(T initValue) {
-        for (int i = 0; i < Count; i++) {
-            _items[i] = initValue;
-        }
-    }
-
-    void initRange(int startIndex, int endIndex, T value) {
-        for (int i = startIndex; i <= endIndex; i++) {
-            _items[i] = value;
-        }
-    }
-
-    void initZero() {
+    void fillZero() {
         Memory::zero<T>(_items, Count);
     }
 

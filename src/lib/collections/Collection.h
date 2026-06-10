@@ -29,6 +29,18 @@ public:
         return -1;
     }
 
+    void initAll(T initValue) {
+        for (int i = 0; i < getCount(); i++) {
+            (*this)[i] = initValue;
+        }
+    }
+
+    void initRange(int startIndex, int endIndex, T value) {
+        for (int i = startIndex; i <= endIndex; i++) {
+            (*this)[i] = value;
+        }
+    }
+
     void sort(IComparator<T>& comparator) {
         sort(0, getCount() - 1, comparator);
     }
