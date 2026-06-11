@@ -90,6 +90,10 @@ void TransformMatrix4::translate(float x, float y, float z) {
     _items[14] = z;
 }
 
+void TransformMatrix4::translate(Vector3& v) {
+    translate(v.x, v.y, v.z);
+}
+
 void TransformMatrix4::rotate(float angle, float axisX, float axisY, float axisZ) {
     float sin = Math::sin(angle);
     float cos = Math::cos(angle);
@@ -114,6 +118,10 @@ void TransformMatrix4::rotate(float angle, float axisX, float axisY, float axisZ
     _items[13] = 0.0f;
     _items[14] = 0.0f;
     _items[15] = 1.0f;
+}
+
+void TransformMatrix4::rotate(float angle, Vector3& axis) {
+    rotate(angle, axis.x, axis.y, axis.z);
 }
 
 void TransformMatrix4::scale(float x, float y, float z) {
@@ -157,6 +165,13 @@ void TransformMatrix4::lookAt(
     _items[13] = -eye.dotProduct(u);
     _items[14] = eye.dotProduct(lookDirection);
     _items[15] = 1.0f;
+}
+
+void TransformMatrix4::lookAt(Vector3& eyePosition, Vector3& lookDirection, Vector3& upDirection) {
+    lookAt(
+        eyePosition.x, eyePosition.y, eyePosition.z,
+        lookDirection.x, lookDirection.y, lookDirection.z,
+        upDirection.x, upDirection.y, upDirection.z);
 }
 
 void TransformMatrix4::ortho(float left, float right, float bottom, float top, float zNear, float zFar) {

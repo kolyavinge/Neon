@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lib/Object.h>
+#include <lib/calc/Vector3.h>
 #include <lib/calc/Vector4.h>
 
 // column major matrix (for OpenGL)
@@ -21,9 +22,12 @@ public:
     void mul(TransformMatrix4& m);
     Vector4 mul(Vector4& v);
     void translate(float x, float y, float z);
+    void translate(Vector3& v);
     void rotate(float angle, float axisX, float axisY, float axisZ);
+    void rotate(float angle, Vector3& axis);
     void scale(float x, float y, float z);
     void lookAt(float eyeX, float eyeY, float eyeZ, float lookDirectionX, float lookDirectionY, float lookDirectionZ, float upX, float upY, float upZ);
+    void lookAt(Vector3& eyePosition, Vector3& lookDirection, Vector3& upDirection);
     void ortho(float left, float right, float bottom, float top, float zNear, float zFar);
     void perspective(float viewAngle, float screenAspect, float zNear, float zFar);
 };

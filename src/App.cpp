@@ -3,8 +3,8 @@
 #include <core/Game.h>
 #include <debug/stat.h>
 
-void App::onResize(GLFWwindow* window, int width, int height) noexcept {
-    glViewport(0, 0, width, (int)(width / CommonConstants::screenAspect));
+void App::onResize(GLFWwindow*, int width, int) noexcept {
+    glViewport(0, 0, width, (int)((float)width / CommonConstants::screenAspect));
 }
 
 void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept {
