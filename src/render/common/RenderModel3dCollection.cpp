@@ -18,9 +18,8 @@ void RenderModel3dCollection::loadAllModels() {
     modelPath.append("vehicle_body.glb");
     Model3d vehicleBodyModel;
     _model3dLoader.load(modelPath, output vehicleBodyModel);
-    vehicleBodyModel.scale(2.0f);
+    vehicleBodyModel.scale(1.25f);
     vehicleBodyModel.invertAxis((int)Model3d::Axis::x | (int)Model3d::Axis::z);
-    vehicleBodyModel.moveToOrigin();
-    //vehicleBodyModel.moveToCenter((int)Model3d::Axis::x | (int)Model3d::Axis::y | (int)Model3d::Axis::z);
+    vehicleBodyModel.moveToCenter((int)Model3d::Axis::x | (int)Model3d::Axis::y | (int)Model3d::Axis::z);
     _renderModel3dLoader.load(vehicleBodyModel, output vehicleBody);
 }

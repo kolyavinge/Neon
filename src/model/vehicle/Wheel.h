@@ -39,6 +39,7 @@ class Wheel : public Object {
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
     Vector3 _linearVelocity;
+    TransformMatrix4 _modelMatrix;
 
 public:
     Wheel();
@@ -76,5 +77,6 @@ public:
     Vector3& getLinearVelocity();
     void setLinearVelocity(Vector3& velocity);
     void calculateAngularVelocityByLinear();
-    TransformMatrix4 getModelMatrixRelateChassis(Vector3& chassisTopNormal);
+    TransformMatrix4& getModelMatrix();
+    void calculateModelMatrix(TransformMatrix4& chassisModelMatrix);
 };

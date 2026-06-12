@@ -47,12 +47,9 @@ void VehicleRenderer::renderBody(Vehicle& vehicle) {
 
 void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
     return;
-    Chassis& chassis = vehicle.getChassis();
     Wheel& wheel = vehicle.getWheel(wheelPosition);
     RenderMesh* wheelMesh = _wheelMeshes[(int)wheelPosition];
-    TransformMatrix4 modelMatrix = wheel.getModelMatrixRelateChassis(chassis.getTopNormal());
-    modelMatrix.mul(chassis.getModelMatrix());
-    _shader.setModelMatrix(modelMatrix);
+    _shader.setModelMatrix(wheel.getModelMatrix());
     //_mainSceneShader.setMaterial(wheelMesh->material);
     _vaoRenderer.render(wheelMesh->vao);
 }

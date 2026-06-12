@@ -75,4 +75,8 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     frontRightWheel.setOutsideNormal(rightNonDriveWheelOutsideNormal);
     rearLeftWheel.setOutsideNormal(chassisLeftNormal);
     rearRightWheel.setOutsideNormal(chassisRightNormal);
+
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        vehicle.getWheel(i).calculateModelMatrix(chassis.getModelMatrix());
+    }
 }

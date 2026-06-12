@@ -217,19 +217,28 @@ void Wheel::calculateAngularVelocityByLinear() {
     _angularVelocity = _linearVelocity.getLength() / getRadius();
 }
 
-TransformMatrix4 Wheel::getModelMatrixRelateChassis(Vector3& chassisTopNormal) {
+TransformMatrix4& Wheel::getModelMatrix() {
+    return _modelMatrix;
+}
+
+void Wheel::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
     if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
         TransformMatrix4 steeringRotate;
-        steeringRotate.rotate(_steeringAngle, chassisTopNormal.x, chassisTopNormal.y, chassisTopNormal.z);
+        steeringRotate.rotate(_steeringAngle, CommonConstants::upVector);
         TransformMatrix4 angularRotate;
-        angularRotate.rotate(_rotateAngle, _outsideNormal.x, _outsideNormal.y, _outsideNormal.z);
+        if (_position == WheelPosition::frontLeft) {
+            angularRotate.rotate(_rotateAngle, CommonConstants::leftVector);
+        } else {
+            angularRotate.rotate(_rotateAngle, CommonConstants::rightVector);
+        }
         steeringRotate.mul(angularRotate);
-
-        return steeringRotate;
+        _modelMatrix = chassisModelMatrix;
+        _modelMatrix.mul(angularRotate);
+        _modelMatrix.mul(steeringRotate);
     } else {
         TransformMatrix4 angularRotate;
-        angularRotate.rotate(_rotateAngle, _outsideNormal.x, _outsideNormal.y, _outsideNormal.z);
-
-        return angularRotate;
+        angularRotate.rotate(_rotateAngle, _outsideNormal);
+        _modelMatrix = chassisModelMatrix;
+        _modelMatrix.mul(angularRotate);
     }
 }
