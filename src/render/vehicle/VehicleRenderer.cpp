@@ -1,6 +1,4 @@
 #include <lib/calc/TransformMatrix4.h>
-#include <model/vehicle/Body.h>
-#include <model/vehicle/Chassis.h>
 #include <render/vehicle/VehicleRenderer.h>
 
 VehicleRenderer::VehicleRenderer(
@@ -8,15 +6,15 @@ VehicleRenderer::VehicleRenderer(
     VAORenderer& vaoRenderer) :
     _shader(shaderProgramCollection.mesh),
     _vaoRenderer(vaoRenderer) {
-    _vehicleBody = nullptr;
+    _vehicleBodyModel = nullptr;
 }
 
 void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
-    _vehicleBody = &renderModel3dCollection.vehicleBody;
-    //_wheelMeshes[(int)WheelPosition::frontLeft] = &vehicle.getMeshByName("frontLeftWheel");
-    //_wheelMeshes[(int)WheelPosition::frontRight] = &vehicle.getMeshByName("frontRightWheel");
-    //_wheelMeshes[(int)WheelPosition::rearLeft] = &vehicle.getMeshByName("rearLeftWheel");
-    //_wheelMeshes[(int)WheelPosition::rearRight] = &vehicle.getMeshByName("rearRightWheel");
+    _vehicleBodyModel = &renderModel3dCollection.vehicleBody;
+    _wheelModels[(int)WheelPosition::frontLeft] = &renderModel3dCollection.vehicleFrontLeftWheel;
+    _wheelModels[(int)WheelPosition::frontRight] = &renderModel3dCollection.vehicleFrontRightWheel;
+    _wheelModels[(int)WheelPosition::rearLeft] = &renderModel3dCollection.vehicleRearLeftWheel;
+    _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
 void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
@@ -27,7 +25,7 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
     _shader.setColorFactor(1.0f);
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(false);
-    renderBody(vehicle);
+    renderBody(vehicle.getBody());
     renderWheel(vehicle, WheelPosition::frontLeft);
     renderWheel(vehicle, WheelPosition::frontRight);
     renderWheel(vehicle, WheelPosition::rearLeft);
@@ -36,10 +34,10 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
     glDisable(GL_DEPTH_TEST);
 }
 
-void VehicleRenderer::renderBody(Vehicle& vehicle) {
-    _shader.setModelMatrix(vehicle.getBody().getModelMatrix());
-    for (int i = 0; i < _vehicleBody->getMeshes().getCount(); i++) {
-        RenderMesh& mesh = _vehicleBody->getMeshes()[i];
+void VehicleRenderer::renderBody(Body& body) {
+    _shader.setModelMatrix(body.getModelMatrix());
+    for (int i = 0; i < _vehicleBodyModel->getMeshes().getCount(); i++) {
+        RenderMesh& mesh = _vehicleBodyModel->getMeshes()[i];
         //_mainSceneShader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
@@ -48,8 +46,11 @@ void VehicleRenderer::renderBody(Vehicle& vehicle) {
 void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
     return;
     Wheel& wheel = vehicle.getWheel(wheelPosition);
-    RenderMesh* wheelMesh = _wheelMeshes[(int)wheelPosition];
+    RenderModel3d* wheelModel = _wheelModels[(int)wheelPosition];
     _shader.setModelMatrix(wheel.getModelMatrix());
-    //_mainSceneShader.setMaterial(wheelMesh->material);
-    _vaoRenderer.render(wheelMesh->vao);
+    for (int i = 0; i < wheelModel->getMeshes().getCount(); i++) {
+        RenderMesh& mesh = wheelModel->getMeshes()[i];
+        //_mainSceneShader.setMaterial(wheelMesh->material);
+        _vaoRenderer.render(mesh.vao);
+    }
 }

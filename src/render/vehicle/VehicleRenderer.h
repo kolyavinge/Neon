@@ -3,6 +3,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/Camera.h>
+#include <model/vehicle/Body.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <render/common/RenderModel3dCollection.h>
@@ -14,8 +15,8 @@ class VehicleRenderer : public Object {
 
     MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
-    RenderModel3d* _vehicleBody;
-    Array<RenderMesh*, Vehicle::wheelsCount> _wheelMeshes;
+    RenderModel3d* _vehicleBodyModel;
+    Array<RenderModel3d*, Vehicle::wheelsCount> _wheelModels;
 
 public:
     static VehicleRenderer* resolve(Resolver& resolver) {
@@ -33,6 +34,6 @@ public:
     void render(Vehicle& vehicle, Camera& camera);
 
 private:
-    void renderBody(Vehicle& vehicle);
+    void renderBody(Body& body);
     void renderWheel(Vehicle& vehicle, WheelPosition wheelPosition);
 };
