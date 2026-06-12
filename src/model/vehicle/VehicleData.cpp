@@ -18,17 +18,17 @@ VehicleData::VehicleData() {
     gearRatios[7] = finalGearRatio * 0.8f;
 
     /* body */
-    bodyMeasures.xLength = 2.0f;
-    bodyMeasures.yLength = 4.0f;
-    bodyMeasures.zLength = 1.5f;
+    bodyMeasures.xLength = 1.7f;
+    bodyMeasures.yLength = 3.5f;
+    bodyMeasures.zLength = 0.6f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = 1.0f;
     wheelbaseLength = 3.6f;
     frontWheelLengthToMassCenter = 1.8f;
     rearWheelLengthToMassCenter = 1.8f;
     trackWidth = 2.0f;
-    bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
-    bodyMaxRoll = UnitConverter::degreesToRadians(10.0f);
+    bodyMaxPitch = UnitConverter::degreesToRadians(50.0f);
+    bodyMaxRoll = UnitConverter::degreesToRadians(50.0f);
     airDragCoeff = 0.2f;
 
     /* engine */

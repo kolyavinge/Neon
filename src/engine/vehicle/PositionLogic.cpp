@@ -31,11 +31,6 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     Vector3 chassisLeftNormal = chassisRightNormal;
     chassisLeftNormal.mul(-1.0f);
 
-    chassis.setFrontNormal(chassisFrontNormal);
-    chassis.setRightNormal(chassisRightNormal);
-    chassis.calculateRotateAngleAndAxis();
-    body.updateAngles();
-
     Vector3 lengthBetweenAxleCenters = chassisFrontNormal;
     lengthBetweenAxleCenters.setLength(vehicle.getData().wheelbaseLength);
     Vector3 correctedNonDriveAxleCenter = diveAxle.getCenter();
@@ -44,6 +39,16 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
 
     nonDriveAxle.calculateWheelPositions(chassisRightNormal);
     diveAxle.calculateWheelPositions(chassisRightNormal);
+
+    chassis.setFrontNormal(chassisFrontNormal);
+    chassis.setRightNormal(chassisRightNormal);
+    chassis.calculateCenter(nonDriveAxle.getCenter(), diveAxle.getCenter());
+    chassis.calculateAnglesAndModelMatrix();
+
+    body.calculateCenter(chassis.getCenter(), chassis.getTopNormal());
+    body.calculateBox(chassis.getRightNormal(), chassis.getFrontNormal(), chassis.getTopNormal());
+    body.calculateAngles();
+    body.calculateModelMatrix(chassis.getModelMatrix());
 
     Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);
     Wheel& frontRightWheel = vehicle.getWheel(WheelPosition::frontRight);

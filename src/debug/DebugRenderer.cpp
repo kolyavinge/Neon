@@ -10,9 +10,9 @@
 #include <render/lib/opengl.h>
 
 void DebugRenderer::renderDebugInfo(GameState& gameState) {
-    Camera& camera = gameState.getCamera();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    Camera& camera = gameState.getCamera();
     gluPerspective(UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()), CommonConstants::screenAspect, CommonConstants::minPerspectiveDepth, CommonConstants::maxPerspectiveDepth);
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
@@ -20,12 +20,8 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     renderGrid();
     renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
-    //renderVehicle(vehicle);
-}
-
-void DebugRenderer::renderVehicle(Vehicle& vehicle) {
-    renderVehicleAxles(vehicle);
-    renderVehicleWheels(vehicle);
+    //renderVehicleAxles(vehicle);
+    //renderVehicleWheels(vehicle);
     renderVehicleBody(vehicle);
     //renderVehicleAxis(vehicle);
 }
@@ -171,7 +167,31 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
 }
 
 void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
+    // body box
     Body& body = vehicle.getBody();
+    glColor3f(0.6f, 0.6f, 0.6f);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(body.getBox().getBottomRect().downLeft);
+    glVertex3f(body.getBox().getBottomRect().downRight);
+    glVertex3f(body.getBox().getBottomRect().upRight);
+    glVertex3f(body.getBox().getBottomRect().upLeft);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(body.getBox().getTopRect().downLeft);
+    glVertex3f(body.getBox().getTopRect().downRight);
+    glVertex3f(body.getBox().getTopRect().upRight);
+    glVertex3f(body.getBox().getTopRect().upLeft);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex3f(body.getBox().getBottomRect().downLeft);
+    glVertex3f(body.getBox().getTopRect().downLeft);
+    glVertex3f(body.getBox().getBottomRect().downRight);
+    glVertex3f(body.getBox().getTopRect().downRight);
+    glVertex3f(body.getBox().getBottomRect().upLeft);
+    glVertex3f(body.getBox().getTopRect().upLeft);
+    glVertex3f(body.getBox().getBottomRect().upRight);
+    glVertex3f(body.getBox().getTopRect().upRight);
+    glEnd();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     // air drag force
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -226,18 +246,19 @@ void DebugRenderer::renderGrid() {
 
 void DebugRenderer::renderGlobalAxis() {
     float axisLength = 10.0f;
+    float color = 0.8f;
 
     glBegin(GL_LINES);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(color, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(axisLength, 0.0f, 0.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);
+    glColor3f(0.0f, color, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, axisLength, 0.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, color);
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, axisLength);
 

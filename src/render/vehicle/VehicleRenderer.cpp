@@ -37,11 +37,7 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
 }
 
 void VehicleRenderer::renderBody(Vehicle& vehicle) {
-    Chassis& chassis = vehicle.getChassis();
-    Body& body = vehicle.getBody();
-    TransformMatrix4 modelMatrix = body.getModelMatrixRelateChassis(chassis.getTopNormal(), chassis.getRightNormal());
-    modelMatrix.mul(chassis.getModelMatrix());
-    _shader.setModelMatrix(modelMatrix);
+    _shader.setModelMatrix(vehicle.getBody().getModelMatrix());
     for (int i = 0; i < _vehicleBody->getMeshes().getCount(); i++) {
         RenderMesh& mesh = _vehicleBody->getMeshes()[i];
         //_mainSceneShader.setMaterial(mesh.material);

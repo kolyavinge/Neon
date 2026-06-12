@@ -37,12 +37,24 @@ void Chassis::setTopNormal(Vector3& topNormal) {
     _topNormal = topNormal;
 }
 
-void Chassis::calculateRotateAngleAndAxis() {
+void Chassis::calculateAnglesAndModelMatrix() {
+    _modelMatrix.translate(_center);
+
     Quaternion q = Quaternion::rotateCoordinateSystem(
         CommonConstants::rightVector, _rightNormal,
         CommonConstants::frontVector, _frontNormal);
-    q.getAngleAndAxis(_rotateAngle, _rotateAxis);
-    _modelMatrix = q.getTransformMatrix4();
+    q.getAngleAndAxis(output _rotateAngle, output _rotateAxis);
+    TransformMatrix4 rotate = q.getTransformMatrix4();
+
+    _modelMatrix.mul(rotate);
+}
+
+Vector3& Chassis::getCenter() {
+    return _center;
+}
+
+void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& diveAxleCenter) {
+    _center = diveAxleCenter.getMiddleTo(nonDriveAxleCenter);
 }
 
 float Chassis::getRotateAngle() {

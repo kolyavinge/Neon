@@ -111,6 +111,6 @@ void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {
-    printf("Body pitch: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAngles().pitch));
-    printf("Body roll: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAngles().roll));
+    printf("Body pitch: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAnglesRelateChassis().pitch));
+    printf("Body roll: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAnglesRelateChassis().roll));
 }

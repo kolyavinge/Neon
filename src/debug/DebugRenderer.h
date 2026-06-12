@@ -10,7 +10,6 @@ class DebugRenderer : public Object {
 
 public:
     void renderDebugInfo(GameState& gameState);
-    void renderVehicle(Vehicle& vehicle);
     void renderVehicleAxles(Vehicle& vehicle);
     void renderVehicleWheels(Vehicle& vehicle);
     void renderVehicleBody(Vehicle& vehicle);
