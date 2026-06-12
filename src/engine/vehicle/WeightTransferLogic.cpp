@@ -80,7 +80,7 @@ void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::frontRight).transferWeight(frontRightWeight);
     vehicle.getWheel(WheelPosition::rearLeft).transferWeight(rearLeftWeight);
     vehicle.getWheel(WheelPosition::rearRight).transferWeight(rearRightWeight);
-    body.transferWeightOnRight(frontRightWeight + rearRightWeight);
+    body.transferWeightOnLeft(frontLeftWeight + rearLeftWeight);
 }
 
 void WeightTransferLogic::calculateSpringLengths(Vehicle& vehicle) {

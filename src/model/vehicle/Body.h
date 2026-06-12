@@ -13,7 +13,7 @@ class Body : public Object {
     Angles _angles;
     float _vehicleMass;
     float _transferedWeightOnRear;
-    float _transferedWeightOnRight;
+    float _transferedWeightOnLeft;
 
 public:
     Body();
@@ -21,7 +21,7 @@ public:
     Angles& getAngles();
     void setVehicleMass(float mass);
     void transferWeightOnRear(float onRear);
-    void transferWeightOnRight(float onRight);
+    void transferWeightOnLeft(float onLeft);
     Vector3& getAirDragForce();
     void calculateAirDragForce(Vector3& vehicleVelocity);
     void updateAngles();

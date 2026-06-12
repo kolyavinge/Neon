@@ -4,13 +4,13 @@
 Body::Body() {
     _vehicleMass = 0.0f;
     _transferedWeightOnRear = 0.0f;
-    _transferedWeightOnRight = 0.0f;
+    _transferedWeightOnLeft = 0.0f;
 }
 
 void Body::init() {
     _vehicleMass = 0.0f;
     _transferedWeightOnRear = 0.0f;
-    _transferedWeightOnRight = 0.0f;
+    _transferedWeightOnLeft = 0.0f;
     _airDragForce.setZero();
     _angles.init();
 }
@@ -27,8 +27,8 @@ void Body::transferWeightOnRear(float onRear) {
     _transferedWeightOnRear = onRear;
 }
 
-void Body::transferWeightOnRight(float onRight) {
-    _transferedWeightOnRight = onRight;
+void Body::transferWeightOnLeft(float onLeft) {
+    _transferedWeightOnLeft = onLeft;
 }
 
 Vector3& Body::getAirDragForce() {

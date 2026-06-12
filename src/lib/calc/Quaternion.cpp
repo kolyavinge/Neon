@@ -33,7 +33,7 @@ float Quaternion::getMagnitude() {
     return Math::sqrt(_w * _w + _x * _x + _y * _y + _z * _z);
 }
 
-void Quaternion::getAngleAndAxis(float& angle, Vector3& axis) {
+void Quaternion::getAngleAndAxis(output float& angle, output Vector3& axis) {
     float alphaHalf = Math::arccos(_w);
     angle = 2.0f * alphaHalf;
     axis.set(_x, _y, _z);

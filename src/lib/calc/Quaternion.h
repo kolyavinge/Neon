@@ -16,7 +16,7 @@ public:
     Quaternion(float angle, Vector3 axis);
 
     float getMagnitude();
-    void getAngleAndAxis(float& angle, Vector3& axis);
+    void getAngleAndAxis(output float& angle, output Vector3& axis);
     void setIdentity();
     void setComponents(float w, float x, float y, float z);
     void setVectors(Vector3& from, Vector3& to);

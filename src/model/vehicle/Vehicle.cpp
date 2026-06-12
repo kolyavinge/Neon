@@ -18,7 +18,6 @@ void Vehicle::init() {
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
     _chassis.init();
-    _body.setVehicleMass(_data.vehicleMass);
     getNonDriveAxle().getCenter().y += _data.wheelbaseLength;
     _gearbox.shiftUp();
 }
