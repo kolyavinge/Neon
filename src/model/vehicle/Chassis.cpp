@@ -7,8 +7,8 @@ Chassis::Chassis() {
 }
 
 void Chassis::init() {
-    _frontNormal.set(0.0f, 1.0f, 0.0f);
-    _rightNormal.set(1.0f, 0.0f, 0.0f);
+    _frontNormal = CommonConstants::frontVector;
+    _rightNormal = CommonConstants::rightVector;
     _topNormal = CommonConstants::upVector;
     _rotateAngle = 0.0f;
 }

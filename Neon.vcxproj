@@ -121,6 +121,7 @@
     <ClInclude Include="src\engine\vehicle\GearboxLogic.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\lib\SmoothValue.h" />
     <ClInclude Include="src\lib\calc\Vector2.h" />
     <ClInclude Include="src\lib\collections\BSPTree.h" />
     <ClInclude Include="src\lib\calc\Plane.h" />

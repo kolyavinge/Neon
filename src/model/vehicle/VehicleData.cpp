@@ -27,8 +27,8 @@ VehicleData::VehicleData() {
     frontWheelLengthToMassCenter = 1.8f;
     rearWheelLengthToMassCenter = 1.8f;
     trackWidth = 2.0f;
-    bodyMaxPitch = UnitConverter::degreesToRadians(50.0f);
-    bodyMaxRoll = UnitConverter::degreesToRadians(50.0f);
+    bodyMaxPitch = UnitConverter::degreesToRadians(100.0f);
+    bodyMaxRoll = UnitConverter::degreesToRadians(100.0f);
     airDragCoeff = 0.2f;
 
     /* engine */

@@ -47,7 +47,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
 
     body.calculateCenter(chassis.getCenter(), chassis.getTopNormal());
     body.calculateBox(chassis.getRightNormal(), chassis.getFrontNormal(), chassis.getTopNormal());
-    body.calculateAngles();
+    body.calculateAngles(dt);
     body.calculateModelMatrix(chassis.getModelMatrix());
 
     Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);

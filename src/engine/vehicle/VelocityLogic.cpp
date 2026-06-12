@@ -54,12 +54,11 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
 }
 
 bool VelocityLogic::isVelocityZero(Vehicle& vehicle) {
-    const float minVelocityDelta = 0.1f;
     Axle& driveAxle = vehicle.getDriveAxle();
-    bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, minVelocityDelta);
+    bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, VehicleConstants::minVelocityDelta);
     for (int i = 0; result && i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
-        result &= Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, minVelocityDelta);
+        result &= Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::minVelocityDelta);
     }
 
     return result;

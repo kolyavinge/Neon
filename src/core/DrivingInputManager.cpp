@@ -22,9 +22,9 @@ void DrivingInputManager::update(DrivingInputData& inputData) {
 
     // debug only
     if (_inputManager.keyboard.isKeyPressed(Keys::e)) {
-        inputData.addThrottleRatio(0.05f);
+        inputData.addThrottleRatio(0.1f);
     } else if (_inputManager.keyboard.isKeyPressed(Keys::q)) {
-        inputData.addThrottleRatio(-0.05f);
+        inputData.addThrottleRatio(-0.1f);
     }
     // debug only
 

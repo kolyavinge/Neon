@@ -11,8 +11,8 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     printGear(vehicle);
     printThrottle(inputData);
     printEngineRpm(vehicle);
-    printWheelAngularVelocity(vehicle);
-    printDiffBetweenRpmAndAngularVelocity(vehicle);
+    //printWheelAngularVelocity(vehicle);
+    //printDiffBetweenRpmAndAngularVelocity(vehicle);
     printSlipRatio(vehicle, true);
     //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
@@ -49,12 +49,12 @@ void VehicleDebuger::printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle) {
 
 void VehicleDebuger::printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels) {
     if (onlyDriveWheels) {
-        printf("SR: %.2f (%.2f/%.2f)|",
+        printf("SR: %.4f (%.4f/%.4f)|",
             vehicle.getDriveWheel(0).getSlipRatio().value,
             vehicle.getDriveWheel(0).getSlipRatio().drivenVelocity,
             vehicle.getDriveWheel(0).getSlipRatio().linearVelocity);
     } else {
-        printf("SR: %.2f (%.2f/%.2f) %.2f (%.2f/%.2f)|",
+        printf("SR: %.4f (%.4f/%.4f) %.4f (%.4f/%.4f)|",
             vehicle.getDriveWheel(0).getSlipRatio().value,
             vehicle.getDriveWheel(0).getSlipRatio().drivenVelocity,
             vehicle.getDriveWheel(0).getSlipRatio().linearVelocity,
@@ -111,6 +111,6 @@ void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {
-    printf("Body pitch: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAnglesRelateChassis().pitch));
-    printf("Body roll: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getAnglesRelateChassis().roll));
+    printf("Body pitch: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getPitchAngleRelateChassis()));
+    printf("Body roll: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getRollAngleRelateChassis()));
 }

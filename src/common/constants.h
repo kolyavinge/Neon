@@ -10,7 +10,7 @@ public:
     inline static const float screenAspect = 16.0f / 9.0f;
     inline static const int screenWidth = 1200;
     inline static const int screenHeight = (int)((float)screenWidth / screenAspect);
-    inline static const float frameRate = 25.0f;
+    inline static const float frameRate = 60.0f;
     inline static const float deltaTimeSec = 1.0f / frameRate;
     inline static const float g = 9.81f;
     inline static Vector3 axisOrigin = Vector3(0.0f, 0.0f, 0.0f);
@@ -28,4 +28,11 @@ class GameConstants {
 
 public:
     inline static const int maxVehiclesCount = 1;
+};
+
+class VehicleConstants {
+
+public:
+    inline static const float minVelocityDelta = 0.1f;
+    inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(1.0f);
 };

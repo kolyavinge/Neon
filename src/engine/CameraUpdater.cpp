@@ -5,7 +5,7 @@
 #include <lib/calc/Vector3.h>
 
 void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
-    camera.setVerticalViewAngle(UnitConverter::degreesToRadians(40.0f));
+    camera.setVerticalViewAngle(CommonConstants::verticalFieldOfView);
     //setSideView(camera, playerVehicle);
     setBackView(camera, playerVehicle);
     //setTopView(camera, playerVehicle);

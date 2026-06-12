@@ -21,6 +21,9 @@ void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
 
 void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
+    Body& body = vehicle.getBody();
+    body.transferWeightOnRear(0.0f);
+    body.transferWeightOnLeft(0.0f);
     float frontWheelsWeight = (vehicleData.rearWheelLengthToMassCenter / vehicleData.wheelbaseLength) * vehicleData.vehicleMass;
     float rearWheelsWeight = vehicleData.vehicleMass - frontWheelsWeight;
     float frontWheelWeight = frontWheelsWeight / Vehicle::nonDriveWheelsCount;

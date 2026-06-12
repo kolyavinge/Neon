@@ -18,7 +18,7 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upVector);
     renderGrid();
-    renderGlobalAxis();
+    //renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
     //renderVehicleAxles(vehicle);
     //renderVehicleWheels(vehicle);
@@ -65,7 +65,7 @@ void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {
     glBegin(GL_LINES);
     glVertex3f(0.0f, 0.0f, 0.0f);
     velocity = nonDriveAxle.getVelocity();
-    velocity.div(50.0f);
+    //velocity.div(50.0f);
     glVertex3f(velocity);
     glEnd();
     glPopMatrix();

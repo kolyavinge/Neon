@@ -26,11 +26,11 @@ void Wheel::init(WheelPosition position) {
     _loadWeight = 250.0f;
     _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
-    _frontNormal.set(0.0f, 1.0f, 0.0f);
+    _frontNormal = CommonConstants::frontVector;
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
-        _outsideNormal.set(-1.0f, 0.0f, 0.0f);
+        _outsideNormal = CommonConstants::leftVector;
     } else {
-        _outsideNormal.set(1.0f, 0.0f, 0.0f);
+        _outsideNormal = CommonConstants::rightVector;
     }
     _center.setZero();
     _longitudinalForce.setZero();
@@ -165,6 +165,7 @@ float Wheel::getSlipAngle() {
     float lateralVelocity = _outsideNormal.dotProduct(_linearVelocity);
     float longitudinalVelocity = _frontNormal.dotProduct(_linearVelocity);
     float slipAngle = -Math::arctan2(lateralVelocity, Math::abs(longitudinalVelocity));
+    if (Numeric::floatEquals(slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) return 0.0f;
 
     return slipAngle;
 }
@@ -222,23 +223,14 @@ TransformMatrix4& Wheel::getModelMatrix() {
 }
 
 void Wheel::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
+    _modelMatrix = chassisModelMatrix;
+    Vector3& localOutsideNormal = _position == WheelPosition::frontLeft ? CommonConstants::leftVector : CommonConstants::rightVector;
+    TransformMatrix4 angularRotate;
+    angularRotate.rotate(_rotateAngle, localOutsideNormal);
+    _modelMatrix.mul(angularRotate);
     if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
         TransformMatrix4 steeringRotate;
         steeringRotate.rotate(_steeringAngle, CommonConstants::upVector);
-        TransformMatrix4 angularRotate;
-        if (_position == WheelPosition::frontLeft) {
-            angularRotate.rotate(_rotateAngle, CommonConstants::leftVector);
-        } else {
-            angularRotate.rotate(_rotateAngle, CommonConstants::rightVector);
-        }
-        steeringRotate.mul(angularRotate);
-        _modelMatrix = chassisModelMatrix;
-        _modelMatrix.mul(angularRotate);
         _modelMatrix.mul(steeringRotate);
-    } else {
-        TransformMatrix4 angularRotate;
-        angularRotate.rotate(_rotateAngle, _outsideNormal);
-        _modelMatrix = chassisModelMatrix;
-        _modelMatrix.mul(angularRotate);
     }
 }
