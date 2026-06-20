@@ -75,9 +75,6 @@
     <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lib\calc\Geometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\vehicle\ForceLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -384,9 +381,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\common\constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\calc\Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\vehicle\ForceLogic.h">

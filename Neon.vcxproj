@@ -42,7 +42,6 @@
     <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
-    <ClCompile Include="src\lib\calc\Geometry.cpp" />
     <ClCompile Include="src\lib\calc\Plane.cpp" />
     <ClCompile Include="src\lib\calc\Quaternion.cpp" />
     <ClCompile Include="src\lib\calc\TruncatedPlane.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="src\engine\vehicle\VelocityLogic.h" />
     <ClInclude Include="src\engine\vehicle\WeightTransferLogic.h" />
     <ClInclude Include="src\lib\Assert.h" />
-    <ClInclude Include="src\lib\calc\Geometry.h" />
     <ClInclude Include="src\lib\calc\TransformMatrix4.h" />
     <ClInclude Include="src\lib\calc\UnitConverter.h" />
     <ClInclude Include="src\lib\calc\Vector3.h" />

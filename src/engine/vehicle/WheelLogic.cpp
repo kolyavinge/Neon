@@ -1,6 +1,5 @@
 #include <common/constants.h>
 #include <engine/vehicle/WheelLogic.h>
-#include <lib/calc/Geometry.h>
 #include <lib/calc/Math.h>
 
 void WheelLogic::calculateNormalsBySteeringAngle(
@@ -10,10 +9,10 @@ void WheelLogic::calculateNormalsBySteeringAngle(
     output Vector3& newWheelFrontNormal,
     output Vector3& newLeftWheelOutsideNormal,
     output Vector3& newRightWheelOutsideNormal) {
-    newWheelFrontNormal = Geometry::rotatePoint(chassisFrontNormal, steeringAngle, chassisTopNormal, CommonConstants::axisOrigin);
+    newWheelFrontNormal = Math::rotatePoint(chassisFrontNormal, steeringAngle, chassisTopNormal, CommonConstants::axisOrigin);
     newWheelFrontNormal.normalize();
 
-    newLeftWheelOutsideNormal = Geometry::rotatePoint(chassisFrontNormal, steeringAngle + Math::piHalf, chassisTopNormal, CommonConstants::axisOrigin);
+    newLeftWheelOutsideNormal = Math::rotatePoint(chassisFrontNormal, steeringAngle + Math::piHalf, chassisTopNormal, CommonConstants::axisOrigin);
     newLeftWheelOutsideNormal.normalize();
 
     newRightWheelOutsideNormal = newLeftWheelOutsideNormal;

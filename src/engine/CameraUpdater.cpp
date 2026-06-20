@@ -1,7 +1,6 @@
 #include <common/constants.h>
 #include <engine/CameraUpdater.h>
-#include <lib/calc/Geometry.h>
-#include <lib/calc/UnitConverter.h>
+#include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 
 void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
@@ -22,7 +21,7 @@ void CameraUpdater::setSideView(Camera& camera, Vehicle& playerVehicle) {
 
     Vector3 lookDirection = playerVehicle.getChassis().getRightNormal();
     lookDirection.mul(-1.0f);
-    lookDirection = Geometry::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getFrontNormal(), CommonConstants::axisOrigin);
+    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getFrontNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }
@@ -35,7 +34,7 @@ void CameraUpdater::setBackView(Camera& camera, Vehicle& playerVehicle) {
     camera.setPosition(position);
 
     Vector3 lookDirection = playerVehicle.getChassis().getFrontNormal();
-    lookDirection = Geometry::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getRightNormal(), CommonConstants::axisOrigin);
+    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getRightNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }

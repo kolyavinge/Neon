@@ -1,6 +1,5 @@
 #include <common/constants.h>
 #include <engine/vehicle/PositionLogic.h>
-#include <lib/calc/Geometry.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
@@ -26,7 +25,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     Vector3 chassisFrontNormal = nonDriveAxle.getCenter();
     chassisFrontNormal.sub(diveAxle.getCenter());
     chassisFrontNormal.normalize();
-    Vector3 chassisRightNormal = Geometry::rotatePoint(chassisFrontNormal, -Math::piHalf, chassis.getTopNormal(), CommonConstants::axisOrigin);
+    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, chassis.getTopNormal(), CommonConstants::axisOrigin);
     chassisRightNormal.normalize();
     Vector3 chassisLeftNormal = chassisRightNormal;
     chassisLeftNormal.mul(-1.0f);
