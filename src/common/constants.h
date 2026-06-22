@@ -12,7 +12,6 @@ public:
     inline static const int screenHeight = (int)((float)screenWidth / screenAspect);
     inline static const float frameRate = 60.0f;
     inline static const float deltaTimeSec = 1.0f / frameRate;
-    inline static const float g = 9.81f;
     inline static Vector3 axisOrigin = Vector3(0.0f, 0.0f, 0.0f);
     inline static Vector3 leftVector = Vector3(-1.0f, 0.0f, 0.0f);
     inline static Vector3 rightVector = Vector3(1.0f, 0.0f, 0.0f);
@@ -22,6 +21,12 @@ public:
     inline static const float verticalFieldOfView = UnitConverter::degreesToRadians(verticalFieldOfViewDegrees);
     inline static const float minPerspectiveDepth = 0.01f;
     inline static const float maxPerspectiveDepth = 1000.0f;
+};
+
+class PhysixConstants {
+
+public:
+    inline static const float g = 9.81f;
 };
 
 class GameConstants {

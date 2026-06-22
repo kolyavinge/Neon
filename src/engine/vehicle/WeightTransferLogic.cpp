@@ -38,7 +38,7 @@ void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehi
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     Vector3 acceleration = vehicle.getLongitudinalAcceleration();
-    float accelerationInG = acceleration.getLength() / CommonConstants::g;
+    float accelerationInG = acceleration.getLength() / PhysixConstants::g;
     float transferedWeight = accelerationInG * vehicleData.massCenterHeight * vehicleData.vehicleMass / vehicleData.wheelbaseLength;
     float transferedWeightOneWheel = transferedWeight / Vehicle::driveWheelsCount;
     float frontWheelWeight, rearWheelWeight;
@@ -61,7 +61,7 @@ void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     Vector3 acceleration = vehicle.getLateralAcceleration();
-    float accelerationInG = acceleration.getLength() / CommonConstants::g;
+    float accelerationInG = acceleration.getLength() / PhysixConstants::g;
     float frontTransferedWeight = accelerationInG * vehicle.getFrontWheelsWeight() * vehicleData.massCenterHeight / vehicleData.trackWidth;
     float rearTransferedWeight = accelerationInG * vehicle.getRearWheelsWeight() * vehicleData.massCenterHeight / vehicleData.trackWidth;
     float frontTransferedWeightOneWheel = frontTransferedWeight;

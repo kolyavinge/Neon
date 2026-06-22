@@ -2,6 +2,7 @@
 #include <common/constants.h>
 #include <core/Game.h>
 #include <debug/stat.h>
+#include <lib/windows.h>
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
     glViewport(0, 0, width, (int)((float)width / CommonConstants::screenAspect));
@@ -13,16 +14,28 @@ void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept
     }
 }
 
+void App::moveConsoleToCorner() {
+    HWND cmdWnd = GetConsoleWindow();
+    if (cmdWnd != nullptr) {
+        int xPos = 0;
+        int yPos = 0;
+        int width = 800;
+        int height = 800;
+        MoveWindow(cmdWnd, xPos, yPos, width, height, true);
+    }
+}
+
 void App::run() {
     if (glfwInit() == GLFW_FALSE) throw AppException();
     GLFWwindow* window = glfwCreateWindow(CommonConstants::screenWidth, CommonConstants::screenHeight, CommonConstants::title, nullptr, nullptr);
     if (window == nullptr) { glfwTerminate(); throw AppException(); }
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    glfwSetWindowPos(window, (mode->width - CommonConstants::screenWidth) / 2, (mode->height - CommonConstants::screenHeight) / 2);
+    glfwSetWindowPos(window, (mode->width - CommonConstants::screenWidth) / 2 + 350, (mode->height - CommonConstants::screenHeight) / 2);
     glfwSetKeyCallback(window, onKeyInput);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, onResize);
     if (glewInit() != GLEW_OK) throw AppException();
+    moveConsoleToCorner();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();
     double accumulator = 0.0;
