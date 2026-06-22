@@ -28,8 +28,8 @@ void VehicleUpdater::updateVehicles(VehiclesArray& vehicles, DrivingInputData& i
 
 void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& inputData) {
     _steeringLogic.steer(vehicle, inputData.getSteeringRatio());
-    if (inputData.isShiftedUp() || inputData.isShiftedDown()) {
-        _gearboxLogic.shift(vehicle.getGearbox(), inputData.isShiftedUp(), inputData.isShiftedDown());
+    bool isShifted = _gearboxLogic.shift(vehicle, inputData);
+    if (isShifted) {
         _engineLogic.synchEngineAndWheelsAfterShifting(vehicle, inputData.getThrottleRatio());
     }
     _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());

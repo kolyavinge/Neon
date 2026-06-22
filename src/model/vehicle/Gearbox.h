@@ -4,6 +4,11 @@
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
 
+enum class GearboxKind {
+    manual,
+    automatic
+};
+
 class Gearbox : public Object {
 
     inline static const int _maxGearsCount = (int)Gear::_count;
@@ -17,8 +22,10 @@ class Gearbox : public Object {
 public:
     Gearbox();
     void init();
+    GearboxKind getKind();
     Gear getPrevGear();
     Gear getCurrentGear();
+    float getLowerGearRatio();
     float getCurrentGearRatio();
     bool shiftUp();
     bool shiftDown();

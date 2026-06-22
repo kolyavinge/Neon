@@ -13,12 +13,24 @@ void Gearbox::init() {
     _isClutchActive = true;
 }
 
+GearboxKind Gearbox::getKind() {
+    return GearboxKind::automatic;
+}
+
 Gear Gearbox::getPrevGear() {
     return (Gear)(_prevGearIndex - 1);
 }
 
 Gear Gearbox::getCurrentGear() {
     return (Gear)(_currentGearIndex - 1);
+}
+
+float Gearbox::getLowerGearRatio() {
+    if (_currentGearIndex > 0) {
+        return _gearRatios[_currentGearIndex - 1];
+    } else {
+        return _gearRatios[0];
+    }
 }
 
 float Gearbox::getCurrentGearRatio() {

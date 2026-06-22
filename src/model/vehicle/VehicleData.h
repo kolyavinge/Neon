@@ -19,6 +19,7 @@ public:
     /* gearbox */
     float finalGearRatio;
     Array<float, (int)Gear::_count> gearRatios;
+    float rpmToAutoShift;
 
     /* body */
     Measures bodyMeasures;

@@ -16,6 +16,7 @@ VehicleData::VehicleData() {
     gearRatios[5] = finalGearRatio * 1.5f;
     gearRatios[6] = finalGearRatio * 1.0f;
     gearRatios[7] = finalGearRatio * 0.8f;
+    rpmToAutoShift = 7800.0f;
 
     /* body */
     bodyMeasures.xLength = 1.7f;
@@ -37,8 +38,8 @@ VehicleData::VehicleData() {
     engineTorqueCurve.c = 1.0f;
     engineTorqueCurve.d = 6000.0f;
     engineTorqueCurve.f = 3000.0f;
-    engineMinRpm = 0.0;
-    engineMaxRpm = 8000.0;
+    engineMinRpm = 1000.0f;
+    engineMaxRpm = 8000.0f;
     engineBrakingForce = 0.5f;
 
     /* wheel */
