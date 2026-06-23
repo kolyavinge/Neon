@@ -115,8 +115,10 @@ void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }
 
-void Wheel::calculateNewAngularVelocity(float brakingRatio, float expectedAngularVelocityByEngine, float dt) {
-    _angularVelocity += (expectedAngularVelocityByEngine - _angularVelocity);
+void Wheel::calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt) {
+    if (isEngineAndWheelsConnected) {
+        _angularVelocity += (expectedAngularVelocityByEngine - _angularVelocity);
+    }
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
     }

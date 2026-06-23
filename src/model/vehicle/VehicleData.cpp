@@ -47,9 +47,10 @@ VehicleData::VehicleData() {
     rearWheelRadius = 0.4f;
     brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
+    minRoadFrictionCoeff = 1.0f;
 
     /* spring */
-    springStiffness = 10000.0f;
+    springStiffness = 20000.0f;
     springDamper = 0.2f;
     springMinLength = 0.1f;
     springMaxLength = 0.4f;
@@ -60,7 +61,7 @@ VehicleData::VehicleData() {
 }
 
 float VehicleData::getRoadFrictionCoeff(float slipAngle) {
-    return 20.0f * Math::abs(slipAngle);
+    return Math::max(20.0f * Math::abs(slipAngle), minRoadFrictionCoeff);
 }
 
 float VehicleData::getLongitudinalForceCoeff(float slipRatio) {

@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <engine/vehicle/VelocityLogic.h>
+#include <lib/Numeric.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
@@ -68,6 +69,8 @@ void VelocityLogic::setVelocityToZero(Vehicle& vehicle) {
     vehicle.getDriveAxle().getVelocity().setZero();
     vehicle.getNonDriveAxle().getVelocity().setZero();
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
-        vehicle.getWheel(i).setAngularVelocity(0.0f);
+        Wheel& wheel = vehicle.getWheel(i);
+        wheel.setAngularVelocity(0.0f);
+        wheel.getLinearVelocity().setZero();
     }
 }

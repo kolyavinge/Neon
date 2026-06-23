@@ -24,8 +24,10 @@ void Engine::setRpm(float rpm, float throttleRatio) {
     _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
 }
 
-void Engine::calculateNewRpm(float throttleRatio, float expectedRpmByWheels, float gearRatio, float dt) {
-    _rpm += _data.engineBrakingForce * (expectedRpmByWheels - _rpm);
+void Engine::calculateNewRpm(bool isEngineAndWheelsConnected, float throttleRatio, float expectedRpmByWheels, float gearRatio, float dt) {
+    if (isEngineAndWheelsConnected) {
+        _rpm += _data.engineBrakingForce * (expectedRpmByWheels - _rpm);
+    }
     if (_rpm < _data.engineMinRpm) {
         _rpm = _data.engineMinRpm;
     }

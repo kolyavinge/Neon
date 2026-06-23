@@ -61,7 +61,7 @@ public:
     void transferWeight(float weight);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
-    void calculateNewAngularVelocity(float brakingRatio, float expectedAngularVelocityByEngine, float dt);
+    void calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt);
     void brake(float brakingRatio, float dt);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
