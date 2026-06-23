@@ -1,4 +1,5 @@
 #include <debug/VehicleDebuger.h>
+#include <iostream>
 #include <lib/calc/UnitConverter.h>
 #include <stdio.h>
 
@@ -8,14 +9,15 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     _tick++;
     if ((_tick % 10) != 0) return;
 
+    paintText(inputData);
     printGear(vehicle);
     printThrottle(inputData);
     printEngineRpm(vehicle);
     //printWheelAngularVelocity(vehicle);
-    //printDiffBetweenRpmAndAngularVelocity(vehicle);
+    printDiffBetweenRpmAndAngularVelocity(vehicle);
     printSlipRatio(vehicle, true);
     //printSlipAngle(vehicle);
-    //printLongitudinalForce(vehicle);
+    printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
     printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
@@ -49,12 +51,12 @@ void VehicleDebuger::printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle) {
 
 void VehicleDebuger::printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels) {
     if (onlyDriveWheels) {
-        printf("SR: %.4f (%.4f/%.4f)|",
+        printf("SR: %.2f (%.2f/%.2f)|",
             vehicle.getDriveWheel(0).getSlipRatio().value,
             vehicle.getDriveWheel(0).getSlipRatio().drivenVelocity,
             vehicle.getDriveWheel(0).getSlipRatio().linearVelocity);
     } else {
-        printf("SR: %.4f (%.4f/%.4f) %.4f (%.4f/%.4f)|",
+        printf("SR: %.2f (%.2f/%.2f) %.2f (%.2f/%.2f)|",
             vehicle.getDriveWheel(0).getSlipRatio().value,
             vehicle.getDriveWheel(0).getSlipRatio().drivenVelocity,
             vehicle.getDriveWheel(0).getSlipRatio().linearVelocity,
@@ -113,4 +115,17 @@ void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
 void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {
     printf("Body pitch: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getPitchAngleRelateChassis()));
     printf("Body roll: %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getRollAngleRelateChassis()));
+}
+
+void VehicleDebuger::paintText(DrivingInputData& inputData) {
+    const char* reset = "\033[0m";
+    const char* green = "\033[1;32m";
+    const char* red = "\033[1;31m";
+    if (inputData.getThrottleRatio() > 0.0f) {
+        std::cout << green;
+    } else if (inputData.getBrakeRatio() > 0.0f) {
+        std::cout << red;
+    } else {
+        std::cout << reset;
+    }
 }
