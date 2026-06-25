@@ -32,14 +32,14 @@ Vector3& Axle::getRightWheelPosition() {
     return _rightWheelPosition;
 }
 
-void Axle::calculateVelocity(Vector3& force, float vehicleMass, float deltaTime) {
+void Axle::calculateVelocity(Vector3& force, float vehicleMass, float dt) {
     _acceleration = force;
     _acceleration.div(vehicleMass);
-    _velocity.addMultiplied(_acceleration, deltaTime);
+    _velocity.addMultiplied(_acceleration, dt);
 }
 
-void Axle::calculateNewPosition(float deltaTime) {
-    _center.addMultiplied(_velocity, deltaTime);
+void Axle::calculateNewPosition(Vector3& leftWheelCenter, Vector3& rightWheelCenter) {
+    _center = leftWheelCenter.getMiddleTo(rightWheelCenter);
 }
 
 void Axle::calculateWheelPositions(Vector3& vehicleRightNormal) {

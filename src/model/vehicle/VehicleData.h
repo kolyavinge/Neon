@@ -14,7 +14,6 @@ class VehicleData : public Object {
 
 public:
     float vehicleMass;
-    //float lengthBetweenAxleCenters;
 
     /* gearbox */
     float finalGearRatio;
@@ -32,6 +31,7 @@ public:
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;
+    float groundClearance;
 
     /* engine */
     EngineTorqueCurve engineTorqueCurve;
@@ -44,6 +44,7 @@ public:
     float rearWheelRadius;
     float brakingForceCoeff;
     float maxSteeringAngle;
+    float minRoadFrictionCoeff;
 
     /* spring */
     float springStiffness;

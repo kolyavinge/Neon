@@ -1,6 +1,5 @@
 #include <common/constants.h>
 #include <engine/vehicle/VelocityLogic.h>
-#include <lib/Numeric.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
@@ -37,8 +36,8 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().vehicleMass, dt);
     driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().vehicleMass, dt);
 
-    if (isVelocityZero(vehicle)) {
-        setVelocityToZero(vehicle);
+    if (vehicle.isVelocityZero()) {
+        vehicle.setVelocityToZero();
     }
 
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
@@ -51,26 +50,5 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
         wheel.setLinearVelocity(nonDriveAxle.getVelocity());
         wheel.calculateAngularVelocityByLinear();
         wheel.updateRotateAngle(dt);
-    }
-}
-
-bool VelocityLogic::isVelocityZero(Vehicle& vehicle) {
-    Axle& driveAxle = vehicle.getDriveAxle();
-    bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, VehicleConstants::minVelocityDelta);
-    for (int i = 0; result && i < Vehicle::driveWheelsCount; i++) {
-        Wheel& wheel = vehicle.getDriveWheel(i);
-        result &= Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::minVelocityDelta);
-    }
-
-    return result;
-}
-
-void VelocityLogic::setVelocityToZero(Vehicle& vehicle) {
-    vehicle.getDriveAxle().getVelocity().setZero();
-    vehicle.getNonDriveAxle().getVelocity().setZero();
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        wheel.setAngularVelocity(0.0f);
-        wheel.getLinearVelocity().setZero();
     }
 }

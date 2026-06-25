@@ -12,10 +12,10 @@ void Body::init() {
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnLeft = 0.0f;
     _airDragForce.setZero();
-    _pitchAngle.setCurrentValue(0);
-    _pitchAngle.setDestinationValue(0);
-    _rollAngle.setCurrentValue(0);
-    _rollAngle.setDestinationValue(0);
+    _pitchAngle.setCurrentValue(0.0f);
+    _pitchAngle.setDestinationValue(0.0f);
+    _rollAngle.setCurrentValue(0.0f);
+    _rollAngle.setDestinationValue(0.0f);
 }
 
 float Body::getPitchAngleRelateChassis() {
@@ -50,7 +50,7 @@ void Body::calculateAirDragForce(Vector3& vehicleVelocity) {
 
 void Body::calculateCenter(Vector3& chassisCenter, Vector3& chassisTopNormal) {
     _center = chassisCenter;
-    //_center.addMultiplied(chassisTopNormal, _data.bodyMeasures.zLength / 2.0f);
+    _center.addMultiplied(chassisTopNormal, _data.bodyMeasures.zLength / 2.0f);
 }
 
 void Body::calculateBox(Vector3& chassisRightNormal, Vector3& chassisFrontNormal, Vector3& chassisTopNormal) {

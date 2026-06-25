@@ -220,6 +220,14 @@ void Wheel::calculateAngularVelocityByLinear() {
     _angularVelocity = _linearVelocity.getLength() / getRadius();
 }
 
+void Wheel::calculateNewCenterPosition(float dt) {
+    _center.addMultiplied(_linearVelocity, dt);
+}
+
+void Wheel::calculateNewCenterZ(float wheelZ) {
+    _center.z = wheelZ + getRadius();
+}
+
 TransformMatrix4& Wheel::getModelMatrix() {
     return _modelMatrix;
 }

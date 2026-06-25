@@ -4,7 +4,6 @@
 
 VehicleData::VehicleData() {
     vehicleMass = 1000.0f;
-    //lengthBetweenAxleCenters = 2.0f;
 
     /* gearbox */
     finalGearRatio = 3.5f;
@@ -19,18 +18,19 @@ VehicleData::VehicleData() {
     rpmToAutoShift = 7800.0f;
 
     /* body */
-    bodyMeasures.xLength = 1.7f;
+    bodyMeasures.xLength = 1.6f;
     bodyMeasures.yLength = 3.5f;
-    bodyMeasures.zLength = 0.6f;
+    bodyMeasures.zLength = 0.8f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = 1.0f;
-    wheelbaseLength = 3.6f;
+    wheelbaseLength = 2.0f;
     frontWheelLengthToMassCenter = 1.8f;
     rearWheelLengthToMassCenter = 1.8f;
-    trackWidth = 2.0f;
-    bodyMaxPitch = UnitConverter::degreesToRadians(100.0f);
-    bodyMaxRoll = UnitConverter::degreesToRadians(100.0f);
+    trackWidth = 1.7f;
+    bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
+    bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
+    groundClearance = 0.02f;
 
     /* engine */
     engineTorqueCurve.a = 200.0f;
@@ -43,8 +43,8 @@ VehicleData::VehicleData() {
     engineBrakingForce = 0.5f;
 
     /* wheel */
-    frontWheelRadius = 0.3f;
-    rearWheelRadius = 0.4f;
+    frontWheelRadius = 0.2f;
+    rearWheelRadius = 0.25f;
     brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRoadFrictionCoeff = 1.0f;

@@ -9,6 +9,4 @@ public:
     void calculateVelocity(Vehicle& vehicle);
 
 private:
-    bool isVelocityZero(Vehicle& vehicle);
-    void setVelocityToZero(Vehicle& vehicle);
 };

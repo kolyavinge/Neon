@@ -3,9 +3,11 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/vehicle/VehicleData.h>
 
 class Chassis : public Object {
 
+    VehicleData _data;
     Vector3 _frontNormal;
     Vector3 _rightNormal;
     Vector3 _topNormal;
@@ -25,7 +27,7 @@ public:
     void setTopNormal(Vector3& topNormal);
     void calculateAnglesAndModelMatrix();
     Vector3& getCenter();
-    void calculateCenter(Vector3& nonDriveAxleCenter, Vector3& diveAxleCenter);
+    void calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter);
     float getRotateAngle();
     Vector3& getRotateAxis();
     TransformMatrix4& getModelMatrix();

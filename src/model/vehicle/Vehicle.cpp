@@ -18,8 +18,17 @@ void Vehicle::init() {
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
     _chassis.init();
-    getNonDriveAxle().getCenter().y += _data.wheelbaseLength;
-    _gearbox.shiftUp();
+
+    // TODO возможно нужно вынести в отдельный класс инициализацию позиции машинки
+    Axle& nonDriveAxle = getNonDriveAxle();
+    Axle& driveAxle = getDriveAxle();
+    nonDriveAxle.getCenter().y += _data.wheelbaseLength;
+    nonDriveAxle.calculateWheelPositions(_chassis.getRightNormal());
+    driveAxle.calculateWheelPositions(_chassis.getRightNormal());
+    getWheel(WheelPosition::frontLeft).setPosition(nonDriveAxle.getLeftWheelPosition());
+    getWheel(WheelPosition::frontRight).setPosition(nonDriveAxle.getRightWheelPosition());
+    getWheel(WheelPosition::rearLeft).setPosition(driveAxle.getLeftWheelPosition());
+    getWheel(WheelPosition::rearRight).setPosition(driveAxle.getRightWheelPosition());
 }
 
 VehicleData& Vehicle::getData() {
@@ -147,4 +156,23 @@ float Vehicle::getAverageDriveWheelsRpm() {
     float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / Vehicle::driveWheelsCount;
 
     return averageWheelsRpm;
+}
+
+bool Vehicle::isVelocityZero() {
+    Axle& driveAxle = getDriveAxle();
+    bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, VehicleConstants::minVelocityDelta);
+    for (int i = 0; result && i < Vehicle::driveWheelsCount; i++) {
+        Wheel& wheel = getDriveWheel(i);
+        result &= Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::minVelocityDelta);
+    }
+
+    return result;
+}
+
+void Vehicle::setVelocityToZero() {
+    getDriveAxle().getVelocity().setZero();
+    getNonDriveAxle().getVelocity().setZero();
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        getWheel(i).setAngularVelocity(0.0f);
+    }
 }

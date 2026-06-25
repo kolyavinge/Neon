@@ -21,7 +21,7 @@ public:
     void setCenter(Vector3& center);
     Vector3& getLeftWheelPosition();
     Vector3& getRightWheelPosition();
-    void calculateVelocity(Vector3& force, float vehicleMass, float deltaTime);
-    void calculateNewPosition(float deltaTime);
+    void calculateVelocity(Vector3& force, float vehicleMass, float dt);
+    void calculateNewPosition(Vector3& leftWheelCenter, Vector3& rightWheelCenter);
     void calculateWheelPositions(Vector3& vehicleRightNormal);
 };

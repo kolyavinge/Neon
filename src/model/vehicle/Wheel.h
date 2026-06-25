@@ -77,6 +77,8 @@ public:
     Vector3& getLinearVelocity();
     void setLinearVelocity(Vector3& velocity);
     void calculateAngularVelocityByLinear();
+    void calculateNewCenterPosition(float dt);
+    void calculateNewCenterZ(float wheelZ);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(TransformMatrix4& chassisModelMatrix);
 };

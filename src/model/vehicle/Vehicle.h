@@ -55,6 +55,8 @@ public:
     float getFrontWheelsWeight();
     float getRearWheelsWeight();
     float getAverageDriveWheelsRpm();
+    bool isVelocityZero();
+    void setVelocityToZero();
 };
 
 typedef Array<Vehicle, GameConstants::maxVehiclesCount> VehiclesArray;

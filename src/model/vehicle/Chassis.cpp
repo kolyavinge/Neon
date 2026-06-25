@@ -53,8 +53,9 @@ Vector3& Chassis::getCenter() {
     return _center;
 }
 
-void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& diveAxleCenter) {
-    _center = diveAxleCenter.getMiddleTo(nonDriveAxleCenter);
+void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter) {
+    _center = driveAxleCenter.getMiddleTo(nonDriveAxleCenter);
+    _center.z -= _data.frontWheelRadius - _data.groundClearance;
 }
 
 float Chassis::getRotateAngle() {

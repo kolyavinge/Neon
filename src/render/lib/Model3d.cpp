@@ -30,8 +30,11 @@ Collection<Texture>& Model3d::getTextures() {
     return _textures;
 }
 
-void Model3d::moveToOrigin() {
+void Model3d::moveToOrigin(int axis) {
     Vector3 min = getMinVertex();
+    if ((axis & (int)Axis::x) == 0) min.x = 0.0f;
+    if ((axis & (int)Axis::y) == 0) min.y = 0.0f;
+    if ((axis & (int)Axis::z) == 0) min.z = 0.0f;
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
