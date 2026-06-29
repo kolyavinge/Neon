@@ -14,4 +14,5 @@ private:
     void setBackView(Camera& camera, Vehicle& playerVehicle);
     void setSideBackView(Camera& camera, Vehicle& playerVehicle);
     void setTopView(Camera& camera, Vehicle& playerVehicle);
+    void setWheelCenterView(Camera& camera, Vehicle& playerVehicle);
 };

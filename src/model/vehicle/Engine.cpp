@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/Math.h>
 #include <model/vehicle/Engine.h>
 
 Engine::Engine() {
@@ -33,7 +34,7 @@ void Engine::calculateNewRpm(bool isEngineAndWheelsConnected, float throttleRati
     }
     _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
     if (_rpm < _data.engineMaxRpm && _torque > 0.0f) {
-        _rpm += 2.0f * gearRatio * dt * _torque;
+        _rpm += 12.0f * Math::max(gearRatio, 1.0f) * dt * _torque;
         _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
     }
 }

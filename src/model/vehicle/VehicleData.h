@@ -18,7 +18,7 @@ public:
     /* gearbox */
     float finalGearRatio;
     Array<float, (int)Gear::_count> gearRatios;
-    float rpmToAutoShift;
+    float autoShiftRpm;
 
     /* body */
     Measures bodyMeasures;
@@ -45,6 +45,7 @@ public:
     float brakingForceCoeff;
     float maxSteeringAngle;
     float minRoadFrictionCoeff;
+    float roadAdhesionLimit;
 
     /* spring */
     float springStiffness;

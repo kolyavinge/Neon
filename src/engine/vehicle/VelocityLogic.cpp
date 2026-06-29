@@ -3,11 +3,13 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Wheel.h>
 
 void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
+    Gearbox& gearbox = vehicle.getGearbox();
 
     // оси связаны друг с другом => продольная сила (longitudinal) для них равна сумме сил колес
     Vector3 driveAxleForce;
@@ -36,13 +38,21 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().vehicleMass, dt);
     driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().vehicleMass, dt);
 
-    if (vehicle.isVelocityZero()) {
+    if (vehicle.isVelocityAproxZero()) {
         vehicle.setVelocityToZero();
     }
 
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
         wheel.setLinearVelocity(driveAxle.getVelocity());
+    }
+
+    if (!gearbox.isEngineAndWheelsConnected()) {
+        for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+            Wheel& wheel = vehicle.getDriveWheel(i);
+            wheel.calculateAngularVelocityByLinear();
+            wheel.updateRotateAngle(dt);
+        }
     }
 
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {

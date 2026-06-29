@@ -158,7 +158,7 @@ float Vehicle::getAverageDriveWheelsRpm() {
     return averageWheelsRpm;
 }
 
-bool Vehicle::isVelocityZero() {
+bool Vehicle::isVelocityAproxZero() {
     Axle& driveAxle = getDriveAxle();
     bool result = Numeric::floatEquals(driveAxle.getVelocity().getLength(), 0.0f, VehicleConstants::minVelocityDelta);
     for (int i = 0; result && i < Vehicle::driveWheelsCount; i++) {

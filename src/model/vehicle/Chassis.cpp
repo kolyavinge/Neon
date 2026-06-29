@@ -17,24 +17,20 @@ Vector3& Chassis::getFrontNormal() {
     return _frontNormal;
 }
 
-void Chassis::setFrontNormal(Vector3& frontNormal) {
-    _frontNormal = frontNormal;
-}
-
 Vector3& Chassis::getRightNormal() {
     return _rightNormal;
-}
-
-void Chassis::setRightNormal(Vector3& rightNormal) {
-    _rightNormal = rightNormal;
 }
 
 Vector3& Chassis::getTopNormal() {
     return _topNormal;
 }
 
-void Chassis::setTopNormal(Vector3& topNormal) {
-    _topNormal = topNormal;
+void Chassis::setNormals(Vector3& frontNormal, Vector3& rightNormal) {
+    _frontNormal = frontNormal;
+    _rightNormal = rightNormal;
+    _topNormal = _rightNormal;
+    _topNormal.vectorProduct(_frontNormal);
+    _topNormal.normalize();
 }
 
 void Chassis::calculateAnglesAndModelMatrix() {
@@ -55,7 +51,7 @@ Vector3& Chassis::getCenter() {
 
 void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter) {
     _center = driveAxleCenter.getMiddleTo(nonDriveAxleCenter);
-    _center.z -= _data.frontWheelRadius - _data.groundClearance;
+    _center.subMultiplied(_topNormal, _data.frontWheelRadius - _data.groundClearance);
 }
 
 float Chassis::getRotateAngle() {

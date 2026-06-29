@@ -72,6 +72,7 @@ public:
     Vector3& getLateralAcceleration();
     void calculateLongitudinalForce(float longitudinalForceCoeff, float springForce);
     void calculateLateralForce(float lateralForceCoeff, float springForce);
+    void normalizeLongitudinalAndLateralForces(float springForce);
     void calculateLongitudinalAcceleration(float vehicleMass);
     void calculateLateralAcceleration(float vehicleMass);
     Vector3& getLinearVelocity();

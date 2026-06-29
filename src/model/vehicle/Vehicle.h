@@ -55,7 +55,7 @@ public:
     float getFrontWheelsWeight();
     float getRearWheelsWeight();
     float getAverageDriveWheelsRpm();
-    bool isVelocityZero();
+    bool isVelocityAproxZero();
     void setVelocityToZero();
 };
 

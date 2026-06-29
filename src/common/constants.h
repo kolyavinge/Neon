@@ -38,6 +38,6 @@ public:
 class VehicleConstants {
 
 public:
-    inline static const float minVelocityDelta = 0.1f;
+    inline static const float minVelocityDelta = 0.5f;
     inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(1.0f);
 };

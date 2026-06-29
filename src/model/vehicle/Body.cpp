@@ -71,9 +71,10 @@ TransformMatrix4& Body::getModelMatrix() {
 }
 
 void Body::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
+    float pitchAngle = _pitchAngle.getCurrentValue();
     TransformMatrix4 pitchRotate;
-    pitchRotate.rotate(_pitchAngle.getCurrentValue(), CommonConstants::rightVector);
-    Vector3 rollRotateAxis = Math::rotatePoint(CommonConstants::frontVector, -_pitchAngle.getCurrentValue(), CommonConstants::rightVector, CommonConstants::axisOrigin);
+    pitchRotate.rotate(pitchAngle, CommonConstants::rightVector);
+    Vector3 rollRotateAxis = Math::rotatePoint(CommonConstants::frontVector, -pitchAngle, CommonConstants::rightVector, CommonConstants::axisOrigin);
     TransformMatrix4 rollRotate;
     rollRotate.rotate(_rollAngle.getCurrentValue(), rollRotateAxis);
     _modelMatrix = chassisModelMatrix;

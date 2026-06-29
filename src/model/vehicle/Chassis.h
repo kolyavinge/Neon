@@ -20,11 +20,9 @@ public:
     Chassis();
     void init();
     Vector3& getFrontNormal();
-    void setFrontNormal(Vector3& frontNormal);
     Vector3& getRightNormal();
-    void setRightNormal(Vector3& rightNormal);
     Vector3& getTopNormal();
-    void setTopNormal(Vector3& topNormal);
+    void setNormals(Vector3& frontNormal, Vector3& rightNormal);
     void calculateAnglesAndModelMatrix();
     Vector3& getCenter();
     void calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter);

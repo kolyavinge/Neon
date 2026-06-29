@@ -33,10 +33,8 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     nonDriveAxle.calculateNewPosition(vehicle.getNonDriveWheel(0).getCenter(), vehicle.getNonDriveWheel(1).getCenter());
     driveAxle.calculateNewPosition(vehicle.getDriveWheel(0).getCenter(), vehicle.getDriveWheel(1).getCenter());
 
-    Vector3 chassisFrontNormal = nonDriveAxle.getCenter();
-    chassisFrontNormal.sub(driveAxle.getCenter());
-    chassisFrontNormal.normalize();
-    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, chassis.getTopNormal(), CommonConstants::axisOrigin);
+    Vector3 chassisFrontNormal = driveAxle.getCenter().getDirectionTo(nonDriveAxle.getCenter()).getNormalized();
+    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upVector, CommonConstants::axisOrigin);
     chassisRightNormal.normalize();
     Vector3 chassisLeftNormal = chassisRightNormal;
     chassisLeftNormal.mul(-1.0f);
@@ -50,8 +48,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     nonDriveAxle.calculateWheelPositions(chassisRightNormal);
     driveAxle.calculateWheelPositions(chassisRightNormal);
 
-    chassis.setFrontNormal(chassisFrontNormal);
-    chassis.setRightNormal(chassisRightNormal);
+    chassis.setNormals(chassisFrontNormal, chassisRightNormal);
     chassis.calculateCenter(nonDriveAxle.getCenter(), driveAxle.getCenter());
     chassis.calculateAnglesAndModelMatrix();
 
@@ -70,7 +67,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     rearLeftWheel.setPosition(driveAxle.getLeftWheelPosition());
     rearRightWheel.setPosition(driveAxle.getRightWheelPosition());
 
-    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle();
+    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // у обоих передних колес одинаковый угол поворота
     Vector3 nonDriveWheelFrontNormal, leftNonDriveWheelOutsideNormal, rightNonDriveWheelOutsideNormal;
     _wheelLogic.calculateNormalsBySteeringAngle(
         steeringAngle, chassisFrontNormal, chassis.getTopNormal(),

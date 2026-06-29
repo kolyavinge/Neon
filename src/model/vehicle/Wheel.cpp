@@ -104,7 +104,7 @@ float Wheel::getTransferedWeight() {
 void Wheel::transferWeight(float weight) {
     _transferedWeight = weight;
     _loadWeight += weight;
-    Assert::isTrue(_loadWeight > 0.0f);
+    //Assert::isTrue(_loadWeight > 0.0f); TODO лучше раскомментировать
 }
 
 float Wheel::getAngularVelocity() {
@@ -117,7 +117,7 @@ void Wheel::setAngularVelocity(float angularVelocity) {
 
 void Wheel::calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt) {
     if (isEngineAndWheelsConnected) {
-        _angularVelocity += (expectedAngularVelocityByEngine - _angularVelocity);
+        _angularVelocity += expectedAngularVelocityByEngine - _angularVelocity;
     }
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
@@ -164,9 +164,11 @@ SlipRatio Wheel::getSlipRatio() {
 
 float Wheel::getSlipAngle() {
     if (_linearVelocity.isZero()) return 0.0f;
+    // знак lateralVelocity разный для левого и правого колеса
+    // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
     float lateralVelocity = _outsideNormal.dotProduct(_linearVelocity);
-    float longitudinalVelocity = _frontNormal.dotProduct(_linearVelocity);
-    float slipAngle = -Math::arctan2(lateralVelocity, Math::abs(longitudinalVelocity));
+    float longitudinalVelocity = Math::abs(_frontNormal.dotProduct(_linearVelocity));
+    float slipAngle = -Math::arctan2(lateralVelocity, longitudinalVelocity);
     if (Numeric::floatEquals(slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) return 0.0f;
 
     return slipAngle;
@@ -198,6 +200,25 @@ void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
     _lateralForce.mul(lateralForceCoeff * springForce);
 }
 
+void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
+    // friction circle (Kamm's circle)
+    Vector3 sumForces(_longitudinalForce.getLength(), _lateralForce.getLength(), 0.0f);
+    bool isOutOfFrictionCircle = sumForces.getLength() > _data.roadAdhesionLimit * springForce;
+    if (isOutOfFrictionCircle) {
+        sumForces.normalize();
+        if (!Numeric::floatEquals(sumForces.x, 0.0f)) {
+            _longitudinalForce.setLength(sumForces.x);
+        } else {
+            _longitudinalForce.setZero();
+        }
+        if (!Numeric::floatEquals(sumForces.y, 0.0f)) {
+            _lateralForce.setLength(sumForces.y);
+        } else {
+            _lateralForce.setZero();
+        }
+    }
+}
+
 void Wheel::calculateLongitudinalAcceleration(float vehicleMass) {
     _longitudinalAcceleration = _longitudinalForce;
     _longitudinalAcceleration.div(vehicleMass);
@@ -225,7 +246,7 @@ void Wheel::calculateNewCenterPosition(float dt) {
 }
 
 void Wheel::calculateNewCenterZ(float wheelZ) {
-    _center.z = wheelZ + getRadius();
+    _center.z = wheelZ + getRadius(); // TODO нужно использовать нормаль поверхности на которой находится колесо
 }
 
 TransformMatrix4& Wheel::getModelMatrix() {

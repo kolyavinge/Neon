@@ -15,7 +15,7 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle, float throttleRatio) {
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
     bool isAccelerating = throttleRatio > 0.0f;
-    if (isAccelerating && engine.getRpm() > data.rpmToAutoShift) {
+    if (isAccelerating && engine.getRpm() > data.autoShiftRpm) {
         return gearbox.shiftUp();
     } else if (isAccelerating && engine.getRpm() == data.engineMinRpm) {
         if (gearbox.getCurrentGear() == Gear::neutral) {
@@ -25,7 +25,7 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle, float throttleRatio) {
         if (gearbox.getCurrentGear() == Gear::first) {
             return gearbox.shiftDown();
         }
-    } else if (!isAccelerating && getRpmOnLowerGear(engine, gearbox) < data.rpmToAutoShift) {
+    } else if (!isAccelerating && getRpmOnLowerGear(engine, gearbox) < data.autoShiftRpm) {
         if (gearbox.getCurrentGear() > Gear::first) {
             return gearbox.shiftDown();
         }

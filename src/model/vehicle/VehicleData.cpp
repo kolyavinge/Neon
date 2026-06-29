@@ -15,14 +15,14 @@ VehicleData::VehicleData() {
     gearRatios[5] = finalGearRatio * 1.5f;
     gearRatios[6] = finalGearRatio * 1.0f;
     gearRatios[7] = finalGearRatio * 0.8f;
-    rpmToAutoShift = 7800.0f;
+    autoShiftRpm = 7800.0f;
 
     /* body */
     bodyMeasures.xLength = 1.6f;
     bodyMeasures.yLength = 3.5f;
-    bodyMeasures.zLength = 0.8f;
+    bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
-    massCenterHeight = 1.0f;
+    massCenterHeight = bodyMeasures.zLength / 2.0f;
     wheelbaseLength = 2.0f;
     frontWheelLengthToMassCenter = 1.8f;
     rearWheelLengthToMassCenter = 1.8f;
@@ -40,14 +40,15 @@ VehicleData::VehicleData() {
     engineTorqueCurve.f = 3000.0f;
     engineMinRpm = 1000.0f;
     engineMaxRpm = 8000.0f;
-    engineBrakingForce = 0.5f;
+    engineBrakingForce = 1.0f;
 
     /* wheel */
     frontWheelRadius = 0.2f;
     rearWheelRadius = 0.25f;
     brakingForceCoeff = 100.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRoadFrictionCoeff = 1.0f;
+    minRoadFrictionCoeff = 2.0f;
+    roadAdhesionLimit = 1.0f;
 
     /* spring */
     springStiffness = 20000.0f;
