@@ -45,7 +45,7 @@ VehicleData::VehicleData() {
     /* wheel */
     frontWheelRadius = 0.2f;
     rearWheelRadius = 0.25f;
-    brakingForceCoeff = 100.0f;
+    brakingForceCoeff = 1000.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRoadFrictionCoeff = 2.0f;
     roadAdhesionLimit = 1.0f;
@@ -58,11 +58,18 @@ VehicleData::VehicleData() {
     springMaxWeight = 800.0f;
 
     _longitudinalForceCurve.set(1.5f, 1.0f, 0.5f);
-    _lateralForceCurve.set(1.0f, 1.0f, 1.0f);
+    _lateralForceCurve.set(1.0f, 0.1f, 1.0f);
 }
 
-float VehicleData::getRoadFrictionCoeff(float slipAngle) {
-    return Math::max(20.0f * Math::abs(slipAngle), minRoadFrictionCoeff);
+float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {
+    if (linearVelocityNormalizedProjection < 0.5f) {
+        return 1000.0f * (1.0f - linearVelocityNormalizedProjection);
+    }
+    if (linearVelocityNormalizedProjection < 0.8f) {
+        return 100.0f * (1.0f - linearVelocityNormalizedProjection);
+    }
+
+    return minRoadFrictionCoeff;
 }
 
 float VehicleData::getLongitudinalForceCoeff(float slipRatio) {

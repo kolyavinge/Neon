@@ -55,7 +55,7 @@ public:
     float springMaxWeight;
 
     VehicleData();
-    float getRoadFrictionCoeff(float slipAngle);
+    float getRoadFrictionCoeff(float linearVelocityNormalizedProjection);
     float getLongitudinalForceCoeff(float slipRatio);
     float getLateralForceCoeff(float slipAngle);
 };

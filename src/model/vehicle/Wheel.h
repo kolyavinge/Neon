@@ -19,7 +19,10 @@ public:
     float linearVelocity;
     float value;
 
+    SlipRatio();
     SlipRatio(float driven, float linear, float slipRatio);
+    SlipRatio& operator=(const SlipRatio& other);
+    SlipRatio(const SlipRatio&) = default;
 };
 
 class Wheel : public Object {
@@ -36,6 +39,9 @@ class Wheel : public Object {
     Vector3 _center;
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
+    Vector3 _roadFrictionForce;
+    float _longitudinalForceBeforeNormalize;
+    float _lateralForceBeforeNormalize;
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
     Vector3 _linearVelocity;
@@ -64,15 +70,19 @@ public:
     void calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt);
     void brake(float brakingRatio, float dt);
     void updateRotateAngle(float dt);
-    SlipRatio getSlipRatio();
+    SlipRatio getSlipRatio(Vector3& chassisFrontNormal, float throttleRatio, float brakeRatio);
     float getSlipAngle();
     Vector3& getLongitudinalForce();
     Vector3& getLateralForce();
+    Vector3& getRoadFrictionForce();
+    float getLongitudinalForceBeforeNormalize();
+    float getLateralForceBeforeNormalize();
     Vector3& getLongitudinalAcceleration();
     Vector3& getLateralAcceleration();
     void calculateLongitudinalForce(float longitudinalForceCoeff, float springForce);
     void calculateLateralForce(float lateralForceCoeff, float springForce);
     void normalizeLongitudinalAndLateralForces(float springForce);
+    void calculateRoadFrictionForce();
     void calculateLongitudinalAcceleration(float vehicleMass);
     void calculateLateralAcceleration(float vehicleMass);
     Vector3& getLinearVelocity();

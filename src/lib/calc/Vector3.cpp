@@ -50,6 +50,10 @@ int Vector3::getHashCode() {
     return code;
 }
 
+bool Vector3::lengthEquals(float value, float eps) {
+    return Numeric::floatEquals(getLength(), value, eps);
+}
+
 float Vector3::getLength() {
     return Math::sqrt(x * x + y * y + z * z);
 }

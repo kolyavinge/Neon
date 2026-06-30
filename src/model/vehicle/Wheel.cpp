@@ -4,10 +4,24 @@
 #include <lib/calc/Math.h>
 #include <model/vehicle/Wheel.h>
 
+SlipRatio::SlipRatio() {
+    drivenVelocity = 0.0f;
+    linearVelocity = 0.0f;
+    value = 0.0f;
+}
+
 SlipRatio::SlipRatio(float driven, float linear, float slipRatio) {
     drivenVelocity = driven;
     linearVelocity = linear;
     value = slipRatio;
+}
+
+SlipRatio& SlipRatio::operator=(const SlipRatio& other) {
+    drivenVelocity = other.drivenVelocity;
+    linearVelocity = other.linearVelocity;
+    value = other.value;
+
+    return *this;
 }
 
 Wheel::Wheel() {
@@ -16,6 +30,8 @@ Wheel::Wheel() {
     _loadWeight = 0.0f;
     _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
+    _longitudinalForceBeforeNormalize = 0.0f;
+    _lateralForceBeforeNormalize = 0.0f;
     _position = (WheelPosition)-1; // unset position
 }
 
@@ -122,21 +138,22 @@ void Wheel::calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float b
     if (brakingRatio > 0.0f) {
         brake(brakingRatio, dt);
     }
-    _angularVelocity -= dt * _angularVelocity * _data.getRoadFrictionCoeff(getSlipAngle());
+    // TODO нужно ли применять трение к передним колесам тоже?
+    float sign = Numeric::getSign(_angularVelocity);
+    _angularVelocity += -sign * dt * Math::abs(_angularVelocity) * _data.minRoadFrictionCoeff;
+    float newSign = Numeric::getSign(_angularVelocity);
+    if (sign != newSign) {
+        _angularVelocity = 0.0f;
+    }
 }
 
 void Wheel::brake(float brakingRatio, float dt) {
     float brakingValue = _data.brakingForceCoeff * brakingRatio * dt;
-    if (_angularVelocity > 0.0f) {
-        _angularVelocity -= brakingValue;
-        if (_angularVelocity < 0.0f) {
-            _angularVelocity = 0.0f;
-        }
-    } else if (_angularVelocity < 0.0f) {
-        _angularVelocity += brakingValue;
-        if (_angularVelocity > 0.0f) {
-            _angularVelocity = 0.0f;
-        }
+    float sign = Numeric::getSign(_angularVelocity);
+    _angularVelocity += -sign * brakingValue;
+    float newSign = Numeric::getSign(_angularVelocity);
+    if (sign != newSign) {
+        _angularVelocity = 0.0f;
     }
 }
 
@@ -148,16 +165,31 @@ void Wheel::updateRotateAngle(float dt) {
     }
 }
 
-SlipRatio Wheel::getSlipRatio() {
+SlipRatio Wheel::getSlipRatio(Vector3& chassisFrontNormal, float throttleRatio, float brakeRatio) {
     float drivenVelocity = _angularVelocity * getRadius();
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
     }
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-5f;
-    bool isLinearVelocityOppositeDirection = _frontNormal.dotProduct(_linearVelocity) < 0.0f;
-    if (isLinearVelocityOppositeDirection) linearVelocity *= -1.0f;
-    float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
+    float slipRatio = (drivenVelocity - linearVelocity) / linearVelocity;
+    // торможение обрабатываем в первую очередь, на случай если машинка и газует и тормозит
+    if (throttleRatio == 0.0f || brakeRatio > 0.0f) {
+        float linearVelocityProjection = _linearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
+        // линейная скорость (почти) перпендикулярна шасси
+        if (Numeric::floatEquals(linearVelocityProjection, 0.0f, 0.1f)) {
+            return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
+        }
+        // сила торможения должна быть направлена противоположно скорости
+        if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
+            slipRatio = -slipRatio;
+        }
+    } else {
+        // сила разгона всегда направлена вперед, slip ratio должен быть положительным
+        if (slipRatio < 0.0f) {
+            slipRatio = -slipRatio;
+        }
+    }
 
     return SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
@@ -182,6 +214,18 @@ Vector3& Wheel::getLateralForce() {
     return _lateralForce;
 }
 
+Vector3& Wheel::getRoadFrictionForce() {
+    return _roadFrictionForce;
+}
+
+float Wheel::getLongitudinalForceBeforeNormalize() {
+    return _longitudinalForceBeforeNormalize;
+}
+
+float Wheel::getLateralForceBeforeNormalize() {
+    return _lateralForceBeforeNormalize;
+}
+
 Vector3& Wheel::getLongitudinalAcceleration() {
     return _longitudinalAcceleration;
 }
@@ -193,30 +237,42 @@ Vector3& Wheel::getLateralAcceleration() {
 void Wheel::calculateLongitudinalForce(float longitudinalForceCoeff, float springForce) {
     _longitudinalForce = _frontNormal;
     _longitudinalForce.mul(longitudinalForceCoeff * springForce);
+    _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
 }
 
 void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
     _lateralForce = _outsideNormal;
     _lateralForce.mul(lateralForceCoeff * springForce);
+    _lateralForceBeforeNormalize = _lateralForce.getLength();
 }
 
 void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
     // friction circle (Kamm's circle)
-    Vector3 sumForces(_longitudinalForce.getLength(), _lateralForce.getLength(), 0.0f);
-    bool isOutOfFrictionCircle = sumForces.getLength() > _data.roadAdhesionLimit * springForce;
+    float longitudinalCoeff = _longitudinalForce.getLength() / springForce;
+    float lateralCoeff = _lateralForce.getLength() / springForce;
+    Vector3 sumForces(longitudinalCoeff, lateralCoeff, 0.0f);
+    bool isOutOfFrictionCircle = sumForces.getLength() > _data.roadAdhesionLimit;
     if (isOutOfFrictionCircle) {
-        sumForces.normalize();
+        sumForces.setLength(_data.roadAdhesionLimit);
         if (!Numeric::floatEquals(sumForces.x, 0.0f)) {
-            _longitudinalForce.setLength(sumForces.x);
+            _longitudinalForce.setLength(springForce * sumForces.x);
         } else {
             _longitudinalForce.setZero();
         }
         if (!Numeric::floatEquals(sumForces.y, 0.0f)) {
-            _lateralForce.setLength(sumForces.y);
+            _lateralForce.setLength(springForce * sumForces.y);
         } else {
             _lateralForce.setZero();
         }
     }
+}
+
+void Wheel::calculateRoadFrictionForce() {
+    _roadFrictionForce = _linearVelocity;
+    if (_roadFrictionForce.isZero()) return;
+    float velocityNormalizedProjection = _frontNormal.dotProduct(_linearVelocity) / _linearVelocity.getLength();
+    velocityNormalizedProjection = Numeric::clamp(Math::abs(velocityNormalizedProjection), 0.0f, 1.0f);
+    _roadFrictionForce.mul(-_data.getRoadFrictionCoeff(velocityNormalizedProjection));
 }
 
 void Wheel::calculateLongitudinalAcceleration(float vehicleMass) {

@@ -13,16 +13,20 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     Camera& camera = gameState.getCamera();
-    gluPerspective(UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()), CommonConstants::screenAspect, CommonConstants::minPerspectiveDepth, CommonConstants::maxPerspectiveDepth);
+    gluPerspective(
+        UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()),
+        CommonConstants::screenAspect,
+        CommonConstants::minPerspectiveDepth,
+        CommonConstants::maxPerspectiveDepth);
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upVector);
     renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
-    //renderVehicleAxles(vehicle);
-    //renderVehicleWheels(vehicle);
-    renderVehicleBody(vehicle);
+    renderVehicleAxles(vehicle);
+    renderVehicleWheels(vehicle);
+    //renderVehicleBody(vehicle);
     //renderVehicleAxis(vehicle);
 }
 
@@ -54,7 +58,7 @@ void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {
     glBegin(GL_LINES);
     glVertex3f(0.0f, 0.0f, 0.0f);
     Vector3 velocity = driveAxle.getVelocity();
-    velocity.div(50.0f);
+    //velocity.div(50.0f);
     glVertex3f(velocity);
     glEnd();
     glPopMatrix();
@@ -232,6 +236,7 @@ void DebugRenderer::renderVehicleAxis(Vehicle& vehicle) {
 }
 
 void DebugRenderer::renderGrid() {
+    glEnable(GL_DEPTH_TEST);
     const float length = 10.0f * CommonConstants::maxPerspectiveDepth;
     glColor3f(0.1f, 0.1f, 0.1f);
     glBegin(GL_LINES);
@@ -242,6 +247,7 @@ void DebugRenderer::renderGrid() {
         glVertex3f(length, step, 0.0f);
     }
     glEnd();
+    glDisable(GL_DEPTH_TEST);
 }
 
 void DebugRenderer::renderGlobalAxis() {

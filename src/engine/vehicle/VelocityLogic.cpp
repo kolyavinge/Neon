@@ -6,7 +6,7 @@
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Wheel.h>
 
-void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
+void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Gearbox& gearbox = vehicle.getGearbox();
@@ -19,15 +19,17 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     }
     Vector3 nonDriveAxleForce = driveAxleForce;
 
-    // поперечные силы (lateral) индивидуальные для каждой оси
+    // поперечная сила (lateral) и сила трения о дорогу индивидуальны для каждой оси
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& driveWheel = vehicle.getDriveWheel(i);
         driveAxleForce.add(driveWheel.getLateralForce());
+        driveAxleForce.add(driveWheel.getRoadFrictionForce());
     }
 
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
         Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
         nonDriveAxleForce.add(nonDriveWheel.getLateralForce());
+        nonDriveAxleForce.add(nonDriveWheel.getRoadFrictionForce());
     }
 
     driveAxleForce.add(body.getAirDragForce());
@@ -38,8 +40,13 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().vehicleMass, dt);
     driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().vehicleMass, dt);
 
-    if (vehicle.isVelocityAproxZero()) {
-        vehicle.setVelocityToZero();
+    if (throttleRatio == 0.0f) {
+        if (nonDriveAxle.getVelocity().lengthEquals(0.0f, VehicleConstants::minVelocityDelta)) {
+            nonDriveAxle.getVelocity().setZero();
+        }
+        if (driveAxle.getVelocity().lengthEquals(0.0f, VehicleConstants::minVelocityDelta)) {
+            driveAxle.getVelocity().setZero();
+        }
     }
 
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
@@ -47,7 +54,7 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
         wheel.setLinearVelocity(driveAxle.getVelocity());
     }
 
-    if (!gearbox.isEngineAndWheelsConnected()) {
+    if (!gearbox.isEngineAndWheelsConnected() /*&& brakeRatio > 0.0f*/) {
         for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
             Wheel& wheel = vehicle.getDriveWheel(i);
             wheel.calculateAngularVelocityByLinear();
@@ -58,7 +65,9 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle) {
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
         Wheel& wheel = vehicle.getNonDriveWheel(i);
         wheel.setLinearVelocity(nonDriveAxle.getVelocity());
-        wheel.calculateAngularVelocityByLinear();
+        if (brakeRatio == 0.0f) {
+            wheel.calculateAngularVelocityByLinear();
+        }
         wheel.updateRotateAngle(dt);
     }
 }

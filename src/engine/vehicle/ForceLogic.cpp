@@ -5,9 +5,10 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
-void ForceLogic::calculateForces(Vehicle& vehicle) {
+void ForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
     calculateSpringForces(vehicle);
-    calculateWheelForces(vehicle);
+    calculateWheelForces(vehicle, throttleRatio, brakeRatio);
+    calculateRoadFrictionForce(vehicle);
     calculateAirDragForce(vehicle);
 }
 
@@ -19,12 +20,13 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
     }
 }
 
-void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
+void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+    Vector3& chassisFrontNormal = vehicle.getChassis().getFrontNormal();
     VehicleData& data = vehicle.getData();
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
-        float slipRatio = wheel.getSlipRatio().value;
+        float slipRatio = wheel.getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).value;
         float slipAngle = wheel.getSlipAngle();
         float longitudinalForceCoeff = data.getLongitudinalForceCoeff(slipRatio);
         float lateralForceCoeff = data.getLateralForceCoeff(slipAngle);
@@ -33,6 +35,13 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
         wheel.normalizeLongitudinalAndLateralForces(spring.getForce());
         wheel.calculateLongitudinalAcceleration(vehicle.getData().vehicleMass);
         wheel.calculateLateralAcceleration(vehicle.getData().vehicleMass);
+    }
+}
+
+void ForceLogic::calculateRoadFrictionForce(Vehicle& vehicle) {
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
+        wheel.calculateRoadFrictionForce();
     }
 }
 

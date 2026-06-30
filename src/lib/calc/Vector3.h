@@ -19,6 +19,7 @@ public:
     bool isZero(float eps = Numeric::epsilonFloat);
     bool equals(Object& v) override;
     int getHashCode() override;
+    bool lengthEquals(float value, float eps = Numeric::epsilonFloat);
     float getLength();
     float getLengthTo(Vector3& v);
     Vector3 getDirectionTo(Vector3 v);

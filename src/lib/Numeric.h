@@ -12,6 +12,7 @@ public:
     static float clamp(float x, float left, float right);
     static String intToString(const int value);
     static void intToString(const int value, String& result);
+    static float getSign(float value);
 
 private:
     static void intToStringRec(const int remainAbs, bool isNegative, String& result);

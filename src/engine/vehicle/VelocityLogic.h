@@ -6,7 +6,7 @@
 class VelocityLogic : public Object {
 
 public:
-    void calculateVelocity(Vehicle& vehicle);
+    void calculateVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio);
 
 private:
 };

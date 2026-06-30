@@ -32,6 +32,10 @@ void Numeric::intToString(const int value, String& result) {
     intToStringRec(Math::abs(value), value < 0, result);
 }
 
+float Numeric::getSign(float value) {
+    return value < 0.0f ? -1.0f : 1.0f;
+}
+
 void Numeric::intToStringRec(const int remainAbs, bool isNegative, String& result) {
     if (remainAbs > 9) {
         int lastDigit = remainAbs % 10;

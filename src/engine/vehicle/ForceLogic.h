@@ -6,10 +6,11 @@
 class ForceLogic : public Object {
 
 public:
-    void calculateForces(Vehicle& vehicle);
+    void calculateForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
 
 private:
     void calculateSpringForces(Vehicle& vehicle);
-    void calculateWheelForces(Vehicle& vehicle);
+    void calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
+    void calculateRoadFrictionForce(Vehicle& vehicle);
     void calculateAirDragForce(Vehicle& vehicle);
 };
