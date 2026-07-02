@@ -135,9 +135,6 @@
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\debug\stat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\lib\opengl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -459,9 +456,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debug\stat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\App.h">

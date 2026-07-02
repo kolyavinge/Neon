@@ -1,7 +1,6 @@
 #include <App.h>
 #include <common/constants.h>
 #include <core/Game.h>
-#include <debug/stat.h>
 #include <lib/windows.h>
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
@@ -55,9 +54,6 @@ void App::run() {
 }
 
 int main(int, char**) {
-    //showDebugInfo();
-
     App::run();
-
     return 0;
 }
