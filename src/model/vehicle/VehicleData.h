@@ -37,12 +37,13 @@ public:
     EngineTorqueCurve engineTorqueCurve;
     float engineMinRpm;
     float engineMaxRpm;
-    float engineBrakingForce;
+    float engineMaxReverseRpm;
+    float engineBrakingCoeff;
 
     /* wheel */
     float frontWheelRadius;
     float rearWheelRadius;
-    float brakingForceCoeff;
+    float wheelBrakingCoeff;
     float maxSteeringAngle;
     float minRoadFrictionCoeff;
     float roadAdhesionLimit;

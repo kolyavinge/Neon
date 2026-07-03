@@ -14,7 +14,7 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     //printThrottle(inputData);
     printEngineRpm(vehicle);
     printWheelAngularVelocity(vehicle);
-    //printDiffBetweenRpmAndAngularVelocity(vehicle);
+    printDiffBetweenRpmAndAngularVelocity(vehicle);
     printSlipRatio(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio(), false);
     //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
@@ -51,19 +51,22 @@ void VehicleDebuger::printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle) {
 
 void VehicleDebuger::printSlipRatio(Vehicle& vehicle, float throttleRatio, float brakeRatio, bool onlyDriveWheels) {
     Vector3& chassisFrontNormal = vehicle.getChassis().getFrontNormal();
+    Gearbox& gearbox = vehicle.getGearbox();
+    Gear gear = vehicle.getGearbox().getCurrentGear();
+    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     if (onlyDriveWheels) {
         printf("SR %.2f(%.2f %.2f)|",
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).value,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).drivenVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).linearVelocity);
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity);
     } else {
         printf("SR %.2f(%.2f %.2f) %.2f(%.2f %.2f)|",
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).value,
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).drivenVelocity,
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).linearVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).value,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).drivenVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).linearVelocity);
+            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
+            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
+            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity,
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
+            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity);
     }
 }
 
@@ -124,12 +127,14 @@ void VehicleDebuger::printLateralForce(Wheel& wheel, bool last) {
 }
 
 void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
-    float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicle.getLinearVelocity())));
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)));
     printf("V %i|", (int)v);
 }
 
 void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
-    float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicle.getLinearVelocity())) / vehicle.getDriveWheel(0).getRadius();
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)) / vehicle.getDriveWheel(0).getRadius();
     printf("AngV %i|", (int)v);
 }
 

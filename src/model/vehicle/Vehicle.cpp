@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/Math.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Vehicle.h>
 
@@ -81,8 +82,12 @@ Chassis& Vehicle::getChassis() {
     return _chassis;
 }
 
-Vector3& Vehicle::getLinearVelocity() {
-    return getDriveAxle().getVelocity();
+Vector3 Vehicle::getLinearVelocity() {
+    Vector3 linearVelocity = getDriveAxle().getVelocity();
+    linearVelocity.add(getNonDriveAxle().getVelocity());
+    linearVelocity.div(2.0f);
+
+    return linearVelocity;
 }
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
@@ -154,6 +159,9 @@ float Vehicle::getAverageDriveWheelsRpm() {
         wheelsAngularVelocity += wheel.getAngularVelocity();
     }
     float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / Vehicle::driveWheelsCount;
+    // угловая скорость колес может быть отрицательной
+    // обороты в минуту берем как положительное число, по-аналогии с двигателем
+    averageWheelsRpm = Math::abs(averageWheelsRpm);
 
     return averageWheelsRpm;
 }

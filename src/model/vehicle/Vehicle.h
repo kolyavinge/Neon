@@ -45,7 +45,7 @@ public:
     Axle& getDriveAxle();
     Body& getBody();
     Chassis& getChassis();
-    Vector3& getLinearVelocity();
+    Vector3 getLinearVelocity();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();
     bool isAccelerating();

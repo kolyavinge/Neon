@@ -36,6 +36,14 @@ float Numeric::getSign(float value) {
     return value < 0.0f ? -1.0f : 1.0f;
 }
 
+void Numeric::makePositiveSign(float& value) {
+    if (value < 0.0f) value = -value;
+}
+
+void Numeric::makeNegativeSign(float& value) {
+    if (value > 0.0f) value = -value;
+}
+
 void Numeric::intToStringRec(const int remainAbs, bool isNegative, String& result) {
     if (remainAbs > 9) {
         int lastDigit = remainAbs % 10;

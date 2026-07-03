@@ -13,6 +13,8 @@ public:
     static String intToString(const int value);
     static void intToString(const int value, String& result);
     static float getSign(float value);
+    static void makePositiveSign(float& value);
+    static void makeNegativeSign(float& value);
 
 private:
     static void intToStringRec(const int remainAbs, bool isNegative, String& result);

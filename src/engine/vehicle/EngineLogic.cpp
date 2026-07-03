@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Engine.h>
@@ -17,23 +18,32 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
     const float dt = CommonConstants::deltaTimeSec;
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
+    Gear gear = gearbox.getCurrentGear();
     float gearRatio = gearbox.getCurrentGearRatio();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
+
     float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
     float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
-    engine.calculateNewRpm(isEngineAndWheelsConnected, throttleRatio, expectedRpmByWheels, gearRatio, dt);
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& driveWheel = vehicle.getDriveWheel(i);
-        driveWheel.calculateNewAngularVelocity(isEngineAndWheelsConnected, brakingRatio, expectedAngularVelocityByEngine, dt);
-    }
-    if (brakingRatio > 0.0f) {
-        for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
-            Wheel& nonDriveWheel = vehicle.getNonDriveWheel(i);
-            nonDriveWheel.brake(brakingRatio, dt);
+    // вычисляем обороты двигателя и синхронизируем их с ведущими колесами
+    engine.calculateNewRpm(isEngineAndWheelsConnected, throttleRatio, expectedRpmByWheels, gear, gearRatio, dt);
+    if (isEngineAndWheelsConnected) {
+        for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+            Wheel& driveWheel = vehicle.getDriveWheel(i);
+            driveWheel.synchAngularVelocity(expectedAngularVelocityByEngine, gear);
         }
     }
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-        Wheel& driveWheel = vehicle.getDriveWheel(i);
-        driveWheel.updateRotateAngle(dt);
+
+    if (brakingRatio > 0.0f) {
+        // обрабатываем торможение
+        for (int i = 0; i < Vehicle::wheelsCount; i++) {
+            Wheel& wheel = vehicle.getWheel(i);
+            wheel.brake(brakingRatio, dt);
+        }
+    } else if (!isEngineAndWheelsConnected || throttleRatio == 0.0f) {
+        // применяем трение о дорогу
+        for (int i = 0; i < Vehicle::wheelsCount; i++) {
+            Wheel& wheel = vehicle.getWheel(i);
+            wheel.reduceAngularVelocityByRoadFriction(dt);
+        }
     }
 }

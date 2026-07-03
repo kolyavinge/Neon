@@ -100,27 +100,27 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glEnd();
         glPopMatrix();
         // front normal
-        glPushMatrix();
-        glTranslatef(wheel.getCenter());
-        glColor3f(0.0f, 0.8f, 0.0f);
-        glBegin(GL_LINES);
-        glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 frontNormal = wheel.getFrontNormal();
-        frontNormal.setLength(0.5f);
-        glVertex3f(frontNormal);
-        glEnd();
-        glPopMatrix();
+        //glPushMatrix();
+        //glTranslatef(wheel.getCenter());
+        //glColor3f(0.0f, 0.8f, 0.0f);
+        //glBegin(GL_LINES);
+        //glVertex3f(0.0f, 0.0f, 0.0f);
+        //Vector3 frontNormal = wheel.getFrontNormal();
+        //frontNormal.setLength(0.5f);
+        //glVertex3f(frontNormal);
+        //glEnd();
+        //glPopMatrix();
         // outside normal
-        glPushMatrix();
-        glTranslatef(wheel.getCenter());
-        glColor3f(0.0f, 0.8f, 0.0f);
-        glBegin(GL_LINES);
-        glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 outsideNormal = wheel.getOutsdteNormal();
-        outsideNormal.setLength(0.5f);
-        glVertex3f(outsideNormal);
-        glEnd();
-        glPopMatrix();
+        //glPushMatrix();
+        //glTranslatef(wheel.getCenter());
+        //glColor3f(0.0f, 0.8f, 0.0f);
+        //glBegin(GL_LINES);
+        //glVertex3f(0.0f, 0.0f, 0.0f);
+        //Vector3 outsideNormal = wheel.getOutsdteNormal();
+        //outsideNormal.setLength(0.5f);
+        //glVertex3f(outsideNormal);
+        //glEnd();
+        //glPopMatrix();
         // longitudinal force
         glColor3f(1.0f, 0.0f, 0.0f);
         glPushMatrix();

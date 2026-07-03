@@ -131,24 +131,13 @@ void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }
 
-void Wheel::calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt) {
-    if (isEngineAndWheelsConnected) {
-        _angularVelocity += expectedAngularVelocityByEngine - _angularVelocity;
-    }
-    if (brakingRatio > 0.0f) {
-        brake(brakingRatio, dt);
-    }
-    // TODO нужно ли применять трение к передним колесам тоже?
-    float sign = Numeric::getSign(_angularVelocity);
-    _angularVelocity += -sign * dt * Math::abs(_angularVelocity) * _data.minRoadFrictionCoeff;
-    float newSign = Numeric::getSign(_angularVelocity);
-    if (sign != newSign) {
-        _angularVelocity = 0.0f;
-    }
+void Wheel::synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear) {
+    float sign = gear >= Gear::first ? 1.0f : -1.0f;
+    _angularVelocity += sign * expectedAngularVelocityByEngine - _angularVelocity;
 }
 
 void Wheel::brake(float brakingRatio, float dt) {
-    float brakingValue = _data.brakingForceCoeff * brakingRatio * dt;
+    float brakingValue = _data.wheelBrakingCoeff * brakingRatio * dt;
     float sign = Numeric::getSign(_angularVelocity);
     _angularVelocity += -sign * brakingValue;
     float newSign = Numeric::getSign(_angularVelocity);
@@ -157,24 +146,35 @@ void Wheel::brake(float brakingRatio, float dt) {
     }
 }
 
-void Wheel::updateRotateAngle(float dt) {
-    if (_position == WheelPosition::frontRight || _position == WheelPosition::rearRight) {
-        _rotateAngle = Math::normalizeRadians(_rotateAngle - _angularVelocity * dt);
-    } else {
-        _rotateAngle = Math::normalizeRadians(_rotateAngle + _angularVelocity * dt);
+void Wheel::reduceAngularVelocityByRoadFriction(float dt) {
+    float sign = Numeric::getSign(_angularVelocity);
+    _angularVelocity += -sign * dt * _data.minRoadFrictionCoeff;
+    float newSign = Numeric::getSign(_angularVelocity);
+    if (sign != newSign) {
+        _angularVelocity = 0.0f;
     }
 }
 
-SlipRatio Wheel::getSlipRatio(Vector3& chassisFrontNormal, float throttleRatio, float brakeRatio) {
-    float drivenVelocity = _angularVelocity * getRadius();
+void Wheel::updateRotateAngle(float dt) {
+    if (_position == WheelPosition::frontRight || _position == WheelPosition::rearRight) {
+        _rotateAngle -= _angularVelocity * dt;
+    } else {
+        _rotateAngle += _angularVelocity * dt;
+    }
+    _rotateAngle = Math::normalizeRadians(_rotateAngle);
+}
+
+SlipRatio Wheel::getSlipRatio(Vector3& chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear) {
+    float drivenVelocity = Math::abs(_angularVelocity) * getRadius();
     float linearVelocity = _linearVelocity.getLength();
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
     }
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-5f;
     float slipRatio = (drivenVelocity - linearVelocity) / linearVelocity;
-    // торможение обрабатываем в первую очередь, на случай если машинка и газует и тормозит
-    if (throttleRatio == 0.0f || brakeRatio > 0.0f) {
+    // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
+    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
+    if (isBrakingByWheelsOrEngine) {
         float linearVelocityProjection = _linearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
         // линейная скорость (почти) перпендикулярна шасси
         if (Numeric::floatEquals(linearVelocityProjection, 0.0f, 0.1f)) {
@@ -185,9 +185,11 @@ SlipRatio Wheel::getSlipRatio(Vector3& chassisFrontNormal, float throttleRatio, 
             slipRatio = -slipRatio;
         }
     } else {
-        // сила разгона всегда направлена вперед, slip ratio должен быть положительным
-        if (slipRatio < 0.0f) {
-            slipRatio = -slipRatio;
+        // сила разгона всегда направлена по ходу движения
+        if (gear >= Gear::first) {
+            Numeric::makePositiveSign(slipRatio);
+        } else if (gear == Gear::reverse) {
+            Numeric::makeNegativeSign(slipRatio);
         }
     }
 
@@ -267,12 +269,12 @@ void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
     }
 }
 
-void Wheel::calculateRoadFrictionForce() {
+void Wheel::calculateRoadFrictionForce(float dt) {
     _roadFrictionForce = _linearVelocity;
     if (_roadFrictionForce.isZero()) return;
     float velocityNormalizedProjection = _frontNormal.dotProduct(_linearVelocity) / _linearVelocity.getLength();
     velocityNormalizedProjection = Numeric::clamp(Math::abs(velocityNormalizedProjection), 0.0f, 1.0f);
-    _roadFrictionForce.mul(-_data.getRoadFrictionCoeff(velocityNormalizedProjection));
+    _roadFrictionForce.mul(-dt * _data.getRoadFrictionCoeff(velocityNormalizedProjection));
 }
 
 void Wheel::calculateLongitudinalAcceleration(float vehicleMass) {
@@ -293,8 +295,9 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
     _linearVelocity = velocity;
 }
 
-void Wheel::calculateAngularVelocityByLinear() {
-    _angularVelocity = _linearVelocity.getLength() / getRadius();
+void Wheel::calculateAngularVelocityByLinear(Vector3& vehicleLinearVelocity) {
+    float directionSign = Numeric::getSign(_frontNormal.dotProduct(vehicleLinearVelocity));
+    _angularVelocity = directionSign * _linearVelocity.getLength() / getRadius();
 }
 
 void Wheel::calculateNewCenterPosition(float dt) {

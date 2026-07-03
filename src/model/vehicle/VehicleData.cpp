@@ -7,7 +7,7 @@ VehicleData::VehicleData() {
 
     /* gearbox */
     finalGearRatio = 3.5f;
-    gearRatios[0] = finalGearRatio * -2.5f;
+    gearRatios[0] = finalGearRatio * 2.5f;
     gearRatios[1] = finalGearRatio * 0.0f;
     gearRatios[2] = finalGearRatio * 3.5f;
     gearRatios[3] = finalGearRatio * 2.8f;
@@ -40,14 +40,15 @@ VehicleData::VehicleData() {
     engineTorqueCurve.f = 3000.0f;
     engineMinRpm = 1000.0f;
     engineMaxRpm = 8000.0f;
-    engineBrakingForce = 1.0f;
+    engineMaxReverseRpm = 2500.0f;
+    engineBrakingCoeff = 10000.0f;
 
     /* wheel */
     frontWheelRadius = 0.2f;
     rearWheelRadius = 0.25f;
-    brakingForceCoeff = 1000.0f;
+    wheelBrakingCoeff = 1000.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRoadFrictionCoeff = 2.0f;
+    minRoadFrictionCoeff = 5.0f;
     roadAdhesionLimit = 1.0f;
 
     /* spring */
@@ -62,14 +63,11 @@ VehicleData::VehicleData() {
 }
 
 float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {
-    if (linearVelocityNormalizedProjection < 0.5f) {
-        return 1000.0f * (1.0f - linearVelocityNormalizedProjection);
-    }
-    if (linearVelocityNormalizedProjection < 0.8f) {
-        return 100.0f * (1.0f - linearVelocityNormalizedProjection);
-    }
+    float friction = 1.0f - linearVelocityNormalizedProjection;
+    friction *= friction;
+    friction *= 10000.0f;
 
-    return minRoadFrictionCoeff;
+    return Math::max(friction, minRoadFrictionCoeff);
 }
 
 float VehicleData::getLongitudinalForceCoeff(float slipRatio) {

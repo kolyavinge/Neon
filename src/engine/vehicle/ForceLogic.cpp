@@ -2,7 +2,10 @@
 #include <engine/vehicle/ForceLogic.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/Gear.h>
+#include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
+#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
 void ForceLogic::calculateForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
@@ -22,11 +25,14 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
     Vector3& chassisFrontNormal = vehicle.getChassis().getFrontNormal();
+    Gearbox& gearbox = vehicle.getGearbox();
+    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
+    Gear gear = vehicle.getGearbox().getCurrentGear();
     VehicleData& data = vehicle.getData();
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
-        float slipRatio = wheel.getSlipRatio(chassisFrontNormal, throttleRatio, brakeRatio).value;
+        float slipRatio = wheel.getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value;
         float slipAngle = wheel.getSlipAngle();
         float longitudinalForceCoeff = data.getLongitudinalForceCoeff(slipRatio);
         float lateralForceCoeff = data.getLateralForceCoeff(slipAngle);
@@ -39,9 +45,10 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
 }
 
 void ForceLogic::calculateRoadFrictionForce(Vehicle& vehicle) {
+    const float dt = CommonConstants::deltaTimeSec;
     for (int i = 0; i < Vehicle::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        wheel.calculateRoadFrictionForce();
+        wheel.calculateRoadFrictionForce(dt);
     }
 }
 

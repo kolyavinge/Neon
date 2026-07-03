@@ -4,6 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/vehicle/VehicleData.h>
+#include <model/vehicle/Gear.h>
 
 enum class WheelPosition {
     frontLeft = 0,
@@ -67,10 +68,11 @@ public:
     void transferWeight(float weight);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
-    void calculateNewAngularVelocity(bool isEngineAndWheelsConnected, float brakingRatio, float expectedAngularVelocityByEngine, float dt);
+    void synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear);
     void brake(float brakingRatio, float dt);
+    void reduceAngularVelocityByRoadFriction(float dt);
     void updateRotateAngle(float dt);
-    SlipRatio getSlipRatio(Vector3& chassisFrontNormal, float throttleRatio, float brakeRatio);
+    SlipRatio getSlipRatio(Vector3& chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear);
     float getSlipAngle();
     Vector3& getLongitudinalForce();
     Vector3& getLateralForce();
@@ -82,12 +84,12 @@ public:
     void calculateLongitudinalForce(float longitudinalForceCoeff, float springForce);
     void calculateLateralForce(float lateralForceCoeff, float springForce);
     void normalizeLongitudinalAndLateralForces(float springForce);
-    void calculateRoadFrictionForce();
+    void calculateRoadFrictionForce(float dt);
     void calculateLongitudinalAcceleration(float vehicleMass);
     void calculateLateralAcceleration(float vehicleMass);
     Vector3& getLinearVelocity();
     void setLinearVelocity(Vector3& velocity);
-    void calculateAngularVelocityByLinear();
+    void calculateAngularVelocityByLinear(Vector3& vehicleLinearVelocity);
     void calculateNewCenterPosition(float dt);
     void calculateNewCenterZ(float wheelZ);
     TransformMatrix4& getModelMatrix();

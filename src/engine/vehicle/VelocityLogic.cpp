@@ -10,6 +10,7 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Gearbox& gearbox = vehicle.getGearbox();
+    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
 
     // оси связаны друг с другом => продольная сила (longitudinal) для них равна сумме сил колес
     Vector3 driveAxleForce;
@@ -40,7 +41,7 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
     nonDriveAxle.calculateVelocity(nonDriveAxleForce, vehicle.getData().vehicleMass, dt);
     driveAxle.calculateVelocity(driveAxleForce, vehicle.getData().vehicleMass, dt);
 
-    if (throttleRatio == 0.0f) {
+    if (!isEngineAndWheelsConnected || throttleRatio == 0.0f) {
         if (nonDriveAxle.getVelocity().lengthEquals(0.0f, VehicleConstants::minVelocityDelta)) {
             nonDriveAxle.getVelocity().setZero();
         }
@@ -49,25 +50,24 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
         }
     }
 
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    bool noAcceleration = !gearbox.isEngineAndWheelsConnected() || throttleRatio == 0.0f;
     for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
         Wheel& wheel = vehicle.getDriveWheel(i);
         wheel.setLinearVelocity(driveAxle.getVelocity());
-    }
-
-    if (!gearbox.isEngineAndWheelsConnected() /*&& brakeRatio > 0.0f*/) {
-        for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
-            Wheel& wheel = vehicle.getDriveWheel(i);
-            wheel.calculateAngularVelocityByLinear();
-            wheel.updateRotateAngle(dt);
+        if (noAcceleration) {
+            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity);
         }
     }
 
     for (int i = 0; i < Vehicle::nonDriveWheelsCount; i++) {
         Wheel& wheel = vehicle.getNonDriveWheel(i);
         wheel.setLinearVelocity(nonDriveAxle.getVelocity());
-        if (brakeRatio == 0.0f) {
-            wheel.calculateAngularVelocityByLinear();
-        }
+        wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity);
+    }
+
+    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
         wheel.updateRotateAngle(dt);
     }
 }
