@@ -3,8 +3,8 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Gear.h>
+#include <model/vehicle/VehicleData.h>
 
 enum class WheelPosition {
     frontLeft = 0,

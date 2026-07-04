@@ -1,8 +1,10 @@
 #pragma once
 
 #include <common/constants.h>
+#include <lib/SmoothValue.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/Wheel.h>
+#include <stdio.h>
 
 SlipRatio::SlipRatio() {
     drivenVelocity = 0.0f;
@@ -250,6 +252,7 @@ void Wheel::calculateLateralForce(float lateralForceCoeff, float springForce) {
 
 void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
     // friction circle (Kamm's circle)
+    // (TODO нужно ли при этой нормализации учитывать максимальную амплитуду функций _longitudinalForceCurve и _lateralForceCurve?)
     float longitudinalCoeff = _longitudinalForce.getLength() / springForce;
     float lateralCoeff = _lateralForce.getLength() / springForce;
     Vector3 sumForces(longitudinalCoeff, lateralCoeff, 0.0f);
@@ -296,8 +299,12 @@ void Wheel::setLinearVelocity(Vector3& velocity) {
 }
 
 void Wheel::calculateAngularVelocityByLinear(Vector3& vehicleLinearVelocity) {
+    // направление вращения колеса определяем по линейной скорости авто
+    // а скорость вращения колеса по линейной скорости колеса
+    // так лучше работает вычисление slip ratio
     float directionSign = Numeric::getSign(_frontNormal.dotProduct(vehicleLinearVelocity));
-    _angularVelocity = directionSign * _linearVelocity.getLength() / getRadius();
+    float destinationAngularVelocity = directionSign * _linearVelocity.getLength() / getRadius();
+    _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
 void Wheel::calculateNewCenterPosition(float dt) {

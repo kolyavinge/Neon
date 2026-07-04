@@ -1,6 +1,7 @@
 #include <lib/calc/Math.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/VehicleData.h>
+#include <model/vehicle/Wheel.h>
 
 VehicleData::VehicleData() {
     vehicleMass = 1000.0f;
@@ -46,7 +47,7 @@ VehicleData::VehicleData() {
     /* wheel */
     frontWheelRadius = 0.2f;
     rearWheelRadius = 0.25f;
-    wheelBrakingCoeff = 1000.0f;
+    wheelBrakingCoeff = 500.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRoadFrictionCoeff = 5.0f;
     roadAdhesionLimit = 1.0f;
@@ -58,8 +59,15 @@ VehicleData::VehicleData() {
     springMaxLength = 0.4f;
     springMaxWeight = 800.0f;
 
-    _longitudinalForceCurve.set(1.5f, 1.0f, 0.5f);
-    _lateralForceCurve.set(1.0f, 0.1f, 1.0f);
+    _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(1.5f, 1.0f, 0.5f);
+    _longitudinalForceCurve[(int)WheelPosition::frontRight].set(1.5f, 1.0f, 0.5f);
+    _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(1.5f, 1.0f, 0.5f);
+    _longitudinalForceCurve[(int)WheelPosition::rearRight].set(1.5f, 1.0f, 0.5f);
+
+    _lateralForceCurve[(int)WheelPosition::frontLeft].set(1.0f, 0.1f, 1.0f);
+    _lateralForceCurve[(int)WheelPosition::frontRight].set(1.0f, 0.1f, 1.0f);
+    _lateralForceCurve[(int)WheelPosition::rearLeft].set(1.0f, 0.25f, 1.0f);
+    _lateralForceCurve[(int)WheelPosition::rearRight].set(1.0f, 0.25f, 1.0f);
 }
 
 float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {
@@ -70,11 +78,31 @@ float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection
     return Math::max(friction, minRoadFrictionCoeff);
 }
 
-float VehicleData::getLongitudinalForceCoeff(float slipRatio) {
-    return _longitudinalForceCurve.getValue(10.0f * slipRatio);
+float VehicleData::getLongitudinalForceCoeff(int wheelIndex, float slipRatio) {
+    return _longitudinalForceCurve[wheelIndex].getValue(10.0f * slipRatio);
 }
 
-float VehicleData::getLateralForceCoeff(float slipAngle) {
+float VehicleData::getLateralForceCoeff(int wheelIndex, float slipAngle) {
     slipAngle = UnitConverter::radiansToDegrees(slipAngle);
-    return _lateralForceCurve.getValue(slipAngle);
+    return _lateralForceCurve[wheelIndex].getValue(slipAngle);
+}
+
+String VehicleData::getEngineStat(float rpmStep) {
+    VehicleData data;
+    String result;
+    result.append(L"RPM:\t");
+    for (float rpm = 1000.0f; rpm <= data.engineMaxRpm; rpm += rpmStep) {
+        String rpmStr = Numeric::intToString((int)rpm);
+        result.append(rpmStr);
+        result.append(L"\t");
+    }
+    result.append(L"\r\nTorque:\t");
+    for (float rpm = 1000; rpm <= data.engineMaxRpm; rpm += rpmStep) {
+        int torque = (int)data.engineTorqueCurve.getValue(rpm);
+        String torqueStr = Numeric::intToString(torque);
+        result.append(torqueStr);
+        result.append(L"\t");
+    }
+
+    return result;
 }

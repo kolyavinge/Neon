@@ -14,7 +14,7 @@ void Gearbox::init() {
 }
 
 GearboxKind Gearbox::getKind() {
-    return GearboxKind::manual;
+    return GearboxKind::automatic;
 }
 
 Gear Gearbox::getPrevGear() {

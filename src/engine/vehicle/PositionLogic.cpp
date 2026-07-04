@@ -19,14 +19,14 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     Axle& driveAxle = vehicle.getDriveAxle();
 
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         vehicle.getWheel(i).calculateNewCenterPosition(dt);
     }
 
     // TODO find wheels collisions
     float wheelCollisionZ = 0.0f;
 
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         vehicle.getWheel(i).calculateNewCenterZ(wheelCollisionZ);
     }
 
@@ -83,7 +83,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     rearLeftWheel.setOutsideNormal(chassisLeftNormal);
     rearRightWheel.setOutsideNormal(chassisRightNormal);
 
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         vehicle.getWheel(i).calculateModelMatrix(chassis.getModelMatrix());
     }
 }

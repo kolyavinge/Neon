@@ -2,6 +2,7 @@
 
 #include <lib/system.h>
 
+// проста€ интерпол€ци€ двух значений
 template<class T>
 class SmoothValue : public Object {
 
@@ -16,7 +17,7 @@ public:
 
     SmoothValue(T initCurrentValue) {
         _currentValue = initCurrentValue;
-        _destinationValue = {};
+        _destinationValue = initCurrentValue;
     }
 
     T getCurrentValue() {
@@ -35,18 +36,29 @@ public:
         _destinationValue = value;
     }
 
+    void set(T value) {
+        _currentValue = value;
+        _destinationValue = value;
+    }
+
     void update(T step) {
-        if (_currentValue == _destinationValue) return;
-        if (_currentValue < _destinationValue) {
-            _currentValue += step;
-            if (_currentValue > _destinationValue) {
-                _currentValue = _destinationValue;
+        _currentValue = getUpdated(_currentValue, _destinationValue, step);
+    }
+
+    static T getUpdated(T currentValue, T destinationValue, T step) {
+        if (currentValue == destinationValue) return currentValue;
+        if (currentValue < destinationValue) {
+            currentValue += step;
+            if (currentValue > destinationValue) {
+                currentValue = destinationValue;
             }
         } else {
-            _currentValue -= step;
-            if (_currentValue < _destinationValue) {
-                _currentValue = _destinationValue;
+            currentValue -= step;
+            if (currentValue < destinationValue) {
+                currentValue = destinationValue;
             }
         }
+
+        return currentValue;
     }
 };

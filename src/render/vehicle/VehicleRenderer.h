@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/constants.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/Camera.h>
@@ -16,7 +17,7 @@ class VehicleRenderer : public Object {
     MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
     RenderModel3d* _vehicleBodyModel;
-    Array<RenderModel3d*, Vehicle::wheelsCount> _wheelModels;
+    Array<RenderModel3d*, VehicleConstants::wheelsCount> _wheelModels;
 
 public:
     static VehicleRenderer* resolve(Resolver& resolver) {

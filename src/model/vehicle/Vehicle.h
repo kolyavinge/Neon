@@ -14,19 +14,13 @@
 
 class Vehicle : public Object {
 
-public:
-    inline static const int wheelsCount = 4;
-    inline static const int driveWheelsCount = 2;
-    inline static const int nonDriveWheelsCount = 2;
-    inline static const int axlesCount = 2;
-
 private:
     VehicleData _data;
     Engine _engine;
     Gearbox _gearbox;
-    Array<Wheel, Vehicle::wheelsCount> _wheels;
-    Array<Spring, Vehicle::wheelsCount> _springs;
-    Array<Axle, Vehicle::axlesCount> _axles;
+    Array<Wheel, VehicleConstants::wheelsCount> _wheels;
+    Array<Spring, VehicleConstants::wheelsCount> _springs;
+    Array<Axle, VehicleConstants::axlesCount> _axles;
     Body _body;
     Chassis _chassis;
 

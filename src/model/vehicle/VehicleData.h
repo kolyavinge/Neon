@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common.h>
@@ -9,8 +10,8 @@
 
 class VehicleData : public Object {
 
-    PacejkaFormula _longitudinalForceCurve;
-    PacejkaFormula _lateralForceCurve;
+    Array<PacejkaFormula, VehicleConstants::wheelsCount> _longitudinalForceCurve;
+    Array<PacejkaFormula, VehicleConstants::wheelsCount> _lateralForceCurve;
 
 public:
     float vehicleMass;
@@ -57,6 +58,7 @@ public:
 
     VehicleData();
     float getRoadFrictionCoeff(float linearVelocityNormalizedProjection);
-    float getLongitudinalForceCoeff(float slipRatio);
-    float getLateralForceCoeff(float slipAngle);
+    float getLongitudinalForceCoeff(int wheelIndex, float slipRatio);
+    float getLateralForceCoeff(int wheelIndex, float slipAngle);
+    static String getEngineStat(float rpmStep = 1000.0f);
 };

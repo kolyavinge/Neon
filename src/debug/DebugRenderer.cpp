@@ -77,7 +77,7 @@ void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {
 
 void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
     Chassis& chassis = vehicle.getChassis();
-    for (int i = 0; i < vehicle.wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
         glColor3f(0.8f, 0.8f, 0.8f);

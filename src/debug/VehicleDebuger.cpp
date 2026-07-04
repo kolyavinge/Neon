@@ -7,17 +7,17 @@ int VehicleDebuger::_tick = 0;
 
 void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputData) {
     _tick++;
-    if ((_tick % 10) != 0) return;
+    //if ((_tick % 10) != 0) return;
 
     paintText(inputData);
     printGear(vehicle);
     //printThrottle(inputData);
     printEngineRpm(vehicle);
     printWheelAngularVelocity(vehicle);
-    printDiffBetweenRpmAndAngularVelocity(vehicle);
+    //printDiffBetweenRpmAndAngularVelocity(vehicle);
     printSlipRatio(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio(), false);
     //printSlipAngle(vehicle);
-    //printLongitudinalForce(vehicle);
+    printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
@@ -55,18 +55,18 @@ void VehicleDebuger::printSlipRatio(Vehicle& vehicle, float throttleRatio, float
     Gear gear = vehicle.getGearbox().getCurrentGear();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     if (onlyDriveWheels) {
-        printf("SR %.2f(%.2f %.2f)|",
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity);
+        SlipRatio slipRatio = vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);
+        printf("SR %.2f(%.2f %.2f)|", slipRatio.value, slipRatio.drivenVelocity, slipRatio.linearVelocity);
     } else {
+        SlipRatio nonDriveWheelSlipRatio = vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);
+        SlipRatio driveWheelSlipRatio = vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);
         printf("SR %.2f(%.2f %.2f) %.2f(%.2f %.2f)|",
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
-            vehicle.getNonDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).drivenVelocity,
-            vehicle.getDriveWheel(0).getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).linearVelocity);
+            nonDriveWheelSlipRatio.value,
+            nonDriveWheelSlipRatio.drivenVelocity,
+            nonDriveWheelSlipRatio.linearVelocity,
+            driveWheelSlipRatio.value,
+            driveWheelSlipRatio.drivenVelocity,
+            driveWheelSlipRatio.linearVelocity);
     }
 }
 

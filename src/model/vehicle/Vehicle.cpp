@@ -53,12 +53,12 @@ Wheel& Vehicle::getWheel(WheelPosition p) {
 }
 
 Wheel& Vehicle::getDriveWheel(int i) {
-    if (!Numeric::between(i, 0, driveWheelsCount - 1)) throw ArgumentException();
+    if (!Numeric::between(i, 0, VehicleConstants::driveWheelsCount - 1)) throw ArgumentException();
     return _wheels[i + 2];
 }
 
 Wheel& Vehicle::getNonDriveWheel(int i) {
-    if (!Numeric::between(i, 0, nonDriveWheelsCount - 1)) throw ArgumentException();
+    if (!Numeric::between(i, 0, VehicleConstants::nonDriveWheelsCount - 1)) throw ArgumentException();
     return _wheels[i];
 }
 
@@ -83,16 +83,20 @@ Chassis& Vehicle::getChassis() {
 }
 
 Vector3 Vehicle::getLinearVelocity() {
-    Vector3 linearVelocity = getDriveAxle().getVelocity();
-    linearVelocity.add(getNonDriveAxle().getVelocity());
-    linearVelocity.div(2.0f);
+    Vector3& driveAxleVelocity = getDriveAxle().getVelocity();
+    Vector3& nonDriveAxleVelocity = getNonDriveAxle().getVelocity();
+    float averageLength = (driveAxleVelocity.getLength() + nonDriveAxleVelocity.getLength()) / 2.0f;
+    if (Numeric::floatEquals(averageLength, 0.0f)) return Vector3();
+    Vector3 vehicleVelocity = driveAxleVelocity;
+    vehicleVelocity.add(nonDriveAxleVelocity);
+    vehicleVelocity.setLength(averageLength);
 
-    return linearVelocity;
+    return vehicleVelocity;
 }
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
     Vector3 acceleration;
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = getWheel(i);
         acceleration.add(wheel.getLongitudinalAcceleration());
     }
@@ -102,7 +106,7 @@ Vector3 Vehicle::getLongitudinalAcceleration() {
 
 Vector3 Vehicle::getLateralAcceleration() {
     Vector3 acceleration;
-    for (int i = 0; i < Vehicle::wheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = getWheel(i);
         acceleration.add(wheel.getLateralAcceleration());
     }
@@ -154,11 +158,11 @@ float Vehicle::getRearWheelsWeight() {
 
 float Vehicle::getAverageDriveWheelsRpm() {
     float wheelsAngularVelocity = 0.0f;
-    for (int i = 0; i < Vehicle::driveWheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
         Wheel& wheel = getDriveWheel(i);
         wheelsAngularVelocity += wheel.getAngularVelocity();
     }
-    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / Vehicle::driveWheelsCount;
+    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / VehicleConstants::driveWheelsCount;
     // угловая скорость колес может быть отрицательной
     // обороты в минуту берем как положительное число, по-аналогии с двигателем
     averageWheelsRpm = Math::abs(averageWheelsRpm);

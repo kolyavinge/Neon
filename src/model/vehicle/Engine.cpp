@@ -42,7 +42,7 @@ void Engine::calculateNewRpm(bool isEngineAndWheelsConnected, float throttleRati
 void Engine::accelerate(float throttleRatio, Gear gear, float gearRatio, float dt) {
     correctMinRpm();
     _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
-    float newRpm = _rpm + 2.0f * gearRatio * dt * _torque;
+    float newRpm = _rpm + 1.0f * gearRatio * dt * _torque;
     if (gear >= Gear::neutral) {
         if (_rpm < _data.engineMaxRpm) {
             _rpm = newRpm;
@@ -64,24 +64,4 @@ void Engine::correctMinRpm() {
     if (_rpm < _data.engineMinRpm) {
         _rpm = _data.engineMinRpm;
     }
-}
-
-String Engine::getEngineStat(float rpmStep) {
-    VehicleData data;
-    String result;
-    result.append(L"RPM:\t");
-    for (float rpm = 1000.0f; rpm <= data.engineMaxRpm; rpm += rpmStep) {
-        String rpmStr = Numeric::intToString((int)rpm);
-        result.append(rpmStr);
-        result.append(L"\t");
-    }
-    result.append(L"\r\nTorque:\t");
-    for (float rpm = 1000; rpm <= data.engineMaxRpm; rpm += rpmStep) {
-        int torque = (int)data.engineTorqueCurve.getValue(rpm);
-        String torqueStr = Numeric::intToString(torque);
-        result.append(torqueStr);
-        result.append(L"\t");
-    }
-
-    return result;
 }
