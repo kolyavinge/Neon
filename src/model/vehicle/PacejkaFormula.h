@@ -4,10 +4,11 @@
 
 class PacejkaFormula : public Object {
 
-public:
-    float c, d, e;
+    float b, c, d, e;
 
+public:
     PacejkaFormula();
-    void set(float valueC, float valueD, float valueE);
+    void set(float valueB, float valueC, float valueD, float valueE);
+    float getMaxValue();
     float getValue(float x);
 };

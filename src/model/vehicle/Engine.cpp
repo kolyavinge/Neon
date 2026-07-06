@@ -30,34 +30,38 @@ void Engine::calculateNewRpm(bool isEngineAndWheelsConnected, float throttleRati
         _rpm += expectedRpmByWheels - _rpm;
     }
     if (gear == Gear::neutral) {
-        gearRatio = 20.0f;
+        gearRatio = _data.neutralGearFakeRatio;
     }
     if (throttleRatio > 0.0f) {
         accelerate(throttleRatio, gear, gearRatio, dt);
     } else {
-        brake(gearRatio, dt);
+        brake(dt);
     }
 }
 
 void Engine::accelerate(float throttleRatio, Gear gear, float gearRatio, float dt) {
     correctMinRpm();
-    _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
-    float newRpm = _rpm + 1.0f * gearRatio * dt * _torque;
+    calculateTorque(throttleRatio);
+    float newRpm = _rpm + gearRatio * dt * _torque;
     if (gear >= Gear::neutral) {
         if (_rpm < _data.engineMaxRpm) {
             _rpm = newRpm;
-            _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
+            calculateTorque(throttleRatio);
         }
     } else { // reverse
         _rpm = Numeric::clamp(newRpm, _data.engineMinRpm, _data.engineMaxReverseRpm);
-        _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
+        calculateTorque(throttleRatio);
     }
 }
 
-void Engine::brake(float gearRatio, float dt) {
+void Engine::brake(float dt) {
     _rpm -= dt * _data.engineBrakingCoeff;
     correctMinRpm();
     _torque = 0.0f;
+}
+
+void Engine::calculateTorque(float throttleRatio) {
+    _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
 }
 
 void Engine::correctMinRpm() {

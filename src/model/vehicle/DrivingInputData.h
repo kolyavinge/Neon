@@ -1,12 +1,13 @@
 #pragma once
 
+#include <lib/SmoothValue.h>
 #include <lib/system.h>
 
 class DrivingInputData : public Object {
 
-    float _throttleRatio;
-    float _brakeRatio;
-    float _steeringRatio;
+    SmoothValue<float> _throttleRatio;
+    SmoothValue<float> _brakeRatio;
+    SmoothValue<float> _steeringRatio;
     bool _shiftUp;
     bool _shiftDown;
 
@@ -24,4 +25,5 @@ public:
     bool isShiftedDown();
     void shiftDown();
     void resetShifting();
+    void update(float dt);
 };

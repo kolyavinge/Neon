@@ -19,6 +19,7 @@ public:
     /* gearbox */
     float finalGearRatio;
     Array<float, (int)Gear::_count> gearRatios;
+    float neutralGearFakeRatio;
     float autoShiftRpm;
 
     /* body */
@@ -26,7 +27,7 @@ public:
     Vector3 massCenter;
     float massCenterHeight;
     float wheelbaseLength;
-    float frontWheelLengthToMassCenter;
+    //float frontWheelLengthToMassCenter;
     float rearWheelLengthToMassCenter;
     float trackWidth;
     float bodyMaxPitch;
@@ -50,15 +51,22 @@ public:
     float roadAdhesionLimit;
 
     /* spring */
-    float springStiffness;
-    float springDamper;
-    float springMinLength;
-    float springMaxLength;
-    float springMaxWeight;
+    float frontSpringStiffness;
+    float frontSpringDamper;
+    float frontSpringMinLength;
+    float frontSpringMaxLength;
+    float frontSpringMaxWeight;
+    float rearSpringStiffness;
+    float rearSpringDamper;
+    float rearSpringMinLength;
+    float rearSpringMaxLength;
+    float rearSpringMaxWeight;
 
     VehicleData();
     float getRoadFrictionCoeff(float linearVelocityNormalizedProjection);
     float getLongitudinalForceCoeff(int wheelIndex, float slipRatio);
     float getLateralForceCoeff(int wheelIndex, float slipAngle);
-    static String getEngineStat(float rpmStep = 1000.0f);
+    float getLongitudinalForceMaxCoeff(int wheelIndex);
+    float getLateralForceMaxCoeff(int wheelIndex);
+    String getEngineStat(float rpmStep = 1000.0f);
 };

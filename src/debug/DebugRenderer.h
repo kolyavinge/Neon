@@ -7,6 +7,7 @@
 class DebugRenderer : public Object {
 
     inline static const float _forceDivider = 500.0f;
+    inline static const float _velocityDivider = 10.0f;
 
 public:
     void renderDebugInfo(GameState& gameState);

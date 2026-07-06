@@ -16,6 +16,7 @@ VehicleData::VehicleData() {
     gearRatios[5] = finalGearRatio * 1.5f;
     gearRatios[6] = finalGearRatio * 1.0f;
     gearRatios[7] = finalGearRatio * 0.8f;
+    neutralGearFakeRatio = 20.0f;
     autoShiftRpm = 7800.0f;
 
     /* body */
@@ -24,9 +25,9 @@ VehicleData::VehicleData() {
     bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = bodyMeasures.zLength / 2.0f;
-    wheelbaseLength = 2.0f;
-    frontWheelLengthToMassCenter = 1.8f;
-    rearWheelLengthToMassCenter = 1.8f;
+    wheelbaseLength = 3.0f;
+    //frontWheelLengthToMassCenter = 1.5f;
+    rearWheelLengthToMassCenter = 1.5f;
     trackWidth = 1.7f;
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
@@ -34,7 +35,7 @@ VehicleData::VehicleData() {
     groundClearance = 0.02f;
 
     /* engine */
-    engineTorqueCurve.a = 200.0f;
+    engineTorqueCurve.a = 400.0f;
     engineTorqueCurve.b = 100.0f;
     engineTorqueCurve.c = 1.0f;
     engineTorqueCurve.d = 6000.0f;
@@ -49,56 +50,68 @@ VehicleData::VehicleData() {
     rearWheelRadius = 0.25f;
     wheelBrakingCoeff = 500.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRoadFrictionCoeff = 5.0f;
+    minRoadFrictionCoeff = 10.0f;
+    // задает общее сцепление с дорогой
+    // пример: 1.0 - сухой асфальт, 0.5 - мокрый, 0.2 - лед
     roadAdhesionLimit = 1.0f;
 
     /* spring */
-    springStiffness = 20000.0f;
-    springDamper = 0.2f;
-    springMinLength = 0.1f;
-    springMaxLength = 0.4f;
-    springMaxWeight = 800.0f;
+    frontSpringStiffness = 15000.0f;
+    frontSpringDamper = 0.2f;
+    frontSpringMinLength = 0.1f;
+    frontSpringMaxLength = 0.4f;
+    frontSpringMaxWeight = 800.0f;
 
-    _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(1.5f, 1.0f, 0.5f);
-    _longitudinalForceCurve[(int)WheelPosition::frontRight].set(1.5f, 1.0f, 0.5f);
-    _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(1.5f, 1.0f, 0.5f);
-    _longitudinalForceCurve[(int)WheelPosition::rearRight].set(1.5f, 1.0f, 0.5f);
+    rearSpringStiffness = 20000.0f;
+    rearSpringDamper = 0.2f;
+    rearSpringMinLength = 0.1f;
+    rearSpringMaxLength = 0.4f;
+    rearSpringMaxWeight = 800.0f;
 
-    _lateralForceCurve[(int)WheelPosition::frontLeft].set(1.0f, 0.1f, 1.0f);
-    _lateralForceCurve[(int)WheelPosition::frontRight].set(1.0f, 0.1f, 1.0f);
-    _lateralForceCurve[(int)WheelPosition::rearLeft].set(1.0f, 0.25f, 1.0f);
-    _lateralForceCurve[(int)WheelPosition::rearRight].set(1.0f, 0.25f, 1.0f);
+    _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
+    _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, 1.0f, 0.8f);
+    _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
+    _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, 1.0f, 0.8f);
+
+    _lateralForceCurve[(int)WheelPosition::frontLeft].set(1.0f, 1.5f, 1.0f, 1.005f);
+    _lateralForceCurve[(int)WheelPosition::frontRight].set(1.0f, 1.5f, 1.0f, 1.005f);
+    _lateralForceCurve[(int)WheelPosition::rearLeft].set(1.0f, 1.5f, 1.0f, 1.005f);
+    _lateralForceCurve[(int)WheelPosition::rearRight].set(1.0f, 1.5f, 1.0f, 1.005f);
 }
 
 float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {
-    float friction = 1.0f - linearVelocityNormalizedProjection;
-    friction *= friction;
-    friction *= 10000.0f;
-
+    float friction = (1.0f - linearVelocityNormalizedProjection) * 100.0f;
     return Math::max(friction, minRoadFrictionCoeff);
 }
 
 float VehicleData::getLongitudinalForceCoeff(int wheelIndex, float slipRatio) {
-    return _longitudinalForceCurve[wheelIndex].getValue(10.0f * slipRatio);
+    return _longitudinalForceCurve[wheelIndex].getValue(slipRatio);
 }
 
 float VehicleData::getLateralForceCoeff(int wheelIndex, float slipAngle) {
-    slipAngle = UnitConverter::radiansToDegrees(slipAngle);
+    slipAngle = UnitConverter::radiansToDegrees(slipAngle); // формула рассчитана на градусы
     return _lateralForceCurve[wheelIndex].getValue(slipAngle);
 }
 
+float VehicleData::getLongitudinalForceMaxCoeff(int wheelIndex) {
+    return _longitudinalForceCurve[wheelIndex].getMaxValue();
+}
+
+float VehicleData::getLateralForceMaxCoeff(int wheelIndex) {
+    return _lateralForceCurve[wheelIndex].getMaxValue();
+}
+
 String VehicleData::getEngineStat(float rpmStep) {
-    VehicleData data;
     String result;
     result.append(L"RPM:\t");
-    for (float rpm = 1000.0f; rpm <= data.engineMaxRpm; rpm += rpmStep) {
+    for (float rpm = 1000.0f; rpm <= engineMaxRpm; rpm += rpmStep) {
         String rpmStr = Numeric::intToString((int)rpm);
         result.append(rpmStr);
         result.append(L"\t");
     }
     result.append(L"\r\nTorque:\t");
-    for (float rpm = 1000; rpm <= data.engineMaxRpm; rpm += rpmStep) {
-        int torque = (int)data.engineTorqueCurve.getValue(rpm);
+    for (float rpm = 1000; rpm <= engineMaxRpm; rpm += rpmStep) {
+        int torque = (int)engineTorqueCurve.getValue(rpm);
         String torqueStr = Numeric::intToString(torque);
         result.append(torqueStr);
         result.append(L"\t");

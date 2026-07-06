@@ -16,12 +16,14 @@ private:
     static void printEngineRpm(Vehicle& vehicle);
     static void printWheelAngularVelocity(Vehicle& vehicle);
     static void printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle);
-    static void printSlipRatio(Vehicle& vehicle, float throttleRatio, float brakeRatio, bool onlyDriveWheels);
+    static void printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels);
     static void printSlipAngle(Vehicle& vehicle);
     static void printLongitudinalForce(Vehicle& vehicle);
-    static void printLongitudinalForce(Wheel& wheel, Vector3& chassisFrontNormal, bool last = false);
+    static void printLongitudinalForce(Wheel& wheel, bool last = false);
     static void printLateralForce(Vehicle& vehicle);
     static void printLateralForce(Wheel& wheel, bool last = false);
+    //static void printFrictionCircleData(Vehicle& vehicle);
+    //static void printFrictionCircleData(Wheel& wheel, bool last);
     static void printVehicleLinearVelocity(Vehicle& vehicle);
     static void printVehicleAngularVelocity(Vehicle& vehicle);
     static void printWheelLoadWeight(Vehicle& vehicle);

@@ -15,7 +15,10 @@ void Vehicle::init() {
     _wheels[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
     _wheels[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
     _wheels[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
-    for (int i = 0; i < _springs.getCount(); i++) _springs[i].init();
+    _springs[(int)WheelPosition::frontLeft].init(WheelPosition::frontLeft);
+    _springs[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
+    _springs[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
+    _springs[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
     for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
     _body.init();
     _chassis.init();

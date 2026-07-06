@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <core/DrivingInputManager.h>
 
 DrivingInputManager::DrivingInputManager(
@@ -40,4 +41,7 @@ void DrivingInputManager::update(DrivingInputData& inputData) {
     } else if (_inputManager.keyboard.isKeyPressed(Keys::down)) {
         inputData.shiftDown();
     }
+
+    const float dt = CommonConstants::deltaTimeSec;
+    inputData.update(dt);
 }

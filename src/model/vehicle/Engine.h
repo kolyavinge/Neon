@@ -20,6 +20,7 @@ public:
 
 private:
     void accelerate(float throttleRatio, Gear gear, float gearRatio, float dt);
-    void brake(float gearRatio, float dt);
+    void brake(float dt);
+    void calculateTorque(float throttleRatio);
     void correctMinRpm();
 };

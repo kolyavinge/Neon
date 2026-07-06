@@ -24,20 +24,18 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3& chassisFrontNormal = vehicle.getChassis().getFrontNormal();
     Gearbox& gearbox = vehicle.getGearbox();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     Gear gear = vehicle.getGearbox().getCurrentGear();
-    VehicleData& data = vehicle.getData();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         Spring& spring = vehicle.getSpring(wheelIndex);
-        float slipRatio = wheel.getSlipRatio(chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear).value;
-        float slipAngle = wheel.getSlipAngle();
-        float longitudinalForceCoeff = data.getLongitudinalForceCoeff(wheelIndex, slipRatio);
-        float lateralForceCoeff = data.getLateralForceCoeff(wheelIndex, slipAngle);
-        wheel.calculateLongitudinalForce(longitudinalForceCoeff, spring.getForce());
-        wheel.calculateLateralForce(lateralForceCoeff, spring.getForce());
+        wheel.calculateSlipRatio(vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);
+        wheel.calculateSlipAngle(vehicleLinearVelocity);
+        wheel.calculateLongitudinalForce(spring.getForce());
+        wheel.calculateLateralForce(spring.getForce());
         wheel.normalizeLongitudinalAndLateralForces(spring.getForce());
         wheel.calculateLongitudinalAcceleration(vehicle.getData().vehicleMass);
         wheel.calculateLateralAcceleration(vehicle.getData().vehicleMass);
@@ -45,10 +43,9 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
 }
 
 void ForceLogic::calculateRoadFrictionForce(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        wheel.calculateRoadFrictionForce(dt);
+        wheel.calculateRoadFrictionForce();
     }
 }
 

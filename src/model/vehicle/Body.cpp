@@ -62,8 +62,8 @@ void Body::calculateAngles(float dt) {
     float roll = (_transferedWeightOnLeft / _data.vehicleMass) * _data.bodyMaxRoll;
     _pitchAngle.setDestinationValue(pitch);
     _rollAngle.setDestinationValue(roll);
-    _pitchAngle.update(dt);
-    _rollAngle.update(dt);
+    _pitchAngle.update(0.1f * dt);
+    _rollAngle.update(0.1f * dt);
 }
 
 TransformMatrix4& Body::getModelMatrix() {

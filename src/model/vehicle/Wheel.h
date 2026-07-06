@@ -43,6 +43,8 @@ class Wheel : public Object {
     Vector3 _roadFrictionForce;
     float _longitudinalForceBeforeNormalize;
     float _lateralForceBeforeNormalize;
+    SlipRatio _slipRatio;
+    float _slipAngle;
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
     Vector3 _linearVelocity;
@@ -72,8 +74,10 @@ public:
     void brake(float brakingRatio, float dt);
     void reduceAngularVelocityByRoadFriction(float dt);
     void updateRotateAngle(float dt);
-    SlipRatio getSlipRatio(Vector3& chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear);
+    SlipRatio& getSlipRatio();
+    void calculateSlipRatio(Vector3& vehicleLinearVelocity, Vector3& chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear);
     float getSlipAngle();
+    void calculateSlipAngle(Vector3& vehicleLinearVelocity);
     Vector3& getLongitudinalForce();
     Vector3& getLateralForce();
     Vector3& getRoadFrictionForce();
@@ -81,10 +85,10 @@ public:
     float getLateralForceBeforeNormalize();
     Vector3& getLongitudinalAcceleration();
     Vector3& getLateralAcceleration();
-    void calculateLongitudinalForce(float longitudinalForceCoeff, float springForce);
-    void calculateLateralForce(float lateralForceCoeff, float springForce);
+    void calculateLongitudinalForce(float springForce);
+    void calculateLateralForce(float springForce);
     void normalizeLongitudinalAndLateralForces(float springForce);
-    void calculateRoadFrictionForce(float dt);
+    void calculateRoadFrictionForce();
     void calculateLongitudinalAcceleration(float vehicleMass);
     void calculateLateralAcceleration(float vehicleMass);
     Vector3& getLinearVelocity();
