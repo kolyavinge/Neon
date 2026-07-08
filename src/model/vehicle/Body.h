@@ -29,7 +29,7 @@ public:
     void transferWeightOnLeft(float onLeft);
     Vector3& getAirDragForce();
     void calculateAirDragForce(Vector3& vehicleVelocity);
-    void calculateCenter(Vector3& chassisCenter, Vector3& chassisTopNormal);
+    void calculateCenter(Vector3& chassisCenter, Vector3& chassisFrontNormal, Vector3& chassisTopNormal);
     void calculateBox(Vector3& chassisRightNormal, Vector3& chassisFrontNormal, Vector3& chassisTopNormal);
     void calculateAngles(float dt);
     TransformMatrix4& getModelMatrix();

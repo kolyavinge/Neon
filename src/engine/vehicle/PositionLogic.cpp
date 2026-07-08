@@ -5,6 +5,7 @@
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
+#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
 PositionLogic::PositionLogic(
@@ -12,38 +13,19 @@ PositionLogic::PositionLogic(
     _wheelLogic(wheelLogic) {
 }
 
-void PositionLogic::updatePosition(Vehicle& vehicle) {
+void PositionLogic::setPosition(Vehicle& vehicle, Vector3& driveAxleCenter, Vector3& chassisFrontNormal, Vector3& chassisRightNormal) {
     const float dt = CommonConstants::deltaTimeSec;
-    Body& body = vehicle.getBody();
+    VehicleData& data = vehicle.getData();
     Chassis& chassis = vehicle.getChassis();
+    Body& body = vehicle.getBody();
     Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     Axle& driveAxle = vehicle.getDriveAxle();
-
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateNewCenterPosition(dt);
-    }
-
-    // TODO find wheels collisions
-    float wheelCollisionZ = 0.0f;
-
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateNewCenterZ(wheelCollisionZ);
-    }
-
-    nonDriveAxle.calculateNewPosition(vehicle.getNonDriveWheel(0).getCenter(), vehicle.getNonDriveWheel(1).getCenter());
-    driveAxle.calculateNewPosition(vehicle.getDriveWheel(0).getCenter(), vehicle.getDriveWheel(1).getCenter());
-
-    Vector3 chassisFrontNormal = driveAxle.getCenter().getDirectionTo(nonDriveAxle.getCenter()).getNormalized();
-    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upVector, CommonConstants::axisOrigin);
-    chassisRightNormal.normalize();
     Vector3 chassisLeftNormal = chassisRightNormal;
     chassisLeftNormal.mul(-1.0f);
 
-    Vector3 lengthBetweenAxleCenters = chassisFrontNormal;
-    lengthBetweenAxleCenters.setLength(vehicle.getData().wheelbaseLength);
-    Vector3 correctedNonDriveAxleCenter = driveAxle.getCenter();
-    correctedNonDriveAxleCenter.add(lengthBetweenAxleCenters);
-    nonDriveAxle.setCenter(correctedNonDriveAxleCenter);
+    driveAxle.setCenter(driveAxleCenter);
+    nonDriveAxle.setCenter(driveAxleCenter);
+    nonDriveAxle.getCenter().addMultiplied(chassisFrontNormal, data.wheelbaseLength);
 
     nonDriveAxle.calculateWheelPositions(chassisRightNormal);
     driveAxle.calculateWheelPositions(chassisRightNormal);
@@ -52,7 +34,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     chassis.calculateCenter(nonDriveAxle.getCenter(), driveAxle.getCenter());
     chassis.calculateAnglesAndModelMatrix();
 
-    body.calculateCenter(chassis.getCenter(), chassis.getTopNormal());
+    body.calculateCenter(chassis.getCenter(), chassis.getFrontNormal(), chassis.getTopNormal());
     body.calculateBox(chassis.getRightNormal(), chassis.getFrontNormal(), chassis.getTopNormal());
     body.calculateAngles(dt);
     body.calculateModelMatrix(chassis.getModelMatrix());
@@ -86,4 +68,30 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         vehicle.getWheel(i).calculateModelMatrix(chassis.getModelMatrix());
     }
+}
+
+void PositionLogic::updatePosition(Vehicle& vehicle) {
+    const float dt = CommonConstants::deltaTimeSec;
+    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
+    Axle& driveAxle = vehicle.getDriveAxle();
+
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        vehicle.getWheel(i).calculateNewCenterPosition(dt);
+    }
+
+    // TODO find wheels collisions
+    float wheelCollisionZ = 0.0f;
+
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        vehicle.getWheel(i).calculateNewCenterZ(wheelCollisionZ);
+    }
+
+    nonDriveAxle.calculateNewPosition(vehicle.getNonDriveWheel(0).getCenter(), vehicle.getNonDriveWheel(1).getCenter());
+    driveAxle.calculateNewPosition(vehicle.getDriveWheel(0).getCenter(), vehicle.getDriveWheel(1).getCenter());
+
+    Vector3 chassisFrontNormal = driveAxle.getCenter().getDirectionTo(nonDriveAxle.getCenter()).getNormalized();
+    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upVector, CommonConstants::axisOrigin);
+    chassisRightNormal.normalize();
+
+    setPosition(vehicle, driveAxle.getCenter(), chassisFrontNormal, chassisRightNormal);
 }

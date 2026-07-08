@@ -26,13 +26,16 @@ public:
     Measures bodyMeasures;
     Vector3 massCenter;
     float massCenterHeight;
-    float wheelbaseLength;
-    //float frontWheelLengthToMassCenter;
-    float rearWheelLengthToMassCenter;
-    float trackWidth;
+    float chassisShift;
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;
+
+    /* chassis */
+    float rearWheelLengthToMassCenter;
+    float wheelbaseLength;
+    float frontTrackWidth;
+    float rearTrackWidth;
     float groundClearance;
 
     /* engine */
@@ -48,7 +51,7 @@ public:
     float wheelBrakingCoeff;
     float maxSteeringAngle;
     float minRoadFrictionCoeff;
-    float roadAdhesionLimit;
+    float roadAdhesionCoeff;
 
     /* spring */
     float frontSpringStiffness;

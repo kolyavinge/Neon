@@ -25,17 +25,20 @@ VehicleData::VehicleData() {
     bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = bodyMeasures.zLength / 2.0f;
-    wheelbaseLength = 3.0f;
-    //frontWheelLengthToMassCenter = 1.5f;
-    rearWheelLengthToMassCenter = 1.5f;
-    trackWidth = 1.7f;
+    chassisShift = -0.03f;
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
+
+    /* chassis */
+    rearWheelLengthToMassCenter = 1.0f;
+    wheelbaseLength = 2.0f;
+    frontTrackWidth = bodyMeasures.xLength - 0.2f;
+    rearTrackWidth = bodyMeasures.xLength;
     groundClearance = 0.02f;
 
     /* engine */
-    engineTorqueCurve.a = 400.0f;
+    engineTorqueCurve.a = 500.0f;
     engineTorqueCurve.b = 100.0f;
     engineTorqueCurve.c = 1.0f;
     engineTorqueCurve.d = 6000.0f;
@@ -53,7 +56,7 @@ VehicleData::VehicleData() {
     minRoadFrictionCoeff = 10.0f;
     // задает общее сцепление с дорогой
     // пример: 1.0 - сухой асфальт, 0.5 - мокрый, 0.2 - лед
-    roadAdhesionLimit = 1.0f;
+    roadAdhesionCoeff = 1.0f;
 
     /* spring */
     frontSpringStiffness = 15000.0f;
@@ -73,10 +76,10 @@ VehicleData::VehicleData() {
     _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, 1.0f, 0.8f);
 
-    _lateralForceCurve[(int)WheelPosition::frontLeft].set(1.0f, 1.5f, 1.0f, 1.005f);
-    _lateralForceCurve[(int)WheelPosition::frontRight].set(1.0f, 1.5f, 1.0f, 1.005f);
-    _lateralForceCurve[(int)WheelPosition::rearLeft].set(1.0f, 1.5f, 1.0f, 1.005f);
-    _lateralForceCurve[(int)WheelPosition::rearRight].set(1.0f, 1.5f, 1.0f, 1.005f);
+    _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, 1.0f, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, 1.0f, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, 1.0f, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::rearRight].set(0.714f, 1.4f, 1.0f, -0.2f);
 }
 
 float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {

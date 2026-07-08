@@ -4,9 +4,15 @@
 #include <lib/system.h>
 #include <model/vehicle/VehicleData.h>
 
+enum class AxleKind {
+    nonDrive = 0,
+    drive = 1
+};
+
 class Axle : public Object {
 
     VehicleData _data;
+    float _trackWidthHalf;
     Vector3 _acceleration;
     Vector3 _velocity;
     Vector3 _center;
@@ -14,7 +20,7 @@ class Axle : public Object {
     Vector3 _rightWheelPosition;
 
 public:
-    void init();
+    void init(AxleKind kind);
     Vector3& getAcceleration();
     Vector3& getVelocity();
     Vector3& getCenter();

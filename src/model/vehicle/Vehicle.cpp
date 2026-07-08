@@ -19,20 +19,10 @@ void Vehicle::init() {
     _springs[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
     _springs[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
     _springs[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
-    for (int i = 0; i < _axles.getCount(); i++) _axles[i].init();
+    _axles[(int)AxleKind::nonDrive].init(AxleKind::nonDrive);
+    _axles[(int)AxleKind::drive].init(AxleKind::drive);
     _body.init();
     _chassis.init();
-
-    // TODO возможно нужно вынести в отдельный класс инициализацию позиции машинки
-    Axle& nonDriveAxle = getNonDriveAxle();
-    Axle& driveAxle = getDriveAxle();
-    nonDriveAxle.getCenter().y += _data.wheelbaseLength;
-    nonDriveAxle.calculateWheelPositions(_chassis.getRightNormal());
-    driveAxle.calculateWheelPositions(_chassis.getRightNormal());
-    getWheel(WheelPosition::frontLeft).setPosition(nonDriveAxle.getLeftWheelPosition());
-    getWheel(WheelPosition::frontRight).setPosition(nonDriveAxle.getRightWheelPosition());
-    getWheel(WheelPosition::rearLeft).setPosition(driveAxle.getLeftWheelPosition());
-    getWheel(WheelPosition::rearRight).setPosition(driveAxle.getRightWheelPosition());
 }
 
 VehicleData& Vehicle::getData() {

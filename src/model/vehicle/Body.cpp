@@ -48,8 +48,9 @@ void Body::calculateAirDragForce(Vector3& vehicleVelocity) {
     _airDragForce.mul(-_data.airDragCoeff);
 }
 
-void Body::calculateCenter(Vector3& chassisCenter, Vector3& chassisTopNormal) {
+void Body::calculateCenter(Vector3& chassisCenter, Vector3& chassisFrontNormal, Vector3& chassisTopNormal) {
     _center = chassisCenter;
+    _center.addMultiplied(chassisFrontNormal, _data.chassisShift);
     _center.addMultiplied(chassisTopNormal, _data.bodyMeasures.zLength / 2.0f);
 }
 
@@ -71,6 +72,8 @@ TransformMatrix4& Body::getModelMatrix() {
 }
 
 void Body::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
+    TransformMatrix4 translateRotate;
+    translateRotate.translate(0.0f, _data.chassisShift, 0.0f);
     float pitchAngle = _pitchAngle.getCurrentValue();
     TransformMatrix4 pitchRotate;
     pitchRotate.rotate(pitchAngle, CommonConstants::rightVector);
@@ -78,6 +81,7 @@ void Body::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
     TransformMatrix4 rollRotate;
     rollRotate.rotate(_rollAngle.getCurrentValue(), rollRotateAxis);
     _modelMatrix = chassisModelMatrix;
+    _modelMatrix.mul(translateRotate);
     _modelMatrix.mul(pitchRotate);
     _modelMatrix.mul(rollRotate);
 }

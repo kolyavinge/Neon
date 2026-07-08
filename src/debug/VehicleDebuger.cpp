@@ -12,17 +12,17 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     paintText(inputData);
     printGear(vehicle);
     //printThrottle(inputData);
-    //printEngineRpm(vehicle);
+    printEngineRpm(vehicle);
     //printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
-    printSlipRatio(vehicle, false);
-    printSlipAngle(vehicle);
-    printLongitudinalForce(vehicle);
+    //printSlipRatio(vehicle, false);
+    //printSlipAngle(vehicle);
+    //printLongitudinalForce(vehicle);
     printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
     //printWheelLoadWeight(vehicle);
-    //printSpringForce(vehicle);
+    printSpringForce(vehicle);
     //printBodyAngles(vehicle);
 
     printf("\r\n");

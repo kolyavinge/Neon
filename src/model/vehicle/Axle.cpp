@@ -1,6 +1,8 @@
 #include <model/vehicle/Axle.h>
 
-void Axle::init() {
+void Axle::init(AxleKind kind) {
+    _trackWidthHalf = kind == AxleKind::nonDrive ? _data.frontTrackWidth : _data.rearTrackWidth;
+    _trackWidthHalf /= 2.0f;
     _acceleration.setZero();
     _velocity.setZero();
     _center.setZero();
@@ -44,7 +46,7 @@ void Axle::calculateNewPosition(Vector3& leftWheelCenter, Vector3& rightWheelCen
 
 void Axle::calculateWheelPositions(Vector3& vehicleRightNormal) {
     Vector3 shift = vehicleRightNormal;
-    shift.setLength(_data.trackWidth / 2.0f);
+    shift.setLength(_trackWidthHalf);
     _leftWheelPosition = _center;
     _rightWheelPosition = _center;
     _leftWheelPosition.sub(shift);

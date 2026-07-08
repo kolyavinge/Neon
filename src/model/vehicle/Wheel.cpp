@@ -182,7 +182,7 @@ void Wheel::calculateSlipRatio(
         _slipRatio = SlipRatio(drivenVelocity, linearVelocity, 0.0f);
         return;
     }
-    if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-5f;
+    if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
     float slipRatio = (drivenVelocity - linearVelocity) / linearVelocity;
     // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
     bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
@@ -205,7 +205,7 @@ void Wheel::calculateSlipRatio(
             Numeric::makeNegativeSign(slipRatio);
         }
     }
-
+    slipRatio = Numeric::clamp(slipRatio, -VehicleConstants::slipRatioLimit, VehicleConstants::slipRatioLimit);
     _slipRatio = SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
 
@@ -271,18 +271,19 @@ void Wheel::calculateLateralForce(float springForce) {
 
 void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
     // friction circle (Kamm's circle) круг сцепления (диаграмма Камма)
-    // хотя на самом деле это эллипс, тк максимальные значения продольной и поперечной силы не равны друг другу
+    // на самом деле это эллипс, тк максимальные значения продольной (longitudinal) и поперечной (lateral) сил не равны друг другу
     float curLater = _lateralForce.getLength();
     float curLong = _longitudinalForce.getLength();
     if (Numeric::floatEquals(curLater, 0.0f) || Numeric::floatEquals(curLong, 0.0f)) return;
-    float maxLater = springForce * _data.roadAdhesionLimit * _data.getLateralForceMaxCoeff((int)_position);
-    float maxLong = springForce * _data.roadAdhesionLimit * _data.getLongitudinalForceMaxCoeff((int)_position);
+    float maxLater = springForce * _data.roadAdhesionCoeff * _data.getLateralForceMaxCoeff((int)_position);
+    float maxLong = springForce * _data.roadAdhesionCoeff * _data.getLongitudinalForceMaxCoeff((int)_position);
     float maxLater2 = maxLater * maxLater;
     float maxLong2 = maxLong * maxLong;
     // уравнение эллипса
     bool inFrictionCircle = ((curLater * curLater) / maxLater2) + ((curLong * curLong) / maxLong2) < 1.0f;
     if (inFrictionCircle) return;
     // находим любую точку пересечения прямой и эллипса
+    // подробности в 'docs\friction circle.jpg'
     float k = curLong / curLater; // угловой коэфф прямой (вектора суммы сил)
     float n = (1.0f / maxLater2) + ((k * k) / maxLong2);
     float x = Math::sqrt(1.0f / n);
