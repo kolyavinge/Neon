@@ -27,6 +27,7 @@ SlipRatio& SlipRatio::operator=(const SlipRatio& other) {
 
 Wheel::Wheel() {
     _position = (WheelPosition)-1; // unset position
+    _radius = 0.0f;
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 0.0f;
@@ -39,6 +40,11 @@ Wheel::Wheel() {
 
 void Wheel::init(WheelPosition position) {
     _position = position;
+    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
+        _radius = _data.frontWheelRadius;
+    } else {
+        _radius = _data.rearWheelRadius;
+    }
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _loadWeight = 250.0f;
@@ -66,11 +72,7 @@ WheelPosition Wheel::getPosition() {
 }
 
 float Wheel::getRadius() {
-    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
-        return _data.frontWheelRadius;
-    } else {
-        return _data.rearWheelRadius;
-    }
+    return _radius;
 }
 
 float Wheel::getRotateAngle() {
@@ -189,6 +191,7 @@ void Wheel::calculateSlipRatio(
     if (isBrakingByWheelsOrEngine) {
         float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
         // линейная скорость (почти) перпендикулярна шасси
+        // TODO скорее всего это условие не нужно
         if (Numeric::floatEquals(linearVelocityProjection, 0.0f, 0.1f)) {
             _slipRatio = SlipRatio(drivenVelocity, linearVelocity, 0.0f);
             return;
@@ -346,15 +349,19 @@ TransformMatrix4& Wheel::getModelMatrix() {
     return _modelMatrix;
 }
 
-void Wheel::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
-    _modelMatrix = chassisModelMatrix;
-    Vector3& localOutsideNormal = _position == WheelPosition::frontLeft ? CommonConstants::leftVector : CommonConstants::rightVector;
+void Wheel::calculateModelMatrix(float chassisRotateAngle, Vector3& chassisRotateAxis) {
+    TransformMatrix4 chassisRotation;
+    chassisRotation.rotate(chassisRotateAngle, chassisRotateAxis);
+    bool isLeftWheel = _position == WheelPosition::frontLeft || _position == WheelPosition::rearLeft;
+    Vector3& localOutsideNormal = isLeftWheel ? CommonConstants::leftVector : CommonConstants::rightVector;
     TransformMatrix4 angularRotate;
     angularRotate.rotate(_rotateAngle, localOutsideNormal);
-    _modelMatrix.mul(angularRotate);
-    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
+    _modelMatrix.translate(_center);
+    _modelMatrix.mul(chassisRotation);
+    if (_steeringAngle != 0.0f) {
         TransformMatrix4 steeringRotate;
         steeringRotate.rotate(_steeringAngle, CommonConstants::upVector);
         _modelMatrix.mul(steeringRotate);
     }
+    _modelMatrix.mul(angularRotate);
 }

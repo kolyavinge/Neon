@@ -44,7 +44,6 @@ void VehicleRenderer::renderBody(Body& body) {
 }
 
 void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
-    return;
     Wheel& wheel = vehicle.getWheel(wheelPosition);
     RenderModel3d* wheelModel = _wheelModels[(int)wheelPosition];
     _shader.setModelMatrix(wheel.getModelMatrix());

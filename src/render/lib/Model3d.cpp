@@ -32,9 +32,11 @@ Collection<Texture>& Model3d::getTextures() {
 
 void Model3d::moveToOrigin(int axis) {
     Vector3 min = getMinVertex();
-    if ((axis & (int)Axis::x) == 0) min.x = 0.0f;
-    if ((axis & (int)Axis::y) == 0) min.y = 0.0f;
-    if ((axis & (int)Axis::z) == 0) min.z = 0.0f;
+    if (axis != 0) {
+        if ((axis & (int)Axis::x) == 0) min.x = 0.0f;
+        if ((axis & (int)Axis::y) == 0) min.y = 0.0f;
+        if ((axis & (int)Axis::z) == 0) min.z = 0.0f;
+    }
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
@@ -53,9 +55,11 @@ void Model3d::moveToCenter(int axis) {
     lengthHalf.div(2.0f);
     Vector3 delta = min;
     delta.add(lengthHalf);
-    if ((axis & (int)Axis::x) == 0) delta.x = 0.0f;
-    if ((axis & (int)Axis::y) == 0) delta.y = 0.0f;
-    if ((axis & (int)Axis::z) == 0) delta.z = 0.0f;
+    if (axis != 0) {
+        if ((axis & (int)Axis::x) == 0) delta.x = 0.0f;
+        if ((axis & (int)Axis::y) == 0) delta.y = 0.0f;
+        if ((axis & (int)Axis::z) == 0) delta.z = 0.0f;
+    }
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {

@@ -30,6 +30,7 @@ class Wheel : public Object {
 
     VehicleData _data;
     WheelPosition _position;
+    float _radius;
     float _rotateAngle;
     float _steeringAngle;
     float _loadWeight;
@@ -97,5 +98,5 @@ public:
     void calculateNewCenterPosition(float dt);
     void calculateNewCenterZ(float wheelZ);
     TransformMatrix4& getModelMatrix();
-    void calculateModelMatrix(TransformMatrix4& chassisModelMatrix);
+    void calculateModelMatrix(float chassisRotateAngle, Vector3& chassisRotateAxis);
 };

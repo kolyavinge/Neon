@@ -36,8 +36,8 @@ public:
     Collection<Mesh>& getMeshes();
     Texture& createNewTexture();
     Collection<Texture>& getTextures();
-    void moveToOrigin(int axis);
-    void moveToCenter(int axis);
+    void moveToOrigin(int axis = 0);
+    void moveToCenter(int axis = 0);
     void scale(float scale);
     void invertAxis(int axis);
 

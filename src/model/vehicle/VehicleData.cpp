@@ -33,9 +33,9 @@ VehicleData::VehicleData() {
     /* chassis */
     rearWheelLengthToMassCenter = 1.0f;
     wheelbaseLength = 2.0f;
-    frontTrackWidth = bodyMeasures.xLength - 0.2f;
-    rearTrackWidth = bodyMeasures.xLength;
-    groundClearance = 0.02f;
+    frontTrackWidth = bodyMeasures.xLength - 0.3f;
+    rearTrackWidth = bodyMeasures.xLength - 0.25f;
+    groundClearance = 0.05f;
 
     /* engine */
     engineTorqueCurve.a = 500.0f;
@@ -49,7 +49,7 @@ VehicleData::VehicleData() {
     engineBrakingCoeff = 10000.0f;
 
     /* wheel */
-    frontWheelRadius = 0.2f;
+    frontWheelRadius = 0.22f;
     rearWheelRadius = 0.25f;
     wheelBrakingCoeff = 500.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);

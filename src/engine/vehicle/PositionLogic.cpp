@@ -66,7 +66,7 @@ void PositionLogic::setPosition(Vehicle& vehicle, Vector3& driveAxleCenter, Vect
     rearRightWheel.setOutsideNormal(chassisRightNormal);
 
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateModelMatrix(chassis.getModelMatrix());
+        vehicle.getWheel(i).calculateModelMatrix(chassis.getRotateAngle(), chassis.getRotateAxis());
     }
 }
 

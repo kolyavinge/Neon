@@ -57,7 +57,7 @@ void DrivingInputData::resetShifting() {
 }
 
 void DrivingInputData::update(float dt) {
-    _throttleRatio.update(0.5f * dt);
-    _brakeRatio.update(0.5f * dt);
-    _steeringRatio.update(dt);
+    _throttleRatio.update(0.8f * dt);
+    _brakeRatio.update(0.8f * dt);
+    _steeringRatio.update(2.0f * dt);
 }

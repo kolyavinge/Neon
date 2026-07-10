@@ -22,11 +22,10 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upVector);
     renderGrid();
-    //return;
     //renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
-    renderVehicleAxles(vehicle);
-    renderVehicleWheels(vehicle);
+    //renderVehicleAxles(vehicle);
+    //renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
     //renderVehicleAxis(vehicle);
 }

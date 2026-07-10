@@ -3,6 +3,7 @@
 #include <common/AssetsDirectory.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <render/lib/Model3d.h>
 #include <render/lib/Model3dLoader.h>
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/RenderModel3dLoader.h>
@@ -33,4 +34,7 @@ public:
         RenderModel3dLoader& renderModel3dLoader);
 
     void loadAllModels();
+
+private:
+    float getWheelRadius(Model3d& wheelModel);
 };
