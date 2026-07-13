@@ -11,6 +11,7 @@ class Spring : public Object {
     float _damper;
     float _minLength;
     float _maxLength;
+    float _restLength;
     float _maxWeight;
     float _prevLength;
     float _currentLength;
@@ -19,6 +20,8 @@ class Spring : public Object {
 public:
     Spring();
     void init(WheelPosition position);
+    float getLength();
+    float getLengthDelta();
     float getForce();
     void calculateLength(float wheelLoadWeight);
     void calculateForce(float dt);

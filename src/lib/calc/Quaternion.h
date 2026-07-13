@@ -23,7 +23,9 @@ public:
     void setAngleAndAxis(float angle, Vector3 axis);
     void normalize();
     void inverse();
+    void add(Quaternion& q2);
     void mul(Quaternion& q2);
+    void mul(float a);
     void rotatePoint(Vector3& point);
     TransformMatrix4 getTransformMatrix4();
 };

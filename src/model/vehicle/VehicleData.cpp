@@ -25,7 +25,7 @@ VehicleData::VehicleData() {
     bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = bodyMeasures.zLength / 2.0f;
-    chassisShift = -0.03f;
+    bodyFrontShiftByChassis = -0.03f;
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
@@ -50,7 +50,7 @@ VehicleData::VehicleData() {
 
     /* wheel */
     frontWheelRadius = 0.22f;
-    rearWheelRadius = 0.25f;
+    rearWheelRadius = 0.26f;
     wheelBrakingCoeff = 500.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRoadFrictionCoeff = 10.0f;

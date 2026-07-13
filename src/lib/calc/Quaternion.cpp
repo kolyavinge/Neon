@@ -98,6 +98,13 @@ void Quaternion::inverse() {
     _z = -_z;
 }
 
+void Quaternion::add(Quaternion& q2) {
+    _w += q2._w;
+    _x += q2._x;
+    _y += q2._y;
+    _z += q2._z;
+}
+
 void Quaternion::mul(Quaternion& q2) {
     Quaternion& q1 = *this;
     float w = (q1._w * q2._w) - (q1._x * q2._x) - (q1._y * q2._y) - (q1._z * q2._z);
@@ -105,6 +112,13 @@ void Quaternion::mul(Quaternion& q2) {
     float y = (q1._w * q2._y) - (q1._x * q2._z) + (q1._y * q2._w) + (q1._z * q2._x);
     float z = (q1._w * q2._z) + (q1._x * q2._y) - (q1._y * q2._x) + (q1._z * q2._w);
     setComponents(w, x, y, z);
+}
+
+void Quaternion::mul(float a) {
+    _w *= a;
+    _x *= a;
+    _y *= a;
+    _z *= a;
 }
 
 void Quaternion::rotatePoint(Vector3& point) {

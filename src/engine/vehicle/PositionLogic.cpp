@@ -5,6 +5,7 @@
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
+#include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
@@ -76,14 +77,18 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     Axle& driveAxle = vehicle.getDriveAxle();
 
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateNewCenterPosition(dt);
+        Wheel& wheel = vehicle.getWheel(i);
+        //Spring& spring = vehicle.getSpring(i);
+        wheel.calculateNewCenterPosition(dt);
+        //spring.calculateNewPosition(wheel.getLinearVelocity(), dt);
     }
 
     // TODO find wheels collisions
     float wheelCollisionZ = 0.0f;
 
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateNewCenterZ(wheelCollisionZ);
+        Wheel& wheel = vehicle.getWheel(i);
+        wheel.calculateNewCenterZ(wheelCollisionZ);
     }
 
     nonDriveAxle.calculateNewPosition(vehicle.getNonDriveWheel(0).getCenter(), vehicle.getNonDriveWheel(1).getCenter());

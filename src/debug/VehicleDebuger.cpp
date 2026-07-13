@@ -7,22 +7,23 @@ int VehicleDebuger::_tick = 0;
 
 void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputData) {
     _tick++;
-    //if ((_tick % 10) != 0) return;
+    if ((_tick % 10) != 0) return;
 
     paintText(inputData);
-    printGear(vehicle);
-    printThrottle(inputData);
-    printEngineRpm(vehicle);
+    //printGear(vehicle);
+    //printThrottle(inputData);
+    //printEngineRpm(vehicle);
     //printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
-    printLateralForce(vehicle);
+    //printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
+    //printWheelTransferedWeight(vehicle);
     //printWheelLoadWeight(vehicle);
-    printSpringForce(vehicle);
+    //printSpringForce(vehicle);
     //printBodyAngles(vehicle);
 
     printf("\r\n");
@@ -121,14 +122,6 @@ void VehicleDebuger::printLateralForce(Wheel& wheel, bool last) {
     if (!last) printf(" ");
 }
 
-//void VehicleDebuger::printFrictionCircleData(Vehicle& vehicle) {
-//
-//}
-
-//void VehicleDebuger::printFrictionCircleData(Wheel& wheel, bool last) {
-//
-//}
-
 void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)));
@@ -139,6 +132,14 @@ void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)) / vehicle.getDriveWheel(0).getRadius();
     printf("AngV %i|", (int)v);
+}
+
+void VehicleDebuger::printWheelTransferedWeight(Vehicle& vehicle) {
+    printf("WheelWeight %i %i %i %i|",
+        (int)vehicle.getWheel(0).getTransferedWeight(),
+        (int)vehicle.getWheel(1).getTransferedWeight(),
+        (int)vehicle.getWheel(2).getTransferedWeight(),
+        (int)vehicle.getWheel(3).getTransferedWeight());
 }
 
 void VehicleDebuger::printWheelLoadWeight(Vehicle& vehicle) {

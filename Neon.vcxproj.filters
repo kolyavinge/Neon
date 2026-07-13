@@ -264,7 +264,7 @@
     <ClCompile Include="src\debug\DebugRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\common.cpp">
+    <ClCompile Include="src\model\common\common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -593,7 +593,7 @@
     <ClInclude Include="src\debug\DebugRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\common.h">
+    <ClInclude Include="src\model\common\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\SmoothValue.h">

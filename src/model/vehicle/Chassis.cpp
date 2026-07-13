@@ -50,8 +50,13 @@ Vector3& Chassis::getCenter() {
 }
 
 void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter) {
-    _center = driveAxleCenter.getMiddleTo(nonDriveAxleCenter);
-    _center.subMultiplied(_topNormal, _data.frontWheelRadius - _data.groundClearance);
+    Vector3 nonDriveAxleCenterOnChassis = nonDriveAxleCenter;
+    Vector3 driveAxleCenterOnChassis = driveAxleCenter;
+    nonDriveAxleCenterOnChassis.subMultiplied(_topNormal, _data.frontWheelRadius);
+    nonDriveAxleCenterOnChassis.addMultiplied(_topNormal, _data.groundClearance);
+    driveAxleCenterOnChassis.subMultiplied(_topNormal, _data.rearWheelRadius);
+    driveAxleCenterOnChassis.addMultiplied(_topNormal, _data.groundClearance);
+    _center = driveAxleCenterOnChassis.getMiddleTo(nonDriveAxleCenterOnChassis);
 }
 
 float Chassis::getRotateAngle() {

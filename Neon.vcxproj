@@ -66,7 +66,7 @@
     <ClCompile Include="src\lib\String.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\model\Camera.cpp" />
-    <ClCompile Include="src\model\common.cpp" />
+    <ClCompile Include="src\model\common\common.cpp" />
     <ClCompile Include="src\model\vehicle\Axle.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
     <ClCompile Include="src\model\vehicle\Chassis.cpp" />
@@ -130,7 +130,7 @@
     <ClInclude Include="src\lib\ResourceManager.h" />
     <ClInclude Include="src\lib\windows.h" />
     <ClInclude Include="src\model\Camera.h" />
-    <ClInclude Include="src\model\common.h" />
+    <ClInclude Include="src\model\common\common.h" />
     <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />

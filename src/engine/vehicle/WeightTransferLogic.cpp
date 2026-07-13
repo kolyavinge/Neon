@@ -6,15 +6,15 @@
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
-void WeightTransferLogic::transferWeight(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeight(Vehicle& vehicle, DrivingInputData& inputData) {
     transferWeightInStatic(vehicle);
     Vector3 longitudinalAcceleration = vehicle.getLongitudinalAcceleration();
     if (!longitudinalAcceleration.isZero()) {
-        transferWeightAfterAccelerationOrBraking(vehicle);
+        transferWeightAfterAccelerationOrBraking(vehicle, inputData.getThrottleRatio());
     }
     Vector3 lateralAcceleration = vehicle.getLateralAcceleration();
     if (!lateralAcceleration.isZero()) {
-        transferWeightAfterSteering(vehicle);
+        transferWeightAfterSteering(vehicle, inputData.getSteeringRatio());
     }
     calculateSpringLengths(vehicle);
 }
@@ -23,7 +23,7 @@ void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     body.transferWeightOnRear(0.0f);
-    body.transferWeightOnLeft(0.0f);
+    body.transferWeightOnRight(0.0f);
     float frontWheelsWeight = (vehicleData.rearWheelLengthToMassCenter / vehicleData.wheelbaseLength) * vehicleData.vehicleMass;
     float rearWheelsWeight = vehicleData.vehicleMass - frontWheelsWeight;
     float frontWheelWeight = frontWheelsWeight / VehicleConstants::nonDriveWheelsCount;
@@ -34,7 +34,7 @@ void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::rearRight).setLoadWeight(rearWheelWeight);
 }
 
-void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle, float throttleRatio) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     Vector3 acceleration = vehicle.getLongitudinalAcceleration();
@@ -42,11 +42,12 @@ void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehi
     float transferedWeight = accelerationInG * vehicleData.massCenterHeight * vehicleData.vehicleMass / vehicleData.wheelbaseLength;
     float transferedWeightOneWheel = transferedWeight / VehicleConstants::driveWheelsCount;
     float frontWheelWeight, rearWheelWeight;
-    bool onRearWheels = vehicle.isAccelerating();
-    if (onRearWheels) {
+    if (throttleRatio > 0.0f) {
+        // accelerating
         frontWheelWeight = -transferedWeightOneWheel;
         rearWheelWeight = +transferedWeightOneWheel;
-    } else { // braking
+    } else {
+        // braking
         frontWheelWeight = +transferedWeightOneWheel;
         rearWheelWeight = -transferedWeightOneWheel;
     }
@@ -57,7 +58,7 @@ void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehi
     body.transferWeightOnRear(2.0f * rearWheelWeight);
 }
 
-void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
+void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle, float steeringRatio) {
     VehicleData& vehicleData = vehicle.getData();
     Body& body = vehicle.getBody();
     Vector3 acceleration = vehicle.getLateralAcceleration();
@@ -67,13 +68,14 @@ void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     float frontTransferedWeightOneWheel = frontTransferedWeight;
     float rearTransferedWeightOneWheel = rearTransferedWeight;
     float frontLeftWeight, frontRightWeight, rearLeftWeight, rearRightWeight;
-    bool onRightWheels = vehicle.isTurningLeft();
-    if (onRightWheels) {
+    if (steeringRatio < 0.0f) {
+        // steering left
         frontLeftWeight = -frontTransferedWeightOneWheel;
         rearLeftWeight = -rearTransferedWeightOneWheel;
         frontRightWeight = +frontTransferedWeightOneWheel;
         rearRightWeight = +rearTransferedWeightOneWheel;
-    } else { // turning right
+    } else {
+        // steering right
         frontLeftWeight = +frontTransferedWeightOneWheel;
         rearLeftWeight = +rearTransferedWeightOneWheel;
         frontRightWeight = -frontTransferedWeightOneWheel;
@@ -83,7 +85,7 @@ void WeightTransferLogic::transferWeightAfterSteering(Vehicle& vehicle) {
     vehicle.getWheel(WheelPosition::frontRight).transferWeight(frontRightWeight);
     vehicle.getWheel(WheelPosition::rearLeft).transferWeight(rearLeftWeight);
     vehicle.getWheel(WheelPosition::rearRight).transferWeight(rearRightWeight);
-    body.transferWeightOnLeft(frontLeftWeight + rearLeftWeight);
+    body.transferWeightOnRight(frontRightWeight + rearRightWeight);
 }
 
 void WeightTransferLogic::calculateSpringLengths(Vehicle& vehicle) {

@@ -34,7 +34,7 @@ void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& inputData
     }
     _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
     _forceLogic.calculateForces(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
-    _weightTransferLogic.transferWeight(vehicle);
+    _weightTransferLogic.transferWeight(vehicle, inputData);
     _velocityLogic.calculateVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
     _positionLogic.updatePosition(vehicle);
 }

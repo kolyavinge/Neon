@@ -127,7 +127,7 @@ float Wheel::getTransferedWeight() {
 void Wheel::transferWeight(float weight) {
     _transferedWeight = weight;
     _loadWeight += weight;
-    //Assert::isTrue(_loadWeight > 0.0f); TODO лучше раскомментировать
+    Assert::isTrue(_loadWeight > 0.0f);
 }
 
 float Wheel::getAngularVelocity() {

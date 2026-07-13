@@ -6,6 +6,7 @@ Spring::Spring() {
     _damper = 0.0f;
     _minLength = 0.0f;
     _maxLength = 0.0f;
+    _restLength = 0.0f;
     _maxWeight = 0.0f;
     _prevLength = 0.0f;
     _currentLength = 0.0f;
@@ -26,8 +27,17 @@ void Spring::init(WheelPosition position) {
         _maxLength = _data.rearSpringMaxLength;
         _maxWeight = _data.rearSpringMaxWeight;
     }
-    _prevLength = _maxLength / 2.0f;
+    _restLength = _maxLength / 2.0f;
+    _prevLength = _restLength;
     _currentLength = _prevLength;
+}
+
+float Spring::getLength() {
+    return _currentLength;
+}
+
+float Spring::getLengthDelta() {
+    return _restLength - _currentLength;
 }
 
 float Spring::getForce() {

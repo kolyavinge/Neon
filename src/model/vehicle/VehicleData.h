@@ -3,7 +3,7 @@
 #include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common.h>
+#include <model/common/common.h>
 #include <model/vehicle/EngineTorqueCurve.h>
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/PacejkaFormula.h>
@@ -26,7 +26,7 @@ public:
     Measures bodyMeasures;
     Vector3 massCenter;
     float massCenterHeight;
-    float chassisShift;
+    float bodyFrontShiftByChassis;
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;

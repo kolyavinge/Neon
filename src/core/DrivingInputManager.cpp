@@ -7,9 +7,12 @@ DrivingInputManager::DrivingInputManager(
 }
 
 void DrivingInputManager::update(DrivingInputData& inputData) {
-    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::a)) {
+    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::a) ||
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::left)) {
         inputData.setSteeringRatio(-1.0f);
-    } else if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::d)) {
+    } else if (
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::d) ||
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::right)) {
         inputData.setSteeringRatio(1.0f);
     } else {
         inputData.setSteeringRatio(0.0f);

@@ -5,8 +5,8 @@
 
 void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
     camera.setVerticalViewAngle(CommonConstants::verticalFieldOfView);
-    setLeftSideView(camera, playerVehicle);
-    //setRightSideView(camera, playerVehicle);
+    //setLeftSideView(camera, playerVehicle);
+    setRightSideView(camera, playerVehicle);
     //setBackView(camera, playerVehicle);
     //setSideBackView(camera, playerVehicle);
     //setTopView(camera, playerVehicle);

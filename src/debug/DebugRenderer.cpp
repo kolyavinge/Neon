@@ -27,7 +27,7 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     //renderVehicleAxles(vehicle);
     //renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
-    //renderVehicleAxis(vehicle);
+    renderVehicleAxis(vehicle);
 }
 
 void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {

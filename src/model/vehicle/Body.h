@@ -4,7 +4,7 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common.h>
+#include <model/common/common.h>
 #include <model/vehicle/VehicleData.h>
 
 class Body : public Object {
@@ -16,7 +16,7 @@ class Body : public Object {
     Vector3 _center;
     Box3d _box;
     float _transferedWeightOnRear;
-    float _transferedWeightOnLeft;
+    float _transferedWeightOnRight;
     TransformMatrix4 _modelMatrix;
 
 public:
@@ -26,7 +26,7 @@ public:
     float getRollAngleRelateChassis();
     Box3d& getBox();
     void transferWeightOnRear(float onRear);
-    void transferWeightOnLeft(float onLeft);
+    void transferWeightOnRight(float onRight);
     Vector3& getAirDragForce();
     void calculateAirDragForce(Vector3& vehicleVelocity);
     void calculateCenter(Vector3& chassisCenter, Vector3& chassisFrontNormal, Vector3& chassisTopNormal);

@@ -22,10 +22,9 @@ private:
     static void printLongitudinalForce(Wheel& wheel, bool last = false);
     static void printLateralForce(Vehicle& vehicle);
     static void printLateralForce(Wheel& wheel, bool last = false);
-    //static void printFrictionCircleData(Vehicle& vehicle);
-    //static void printFrictionCircleData(Wheel& wheel, bool last);
     static void printVehicleLinearVelocity(Vehicle& vehicle);
     static void printVehicleAngularVelocity(Vehicle& vehicle);
+    static void printWheelTransferedWeight(Vehicle& vehicle);
     static void printWheelLoadWeight(Vehicle& vehicle);
     static void printSpringForce(Vehicle& vehicle);
     static void printBodyAngles(Vehicle& vehicle);
