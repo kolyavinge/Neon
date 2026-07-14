@@ -1,5 +1,9 @@
 #include <model/vehicle/Axle.h>
 
+Axle::Axle() {
+    _trackWidthHalf = 0.0f;
+}
+
 void Axle::init(AxleKind kind) {
     _trackWidthHalf = kind == AxleKind::nonDrive ? _data.frontTrackWidth : _data.rearTrackWidth;
     _trackWidthHalf /= 2.0f;

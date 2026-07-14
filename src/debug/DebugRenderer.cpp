@@ -20,14 +20,15 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
         CommonConstants::maxPerspectiveDepth);
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
-    gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upVector);
+    gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
     //renderVehicleAxles(vehicle);
-    //renderVehicleWheels(vehicle);
+    renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
-    renderVehicleAxis(vehicle);
+    renderVehicleChassis(vehicle);
+    //renderVehicleAxis(vehicle);
 }
 
 void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {
@@ -220,6 +221,30 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     glVertex3f(airDragForce);
     glEnd();
     glPopMatrix();
+}
+
+void DebugRenderer::renderVehicleChassis(Vehicle& vehicle) {
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glBegin(GL_POINTS);
+    glVertex3f(vehicle.getChassis().getCenter());
+    glEnd();
+
+    // rigid body direction
+    //glColor3f(1.0f, 1.0f, 0.0f);
+    //glPushMatrix();
+    //glTranslatef(vehicle._rigidBody.getCenter());
+    //glRotatef(UnitConverter::radiansToDegrees(vehicle._rigidBody.getRotateAngle()), vehicle._rigidBody.getRotateAxis());
+    //glBegin(GL_LINES);
+    //glVertex3f(0.0f, 0.0f, 0.0f);
+    //glVertex3f(0.0f, 0.5f, 0.0f);
+    //glEnd();
+    //glPopMatrix();
+
+    // rigid body center
+    //glColor3f(1.0f, 0.0f, 0.0f);
+    //glBegin(GL_POINTS);
+    //glVertex3f(vehicle._rigidBody.getCenter());
+    //glEnd();
 }
 
 void DebugRenderer::renderVehicleAxis(Vehicle& vehicle) {

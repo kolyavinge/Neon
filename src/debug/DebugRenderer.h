@@ -14,6 +14,7 @@ public:
     void renderVehicleAxles(Vehicle& vehicle);
     void renderVehicleWheels(Vehicle& vehicle);
     void renderVehicleBody(Vehicle& vehicle);
+    void renderVehicleChassis(Vehicle& vehicle);
     void renderVehicleAxis(Vehicle& vehicle);
     void renderGrid();
     void renderGlobalAxis();

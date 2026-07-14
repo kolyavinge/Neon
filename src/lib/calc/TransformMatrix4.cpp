@@ -83,6 +83,42 @@ Vector4 TransformMatrix4::mul(Vector4& v) {
     return Vector4(x, y, z, w);
 }
 
+Vector3 TransformMatrix4::mul(Vector3& v) {
+    float x = _items[0] * v.x + _items[4] * v.y + _items[8] * v.z;
+    float y = _items[1] * v.x + _items[5] * v.y + _items[9] * v.z;
+    float z = _items[2] * v.x + _items[6] * v.y + _items[10] * v.z;
+
+    return Vector3(x, y, z);
+}
+
+void TransformMatrix4::transpose() {
+    float i0 = _items[0];
+    float i1 = _items[1];
+    float i2 = _items[2];
+    float i3 = _items[3];
+    float i4 = _items[4];
+    float i5 = _items[5];
+    float i6 = _items[6];
+    float i7 = _items[7];
+    float i8 = _items[8];
+    float i9 = _items[9];
+    float i10 = _items[10];
+    float i11 = _items[11];
+    float i12 = _items[12];
+    float i13 = _items[13];
+    float i14 = _items[14];
+    float i15 = _items[15];
+
+    float transposed[16] = {
+        i0, i1, i2, i3,
+        i4, i5, i6, i7,
+        i8, i9, i10, i11,
+        i12, i13, i14, i15
+    };
+
+    Memory::copy(transposed, _items, 16);
+}
+
 void TransformMatrix4::translate(float x, float y, float z) {
     setIdentity();
     _items[12] = x;

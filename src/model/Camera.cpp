@@ -38,7 +38,7 @@ TransformMatrix4& Camera::getProjectionMatrix() {
 }
 
 void Camera::calculateViewMatrix() {
-    _viewMatrix.lookAt(_position, _lookDirection, CommonConstants::upVector);
+    _viewMatrix.lookAt(_position, _lookDirection, CommonConstants::upAxis);
 }
 
 void Camera::calculateProjectionMatrix() {

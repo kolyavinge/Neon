@@ -3,6 +3,7 @@
 #include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/common/RigidBody.h>
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
@@ -23,6 +24,7 @@ private:
     Array<Axle, VehicleConstants::axlesCount> _axles;
     Body _body;
     Chassis _chassis;
+    RigidBody _rigidBody;
 
 public:
     Vehicle();

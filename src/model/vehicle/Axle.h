@@ -20,6 +20,7 @@ class Axle : public Object {
     Vector3 _rightWheelPosition;
 
 public:
+    Axle();
     void init(AxleKind kind);
     Vector3& getAcceleration();
     Vector3& getVelocity();

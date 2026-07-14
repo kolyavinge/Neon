@@ -14,7 +14,8 @@ public:
     Quaternion(float w, float x, float y, float z);
     Quaternion(Vector3& from, Vector3& to);
     Quaternion(float angle, Vector3 axis);
-
+    Quaternion& operator=(const Quaternion& other);
+    Quaternion(const Quaternion&) = default;
     float getMagnitude();
     void getAngleAndAxis(output float& angle, output Vector3& axis);
     void setIdentity();

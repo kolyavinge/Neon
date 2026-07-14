@@ -21,6 +21,8 @@ public:
     void setZero();
     void mul(TransformMatrix4& m);
     Vector4 mul(Vector4& v);
+    Vector3 mul(Vector3& v);
+    void transpose();
     void translate(float x, float y, float z);
     void translate(Vector3& v);
     void rotate(float angle, float axisX, float axisY, float axisZ);

@@ -7,9 +7,9 @@ Chassis::Chassis() {
 }
 
 void Chassis::init() {
-    _frontNormal = CommonConstants::frontVector;
-    _rightNormal = CommonConstants::rightVector;
-    _topNormal = CommonConstants::upVector;
+    _frontNormal = CommonConstants::frontAxis;
+    _rightNormal = CommonConstants::rightAxis;
+    _topNormal = CommonConstants::upAxis;
     _rotateAngle = 0.0f;
 }
 
@@ -37,8 +37,8 @@ void Chassis::calculateAnglesAndModelMatrix() {
     _modelMatrix.translate(_center);
 
     Quaternion q = Quaternion::rotateCoordinateSystem(
-        CommonConstants::rightVector, _rightNormal,
-        CommonConstants::frontVector, _frontNormal);
+        CommonConstants::rightAxis, _rightNormal,
+        CommonConstants::frontAxis, _frontNormal);
     q.getAngleAndAxis(output _rotateAngle, output _rotateAxis);
     TransformMatrix4 rotate = q.getTransformMatrix4();
 

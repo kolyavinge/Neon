@@ -23,6 +23,7 @@ void Vehicle::init() {
     _axles[(int)AxleKind::drive].init(AxleKind::drive);
     _body.init();
     _chassis.init();
+    _rigidBody.init(_data.vehicleMass, _data.bodyMeasures);
 }
 
 VehicleData& Vehicle::getData() {

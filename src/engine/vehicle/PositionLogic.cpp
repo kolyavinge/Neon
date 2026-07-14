@@ -5,7 +5,6 @@
 #include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Chassis.h>
-#include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
@@ -78,9 +77,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
 
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        //Spring& spring = vehicle.getSpring(i);
         wheel.calculateNewCenterPosition(dt);
-        //spring.calculateNewPosition(wheel.getLinearVelocity(), dt);
     }
 
     // TODO find wheels collisions
@@ -95,7 +92,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     driveAxle.calculateNewPosition(vehicle.getDriveWheel(0).getCenter(), vehicle.getDriveWheel(1).getCenter());
 
     Vector3 chassisFrontNormal = driveAxle.getCenter().getDirectionTo(nonDriveAxle.getCenter()).getNormalized();
-    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upVector, CommonConstants::axisOrigin);
+    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upAxis, CommonConstants::axisOrigin);
     chassisRightNormal.normalize();
 
     setPosition(vehicle, driveAxle.getCenter(), chassisFrontNormal, chassisRightNormal);

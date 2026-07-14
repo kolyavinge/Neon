@@ -23,6 +23,7 @@ public:
 
     Measures();
     Measures& operator=(const Measures& other);
+    Measures(const Measures&) = default;
 };
 
 class Rect2d : public Object {

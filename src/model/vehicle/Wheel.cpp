@@ -53,11 +53,11 @@ void Wheel::init(WheelPosition position) {
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
     _slipAngle = 0.0f;
-    _frontNormal = CommonConstants::frontVector;
+    _frontNormal = CommonConstants::frontAxis;
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
-        _outsideNormal = CommonConstants::leftVector;
+        _outsideNormal = CommonConstants::leftAxis;
     } else {
-        _outsideNormal = CommonConstants::rightVector;
+        _outsideNormal = CommonConstants::rightAxis;
     }
     _center.setZero();
     _longitudinalForce.setZero();
@@ -353,14 +353,14 @@ void Wheel::calculateModelMatrix(float chassisRotateAngle, Vector3& chassisRotat
     TransformMatrix4 chassisRotation;
     chassisRotation.rotate(chassisRotateAngle, chassisRotateAxis);
     bool isLeftWheel = _position == WheelPosition::frontLeft || _position == WheelPosition::rearLeft;
-    Vector3& localOutsideNormal = isLeftWheel ? CommonConstants::leftVector : CommonConstants::rightVector;
+    Vector3& localOutsideNormal = isLeftWheel ? CommonConstants::leftAxis : CommonConstants::rightAxis;
     TransformMatrix4 angularRotate;
     angularRotate.rotate(_rotateAngle, localOutsideNormal);
     _modelMatrix.translate(_center);
     _modelMatrix.mul(chassisRotation);
     if (_steeringAngle != 0.0f) {
         TransformMatrix4 steeringRotate;
-        steeringRotate.rotate(_steeringAngle, CommonConstants::upVector);
+        steeringRotate.rotate(_steeringAngle, CommonConstants::upAxis);
         _modelMatrix.mul(steeringRotate);
     }
     _modelMatrix.mul(angularRotate);

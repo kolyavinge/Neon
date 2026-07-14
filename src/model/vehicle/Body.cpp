@@ -76,8 +76,8 @@ void Body::calculateModelMatrix(TransformMatrix4& chassisModelMatrix) {
     translateRotate.translate(0.0f, _data.bodyFrontShiftByChassis, 0.0f);
     float pitchAngle = _pitchAngle.getCurrentValue();
     TransformMatrix4 pitchRotate;
-    pitchRotate.rotate(pitchAngle, CommonConstants::rightVector);
-    Vector3 rollRotateAxis = Math::rotatePoint(CommonConstants::frontVector, -pitchAngle, CommonConstants::rightVector, CommonConstants::axisOrigin);
+    pitchRotate.rotate(pitchAngle, CommonConstants::rightAxis);
+    Vector3 rollRotateAxis = Math::rotatePoint(CommonConstants::frontAxis, -pitchAngle, CommonConstants::rightAxis, CommonConstants::axisOrigin);
     TransformMatrix4 rollRotate;
     rollRotate.rotate(_rollAngle.getCurrentValue(), rollRotateAxis);
     _modelMatrix = chassisModelMatrix;

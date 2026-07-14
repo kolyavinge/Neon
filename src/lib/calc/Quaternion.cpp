@@ -29,6 +29,11 @@ Quaternion::Quaternion(float angle, Vector3 axis) {
     setAngleAndAxis(angle, axis);
 }
 
+Quaternion& Quaternion::operator=(const Quaternion& other) {
+    setComponents(other._w, other._x, other._y, other._z);
+    return *this;
+}
+
 float Quaternion::getMagnitude() {
     return Math::sqrt(_w * _w + _x * _x + _y * _y + _z * _z);
 }
