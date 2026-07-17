@@ -1,10 +1,8 @@
 #include <common/constants.h>
 #include <engine/vehicle/PositionLogic.h>
-#include <lib/calc/Math.h>
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
-#include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
-#include <model/vehicle/Chassis.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
@@ -13,87 +11,38 @@ PositionLogic::PositionLogic(
     _wheelLogic(wheelLogic) {
 }
 
-void PositionLogic::setPosition(Vehicle& vehicle, Vector3& driveAxleCenter, Vector3& chassisFrontNormal, Vector3& chassisRightNormal) {
+void PositionLogic::updatePosition(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
-    VehicleData& data = vehicle.getData();
-    Chassis& chassis = vehicle.getChassis();
+    //VehicleData& data = vehicle.getData();
+    Vector3 chassisRightNormal = vehicle.getChassisRightNormal();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
+    float chassisRotateAngle = vehicle.getChassisRotateAngle();
+    Vector3 chassisRotateAxis = vehicle.getChassisRotateAxis();
+    TransformMatrix4& vehicleModelMatrix = vehicle.getModelMatrix();
+
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        vehicle.getWheel(i).calculateCenter(vehicleModelMatrix);
+    }
+
+    // TODO find wheels collisions
+
     Body& body = vehicle.getBody();
-    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
-    Axle& driveAxle = vehicle.getDriveAxle();
-    Vector3 chassisLeftNormal = chassisRightNormal;
-    chassisLeftNormal.mul(-1.0f);
-
-    driveAxle.setCenter(driveAxleCenter);
-    nonDriveAxle.setCenter(driveAxleCenter);
-    nonDriveAxle.getCenter().addMultiplied(chassisFrontNormal, data.wheelbaseLength);
-
-    nonDriveAxle.calculateWheelPositions(chassisRightNormal);
-    driveAxle.calculateWheelPositions(chassisRightNormal);
-
-    chassis.setNormals(chassisFrontNormal, chassisRightNormal);
-    chassis.calculateCenter(nonDriveAxle.getCenter(), driveAxle.getCenter());
-    chassis.calculateAnglesAndModelMatrix();
-
-    body.calculateCenter(chassis.getCenter(), chassis.getFrontNormal(), chassis.getTopNormal());
-    body.calculateBox(chassis.getRightNormal(), chassis.getFrontNormal(), chassis.getTopNormal());
+    body.setCenter(vehicle.getCenter(), chassisUpNormal);
+    body.calculateBox(chassisRightNormal, chassisFrontNormal, chassisUpNormal);
     body.calculateAngles(dt);
-    body.calculateModelMatrix(chassis.getModelMatrix());
+    body.calculateModelMatrix(vehicleModelMatrix);
 
+    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // у обоих передних колес одинаковый угол поворота
     Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);
     Wheel& frontRightWheel = vehicle.getWheel(WheelPosition::frontRight);
     Wheel& rearLeftWheel = vehicle.getWheel(WheelPosition::rearLeft);
     Wheel& rearRightWheel = vehicle.getWheel(WheelPosition::rearRight);
-
-    frontLeftWheel.setPosition(nonDriveAxle.getLeftWheelPosition());
-    frontRightWheel.setPosition(nonDriveAxle.getRightWheelPosition());
-    rearLeftWheel.setPosition(driveAxle.getLeftWheelPosition());
-    rearRightWheel.setPosition(driveAxle.getRightWheelPosition());
-
-    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // у обоих передних колес одинаковый угол поворота
-    Vector3 nonDriveWheelFrontNormal, leftNonDriveWheelOutsideNormal, rightNonDriveWheelOutsideNormal;
-    _wheelLogic.calculateNormalsBySteeringAngle(
-        steeringAngle, chassisFrontNormal, chassis.getTopNormal(),
-        output nonDriveWheelFrontNormal, output leftNonDriveWheelOutsideNormal, output rightNonDriveWheelOutsideNormal);
-
-    frontLeftWheel.setFrontNormal(nonDriveWheelFrontNormal);
-    frontRightWheel.setFrontNormal(nonDriveWheelFrontNormal);
-    rearLeftWheel.setFrontNormal(chassisFrontNormal);
-    rearRightWheel.setFrontNormal(chassisFrontNormal);
-
-    frontLeftWheel.setOutsideNormal(leftNonDriveWheelOutsideNormal);
-    frontRightWheel.setOutsideNormal(rightNonDriveWheelOutsideNormal);
-    rearLeftWheel.setOutsideNormal(chassisLeftNormal);
-    rearRightWheel.setOutsideNormal(chassisRightNormal);
+    _wheelLogic.updateFrontAndOutsideNormals(
+        steeringAngle, chassisRightNormal, chassisFrontNormal, chassisUpNormal,
+        frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel);
 
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        vehicle.getWheel(i).calculateModelMatrix(chassis.getRotateAngle(), chassis.getRotateAxis());
+        vehicle.getWheel(i).calculateModelMatrix(chassisRotateAngle, chassisRotateAxis);
     }
-}
-
-void PositionLogic::updatePosition(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
-    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
-    Axle& driveAxle = vehicle.getDriveAxle();
-
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        wheel.calculateNewCenterPosition(dt);
-    }
-
-    // TODO find wheels collisions
-    float wheelCollisionZ = 0.0f;
-
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        wheel.calculateNewCenterZ(wheelCollisionZ);
-    }
-
-    nonDriveAxle.calculateNewPosition(vehicle.getNonDriveWheel(0).getCenter(), vehicle.getNonDriveWheel(1).getCenter());
-    driveAxle.calculateNewPosition(vehicle.getDriveWheel(0).getCenter(), vehicle.getDriveWheel(1).getCenter());
-
-    Vector3 chassisFrontNormal = driveAxle.getCenter().getDirectionTo(nonDriveAxle.getCenter()).getNormalized();
-    Vector3 chassisRightNormal = Math::rotatePoint(chassisFrontNormal, -Math::piHalf, CommonConstants::upAxis, CommonConstants::axisOrigin);
-    chassisRightNormal.normalize();
-
-    setPosition(vehicle, driveAxle.getCenter(), chassisFrontNormal, chassisRightNormal);
 }

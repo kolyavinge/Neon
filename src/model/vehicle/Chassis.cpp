@@ -9,7 +9,7 @@ Chassis::Chassis() {
 void Chassis::init() {
     _frontNormal = CommonConstants::frontAxis;
     _rightNormal = CommonConstants::rightAxis;
-    _topNormal = CommonConstants::upAxis;
+    _upNormal = CommonConstants::upAxis;
     _rotateAngle = 0.0f;
 }
 
@@ -21,16 +21,16 @@ Vector3& Chassis::getRightNormal() {
     return _rightNormal;
 }
 
-Vector3& Chassis::getTopNormal() {
-    return _topNormal;
+Vector3& Chassis::getUpNormal() {
+    return _upNormal;
 }
 
 void Chassis::setNormals(Vector3& frontNormal, Vector3& rightNormal) {
     _frontNormal = frontNormal;
     _rightNormal = rightNormal;
-    _topNormal = _rightNormal;
-    _topNormal.vectorProduct(_frontNormal);
-    _topNormal.normalize();
+    _upNormal = _rightNormal;
+    _upNormal.vectorProduct(_frontNormal);
+    _upNormal.normalize();
 }
 
 void Chassis::calculateAnglesAndModelMatrix() {
@@ -52,10 +52,10 @@ Vector3& Chassis::getCenter() {
 void Chassis::calculateCenter(Vector3& nonDriveAxleCenter, Vector3& driveAxleCenter) {
     Vector3 nonDriveAxleCenterOnChassis = nonDriveAxleCenter;
     Vector3 driveAxleCenterOnChassis = driveAxleCenter;
-    nonDriveAxleCenterOnChassis.subMultiplied(_topNormal, _data.frontWheelRadius);
-    nonDriveAxleCenterOnChassis.addMultiplied(_topNormal, _data.groundClearance);
-    driveAxleCenterOnChassis.subMultiplied(_topNormal, _data.rearWheelRadius);
-    driveAxleCenterOnChassis.addMultiplied(_topNormal, _data.groundClearance);
+    nonDriveAxleCenterOnChassis.subMultiplied(_upNormal, _data.frontWheelRadius);
+    nonDriveAxleCenterOnChassis.addMultiplied(_upNormal, _data.groundClearance);
+    driveAxleCenterOnChassis.subMultiplied(_upNormal, _data.rearWheelRadius);
+    driveAxleCenterOnChassis.addMultiplied(_upNormal, _data.groundClearance);
     _center = driveAxleCenterOnChassis.getMiddleTo(nonDriveAxleCenterOnChassis);
 }
 

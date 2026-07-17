@@ -20,7 +20,6 @@ void RenderModel3dCollection::loadAllModels() {
     _model3dLoader.load(modelPath, output vehicleBodyModel);
     vehicleBodyModel.invertAxis((int)Model3d::Axis::x | (int)Model3d::Axis::z);
     vehicleBodyModel.moveToCenter();
-    vehicleBodyModel.moveToOrigin((int)Model3d::Axis::z);
     vehicleBodyModel.scale(1.25f);
     _renderModel3dLoader.load(vehicleBodyModel, output vehicleBody);
 

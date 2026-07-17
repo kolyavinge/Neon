@@ -27,11 +27,11 @@ public:
     Box3d& getBox();
     void transferWeightOnRear(float onRear);
     void transferWeightOnRight(float onRight);
-    Vector3& getAirDragForce();
-    void calculateAirDragForce(Vector3& vehicleVelocity);
-    void calculateCenter(Vector3& chassisCenter, Vector3& chassisFrontNormal, Vector3& chassisTopNormal);
-    void calculateBox(Vector3& chassisRightNormal, Vector3& chassisFrontNormal, Vector3& chassisTopNormal);
+    Vector3 getAirDragForce();
+    void calculateAirDragForce(Vector3 vehicleVelocity);
+    void setCenter(Vector3 vehicleCenter, Vector3 chassisUpNormal);
+    void calculateBox(Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
     void calculateAngles(float dt);
     TransformMatrix4& getModelMatrix();
-    void calculateModelMatrix(TransformMatrix4& chassisModelMatrix);
+    void calculateModelMatrix(TransformMatrix4& vehicleModelMatrix);
 };

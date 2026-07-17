@@ -16,56 +16,56 @@ void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
 }
 
 void CameraUpdater::setLeftSideView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getDriveAxle().getCenter();
-    position.addMultiplied(playerVehicle.getChassis().getFrontNormal(), 2.0f);
-    position.subMultiplied(playerVehicle.getChassis().getRightNormal(), 6.0f);
+    Vector3 position = playerVehicle.getCenter();
+    position.addMultiplied(playerVehicle.getChassisFrontNormal(), 2.0f);
+    position.subMultiplied(playerVehicle.getChassisRightNormal(), 6.0f);
     position.addMultiplied(CommonConstants::upAxis, 2.0f);
     camera.setPosition(position);
-    Vector3 lookDirection = playerVehicle.getChassis().getRightNormal();
-    lookDirection = Math::rotatePoint(lookDirection, 0.2f, playerVehicle.getChassis().getFrontNormal(), CommonConstants::axisOrigin);
+    Vector3 lookDirection = playerVehicle.getChassisRightNormal();
+    lookDirection = Math::rotatePoint(lookDirection, 0.2f, playerVehicle.getChassisFrontNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }
 
 void CameraUpdater::setRightSideView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getDriveAxle().getCenter();
-    position.addMultiplied(playerVehicle.getChassis().getFrontNormal(), 2.0f);
-    position.addMultiplied(playerVehicle.getChassis().getRightNormal(), 6.0f);
+    Vector3 position = playerVehicle.getCenter();
+    position.addMultiplied(playerVehicle.getChassisFrontNormal(), 2.0f);
+    position.addMultiplied(playerVehicle.getChassisRightNormal(), 6.0f);
     position.addMultiplied(CommonConstants::upAxis, 2.0f);
     camera.setPosition(position);
-    Vector3 lookDirection = playerVehicle.getChassis().getRightNormal();
+    Vector3 lookDirection = playerVehicle.getChassisRightNormal();
     lookDirection.mul(-1.0f);
-    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getFrontNormal(), CommonConstants::axisOrigin);
+    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassisFrontNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }
 
 void CameraUpdater::setBackView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getDriveAxle().getCenter();
-    position.subMultiplied(playerVehicle.getChassis().getFrontNormal(), 4.0f);
+    Vector3 position = playerVehicle.getCenter();
+    position.subMultiplied(playerVehicle.getChassisFrontNormal(), 4.0f);
     position.addMultiplied(CommonConstants::upAxis, 2.0f);
     camera.setPosition(position);
-    Vector3 lookDirection = playerVehicle.getChassis().getFrontNormal();
-    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getRightNormal(), CommonConstants::axisOrigin);
+    Vector3 lookDirection = playerVehicle.getChassisFrontNormal();
+    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassisRightNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }
 
 void CameraUpdater::setSideBackView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getDriveAxle().getCenter();
-    position.subMultiplied(playerVehicle.getChassis().getFrontNormal(), 4.0f);
-    position.addMultiplied(playerVehicle.getChassis().getRightNormal(), 2.5f);
+    Vector3 position = playerVehicle.getCenter();
+    position.subMultiplied(playerVehicle.getChassisFrontNormal(), 4.0f);
+    position.addMultiplied(playerVehicle.getChassisRightNormal(), 2.5f);
     position.addMultiplied(CommonConstants::upAxis, 2.0f);
     camera.setPosition(position);
-    Vector3 lookDirection = playerVehicle.getChassis().getFrontNormal();
-    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassis().getRightNormal(), CommonConstants::axisOrigin);
+    Vector3 lookDirection = playerVehicle.getChassisFrontNormal();
+    lookDirection = Math::rotatePoint(lookDirection, -0.2f, playerVehicle.getChassisRightNormal(), CommonConstants::axisOrigin);
     lookDirection.normalize();
     camera.setLookDirection(lookDirection);
 }
 
 void CameraUpdater::setTopView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getDriveAxle().getCenter();
-    position.addMultiplied(playerVehicle.getChassis().getFrontNormal(), 1.0f);
+    Vector3 position = playerVehicle.getCenter();
+    position.addMultiplied(playerVehicle.getChassisFrontNormal(), 1.0f);
     position.addMultiplied(CommonConstants::upAxis, 6.0f);
     camera.setPosition(position);
     Vector3 lookDirection(0.0f, 0.01f, -1.0f);
@@ -74,10 +74,10 @@ void CameraUpdater::setTopView(Camera& camera, Vehicle& playerVehicle) {
 }
 
 void CameraUpdater::setWheelCenterView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getWheel(0).getCenter();
-    position.addMultiplied(playerVehicle.getChassis().getRightNormal(), 1.5f);
+    Vector3 position = playerVehicle.getWheel(1).getCenter();
+    position.addMultiplied(playerVehicle.getChassisRightNormal(), 1.5f);
     camera.setPosition(position);
-    Vector3 lookDirection = playerVehicle.getChassis().getRightNormal();
+    Vector3 lookDirection = playerVehicle.getChassisRightNormal();
     lookDirection.mul(-1.0f);
     camera.setLookDirection(lookDirection);
 }

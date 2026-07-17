@@ -40,7 +40,8 @@ Wheel::Wheel() {
 
 void Wheel::init(WheelPosition position) {
     _position = position;
-    if (_position == WheelPosition::frontLeft || _position == WheelPosition::frontRight) {
+    bool isFrontPosition = _position == WheelPosition::frontLeft || _position == WheelPosition::frontRight;
+    if (isFrontPosition) {
         _radius = _data.frontWheelRadius;
     } else {
         _radius = _data.rearWheelRadius;
@@ -59,16 +60,30 @@ void Wheel::init(WheelPosition position) {
     } else {
         _outsideNormal = CommonConstants::rightAxis;
     }
+    _initCenter.setZero();
+    if (isFrontPosition) {
+        _initCenter.addMultiplied(_frontNormal, _data.frontWheelLengthToMassCenter);
+        _initCenter.addMultiplied(_outsideNormal, _data.frontTrackWidth / 2.0f);
+    } else {
+        _initCenter.subMultiplied(_frontNormal, _data.rearWheelLengthToMassCenter);
+        _initCenter.addMultiplied(_outsideNormal, _data.rearTrackWidth / 2.0f);
+    }
+    _initCenter.subMultiplied(CommonConstants::upAxis, _data.bodyMeasures.zLength / 2.0f);
+    _initCenter.subMultiplied(CommonConstants::upAxis, _data.groundClearance);
+    _initCenter.addMultiplied(CommonConstants::upAxis, _radius);
     _center.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
     _longitudinalAcceleration.setZero();
     _lateralAcceleration.setZero();
-    _linearVelocity.setZero();
 }
 
 WheelPosition Wheel::getPosition() {
     return _position;
+}
+
+bool Wheel::isDrive() {
+    return _position == WheelPosition::rearLeft || _position == WheelPosition::rearRight;
 }
 
 float Wheel::getRadius() {
@@ -87,28 +102,28 @@ void Wheel::setSteeringAngle(float steeringAngle) {
     _steeringAngle = steeringAngle;
 }
 
-Vector3& Wheel::getFrontNormal() {
+Vector3 Wheel::getFrontNormal() {
     return _frontNormal;
 }
 
-void Wheel::setFrontNormal(Vector3& frontNormal) {
+void Wheel::setFrontNormal(Vector3 frontNormal) {
     _frontNormal = frontNormal;
 }
 
-Vector3& Wheel::getOutsdteNormal() {
+Vector3 Wheel::getOutsdteNormal() {
     return _outsideNormal;
 }
 
-void Wheel::setOutsideNormal(Vector3& outsideNormal) {
+void Wheel::setOutsideNormal(Vector3 outsideNormal) {
     _outsideNormal = outsideNormal;
 }
 
-Vector3& Wheel::getCenter() {
+Vector3 Wheel::getCenter() {
     return _center;
 }
 
-void Wheel::setPosition(Vector3& position) {
-    _center = position;
+void Wheel::setCenter(Vector3 center) {
+    _center = center;
 }
 
 float Wheel::getLoadWeight() {
@@ -171,15 +186,16 @@ void Wheel::updateRotateAngle(float dt) {
     _rotateAngle = Math::normalizeRadians(_rotateAngle);
 }
 
-SlipRatio& Wheel::getSlipRatio() {
+SlipRatio Wheel::getSlipRatio() {
     return _slipRatio;
 }
 
+// TODO перенести в WheelLogic
 void Wheel::calculateSlipRatio(
-    Vector3& vehicleLinearVelocity, Vector3& chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear) {
+    Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear) {
     // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
     float drivenVelocity = Math::abs(_angularVelocity) * getRadius();
-    float linearVelocity = _linearVelocity.getLength();
+    float linearVelocity = Math::abs(vehicleLinearVelocity.dotProduct(chassisFrontNormal));
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         _slipRatio = SlipRatio(drivenVelocity, linearVelocity, 0.0f);
         return;
@@ -216,9 +232,10 @@ float Wheel::getSlipAngle() {
     return _slipAngle;
 }
 
-void Wheel::calculateSlipAngle(Vector3& vehicleLinearVelocity) {
+// TODO перенести в WheelLogic
+void Wheel::calculateSlipAngle(Vector3 vehicleLinearVelocity) {
     // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
-    if (_linearVelocity.isZero() || Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minVelocityDelta)) {
+    if (vehicleLinearVelocity.isZero() || Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minLinearVelocityDelta)) {
         _slipAngle = 0.0f;
         return;
     }
@@ -230,15 +247,15 @@ void Wheel::calculateSlipAngle(Vector3& vehicleLinearVelocity) {
     if (Numeric::floatEquals(_slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) _slipAngle = 0.0f;
 }
 
-Vector3& Wheel::getLongitudinalForce() {
+Vector3 Wheel::getLongitudinalForce() {
     return _longitudinalForce;
 }
 
-Vector3& Wheel::getLateralForce() {
+Vector3 Wheel::getLateralForce() {
     return _lateralForce;
 }
 
-Vector3& Wheel::getRoadFrictionForce() {
+Vector3 Wheel::getRoadFrictionForce() {
     return _roadFrictionForce;
 }
 
@@ -250,11 +267,11 @@ float Wheel::getLateralForceBeforeNormalize() {
     return _lateralForceBeforeNormalize;
 }
 
-Vector3& Wheel::getLongitudinalAcceleration() {
+Vector3 Wheel::getLongitudinalAcceleration() {
     return _longitudinalAcceleration;
 }
 
-Vector3& Wheel::getLateralAcceleration() {
+Vector3 Wheel::getLateralAcceleration() {
     return _lateralAcceleration;
 }
 
@@ -300,56 +317,44 @@ void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
     _longitudinalForce.setLength(sumForces.y);
 }
 
-void Wheel::calculateRoadFrictionForce() {
+void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity) {
     // для вычисления силы трения время dt не используем
     // тк эта сила вычисляется на основе скорости, которая уже посчитана с учетом dt
-    _roadFrictionForce = _linearVelocity;
+    _roadFrictionForce = vehicleLinearVelocity;
     if (_roadFrictionForce.isZero()) return;
-    float velocityNormalizedProjection = _frontNormal.dotProduct(_linearVelocity) / _linearVelocity.getLength();
+    float velocityNormalizedProjection = _frontNormal.dotProduct(vehicleLinearVelocity) / vehicleLinearVelocity.getLength();
     velocityNormalizedProjection = Numeric::clamp(velocityNormalizedProjection, -1.0f, 1.0f);
     _roadFrictionForce.mul(-_data.getRoadFrictionCoeff(velocityNormalizedProjection));
 }
 
-void Wheel::calculateLongitudinalAcceleration(float vehicleMass) {
+void Wheel::calculateLongitudinalAcceleration() {
     _longitudinalAcceleration = _longitudinalForce;
-    _longitudinalAcceleration.div(vehicleMass);
+    _longitudinalAcceleration.div(_data.vehicleMass);
 }
 
-void Wheel::calculateLateralAcceleration(float vehicleMass) {
+void Wheel::calculateLateralAcceleration() {
     _lateralAcceleration = _lateralForce;
-    _lateralAcceleration.div(vehicleMass);
+    _lateralAcceleration.div(_data.vehicleMass);
 }
 
-Vector3& Wheel::getLinearVelocity() {
-    return _linearVelocity;
-}
-
-void Wheel::setLinearVelocity(Vector3& velocity) {
-    _linearVelocity = velocity;
-}
-
-void Wheel::calculateAngularVelocityByLinear(Vector3& vehicleLinearVelocity) {
+void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity) {
     // направление вращения колеса определяем по линейной скорости авто
     // а скорость вращения колеса по линейной скорости колеса
     // так лучше работает вычисление slip ratio
     float directionSign = Numeric::getSign(_frontNormal.dotProduct(vehicleLinearVelocity));
-    float destinationAngularVelocity = directionSign * _linearVelocity.getLength() / getRadius();
+    float destinationAngularVelocity = directionSign * vehicleLinearVelocity.getLength() / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
-void Wheel::calculateNewCenterPosition(float dt) {
-    _center.addMultiplied(_linearVelocity, dt);
-}
-
-void Wheel::calculateNewCenterZ(float wheelZ) {
-    _center.z = wheelZ + getRadius(); // TODO нужно использовать нормаль поверхности на которой находится колесо
+void Wheel::calculateCenter(TransformMatrix4& vehicleModelMatrix) {
+    _center = vehicleModelMatrix.mul(_initCenter, 1.0f);
 }
 
 TransformMatrix4& Wheel::getModelMatrix() {
     return _modelMatrix;
 }
 
-void Wheel::calculateModelMatrix(float chassisRotateAngle, Vector3& chassisRotateAxis) {
+void Wheel::calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis) {
     TransformMatrix4 chassisRotation;
     chassisRotation.rotate(chassisRotateAngle, chassisRotateAxis);
     bool isLeftWheel = _position == WheelPosition::frontLeft || _position == WheelPosition::rearLeft;

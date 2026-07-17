@@ -10,7 +10,7 @@ class Chassis : public Object {
     VehicleData _data;
     Vector3 _frontNormal;
     Vector3 _rightNormal;
-    Vector3 _topNormal;
+    Vector3 _upNormal;
     Vector3 _center;
     float _rotateAngle;
     Vector3 _rotateAxis;
@@ -21,7 +21,7 @@ public:
     void init();
     Vector3& getFrontNormal();
     Vector3& getRightNormal();
-    Vector3& getTopNormal();
+    Vector3& getUpNormal();
     void setNormals(Vector3& frontNormal, Vector3& rightNormal);
     void calculateAnglesAndModelMatrix();
     Vector3& getCenter();

@@ -2,6 +2,7 @@
 #include <common/constants.h>
 #include <core/Game.h>
 #include <lib/windows.h>
+#include <lib/calc/CoordinateAxes.h>
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
     glViewport(0, 0, width, (int)((float)width / CommonConstants::screenAspect));

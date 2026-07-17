@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/CoordinateAxes.h>
 #include <lib/calc/Quaternion.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
@@ -15,6 +16,7 @@ class RigidBody : public Object {
     Quaternion _rotation;
     float _rotateAngle;
     Vector3 _rotateAxis;
+    CoordinateAxes _coordinateAxes;
     Vector3 _linearVelocity;
     Vector3 _linearAcceleration;
     Vector3 _angularVelocity;
@@ -24,16 +26,18 @@ class RigidBody : public Object {
 
 public:
     RigidBody();
-    void init(float mass, Measures measures);
-    Vector3& getCenter();
-    void setCenter(Vector3& center);
+    void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures);
+    Vector3 getCenter();
+    void setCenter(Vector3 center);
     float getRotateAngle();
-    Vector3& getRotateAxis();
-    Vector3& getLinearVelocity();
-    Vector3& getLinearAcceleration();
-    void setZeroVelocity();
+    Vector3 getRotateAxis();
+    CoordinateAxes& getCoordinateAxes();
+    Vector3 getLinearVelocity();
+    Vector3 getLinearAcceleration();
+    void setZeroLinearVelocity();
     TransformMatrix4& getModelMatrix();
-    void applyForceAtCenter(Vector3& force);
-    void applyForceAtPoint(Vector3& force, Vector3& point);
+    void applyForceAtCenter(Vector3 force);
+    void applyForceAtPoint(Vector3 force, Vector3 point);
+    void applyGravity();
     void updatePosition(float dt);
 };

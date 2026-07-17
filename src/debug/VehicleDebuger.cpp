@@ -124,13 +124,13 @@ void VehicleDebuger::printLateralForce(Wheel& wheel, bool last) {
 
 void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)));
+    float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassisFrontNormal().dotProduct(vehicleLinearVelocity)));
     printf("V %i|", (int)v);
 }
 
 void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassis().getFrontNormal().dotProduct(vehicleLinearVelocity)) / vehicle.getDriveWheel(0).getRadius();
+    float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassisFrontNormal().dotProduct(vehicleLinearVelocity)) / vehicle.getDriveWheel(0).getRadius();
     printf("AngV %i|", (int)v);
 }
 

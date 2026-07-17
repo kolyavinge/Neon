@@ -41,6 +41,8 @@
     <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
+    <ClCompile Include="src\lib\calc\Angles.cpp" />
+    <ClCompile Include="src\lib\calc\CoordinateAxes.cpp" />
     <ClCompile Include="src\lib\calc\Plane.cpp" />
     <ClCompile Include="src\lib\calc\Quaternion.cpp" />
     <ClCompile Include="src\lib\calc\TruncatedPlane.cpp" />
@@ -119,6 +121,8 @@
     <ClInclude Include="src\engine\vehicle\GearboxLogic.h" />
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h" />
     <ClInclude Include="src\engine\vehicle\WheelLogic.h" />
+    <ClInclude Include="src\lib\calc\Angles.h" />
+    <ClInclude Include="src\lib\calc\CoordinateAxes.h" />
     <ClInclude Include="src\lib\SmoothValue.h" />
     <ClInclude Include="src\lib\calc\Vector2.h" />
     <ClInclude Include="src\lib\collections\BSPTree.h" />

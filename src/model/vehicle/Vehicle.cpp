@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/constants.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Vehicle.h>
@@ -19,11 +20,9 @@ void Vehicle::init() {
     _springs[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
     _springs[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
     _springs[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
-    _axles[(int)AxleKind::nonDrive].init(AxleKind::nonDrive);
-    _axles[(int)AxleKind::drive].init(AxleKind::drive);
     _body.init();
-    _chassis.init();
-    _rigidBody.init(_data.vehicleMass, _data.bodyMeasures);
+    _rigidBody.init(CommonConstants::rightAxis, CommonConstants::frontAxis, _data.vehicleMass, _data.bodyMeasures);
+    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 1.0f));
 }
 
 VehicleData& Vehicle::getData() {
@@ -60,32 +59,60 @@ Spring& Vehicle::getSpring(int i) {
     return _springs[i];
 }
 
-Axle& Vehicle::getNonDriveAxle() {
-    return _axles[0];
-}
-
-Axle& Vehicle::getDriveAxle() {
-    return _axles[1];
-}
-
 Body& Vehicle::getBody() {
     return _body;
 }
 
-Chassis& Vehicle::getChassis() {
-    return _chassis;
+void Vehicle::applyForceAtCenter(Vector3 force) {
+    _rigidBody.applyForceAtCenter(force);
+}
+
+void Vehicle::applyForceAtPoint(Vector3 force, Vector3 point) {
+    _rigidBody.applyForceAtPoint(force, point);
+}
+
+void Vehicle::applyGravity() {
+    _rigidBody.applyGravity();
+}
+
+void Vehicle::updatePosition(float dt) {
+    _rigidBody.updatePosition(dt);
+}
+
+Vector3 Vehicle::getCenter() {
+    return _rigidBody.getCenter();
+}
+
+Vector3 Vehicle::getChassisRightNormal() {
+    return _rigidBody.getCoordinateAxes().getRightAxis();
+}
+
+Vector3 Vehicle::getChassisFrontNormal() {
+    return _rigidBody.getCoordinateAxes().getFrontAxis();
+}
+
+Vector3 Vehicle::getChassisUpNormal() {
+    return _rigidBody.getCoordinateAxes().getUpAxis();
+}
+
+float Vehicle::getChassisRotateAngle() {
+    return _rigidBody.getRotateAngle();
+}
+
+Vector3 Vehicle::getChassisRotateAxis() {
+    return _rigidBody.getRotateAxis();
+}
+
+TransformMatrix4& Vehicle::getModelMatrix() {
+    return _rigidBody.getModelMatrix();
 }
 
 Vector3 Vehicle::getLinearVelocity() {
-    Vector3& driveAxleVelocity = getDriveAxle().getVelocity();
-    Vector3& nonDriveAxleVelocity = getNonDriveAxle().getVelocity();
-    float averageLength = (driveAxleVelocity.getLength() + nonDriveAxleVelocity.getLength()) / 2.0f;
-    if (Numeric::floatEquals(averageLength, 0.0f)) return Vector3();
-    Vector3 vehicleVelocity = driveAxleVelocity;
-    vehicleVelocity.add(nonDriveAxleVelocity);
-    vehicleVelocity.setLength(averageLength);
+    return _rigidBody.getLinearVelocity();
+}
 
-    return vehicleVelocity;
+void Vehicle::setZeroLinearVelocity() {
+    _rigidBody.setZeroLinearVelocity();
 }
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
@@ -112,7 +139,7 @@ bool Vehicle::isAccelerating() {
     Vector3 acceleration = getLongitudinalAcceleration();
     if (acceleration.isZero()) return false;
     Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3& frontNormal = _chassis.getFrontNormal();
+    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
 
     return frontNormal.isCollinear(accelerationDirection, 0.1f);
 }
@@ -121,13 +148,13 @@ bool Vehicle::isBraking() {
     Vector3 acceleration = getLongitudinalAcceleration();
     if (acceleration.isZero()) return false;
     Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3& frontNormal = _chassis.getFrontNormal();
+    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
 
     return !frontNormal.isCollinear(accelerationDirection, 0.1f);
 }
 
 bool Vehicle::isTurningLeft() {
-    Vector3& frontNormal = _chassis.getFrontNormal();
+    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
     Vector3 v = getLinearVelocity();
     v.vectorProduct(frontNormal);
 
@@ -135,7 +162,7 @@ bool Vehicle::isTurningLeft() {
 }
 
 bool Vehicle::isTurningRight() {
-    Vector3& frontNormal = _chassis.getFrontNormal();
+    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
     Vector3 v = getLinearVelocity();
     v.vectorProduct(frontNormal);
 

@@ -1,12 +1,11 @@
 #pragma once
 
 #include <common/constants.h>
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/RigidBody.h>
-#include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
-#include <model/vehicle/Chassis.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
@@ -21,9 +20,7 @@ private:
     Gearbox _gearbox;
     Array<Wheel, VehicleConstants::wheelsCount> _wheels;
     Array<Spring, VehicleConstants::wheelsCount> _springs;
-    Array<Axle, VehicleConstants::axlesCount> _axles;
     Body _body;
-    Chassis _chassis;
     RigidBody _rigidBody;
 
 public:
@@ -37,11 +34,20 @@ public:
     Wheel& getDriveWheel(int i);
     Wheel& getNonDriveWheel(int i);
     Spring& getSpring(int i);
-    Axle& getNonDriveAxle();
-    Axle& getDriveAxle();
     Body& getBody();
-    Chassis& getChassis();
+    void applyForceAtCenter(Vector3 force);
+    void applyForceAtPoint(Vector3 force, Vector3 point);
+    void applyGravity();
+    void updatePosition(float dt);
+    Vector3 getCenter();
+    Vector3 getChassisRightNormal();
+    Vector3 getChassisFrontNormal();
+    Vector3 getChassisUpNormal();
+    float getChassisRotateAngle();
+    Vector3 getChassisRotateAxis();
+    TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
+    void setZeroLinearVelocity();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();
     bool isAccelerating();

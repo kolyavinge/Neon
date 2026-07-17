@@ -3,17 +3,6 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
-class Angles : public Object {
-
-public:
-    float yaw;
-    float pitch;
-    float roll;
-
-    Angles();
-    void init();
-};
-
 class Measures : public Object {
 
 public:
@@ -50,5 +39,5 @@ public:
     Rect2d& getBottomRect();
     Rect2d& getTopRect();
     void setMeasures(Measures& measures);
-    void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& topNormal);
+    void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal);
 };

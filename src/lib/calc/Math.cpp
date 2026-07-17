@@ -71,7 +71,7 @@ float Math::normalizeRadians(float radians) {
     return radians;
 }
 
-Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3& pivotAxis, Vector3& pivotPoint) {
+Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3 pivotPoint) {
     point.sub(pivotPoint);
 
     // Формула Родрига

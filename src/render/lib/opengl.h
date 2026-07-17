@@ -12,12 +12,12 @@
 #include <lib/exceptions.h>
 #include <lib/calc/Vector3.h>
 
-void glTranslatef(Vector3& v);
-void glRotatef(float degrees, Vector3& pivot);
-void glVertex3f(Vector3& v);
-void gluLookAt(Vector3& position, Vector3& lookAt, Vector3& upAxis);
-void glNormal3f(Vector3& v);
-void glScalef(Vector3& v);
+void glTranslatef(Vector3 v);
+void glRotatef(float degrees, Vector3 pivot);
+void glVertex3f(Vector3 v);
+void gluLookAt(Vector3 position, Vector3 lookAt, Vector3 upAxis);
+void glNormal3f(Vector3 v);
+void glScalef(Vector3 v);
 void glDrawCircleYZ(float radius, int edgesCount);
 
 class OpenGLException : public Exception {

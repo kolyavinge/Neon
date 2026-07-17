@@ -15,7 +15,7 @@ void Vector3::set(float valueX, float valueY, float valueZ) {
     z = valueZ;
 }
 
-void Vector3::set(const Vector3& v) {
+void Vector3::set(const Vector3 v) {
     set(v.x, v.y, v.z);
 }
 
@@ -58,7 +58,7 @@ float Vector3::getLength() {
     return Math::sqrt(x * x + y * y + z * z);
 }
 
-float Vector3::getLengthTo(Vector3& v) {
+float Vector3::getLengthTo(Vector3 v) {
     float dx = x - v.x;
     float dy = y - v.y;
     float dz = z - v.z;
@@ -71,7 +71,7 @@ Vector3 Vector3::getDirectionTo(Vector3 v) {
     return v;
 }
 
-Vector3 Vector3::getMiddleTo(Vector3& v) {
+Vector3 Vector3::getMiddleTo(Vector3 v) {
     Vector3 middle = getDirectionTo(v);
     middle.div(2.0f);
     middle.add(*this);
@@ -87,25 +87,25 @@ void Vector3::setLength(float newLength) {
     mul(newLength / currentLength);
 }
 
-void Vector3::add(Vector3& v) {
+void Vector3::add(Vector3 v) {
     x += v.x;
     y += v.y;
     z += v.z;
 }
 
-void Vector3::addMultiplied(Vector3& v, float multipliedBy) {
+void Vector3::addMultiplied(Vector3 v, float multipliedBy) {
     x += multipliedBy * v.x;
     y += multipliedBy * v.y;
     z += multipliedBy * v.z;
 }
 
-void Vector3::sub(Vector3& v) {
+void Vector3::sub(Vector3 v) {
     x -= v.x;
     y -= v.y;
     z -= v.z;
 }
 
-void Vector3::subMultiplied(Vector3& v, float multipliedBy) {
+void Vector3::subMultiplied(Vector3 v, float multipliedBy) {
     x -= multipliedBy * v.x;
     y -= multipliedBy * v.y;
     z -= multipliedBy * v.z;
@@ -117,7 +117,7 @@ void Vector3::mul(float a) {
     z *= a;
 }
 
-void Vector3::mul(Vector3& v) {
+void Vector3::mul(Vector3 v) {
     x *= v.x;
     y *= v.y;
     z *= v.z;
@@ -129,23 +129,23 @@ void Vector3::div(float a) {
     z /= a;
 }
 
-void Vector3::div(Vector3& v) {
+void Vector3::div(Vector3 v) {
     x /= v.x;
     y /= v.y;
     z /= v.z;
 }
 
-bool Vector3::isCollinear(Vector3& v, float eps) {
+bool Vector3::isCollinear(Vector3 v, float eps) {
     float dot = dotProduct(v) / (getLength() * v.getLength());
 
     return Numeric::floatEquals(dot, 1.0f, eps);
 }
 
-float Vector3::dotProduct(Vector3& v) {
+float Vector3::dotProduct(Vector3 v) {
     return x * v.x + y * v.y + z * v.z;
 }
 
-void Vector3::vectorProduct(Vector3& v) {
+void Vector3::vectorProduct(Vector3 v) {
     float px = y * v.z - z * v.y;
     float py = z * v.x - x * v.z;
     float pz = x * v.y - y * v.x;
@@ -169,7 +169,7 @@ Vector3 Vector3::getNormalized() {
     return normalized;
 }
 
-void Vector3::reflectBy(Vector3& normal) {
+void Vector3::reflectBy(Vector3 normal) {
     // reflected = vector - 2 * (vector * normal) * normal
     float product = 2.0f * dotProduct(normal);
     x -= product * normal.x;

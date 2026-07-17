@@ -26,12 +26,12 @@ public:
     Measures bodyMeasures;
     Vector3 massCenter;
     float massCenterHeight;
-    float bodyFrontShiftByChassis;
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;
 
     /* chassis */
+    float frontWheelLengthToMassCenter;
     float rearWheelLengthToMassCenter;
     float wheelbaseLength;
     float frontTrackWidth;

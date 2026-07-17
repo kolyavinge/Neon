@@ -19,6 +19,5 @@ public:
     PositionLogic(
         WheelLogic& wheelLogic);
 
-    void setPosition(Vehicle& vehicle, Vector3& chassisCenter, Vector3& chassisFrontNormal, Vector3& chassisRightNormal);
     void updatePosition(Vehicle& vehicle);
 };

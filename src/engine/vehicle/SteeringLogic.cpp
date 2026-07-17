@@ -1,6 +1,5 @@
 #include <engine/vehicle/SteeringLogic.h>
 #include <lib/calc/Vector3.h>
-#include <model/vehicle/Chassis.h>
 #include <model/vehicle/Wheel.h>
 
 SteeringLogic::SteeringLogic(
@@ -9,11 +8,10 @@ SteeringLogic::SteeringLogic(
 
 void SteeringLogic::steer(Vehicle& vehicle, float steeringRatio) {
     float steeringAngle = -steeringRatio * vehicle.getData().maxSteeringAngle;
-    Chassis& chassis = vehicle.getChassis();
 
     Vector3 wheelFrontNormal, leftWheelOutsideNormal, rightWheelOutsideNormal;
     _wheelLogic.calculateNormalsBySteeringAngle(
-        steeringAngle, chassis.getFrontNormal(), chassis.getTopNormal(),
+        steeringAngle, vehicle.getChassisFrontNormal(), vehicle.getChassisUpNormal(),
         output wheelFrontNormal, output leftWheelOutsideNormal, output rightWheelOutsideNormal);
 
     Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);

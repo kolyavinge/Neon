@@ -27,7 +27,7 @@ class PhysixConstants {
 
 public:
     inline static const float g = 9.81f;
-    inline static Vector3 gravity = Vector3(0.0f, 0.0f, -g);
+    inline static Vector3 gravityVector = Vector3(0.0f, 0.0f, -g);
 };
 
 class GameConstants {
@@ -46,6 +46,6 @@ public:
     inline static const int nonDriveWheelsCount = 2;
     inline static const int axlesCount = 2;
     inline static const float slipRatioLimit = 100.0f;
-    inline static const float minVelocityDelta = 0.1f;
+    inline static const float minLinearVelocityDelta = 0.1f;
     inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(0.5f);
 };

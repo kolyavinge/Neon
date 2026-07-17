@@ -2,9 +2,7 @@
 #include <debug/DebugRenderer.h>
 #include <lib/calc/UnitConverter.h>
 #include <lib/calc/Vector3.h>
-#include <model/vehicle/Axle.h>
 #include <model/vehicle/Body.h>
-#include <model/vehicle/Chassis.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 #include <render/lib/opengl.h>
@@ -24,71 +22,13 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameState.getPlayerVehicle();
-    //renderVehicleAxles(vehicle);
     renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
     renderVehicleChassis(vehicle);
-    //renderVehicleAxis(vehicle);
-}
-
-void DebugRenderer::renderVehicleAxles(Vehicle& vehicle) {
-    Axle& driveAxle = vehicle.getDriveAxle();
-    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
-    // axle axis
-    glColor3f(0.5f, 0.5f, 0.5f);
-    glBegin(GL_LINES);
-    glVertex3f(nonDriveAxle.getLeftWheelPosition());
-    glVertex3f(nonDriveAxle.getRightWheelPosition());
-    glVertex3f(driveAxle.getLeftWheelPosition());
-    glVertex3f(driveAxle.getRightWheelPosition());
-    glEnd();
-    // axle points
-    glPointSize(5.0f);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_POINTS);
-    glVertex3f(driveAxle.getCenter());
-    glEnd();
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_POINTS);
-    glVertex3f(nonDriveAxle.getCenter());
-    glEnd();
-    // driveAxle velocity
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glPushMatrix();
-    glTranslatef(driveAxle.getCenter());
-    glBegin(GL_LINES);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    Vector3 velocity = driveAxle.getVelocity();
-    velocity.div(_velocityDivider);
-    glVertex3f(velocity);
-    glEnd();
-    glPopMatrix();
-    // nonDriveAxle velocity
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glPushMatrix();
-    glTranslatef(nonDriveAxle.getCenter());
-    glBegin(GL_LINES);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    velocity = nonDriveAxle.getVelocity();
-    velocity.div(_velocityDivider);
-    glVertex3f(velocity);
-    glEnd();
-    glPopMatrix();
-    // vehicle velocity
-    glColor3f(0.0f, 1.0f, 1.0f);
-    glPushMatrix();
-    glTranslatef(driveAxle.getCenter());
-    glBegin(GL_LINES);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    velocity = vehicle.getLinearVelocity();
-    velocity.div(_velocityDivider);
-    glVertex3f(velocity);
-    glEnd();
-    glPopMatrix();
+    renderVehicleAxis(vehicle);
 }
 
 void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
-    Chassis& chassis = vehicle.getChassis();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Spring& spring = vehicle.getSpring(i);
@@ -96,43 +36,43 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         // wheel circle
         glPushMatrix();
         glTranslatef(wheel.getCenter());
-        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
-        glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), vehicle.getChassisUpNormal());
+        glRotatef(UnitConverter::radiansToDegrees(vehicle.getChassisRotateAngle()), vehicle.getChassisRotateAxis());
         glDrawCircleYZ(wheel.getRadius(), 16);
         glPopMatrix();
         // angle line
         glPushMatrix();
         glTranslatef(wheel.getCenter());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsdteNormal());
-        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), chassis.getTopNormal());
-        glRotatef(UnitConverter::radiansToDegrees(chassis.getRotateAngle()), chassis.getRotateAxis());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), vehicle.getChassisUpNormal());
+        glRotatef(UnitConverter::radiansToDegrees(vehicle.getChassisRotateAngle()), vehicle.getChassisRotateAxis());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
         glVertex3f(0.0f, wheel.getRadius(), 0.0f);
         glEnd();
         glPopMatrix();
         // front normal
-        //glPushMatrix();
-        //glTranslatef(wheel.getCenter());
-        //glColor3f(0.0f, 0.8f, 0.0f);
-        //glBegin(GL_LINES);
-        //glVertex3f(0.0f, 0.0f, 0.0f);
-        //Vector3 frontNormal = wheel.getFrontNormal();
-        //frontNormal.setLength(0.5f);
-        //glVertex3f(frontNormal);
-        //glEnd();
-        //glPopMatrix();
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glColor3f(0.0f, 0.8f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 frontNormal = wheel.getFrontNormal();
+        frontNormal.setLength(0.5f);
+        glVertex3f(frontNormal);
+        glEnd();
+        glPopMatrix();
         // outside normal
-        //glPushMatrix();
-        //glTranslatef(wheel.getCenter());
-        //glColor3f(0.0f, 0.8f, 0.0f);
-        //glBegin(GL_LINES);
-        //glVertex3f(0.0f, 0.0f, 0.0f);
-        //Vector3 outsideNormal = wheel.getOutsdteNormal();
-        //outsideNormal.setLength(0.5f);
-        //glVertex3f(outsideNormal);
-        //glEnd();
-        //glPopMatrix();
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glColor3f(0.0f, 0.8f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        Vector3 outsideNormal = wheel.getOutsdteNormal();
+        outsideNormal.setLength(0.5f);
+        glVertex3f(outsideNormal);
+        glEnd();
+        glPopMatrix();
         // longitudinal force
         glColor3f(1.0f, 0.0f, 0.0f);
         glPushMatrix();
@@ -166,19 +106,6 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glVertex3f(0.0f, 0.0f, -springForce);
         glEnd();
         glPopMatrix();
-        // linear velocity
-        //if (!wheel.getLinearVelocity().isZero()) {
-        //    glPushMatrix();
-        //    glTranslatef(wheel.getCenter());
-        //    glColor3f(0.8f, 0.8f, 0.0f);
-        //    glBegin(GL_LINES);
-        //    glVertex3f(0.0f, 0.0f, 0.0f);
-        //    Vector3 linearVelocity = wheel.getLinearVelocity();
-        //    linearVelocity.setLength(0.5f);
-        //    glVertex3f(linearVelocity);
-        //    glEnd();
-        //    glPopMatrix();
-        //}
     }
 }
 
@@ -208,11 +135,10 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     glVertex3f(body.getBox().getBottomRect().upRight);
     glVertex3f(body.getBox().getTopRect().upRight);
     glEnd();
-    Axle& nonDriveAxle = vehicle.getNonDriveAxle();
     // air drag force
     glColor3f(1.0f, 0.0f, 0.0f);
     glPushMatrix();
-    glTranslatef(nonDriveAxle.getCenter());
+    glTranslatef(vehicle.getCenter());
     glTranslatef(0.0f, 0.0f, 1.5f);
     glBegin(GL_LINES);
     glVertex3f(0.0f, 0.0f, 0.0f);
@@ -224,48 +150,35 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
 }
 
 void DebugRenderer::renderVehicleChassis(Vehicle& vehicle) {
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_POINTS);
-    glVertex3f(vehicle.getChassis().getCenter());
+    // vehicle linear velocity
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(vehicle.getCenter());
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.1f);
+    Vector3 linearVelocity = vehicle.getLinearVelocity();
+    linearVelocity.div(_velocityDivider);
+    glVertex3f(linearVelocity);
     glEnd();
-
-    // rigid body direction
-    //glColor3f(1.0f, 1.0f, 0.0f);
-    //glPushMatrix();
-    //glTranslatef(vehicle._rigidBody.getCenter());
-    //glRotatef(UnitConverter::radiansToDegrees(vehicle._rigidBody.getRotateAngle()), vehicle._rigidBody.getRotateAxis());
-    //glBegin(GL_LINES);
-    //glVertex3f(0.0f, 0.0f, 0.0f);
-    //glVertex3f(0.0f, 0.5f, 0.0f);
-    //glEnd();
-    //glPopMatrix();
-
-    // rigid body center
-    //glColor3f(1.0f, 0.0f, 0.0f);
-    //glBegin(GL_POINTS);
-    //glVertex3f(vehicle._rigidBody.getCenter());
-    //glEnd();
+    glPopMatrix();
 }
 
 void DebugRenderer::renderVehicleAxis(Vehicle& vehicle) {
-    Chassis& chassis = vehicle.getChassis();
-    Axle& driveAxle = vehicle.getDriveAxle();
-
     glPushMatrix();
-    glTranslatef(driveAxle.getCenter());
+    glTranslatef(vehicle.getCenter());
     glBegin(GL_LINES);
 
     glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(chassis.getRightNormal());
+    glVertex3f(vehicle.getChassisRightNormal());
 
     glColor3f(0.0f, 1.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(chassis.getFrontNormal());
+    glVertex3f(vehicle.getChassisFrontNormal());
 
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(chassis.getTopNormal());
+    glVertex3f(vehicle.getChassisUpNormal());
 
     glEnd();
     glPopMatrix();

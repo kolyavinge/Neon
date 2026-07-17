@@ -25,14 +25,14 @@ VehicleData::VehicleData() {
     bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = bodyMeasures.zLength / 2.0f;
-    bodyFrontShiftByChassis = -0.03f;
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
 
     /* chassis */
-    rearWheelLengthToMassCenter = 1.0f;
     wheelbaseLength = 2.0f;
+    rearWheelLengthToMassCenter = 0.96f;
+    frontWheelLengthToMassCenter = wheelbaseLength - rearWheelLengthToMassCenter;
     frontTrackWidth = bodyMeasures.xLength - 0.3f;
     rearTrackWidth = bodyMeasures.xLength - 0.25f;
     groundClearance = 0.05f;

@@ -1,15 +1,5 @@
 #include <model/common/common.h>
 
-Angles::Angles() {
-    init();
-}
-
-void Angles::init() {
-    yaw = 0.0f;
-    pitch = 0.0f;
-    roll = 0.0f;
-}
-
 Measures::Measures() {
     xLength = 0.0f;
     yLength = 0.0f;
@@ -70,7 +60,7 @@ void Box3d::setMeasures(Measures& measures) {
     _measures = measures;
 }
 
-void Box3d::calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& topNormal) {
+void Box3d::calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal) {
     // bottom
     _bottomRect.downLeft = center;
     _bottomRect.downRight = center;
@@ -84,8 +74,8 @@ void Box3d::calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& fron
     _bottomRect.upLeft.addMultiplied(frontNormal, _measures.yLength / 2.0f);
     _bottomRect.upRight.addMultiplied(rightNormal, _measures.xLength / 2.0f);
     _bottomRect.upRight.addMultiplied(frontNormal, _measures.yLength / 2.0f);
-    _bottomRect.subMultiplied(topNormal, _measures.zLength / 2.0f);
+    _bottomRect.subMultiplied(upNormal, _measures.zLength / 2.0f);
     // top
     _topRect = _bottomRect;
-    _topRect.addMultiplied(topNormal, _measures.zLength);
+    _topRect.addMultiplied(upNormal, _measures.zLength);
 }
