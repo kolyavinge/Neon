@@ -3,7 +3,6 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
-#include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
 PositionLogic::PositionLogic(
@@ -13,7 +12,6 @@ PositionLogic::PositionLogic(
 
 void PositionLogic::updatePosition(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
-    //VehicleData& data = vehicle.getData();
     Vector3 chassisRightNormal = vehicle.getChassisRightNormal();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
@@ -28,7 +26,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     // TODO find wheels collisions
 
     Body& body = vehicle.getBody();
-    body.setCenter(vehicle.getCenter(), chassisUpNormal);
+    body.calculateCenter(vehicleModelMatrix);
     body.calculateBox(chassisRightNormal, chassisFrontNormal, chassisUpNormal);
     body.calculateAngles(dt);
     body.calculateModelMatrix(vehicleModelMatrix);

@@ -93,7 +93,7 @@ public:
     void calculateRoadFrictionForce(Vector3 vehicleLinearVelocity);
     void calculateLongitudinalAcceleration();
     void calculateLateralAcceleration();
-    void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity);
+    void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateCenter(TransformMatrix4& vehicleModelMatrix);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);

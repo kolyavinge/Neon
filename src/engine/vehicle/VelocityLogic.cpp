@@ -19,8 +19,8 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
     bool driveWheelsSpinFree = brakeRatio == 0.0f && (!gearbox.isEngineAndWheelsConnected() || throttleRatio == 0.0f);
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        if (wheel.isDrive() && driveWheelsSpinFree) {
-            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity);
+        if (!wheel.isDrive() || wheel.isDrive() && driveWheelsSpinFree) {
+            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, vehicle.getChassisFrontNormal());
         }
         wheel.updateRotateAngle(dt);
     }

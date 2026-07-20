@@ -40,8 +40,8 @@ Wheel::Wheel() {
 
 void Wheel::init(WheelPosition position) {
     _position = position;
-    bool isFrontPosition = _position == WheelPosition::frontLeft || _position == WheelPosition::frontRight;
-    if (isFrontPosition) {
+    bool isFrontWheel = _position == WheelPosition::frontLeft || _position == WheelPosition::frontRight;
+    if (isFrontWheel) {
         _radius = _data.frontWheelRadius;
     } else {
         _radius = _data.rearWheelRadius;
@@ -61,7 +61,7 @@ void Wheel::init(WheelPosition position) {
         _outsideNormal = CommonConstants::rightAxis;
     }
     _initCenter.setZero();
-    if (isFrontPosition) {
+    if (isFrontWheel) {
         _initCenter.addMultiplied(_frontNormal, _data.frontWheelLengthToMassCenter);
         _initCenter.addMultiplied(_outsideNormal, _data.frontTrackWidth / 2.0f);
     } else {
@@ -206,22 +206,16 @@ void Wheel::calculateSlipRatio(
     bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
     if (isBrakingByWheelsOrEngine) {
         float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
-        // линейная скорость (почти) перпендикулярна шасси
-        // TODO скорее всего это условие не нужно
-        if (Numeric::floatEquals(linearVelocityProjection, 0.0f, 0.1f)) {
-            _slipRatio = SlipRatio(drivenVelocity, linearVelocity, 0.0f);
-            return;
-        }
-        // сила торможения должна быть направлена противоположно скорости
+        // сила торможения направлена противоположно скорости
         if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
             slipRatio = -slipRatio;
         }
     } else {
-        // сила разгона всегда направлена по ходу движения
+        // сила разгона направлена по ходу движения
         if (gear >= Gear::first) {
-            Numeric::makePositiveSign(slipRatio);
+            Numeric::setPositiveSign(slipRatio);
         } else if (gear == Gear::reverse) {
-            Numeric::makeNegativeSign(slipRatio);
+            Numeric::setNegativeSign(slipRatio);
         }
     }
     slipRatio = Numeric::clamp(slipRatio, -VehicleConstants::slipRatioLimit, VehicleConstants::slipRatioLimit);
@@ -337,12 +331,9 @@ void Wheel::calculateLateralAcceleration() {
     _lateralAcceleration.div(_data.vehicleMass);
 }
 
-void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity) {
-    // направление вращения колеса определяем по линейной скорости авто
-    // а скорость вращения колеса по линейной скорости колеса
-    // так лучше работает вычисление slip ratio
+void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal) {
     float directionSign = Numeric::getSign(_frontNormal.dotProduct(vehicleLinearVelocity));
-    float destinationAngularVelocity = directionSign * vehicleLinearVelocity.getLength() / getRadius();
+    float destinationAngularVelocity = directionSign * vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 

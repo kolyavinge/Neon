@@ -3,6 +3,7 @@
 #include <model/vehicle/Body.h>
 
 Body::Body() {
+    _initCenter.addMultiplied(CommonConstants::upAxis, _data.groundClearance);
     _box.setMeasures(_data.bodyMeasures);
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnRight = 0.0f;
@@ -48,9 +49,8 @@ void Body::calculateAirDragForce(Vector3 vehicleVelocity) {
     _airDragForce.mul(-_data.airDragCoeff);
 }
 
-void Body::setCenter(Vector3 vehicleCenter, Vector3 chassisUpNormal) {
-    _center = vehicleCenter;
-    _center.addMultiplied(chassisUpNormal, _data.groundClearance);
+void Body::calculateCenter(TransformMatrix4& vehicleModelMatrix) {
+    _center = vehicleModelMatrix.mul(_initCenter, 1.0f);
 }
 
 void Body::calculateBox(Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {

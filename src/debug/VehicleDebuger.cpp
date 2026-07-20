@@ -16,9 +16,9 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     //printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
-    //printSlipAngle(vehicle);
-    printLongitudinalForce(vehicle);
-    printLateralForce(vehicle);
+    printSlipAngle(vehicle);
+    //printLongitudinalForce(vehicle);
+    //printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
     //printWheelTransferedWeight(vehicle);

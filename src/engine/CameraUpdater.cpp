@@ -42,7 +42,7 @@ void CameraUpdater::setRightSideView(Camera& camera, Vehicle& playerVehicle) {
 
 void CameraUpdater::setBackView(Camera& camera, Vehicle& playerVehicle) {
     Vector3 position = playerVehicle.getCenter();
-    position.subMultiplied(playerVehicle.getChassisFrontNormal(), 4.0f);
+    position.subMultiplied(playerVehicle.getChassisFrontNormal(), 5.0f);
     position.addMultiplied(CommonConstants::upAxis, 2.0f);
     camera.setPosition(position);
     Vector3 lookDirection = playerVehicle.getChassisFrontNormal();
@@ -74,7 +74,7 @@ void CameraUpdater::setTopView(Camera& camera, Vehicle& playerVehicle) {
 }
 
 void CameraUpdater::setWheelCenterView(Camera& camera, Vehicle& playerVehicle) {
-    Vector3 position = playerVehicle.getWheel(1).getCenter();
+    Vector3 position = playerVehicle.getWheel(3).getCenter();
     position.addMultiplied(playerVehicle.getChassisRightNormal(), 1.5f);
     camera.setPosition(position);
     Vector3 lookDirection = playerVehicle.getChassisRightNormal();

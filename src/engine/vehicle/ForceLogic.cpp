@@ -18,13 +18,17 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, 
 void ForceLogic::applyForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
-    for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
-        Wheel& driveWheel = vehicle.getDriveWheel(i);
-        vehicle.applyForceAtCenter(driveWheel.getLongitudinalForce());
-        vehicle.applyForceAtCenter(driveWheel.getRoadFrictionForce());
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
+        Vector3 point = wheel.getCenter();
+        //point.subMultiplied(vehicle.getChassisUpNormal(), wheel.getRadius()); // on the ground
+        point.z = vehicle.getCenter().z;
+        vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), point);
+        vehicle.applyForceAtPoint(wheel.getLateralForce(), point);
+        vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), point);
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
-    //vehicle.applyGravity(); TODO попозже пригодится
+    //vehicle.applyGravity(); // TODO попозже пригодится
     vehicle.updatePosition(dt);
 }
 

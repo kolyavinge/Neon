@@ -36,11 +36,11 @@ float Numeric::getSign(float value) {
     return value < 0.0f ? -1.0f : 1.0f;
 }
 
-void Numeric::makePositiveSign(float& value) {
+void Numeric::setPositiveSign(float& value) {
     if (value < 0.0f) value = -value;
 }
 
-void Numeric::makeNegativeSign(float& value) {
+void Numeric::setNegativeSign(float& value) {
     if (value > 0.0f) value = -value;
 }
 
