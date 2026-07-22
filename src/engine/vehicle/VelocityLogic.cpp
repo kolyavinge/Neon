@@ -13,14 +13,15 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
     if (!isEngineAndWheelsConnected || throttleRatio == 0.0f) {
         if (vehicleLinearVelocity.lengthEquals(0.0f, VehicleConstants::minLinearVelocityDelta)) {
             vehicle.setZeroLinearVelocity();
+            vehicleLinearVelocity.setZero();
         }
     }
 
-    bool driveWheelsSpinFree = brakeRatio == 0.0f && (!gearbox.isEngineAndWheelsConnected() || throttleRatio == 0.0f);
+    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        if (!wheel.isDrive() || wheel.isDrive() && driveWheelsSpinFree) {
-            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, vehicle.getChassisFrontNormal());
+        if (!wheel.isDrive() || wheel.isDrive() && isBrakingByWheelsOrEngine) {
+            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, brakeRatio);
         }
         wheel.updateRotateAngle(dt);
     }

@@ -53,7 +53,7 @@ VehicleData::VehicleData() {
     rearWheelRadius = 0.26f;
     wheelBrakingCoeff = 500.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRoadFrictionCoeff = 10.0f;
+    minRoadFrictionCoeff = 0.1f;
     // задает общее сцепление с дорогой
     // пример: 1.0 - сухой асфальт, 0.5 - мокрый, 0.2 - лед
     roadAdhesionCoeff = 1.0f;
@@ -83,7 +83,7 @@ VehicleData::VehicleData() {
 }
 
 float VehicleData::getRoadFrictionCoeff(float linearVelocityNormalizedProjection) {
-    float friction = (1.0f - linearVelocityNormalizedProjection) * 100.0f;
+    float friction = (1.0f - linearVelocityNormalizedProjection) * 500.0f;
     return Math::max(friction, minRoadFrictionCoeff);
 }
 

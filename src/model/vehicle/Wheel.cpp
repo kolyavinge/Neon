@@ -110,7 +110,7 @@ void Wheel::setFrontNormal(Vector3 frontNormal) {
     _frontNormal = frontNormal;
 }
 
-Vector3 Wheel::getOutsdteNormal() {
+Vector3 Wheel::getOutsideNormal() {
     return _outsideNormal;
 }
 
@@ -168,15 +168,6 @@ void Wheel::brake(float brakingRatio, float dt) {
     }
 }
 
-void Wheel::reduceAngularVelocityByRoadFriction(float dt) {
-    float sign = Numeric::getSign(_angularVelocity);
-    _angularVelocity += -sign * dt * _data.minRoadFrictionCoeff;
-    float newSign = Numeric::getSign(_angularVelocity);
-    if (sign != newSign) {
-        _angularVelocity = 0.0f;
-    }
-}
-
 void Wheel::updateRotateAngle(float dt) {
     if (_position == WheelPosition::frontRight || _position == WheelPosition::rearRight) {
         _rotateAngle -= _angularVelocity * dt;
@@ -190,55 +181,16 @@ SlipRatio Wheel::getSlipRatio() {
     return _slipRatio;
 }
 
-// TODO перенести в WheelLogic
-void Wheel::calculateSlipRatio(
-    Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, bool isEngineAndWheelsConnected, float throttleRatio, float brakeRatio, Gear gear) {
-    // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
-    float drivenVelocity = Math::abs(_angularVelocity) * getRadius();
-    float linearVelocity = Math::abs(vehicleLinearVelocity.dotProduct(chassisFrontNormal));
-    if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
-        _slipRatio = SlipRatio(drivenVelocity, linearVelocity, 0.0f);
-        return;
-    }
-    if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
-    float slipRatio = (drivenVelocity - linearVelocity) / linearVelocity;
-    // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
-    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
-    if (isBrakingByWheelsOrEngine) {
-        float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
-        // сила торможения направлена противоположно скорости
-        if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
-            slipRatio = -slipRatio;
-        }
-    } else {
-        // сила разгона направлена по ходу движения
-        if (gear >= Gear::first) {
-            Numeric::setPositiveSign(slipRatio);
-        } else if (gear == Gear::reverse) {
-            Numeric::setNegativeSign(slipRatio);
-        }
-    }
-    slipRatio = Numeric::clamp(slipRatio, -VehicleConstants::slipRatioLimit, VehicleConstants::slipRatioLimit);
-    _slipRatio = SlipRatio(drivenVelocity, linearVelocity, slipRatio);
+void Wheel::setSlipRatio(SlipRatio slipRatio) {
+    _slipRatio = slipRatio;
 }
 
 float Wheel::getSlipAngle() {
     return _slipAngle;
 }
 
-// TODO перенести в WheelLogic
-void Wheel::calculateSlipAngle(Vector3 vehicleLinearVelocity) {
-    // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
-    if (vehicleLinearVelocity.isZero() || Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minLinearVelocityDelta)) {
-        _slipAngle = 0.0f;
-        return;
-    }
-    // знак lateralVelocity разный для левого и правого колеса
-    // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
-    float lateralVelocity = _outsideNormal.dotProduct(vehicleLinearVelocity);
-    float longitudinalVelocity = Math::abs(_frontNormal.dotProduct(vehicleLinearVelocity));
-    _slipAngle = -Math::arctan2(lateralVelocity, longitudinalVelocity);
-    if (Numeric::floatEquals(_slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) _slipAngle = 0.0f;
+void Wheel::setSlipAngle(float slipAngle) {
+    _slipAngle = slipAngle;
 }
 
 Vector3 Wheel::getLongitudinalForce() {
@@ -271,7 +223,9 @@ Vector3 Wheel::getLateralAcceleration() {
 
 void Wheel::calculateLongitudinalForce(float springForce) {
     _longitudinalForce = _frontNormal;
-    float longitudinalForceCoeff = _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value);
+    float longitudinalForceCoeff =
+        !Numeric::floatEquals(_angularVelocity, 0.0f) ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value) : 0.0f;
+    // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
     _longitudinalForce.mul(longitudinalForceCoeff * springForce);
     _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
 }
@@ -283,42 +237,25 @@ void Wheel::calculateLateralForce(float springForce) {
     _lateralForceBeforeNormalize = _lateralForce.getLength();
 }
 
-void Wheel::normalizeLongitudinalAndLateralForces(float springForce) {
-    // friction circle (Kamm's circle) круг сцепления (диаграмма Камма)
-    // на самом деле это эллипс, тк максимальные значения продольной (longitudinal) и поперечной (lateral) сил не равны друг другу
-    float curLater = _lateralForce.getLength();
-    float curLong = _longitudinalForce.getLength();
-    if (Numeric::floatEquals(curLater, 0.0f) || Numeric::floatEquals(curLong, 0.0f)) return;
-    float maxLater = springForce * _data.roadAdhesionCoeff * _data.getLateralForceMaxCoeff((int)_position);
-    float maxLong = springForce * _data.roadAdhesionCoeff * _data.getLongitudinalForceMaxCoeff((int)_position);
-    float maxLater2 = maxLater * maxLater;
-    float maxLong2 = maxLong * maxLong;
-    // уравнение эллипса
-    bool inFrictionCircle = ((curLater * curLater) / maxLater2) + ((curLong * curLong) / maxLong2) < 1.0f;
-    if (inFrictionCircle) return;
-    // находим любую точку пересечения прямой и эллипса
-    // подробности в 'docs\friction circle.jpg'
-    float k = curLong / curLater; // угловой коэфф прямой (вектора суммы сил)
-    float n = (1.0f / maxLater2) + ((k * k) / maxLong2);
-    float x = Math::sqrt(1.0f / n);
-    float y = k * x;
-    float normalizedLength = Math::sqrt(x * x + y * y);
-    Vector3 sumForces(curLater, curLong, 0.0f);
-    sumForces.setLength(normalizedLength);
-    Assert::isFalse(Numeric::floatEquals(sumForces.x, 0.0f));
-    Assert::isFalse(Numeric::floatEquals(sumForces.y, 0.0f));
-    _lateralForce.setLength(sumForces.x);
-    _longitudinalForce.setLength(sumForces.y);
+void Wheel::normalizeLongitudinalForce(float normalizedLength) {
+    _longitudinalForce.setLength(normalizedLength);
 }
 
-void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity) {
-    // для вычисления силы трения время dt не используем
-    // тк эта сила вычисляется на основе скорости, которая уже посчитана с учетом dt
+void Wheel::normalizeLateralForce(float normalizedLength) {
+    _lateralForce.setLength(normalizedLength);
+}
+
+void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce) {
     _roadFrictionForce = vehicleLinearVelocity;
     if (_roadFrictionForce.isZero()) return;
-    float velocityNormalizedProjection = _frontNormal.dotProduct(vehicleLinearVelocity) / vehicleLinearVelocity.getLength();
-    velocityNormalizedProjection = Numeric::clamp(velocityNormalizedProjection, -1.0f, 1.0f);
-    _roadFrictionForce.mul(-_data.getRoadFrictionCoeff(velocityNormalizedProjection));
+    _roadFrictionForce.normalize();
+    float forceCoeff;
+    if (Numeric::floatEquals(_angularVelocity, 0.0f)) {
+        forceCoeff = _data.getLongitudinalForceCoeff((int)_position, 1.0f);
+    } else {
+        forceCoeff = _data.minRoadFrictionCoeff;
+    }
+    _roadFrictionForce.mul(-1.0f * forceCoeff * springForce);
 }
 
 void Wheel::calculateLongitudinalAcceleration() {
@@ -331,9 +268,9 @@ void Wheel::calculateLateralAcceleration() {
     _lateralAcceleration.div(_data.vehicleMass);
 }
 
-void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal) {
-    float directionSign = Numeric::getSign(_frontNormal.dotProduct(vehicleLinearVelocity));
-    float destinationAngularVelocity = directionSign * vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
+void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio) {
+    if (Numeric::floatEquals(_angularVelocity, 0.0f) && brakeRatio > 0.0f) return;
+    float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(_frontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 

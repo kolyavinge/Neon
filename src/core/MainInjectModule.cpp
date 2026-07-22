@@ -43,7 +43,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<CameraUpdater>();
     binder.bindSingleton<GameUpdater>(GameUpdater::resolve);
     binder.bindSingleton<EngineLogic>();
-    binder.bindSingleton<ForceLogic>();
+    binder.bindSingleton<ForceLogic>(ForceLogic::resolve);
     binder.bindSingleton<GearboxLogic>();
     binder.bindSingleton<PositionLogic>(PositionLogic::resolve);
     binder.bindSingleton<SteeringLogic>(SteeringLogic::resolve);

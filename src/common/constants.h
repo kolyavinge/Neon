@@ -46,5 +46,5 @@ public:
     inline static const int nonDriveWheelsCount = 2;
     inline static const float slipRatioLimit = 100.0f;
     inline static const float minLinearVelocityDelta = 0.1f;
-    inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(0.5f);
+    inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(0.1f);
 };

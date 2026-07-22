@@ -7,19 +7,19 @@ int VehicleDebuger::_tick = 0;
 
 void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputData) {
     _tick++;
-    if ((_tick % 10) != 0) return;
+    //if ((_tick % 10) != 0) return;
 
     paintText(inputData);
-    //printGear(vehicle);
+    printGear(vehicle);
     //printThrottle(inputData);
-    //printEngineRpm(vehicle);
-    //printWheelAngularVelocity(vehicle);
+    printEngineRpm(vehicle);
+    printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
-    //printSlipRatio(vehicle, false);
-    printSlipAngle(vehicle);
-    //printLongitudinalForce(vehicle);
+    printSlipRatio(vehicle, false);
+    //printSlipAngle(vehicle);
+    printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    //printVehicleLinearVelocity(vehicle);
+    printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
     //printWheelTransferedWeight(vehicle);
     //printWheelLoadWeight(vehicle);

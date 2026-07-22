@@ -25,13 +25,13 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
     renderVehicleChassis(vehicle);
-    renderVehicleAxis(vehicle);
+    //renderVehicleAxis(vehicle);
 }
 
 void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        Spring& spring = vehicle.getSpring(i);
+        //Spring& spring = vehicle.getSpring(i);
         glColor3f(0.8f, 0.8f, 0.8f);
         // wheel circle
         glPushMatrix();
@@ -43,7 +43,7 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         // angle line
         glPushMatrix();
         glTranslatef(wheel.getCenter());
-        glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsdteNormal());
+        glRotatef(UnitConverter::radiansToDegrees(wheel.getRotateAngle()), wheel.getOutsideNormal());
         glRotatef(UnitConverter::radiansToDegrees(wheel.getSteeringAngle()), vehicle.getChassisUpNormal());
         glRotatef(UnitConverter::radiansToDegrees(vehicle.getChassisRotateAngle()), vehicle.getChassisRotateAxis());
         glBegin(GL_LINES);
@@ -74,7 +74,7 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         //glEnd();
         //glPopMatrix();
         // longitudinal force
-        glColor3f(1.0f, 0.0f, 0.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
         glPushMatrix();
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
@@ -95,17 +95,28 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glVertex3f(lateralForce);
         glEnd();
         glPopMatrix();
-        // spring force
+        // road friction force
         glColor3f(1.0f, 0.0f, 0.0f);
         glPushMatrix();
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        float springForce = spring.getForce();
-        springForce /= _forceDivider;
-        glVertex3f(0.0f, 0.0f, -springForce);
+        Vector3 roadFrictionForce = wheel.getRoadFrictionForce();
+        roadFrictionForce.div(_forceDivider);
+        glVertex3f(roadFrictionForce);
         glEnd();
         glPopMatrix();
+        // spring force
+        //glColor3f(1.0f, 0.0f, 0.0f);
+        //glPushMatrix();
+        //glTranslatef(wheel.getCenter());
+        //glBegin(GL_LINES);
+        //glVertex3f(0.0f, 0.0f, 0.0f);
+        //float springForce = spring.getForce();
+        //springForce /= _forceDivider;
+        //glVertex3f(0.0f, 0.0f, -springForce);
+        //glEnd();
+        //glPopMatrix();
     }
 }
 

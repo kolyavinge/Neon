@@ -21,7 +21,6 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
     Gear gear = gearbox.getCurrentGear();
     float gearRatio = gearbox.getCurrentGearRatio();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
-
     float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
     float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
     // вычисляем обороты двигателя и синхронизируем их с ведущими колесами
@@ -32,18 +31,11 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
             driveWheel.synchAngularVelocity(expectedAngularVelocityByEngine, gear);
         }
     }
-
     if (brakingRatio > 0.0f) {
         // обрабатываем торможение
         for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
             Wheel& wheel = vehicle.getWheel(i);
             wheel.brake(brakingRatio, dt);
-        }
-    } else if (!isEngineAndWheelsConnected || throttleRatio == 0.0f) {
-        // применяем трение о дорогу
-        for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-            Wheel& wheel = vehicle.getWheel(i);
-            wheel.reduceAngularVelocityByRoadFriction(dt);
         }
     }
 }
