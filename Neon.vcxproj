@@ -29,6 +29,8 @@
     <ClCompile Include="src\debug\DebugRenderer.cpp" />
     <ClCompile Include="src\debug\VehicleDebuger.cpp" />
     <ClCompile Include="src\engine\CameraUpdater.cpp" />
+    <ClCompile Include="src\engine\collision\RigitBodyCollisionResolver.cpp" />
+    <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp" />
     <ClCompile Include="src\engine\GameState.cpp" />
     <ClCompile Include="src\engine\GameUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\EngineLogic.cpp" />
@@ -71,7 +73,6 @@
     <ClCompile Include="src\model\common\common.cpp" />
     <ClCompile Include="src\model\common\RigidBody.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
-    <ClCompile Include="src\model\vehicle\Chassis.cpp" />
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp" />
     <ClCompile Include="src\model\vehicle\Engine.cpp" />
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp" />
@@ -114,6 +115,8 @@
     <ClInclude Include="src\debug\DebugRenderer.h" />
     <ClInclude Include="src\debug\VehicleDebuger.h" />
     <ClInclude Include="src\engine\CameraUpdater.h" />
+    <ClInclude Include="src\engine\collision\RigitBodyCollisionResolver.h" />
+    <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h" />
     <ClInclude Include="src\engine\GameState.h" />
     <ClInclude Include="src\engine\GameUpdater.h" />
     <ClInclude Include="src\engine\vehicle\EngineLogic.h" />
@@ -136,7 +139,6 @@
     <ClInclude Include="src\model\Camera.h" />
     <ClInclude Include="src\model\common\common.h" />
     <ClInclude Include="src\model\common\RigidBody.h" />
-    <ClInclude Include="src\model\vehicle\Chassis.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />

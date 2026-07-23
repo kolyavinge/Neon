@@ -5,6 +5,7 @@
 #include <model/vehicle/Wheel.h>
 
 void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+    // TODO убрать все это в PositionLogic
     const float dt = CommonConstants::deltaTimeSec;
     Gearbox& gearbox = vehicle.getGearbox();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();

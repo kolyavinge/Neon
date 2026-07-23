@@ -23,7 +23,6 @@ private:
     static void printLateralForce(Vehicle& vehicle);
     static void printLateralForce(Wheel& wheel, bool last = false);
     static void printVehicleLinearVelocity(Vehicle& vehicle);
-    static void printVehicleAngularVelocity(Vehicle& vehicle);
     static void printWheelTransferedWeight(Vehicle& vehicle);
     static void printWheelLoadWeight(Vehicle& vehicle);
     static void printSpringForce(Vehicle& vehicle);

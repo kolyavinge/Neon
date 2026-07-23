@@ -58,6 +58,10 @@ float Vector3::getLength() {
     return Math::sqrt(x * x + y * y + z * z);
 }
 
+float Vector3::getLengthSquared() {
+    return x * x + y * y + z * z;
+}
+
 float Vector3::getLengthTo(Vector3 v) {
     float dx = x - v.x;
     float dy = y - v.y;
@@ -175,6 +179,17 @@ void Vector3::reflectBy(Vector3 normal) {
     x -= product * normal.x;
     y -= product * normal.y;
     z -= product * normal.z;
+}
+
+Vector3& Vector3::getLongest(Collection<Vector3>& vectors) {
+    Vector3* longest = &vectors[0];
+    for (int i = 1; i < vectors.getCount(); i++) {
+        if (vectors[i].getLengthSquared() > longest->getLengthSquared()) {
+            longest = &vectors[i];
+        }
+    }
+
+    return *longest;
 }
 
 void Vector3::raiseErrorIfCurrentLengthZero(float length) {

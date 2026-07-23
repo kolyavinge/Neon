@@ -22,7 +22,7 @@ void Vehicle::init() {
     _springs[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
     _body.init();
     _rigidBody.init(CommonConstants::rightAxis, CommonConstants::frontAxis, _data.vehicleMass, _data.bodyMeasures);
-    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 1.0f));
+    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 2.0f));
 }
 
 VehicleData& Vehicle::getData() {
@@ -83,6 +83,10 @@ Vector3 Vehicle::getCenter() {
     return _rigidBody.getCenter();
 }
 
+void Vehicle::setCenter(Vector3 center) {
+    _rigidBody.setCenter(center);
+}
+
 Vector3 Vehicle::getChassisRightNormal() {
     return _rigidBody.getCoordinateAxes().getRightAxis();
 }
@@ -133,6 +137,32 @@ Vector3 Vehicle::getLateralAcceleration() {
     }
 
     return acceleration;
+}
+
+void Vehicle::calculateCenterForAllWheels() {
+    TransformMatrix4& vehicleModelMatrix = getModelMatrix();
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        getWheel(i).calculateCenter(vehicleModelMatrix);
+    }
+}
+
+void Vehicle::calculateModelMatrixForAllWheels() {
+    float chassisRotateAngle = getChassisRotateAngle();
+    Vector3 chassisRotateAxis = getChassisRotateAxis();
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        getWheel(i).calculateModelMatrix(chassisRotateAngle, chassisRotateAxis);
+    }
+}
+
+void Vehicle::calculateBodyPosition(float dt) {
+    Vector3 chassisRightNormal = getChassisRightNormal();
+    Vector3 chassisFrontNormal = getChassisFrontNormal();
+    Vector3 chassisUpNormal = getChassisUpNormal();
+    TransformMatrix4& vehicleModelMatrix = getModelMatrix();
+    _body.calculateCenter(vehicleModelMatrix);
+    _body.calculateBox(chassisRightNormal, chassisFrontNormal, chassisUpNormal);
+    _body.calculateAngles(dt);
+    _body.calculateModelMatrix(vehicleModelMatrix);
 }
 
 bool Vehicle::isAccelerating() {
@@ -189,4 +219,17 @@ float Vehicle::getAverageDriveWheelsRpm() {
     averageWheelsRpm = Math::abs(averageWheelsRpm);
 
     return averageWheelsRpm;
+}
+
+bool Vehicle::hasGroundContact() {
+    int contactedWheels = 0;
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        if (getWheel(i).hasGroundContact()) {
+            contactedWheels++;
+        }
+    }
+
+    // машинка стоит на земле, если хотя бы 3 колеса касаются земли
+
+    return contactedWheels >= 3;
 }

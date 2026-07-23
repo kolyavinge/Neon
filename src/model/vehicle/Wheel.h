@@ -49,6 +49,7 @@ class Wheel : public Object {
     float _slipAngle;
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
+    bool _hasGroundContact;
     TransformMatrix4 _modelMatrix;
 
 public:
@@ -93,8 +94,11 @@ public:
     void calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce);
     void calculateLongitudinalAcceleration();
     void calculateLateralAcceleration();
+    void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
     void calculateCenter(TransformMatrix4& vehicleModelMatrix);
+    bool hasGroundContact();
+    void setGroundContact(bool value);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);
 };

@@ -27,12 +27,25 @@ void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measu
     _localInertiaInverse = TransformMatrix4(items);
 }
 
+float RigidBody::getMass() {
+    return _mass;
+}
+
+TransformMatrix4& RigidBody::getLocalInertiaInverse() {
+    return _localInertiaInverse;
+}
+
+TransformMatrix4& RigidBody::getWorldInertiaInverse() {
+    return _worldInertiaInverse;
+}
+
 Vector3 RigidBody::getCenter() {
     return _center;
 }
 
 void RigidBody::setCenter(Vector3 center) {
     _center = center;
+    updateModelMatrix();
 }
 
 float RigidBody::getRotateAngle() {
@@ -60,6 +73,10 @@ void RigidBody::setZeroLinearVelocity() {
     _angularVelocity.setZero();
 }
 
+Vector3 RigidBody::getAngularVelocity() {
+    return _angularVelocity;
+}
+
 TransformMatrix4& RigidBody::getModelMatrix() {
     return _modelMatrix;
 }
@@ -81,6 +98,22 @@ void RigidBody::applyGravity() {
     _totalForce.add(gravityForce);
 }
 
+void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {
+    Vector3 impulseN = collisionNormal;
+    impulseN.mul(impulse);
+
+    // linear adjustment
+    Vector3 dv = impulseN;
+    dv.div(_mass);
+    _linearVelocity.add(dv);
+
+    // angular adjustment
+    dv = collisionPointDirection;
+    dv.vectorProduct(impulseN);
+    dv = _localInertiaInverse.mul(dv, 0.0f);
+    _angularVelocity.add(dv);
+}
+
 void RigidBody::updatePosition(float dt) {
     // linear movement
     _linearAcceleration = _totalForce;
@@ -92,10 +125,10 @@ void RigidBody::updatePosition(float dt) {
     TransformMatrix4 rotationMatrix = _rotation.getTransformMatrix4();
     TransformMatrix4 rotationMatrixTransposed = rotationMatrix;
     rotationMatrixTransposed.transpose();
-    TransformMatrix4 worldInertiaInverse = rotationMatrix;
-    worldInertiaInverse.mul(_localInertiaInverse);
-    worldInertiaInverse.mul(rotationMatrixTransposed);
-    Vector3 angularAcceleration = worldInertiaInverse.mul(_totalTorque, 0.0f);
+    _worldInertiaInverse = rotationMatrix;
+    _worldInertiaInverse.mul(_localInertiaInverse);
+    _worldInertiaInverse.mul(rotationMatrixTransposed);
+    Vector3 angularAcceleration = _worldInertiaInverse.mul(_totalTorque, 0.0f);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
     Quaternion w(0.0f, _angularVelocity.x, _angularVelocity.y, _angularVelocity.z);
     Quaternion dq = w;
@@ -106,9 +139,12 @@ void RigidBody::updatePosition(float dt) {
 
     _totalForce.setZero();
     _totalTorque.setZero();
+    updateModelMatrix();
+}
 
+void RigidBody::updateModelMatrix() {
     _rotation.getAngleAndAxis(output _rotateAngle, output _rotateAxis);
-    rotationMatrix = _rotation.getTransformMatrix4();
+    TransformMatrix4 rotationMatrix = _rotation.getTransformMatrix4();
     _coordinateAxes.rotate(rotationMatrix);
     _modelMatrix.translate(_center);
     _modelMatrix.mul(rotationMatrix);

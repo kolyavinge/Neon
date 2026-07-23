@@ -36,6 +36,7 @@ Wheel::Wheel() {
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
     _slipAngle = 0.0f;
+    _hasGroundContact = false;
 }
 
 void Wheel::init(WheelPosition position) {
@@ -54,6 +55,7 @@ void Wheel::init(WheelPosition position) {
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
     _slipAngle = 0.0f;
+    _hasGroundContact = false;
     _frontNormal = CommonConstants::frontAxis;
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
         _outsideNormal = CommonConstants::leftAxis;
@@ -223,38 +225,36 @@ Vector3 Wheel::getLateralAcceleration() {
 
 void Wheel::calculateLongitudinalForce(float springForce) {
     _longitudinalForce = _frontNormal;
-    float longitudinalForceCoeff =
-        !Numeric::floatEquals(_angularVelocity, 0.0f) ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value) : 0.0f;
+    float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
+        ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
+        : 0.0f;
     // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
-    _longitudinalForce.mul(longitudinalForceCoeff * springForce);
-    _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
+    _longitudinalForce.mul(forceCoeff * springForce);
 }
 
 void Wheel::calculateLateralForce(float springForce) {
     _lateralForce = _outsideNormal;
-    float lateralForceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
-    _lateralForce.mul(lateralForceCoeff * springForce);
-    _lateralForceBeforeNormalize = _lateralForce.getLength();
+    float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
+    _lateralForce.mul(forceCoeff * springForce);
 }
 
 void Wheel::normalizeLongitudinalForce(float normalizedLength) {
+    _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
     _longitudinalForce.setLength(normalizedLength);
 }
 
 void Wheel::normalizeLateralForce(float normalizedLength) {
+    _lateralForceBeforeNormalize = _lateralForce.getLength();
     _lateralForce.setLength(normalizedLength);
 }
 
 void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce) {
     _roadFrictionForce = vehicleLinearVelocity;
     if (_roadFrictionForce.isZero()) return;
+    float forceCoeff = Numeric::floatEquals(_angularVelocity, 0.0f)
+        ? _data.getLongitudinalForceCoeff((int)_position, VehicleConstants::lockedWheelSlipRatio)
+        : _data.minRoadFrictionCoeff;
     _roadFrictionForce.normalize();
-    float forceCoeff;
-    if (Numeric::floatEquals(_angularVelocity, 0.0f)) {
-        forceCoeff = _data.getLongitudinalForceCoeff((int)_position, 1.0f);
-    } else {
-        forceCoeff = _data.minRoadFrictionCoeff;
-    }
     _roadFrictionForce.mul(-1.0f * forceCoeff * springForce);
 }
 
@@ -268,14 +268,33 @@ void Wheel::calculateLateralAcceleration() {
     _lateralAcceleration.div(_data.vehicleMass);
 }
 
+void Wheel::clearAllForces() {
+    _longitudinalForce.setZero();
+    _lateralForce.setZero();
+    _roadFrictionForce.setZero();
+    _longitudinalForceBeforeNormalize = 0.0f;
+    _lateralForceBeforeNormalize = 0.0f;
+    _longitudinalAcceleration.setZero();
+    _lateralAcceleration.setZero();
+}
+
 void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio) {
-    if (Numeric::floatEquals(_angularVelocity, 0.0f) && brakeRatio > 0.0f) return;
+    bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f) && brakeRatio > 0.0f;
+    if (lockedByBrakes) return;
     float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(_frontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
 void Wheel::calculateCenter(TransformMatrix4& vehicleModelMatrix) {
     _center = vehicleModelMatrix.mul(_initCenter, 1.0f);
+}
+
+bool Wheel::hasGroundContact() {
+    return _hasGroundContact;
+}
+
+void Wheel::setGroundContact(bool value) {
+    _hasGroundContact = value;
 }
 
 TransformMatrix4& Wheel::getModelMatrix() {

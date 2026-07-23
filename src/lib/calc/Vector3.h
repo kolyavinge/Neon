@@ -21,6 +21,7 @@ public:
     int getHashCode() override;
     bool lengthEquals(float value, float eps = Numeric::epsilonFloat);
     float getLength();
+    float getLengthSquared();
     float getLengthTo(Vector3 v);
     Vector3 getDirectionTo(Vector3 v);
     Vector3 getMiddleTo(Vector3 v);
@@ -39,6 +40,8 @@ public:
     void normalize();
     Vector3 getNormalized();
     void reflectBy(Vector3 normal);
+
+    static Vector3& getLongest(Collection<Vector3>& vectors);
 private:
     void raiseErrorIfCurrentLengthZero(float length);
 };

@@ -25,14 +25,16 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         Vector3 point = wheel.getCenter();
-        //point.subMultiplied(vehicle.getChassisUpNormal(), wheel.getRadius()); // on the ground
+        point.subMultiplied(vehicle.getChassisUpNormal(), wheel.getRadius()); // on the ground
         point.z = vehicle.getCenter().z;
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), point);
         vehicle.applyForceAtPoint(wheel.getLateralForce(), point);
-        vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), point);
+        //vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), point);
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
-    //vehicle.applyGravity(); // TODO попозже пригодится
+    if (!vehicle.hasGroundContact()) {
+        vehicle.applyGravity();
+    }
     vehicle.updatePosition(dt);
 }
 
@@ -52,6 +54,8 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
     Gear gear = vehicle.getGearbox().getCurrentGear();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
+        wheel.clearAllForces();
+        if (!wheel.hasGroundContact()) return;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getForce();
         SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);

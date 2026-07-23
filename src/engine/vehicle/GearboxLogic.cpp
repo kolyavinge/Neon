@@ -22,7 +22,7 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle, float throttleRatio) {
             return gearbox.shiftUp();
         }
     } else if (!isAccelerating && engine.getRpm() == data.engineMinRpm) {
-        if (gearbox.getCurrentGear() == Gear::first) {
+        if (gearbox.getCurrentGear() >= Gear::first) {
             return gearbox.shiftDown();
         }
     } else if (!isAccelerating && getRpmOnLowerGear(engine, gearbox) < data.autoShiftRpm) {

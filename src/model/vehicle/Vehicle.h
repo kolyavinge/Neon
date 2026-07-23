@@ -21,9 +21,9 @@ private:
     Array<Wheel, VehicleConstants::wheelsCount> _wheels;
     Array<Spring, VehicleConstants::wheelsCount> _springs;
     Body _body;
-    RigidBody _rigidBody;
 
 public:
+    RigidBody _rigidBody;
     Vehicle();
     void init();
     VehicleData& getData();
@@ -40,6 +40,7 @@ public:
     void applyGravity();
     void updatePosition(float dt);
     Vector3 getCenter();
+    void setCenter(Vector3 center);
     Vector3 getChassisRightNormal();
     Vector3 getChassisFrontNormal();
     Vector3 getChassisUpNormal();
@@ -50,6 +51,9 @@ public:
     void setZeroLinearVelocity();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();
+    void calculateCenterForAllWheels();
+    void calculateModelMatrixForAllWheels();
+    void calculateBodyPosition(float dt);
     bool isAccelerating();
     bool isBraking();
     bool isTurningLeft();
@@ -57,6 +61,7 @@ public:
     float getFrontWheelsWeight();
     float getRearWheelsWeight();
     float getAverageDriveWheelsRpm();
+    bool hasGroundContact();
 };
 
 typedef Array<Vehicle, GameConstants::maxVehiclesCount> VehiclesArray;
