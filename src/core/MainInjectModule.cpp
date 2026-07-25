@@ -8,6 +8,8 @@
 #include <debug/DebugRenderer.h>
 #include <engine/CameraUpdater.h>
 #include <engine/GameUpdater.h>
+#include <engine/collision/RigitBodyCollisionResolver.h>
+#include <engine/collision/VehicleCollisionLogic.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
@@ -39,9 +41,10 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();
     binder.bindSingleton<ResourceManager>();
-
     binder.bindSingleton<CameraUpdater>();
     binder.bindSingleton<GameUpdater>(GameUpdater::resolve);
+    binder.bindSingleton<RigitBodyCollisionResolver>();
+    binder.bindSingleton<VehicleCollisionLogic>();
     binder.bindSingleton<EngineLogic>();
     binder.bindSingleton<ForceLogic>(ForceLogic::resolve);
     binder.bindSingleton<GearboxLogic>();
@@ -51,7 +54,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<VelocityLogic>();
     binder.bindSingleton<WeightTransferLogic>();
     binder.bindSingleton<WheelLogic>();
-
     binder.bindSingleton<RenderInitializer>(RenderInitializer::resolve);
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);
     binder.bindSingleton<ShaderCollection>(ShaderCollection::resolve);
@@ -64,15 +66,11 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
-
     binder.bindSingleton<DebugRenderer>();
-
     binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);
     binder.bindSingleton<InputManager>();
-
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
-
     binder.bindSingleton<GameInitializer>(GameInitializer::resolve);
     binder.bindSingleton<Game>(Game::resolve);
 }

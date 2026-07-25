@@ -80,15 +80,11 @@ void WheelLogic::normalizeLongitudinalAndLateralForces(Wheel& wheel, float sprin
     wheel.normalizeLongitudinalForce(sumForces.y);
 }
 
-void WheelLogic::updateFrontAndOutsideNormals(
-    float steeringAngle,
-    Vector3 chassisRightNormal,
-    Vector3 chassisFrontNormal,
-    Vector3 chassisUpNormal,
-    Wheel& frontLeftWheel,
-    Wheel& frontRightWheel,
-    Wheel& rearLeftWheel,
-    Wheel& rearRightWheel) {
+void WheelLogic::updateFrontAndOutsideNormals(Vehicle& vehicle) {
+    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // у обоих передних колес одинаковый угол поворота
+    Vector3 chassisRightNormal = vehicle.getChassisRightNormal();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     Vector3 chassisLeftNormal = chassisRightNormal;
     chassisLeftNormal.mul(-1.0f);
 
@@ -96,6 +92,11 @@ void WheelLogic::updateFrontAndOutsideNormals(
     calculateNormalsBySteeringAngle(
         steeringAngle, chassisFrontNormal, chassisUpNormal,
         output nonDriveWheelFrontNormal, output leftNonDriveWheelOutsideNormal, output rightNonDriveWheelOutsideNormal);
+
+    Wheel& frontLeftWheel = vehicle.getWheel(WheelPosition::frontLeft);
+    Wheel& frontRightWheel = vehicle.getWheel(WheelPosition::frontRight);
+    Wheel& rearLeftWheel = vehicle.getWheel(WheelPosition::rearLeft);
+    Wheel& rearRightWheel = vehicle.getWheel(WheelPosition::rearRight);
 
     frontLeftWheel.setFrontNormal(nonDriveWheelFrontNormal);
     frontRightWheel.setFrontNormal(nonDriveWheelFrontNormal);

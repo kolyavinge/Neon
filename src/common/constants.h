@@ -39,12 +39,13 @@ public:
 class VehicleConstants {
 
 public:
-    inline static Vector3 initChassisRightNormal = CommonConstants::rightAxis;
-    inline static Vector3 initChassisFrontNormal = CommonConstants::frontAxis;
+    //inline static Vector3 initChassisRightNormal = CommonConstants::rightAxis;
+    //inline static Vector3 initChassisFrontNormal = CommonConstants::frontAxis;
     inline static const int wheelsCount = 4;
     inline static const int driveWheelsCount = 2;
     inline static const int nonDriveWheelsCount = 2;
     inline static const float slipRatioLimit = 100.0f;
+    inline static const float lockedWheelSlipRatio = 1.0f;
     inline static const float minLinearVelocityDelta = 0.1f;
     inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(0.1f);
 };

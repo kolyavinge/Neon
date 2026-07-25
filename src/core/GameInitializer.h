@@ -12,22 +12,18 @@ class GameInitializer : public Object {
     RaceScreen& _debugScreen;
     RenderInitializer& _renderInitializer;
 
-    PositionLogic& _positionLogic; // TODO временно
-
 public:
     static GameInitializer* resolve(Resolver& resolver) {
         return new GameInitializer(
             resolver.resolve<GameUpdater>(),
             resolver.resolve<RaceScreen>(),
-            resolver.resolve<RenderInitializer>(),
-            resolver.resolve<PositionLogic>());
+            resolver.resolve<RenderInitializer>());
     }
 
     GameInitializer(
         GameUpdater& gameUpdater,
         RaceScreen& debugScreen,
-        RenderInitializer& renderInitializer,
-        PositionLogic& positionLogic);
+        RenderInitializer& renderInitializer);
 
     void initGame(GameState& gameState);
 };

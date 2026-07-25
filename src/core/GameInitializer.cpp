@@ -3,22 +3,14 @@
 GameInitializer::GameInitializer(
     GameUpdater& gameUpdater,
     RaceScreen& debugScreen,
-    RenderInitializer& renderInitializer,
-    PositionLogic& positionLogic) :
+    RenderInitializer& renderInitializer) :
     _gameUpdater(gameUpdater),
     _debugScreen(debugScreen),
-    _renderInitializer(renderInitializer),
-    _positionLogic(positionLogic) {
+    _renderInitializer(renderInitializer) {
 }
 
 void GameInitializer::initGame(GameState& gameState) {
     gameState.init();
     _debugScreen.setGameState(gameState);
     _renderInitializer.init();
-
-    // TODO не нужно
-    //Vector3 chassisCenter;
-    //Vector3 chassisFrontNormal(0, 1, 0);
-    //Vector3 chassisRightNormal(1, 0, 0);
-    //_positionLogic.setPosition(gameState.getPlayerVehicle(), chassisCenter, chassisFrontNormal, chassisRightNormal);
 }

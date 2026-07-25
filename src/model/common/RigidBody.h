@@ -12,6 +12,7 @@ class RigidBody : public Object {
     float _mass;
     Measures _measures;
     TransformMatrix4 _localInertiaInverse;
+    TransformMatrix4 _worldInertiaInverse;
     Vector3 _center;
     Quaternion _rotation;
     float _rotateAngle;
@@ -27,6 +28,9 @@ class RigidBody : public Object {
 public:
     RigidBody();
     void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures);
+    float getMass();
+    TransformMatrix4& getLocalInertiaInverse();
+    TransformMatrix4& getWorldInertiaInverse();
     Vector3 getCenter();
     void setCenter(Vector3 center);
     float getRotateAngle();
@@ -35,9 +39,14 @@ public:
     Vector3 getLinearVelocity();
     Vector3 getLinearAcceleration();
     void setZeroLinearVelocity();
+    Vector3 getAngularVelocity();
     TransformMatrix4& getModelMatrix();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
     void applyGravity();
+    void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal); // TODO может не нужон этот метод
     void updatePosition(float dt);
+
+private:
+    void updateModelMatrix();
 };

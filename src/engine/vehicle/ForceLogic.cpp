@@ -22,17 +22,20 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, 
 void ForceLogic::applyForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
+    Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        Vector3 point = wheel.getCenter();
-        //point.subMultiplied(vehicle.getChassisUpNormal(), wheel.getRadius()); // on the ground
-        point.z = vehicle.getCenter().z;
-        vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), point);
-        vehicle.applyForceAtPoint(wheel.getLateralForce(), point);
-        vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), point);
+        if (!wheel.hasGroundContact()) break;
+        Vector3 groundPoint = wheel.getGroundContactPoint(chassisUpNormal);
+        groundPoint.z = vehicle.getCenter().z;
+        vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), groundPoint);
+        vehicle.applyForceAtPoint(wheel.getLateralForce(), groundPoint);
+        //vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), groundPoint);
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
-    //vehicle.applyGravity(); // TODO попозже пригодится
+    if (!vehicle.hasGroundContact()) {
+        vehicle.applyGravity();
+    }
     vehicle.updatePosition(dt);
 }
 
@@ -52,6 +55,8 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
     Gear gear = vehicle.getGearbox().getCurrentGear();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
+        wheel.clearAllForces();
+        if (!wheel.hasGroundContact()) break;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getForce();
         SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);

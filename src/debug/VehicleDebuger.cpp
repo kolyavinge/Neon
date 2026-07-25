@@ -13,14 +13,13 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     printGear(vehicle);
     //printThrottle(inputData);
     printEngineRpm(vehicle);
-    printWheelAngularVelocity(vehicle);
+    //printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
-    printSlipRatio(vehicle, false);
+    //printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
-    printLongitudinalForce(vehicle);
+    //printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
     printVehicleLinearVelocity(vehicle);
-    //printVehicleAngularVelocity(vehicle);
     //printWheelTransferedWeight(vehicle);
     //printWheelLoadWeight(vehicle);
     //printSpringForce(vehicle);
@@ -126,12 +125,6 @@ void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassisFrontNormal().dotProduct(vehicleLinearVelocity)));
     printf("V %i|", (int)v);
-}
-
-void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
-    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    float v = vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassisFrontNormal().dotProduct(vehicleLinearVelocity)) / vehicle.getDriveWheel(0).getRadius();
-    printf("AngV %i|", (int)v);
 }
 
 void VehicleDebuger::printWheelTransferedWeight(Vehicle& vehicle) {

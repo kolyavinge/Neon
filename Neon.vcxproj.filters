@@ -147,9 +147,6 @@
     <ClCompile Include="src\engine\vehicle\SteeringLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\vehicle\Chassis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -271,6 +268,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\calc\Angles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\collision\RigitBodyCollisionResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -473,9 +476,6 @@
     <ClInclude Include="src\engine\vehicle\SteeringLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\vehicle\Chassis.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\vehicle\WheelLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -609,6 +609,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\calc\Angles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\collision\RigitBodyCollisionResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
