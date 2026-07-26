@@ -59,17 +59,18 @@ VehicleData::VehicleData() {
     roadAdhesionCoeff = 1.0f;
 
     /* spring */
-    frontSpringStiffness = 15000.0f;
-    frontSpringDamper = 0.2f;
+    const float stiffnessMul = 1000.0f;
+    frontSpringStiffness = 150.0f * stiffnessMul;
+    frontSpringDamper = 2.0f * stiffnessMul;
     frontSpringMinLength = 0.1f;
-    frontSpringMaxLength = 0.4f;
-    frontSpringMaxWeight = 800.0f;
+    frontSpringMaxLength = 0.20f;
+    frontSpringMaxWeight = 600.0f;
 
-    rearSpringStiffness = 20000.0f;
-    rearSpringDamper = 0.2f;
+    rearSpringStiffness = 150.0f * stiffnessMul;
+    rearSpringDamper = 2.0f * stiffnessMul;
     rearSpringMinLength = 0.1f;
-    rearSpringMaxLength = 0.4f;
-    rearSpringMaxWeight = 800.0f;
+    rearSpringMaxLength = 0.20f;
+    rearSpringMaxWeight = 600.0f;
 
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, 1.0f, 0.8f);

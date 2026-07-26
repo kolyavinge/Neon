@@ -1,5 +1,7 @@
 #pragma once
 
+#include <lib/calc/TransformMatrix4.h>
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
@@ -11,18 +13,23 @@ class Spring : public Object {
     float _damper;
     float _minLength;
     float _maxLength;
-    float _restLength;
     float _maxWeight;
+    Vector3 _initPosition;
+    Vector3 _position;
     float _prevLength;
     float _currentLength;
     float _force;
 
 public:
     Spring();
-    void init(WheelPosition position);
+    void init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 wheelOutsideNormal);
+    float getMinLength();
+    float getMaxLength();
+    Vector3 getPosition();
     float getLength();
-    float getLengthDelta();
     float getForce();
     void calculateLength(float wheelLoadWeight);
+    void calculateLength(Vector3 wheelCenter);
     void calculateForce(float dt);
+    void calculatePosition(TransformMatrix4& vehicleModelMatrix);
 };

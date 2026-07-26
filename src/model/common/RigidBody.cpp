@@ -1,4 +1,3 @@
-#include <common/constants.h>
 #include <model/common/RigidBody.h>
 
 RigidBody::RigidBody() {
@@ -64,13 +63,14 @@ Vector3 RigidBody::getLinearVelocity() {
     return _linearVelocity;
 }
 
-Vector3 RigidBody::getLinearAcceleration() {
-    return _linearAcceleration;
+void RigidBody::setLinearVelocity(Vector3 velocity) {
+    _linearVelocity = velocity;
+    //_linearAcceleration.setZero();
+    //_angularVelocity.setZero();
 }
 
-void RigidBody::setZeroLinearVelocity() {
-    _linearVelocity.setZero();
-    _angularVelocity.setZero();
+Vector3 RigidBody::getLinearAcceleration() {
+    return _linearAcceleration;
 }
 
 Vector3 RigidBody::getAngularVelocity() {
@@ -90,12 +90,6 @@ void RigidBody::applyForceAtPoint(Vector3 force, Vector3 point) {
     Vector3 torque = _center.getDirectionTo(point);
     torque.vectorProduct(force);
     _totalTorque.add(torque);
-}
-
-void RigidBody::applyGravity() {
-    Vector3 gravityForce = PhysixConstants::gravityVector;
-    gravityForce.mul(_mass);
-    _totalForce.add(gravityForce);
 }
 
 void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {

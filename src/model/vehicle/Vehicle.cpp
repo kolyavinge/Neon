@@ -12,17 +12,20 @@ Vehicle::Vehicle() {
 void Vehicle::init() {
     _engine.init();
     _gearbox.init();
-    _wheels[(int)WheelPosition::frontLeft].init(WheelPosition::frontLeft);
-    _wheels[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
-    _wheels[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
-    _wheels[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
-    _springs[(int)WheelPosition::frontLeft].init(WheelPosition::frontLeft);
-    _springs[(int)WheelPosition::frontRight].init(WheelPosition::frontRight);
-    _springs[(int)WheelPosition::rearLeft].init(WheelPosition::rearLeft);
-    _springs[(int)WheelPosition::rearRight].init(WheelPosition::rearRight);
+    initWheelAndSpring(WheelPosition::frontLeft);
+    initWheelAndSpring(WheelPosition::frontRight);
+    initWheelAndSpring(WheelPosition::rearLeft);
+    initWheelAndSpring(WheelPosition::rearRight);
     _body.init();
     _rigidBody.init(CommonConstants::rightAxis, CommonConstants::frontAxis, _data.vehicleMass, _data.bodyMeasures);
-    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 2.0f));
+    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 1.0f));
+}
+
+void Vehicle::initWheelAndSpring(WheelPosition position) {
+    Wheel& wheel = _wheels[(int)position];
+    Spring& spring = _springs[(int)position];
+    wheel.init(position);
+    spring.init(position, wheel.getFrontNormal(), wheel.getOutsideNormal());
 }
 
 VehicleData& Vehicle::getData() {
@@ -72,7 +75,9 @@ void Vehicle::applyForceAtPoint(Vector3 force, Vector3 point) {
 }
 
 void Vehicle::applyGravity() {
-    _rigidBody.applyGravity();
+    Vector3 gravity = PhysixConstants::gravityVector;
+    gravity.mul(_data.vehicleMass);
+    _rigidBody.applyForceAtCenter(gravity);
 }
 
 void Vehicle::updatePosition(float dt) {
@@ -116,7 +121,13 @@ Vector3 Vehicle::getLinearVelocity() {
 }
 
 void Vehicle::setZeroLinearVelocity() {
-    _rigidBody.setZeroLinearVelocity();
+    _rigidBody.setLinearVelocity(Vector3());
+}
+
+void Vehicle::correctLinearVelocityByChassisFrontNormal() {
+    Vector3 velocity = getLinearVelocity();
+    velocity.z = getChassisFrontNormal().z;
+    _rigidBody.setLinearVelocity(velocity);
 }
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
@@ -139,10 +150,50 @@ Vector3 Vehicle::getLateralAcceleration() {
     return acceleration;
 }
 
-void Vehicle::calculateCenterForAllWheels() {
+void Vehicle::calculatePositionForAllSprings() {
     TransformMatrix4& vehicleModelMatrix = getModelMatrix();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        getWheel(i).calculateCenter(vehicleModelMatrix);
+        Spring& spring = _springs[i];
+        spring.calculatePosition(vehicleModelMatrix);
+    }
+}
+
+void Vehicle::calculateLengthForAllSprings() {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = _wheels[i];
+        Spring& spring = _springs[i];
+        spring.calculateLength(wheel.getCenter());
+    }
+}
+
+void Vehicle::correctBodyPositionByMinSpringLength() {
+    float maxCorrectionLength = 0.0f;
+    Vector3 chassisUpNormal = getChassisUpNormal();
+    //chassisUpNormal = CommonConstants::upAxis;
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = _wheels[i];
+        Spring& spring = _springs[i];
+        Vector3 currentSpringLength = wheel.getCenter().getDirectionTo(spring.getPosition());
+        float springLengthProjection = currentSpringLength.dotProduct(chassisUpNormal);
+        if (springLengthProjection >= spring.getMinLength()) continue;
+        float correctionLength = spring.getMinLength() - springLengthProjection;
+        if (correctionLength > maxCorrectionLength) maxCorrectionLength = correctionLength;
+    }
+    if (maxCorrectionLength > 0.0f) {
+        Vector3 correctionVector = chassisUpNormal;
+        correctionVector.mul(maxCorrectionLength);
+        Vector3 center = _rigidBody.getCenter();
+        center.add(correctionVector);
+        _rigidBody.setCenter(center);
+    }
+}
+
+void Vehicle::calculateCenterForAllWheels() {
+    Vector3 chassisUpNormal = getChassisUpNormal();
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = _wheels[i];
+        Spring& spring = _springs[i];
+        wheel.calculateCenter(chassisUpNormal, spring.getPosition(), spring.getLength());
     }
 }
 
@@ -228,7 +279,6 @@ bool Vehicle::hasGroundContact() {
             contactedWheels++;
         }
     }
-
     // машинка стоит на земле, если хотя бы 3 колеса касаются земли
 
     return contactedWheels >= 3;

@@ -31,7 +31,6 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
 void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        //Spring& spring = vehicle.getSpring(i);
         glColor3f(0.8f, 0.8f, 0.8f);
         // wheel circle
         glPushMatrix();
@@ -107,16 +106,17 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glEnd();
         glPopMatrix();
         // spring force
-        //glColor3f(1.0f, 0.0f, 0.0f);
-        //glPushMatrix();
-        //glTranslatef(wheel.getCenter());
-        //glBegin(GL_LINES);
-        //glVertex3f(0.0f, 0.0f, 0.0f);
-        //float springForce = spring.getForce();
-        //springForce /= _forceDivider;
-        //glVertex3f(0.0f, 0.0f, -springForce);
-        //glEnd();
-        //glPopMatrix();
+        Spring& spring = vehicle.getSpring(i);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glPushMatrix();
+        glTranslatef(wheel.getCenter());
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        float springForce = spring.getForce();
+        springForce /= _forceDivider;
+        glVertex3f(0.0f, 0.0f, -springForce);
+        glEnd();
+        glPopMatrix();
     }
 }
 

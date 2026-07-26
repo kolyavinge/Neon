@@ -62,17 +62,6 @@ void Wheel::init(WheelPosition position) {
     } else {
         _outsideNormal = CommonConstants::rightAxis;
     }
-    _initCenter.setZero();
-    if (isFrontWheel) {
-        _initCenter.addMultiplied(_frontNormal, _data.frontWheelLengthToMassCenter);
-        _initCenter.addMultiplied(_outsideNormal, _data.frontTrackWidth / 2.0f);
-    } else {
-        _initCenter.subMultiplied(_frontNormal, _data.rearWheelLengthToMassCenter);
-        _initCenter.addMultiplied(_outsideNormal, _data.rearTrackWidth / 2.0f);
-    }
-    _initCenter.subMultiplied(CommonConstants::upAxis, _data.bodyMeasures.zLength / 2.0f);
-    _initCenter.subMultiplied(CommonConstants::upAxis, _data.groundClearance);
-    _initCenter.addMultiplied(CommonConstants::upAxis, _radius);
     _center.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
@@ -285,8 +274,9 @@ void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, floa
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
-void Wheel::calculateCenter(TransformMatrix4& vehicleModelMatrix) {
-    _center = vehicleModelMatrix.mul(_initCenter, 1.0f);
+void Wheel::calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength) {
+    _center = springPosition;
+    _center.subMultiplied(chassisUpNormal, springLength);
 }
 
 bool Wheel::hasGroundContact() {
@@ -297,12 +287,12 @@ void Wheel::setGroundContact(bool value) {
     _hasGroundContact = value;
 }
 
-Vector3 Wheel::getGroundContactPoint(Vector3 chassisUpNormal) {
-    Vector3 groundPoint = _center;
-    groundPoint.subMultiplied(chassisUpNormal, _radius);
-
-    return groundPoint;
-}
+//Vector3 Wheel::getForceApplyPoint(Vector3 chassisUpNormal) {
+//    Vector3 point = _center;
+//    point.subMultiplied(chassisUpNormal, 0 * _radius);
+//
+//    return point;
+//}
 
 TransformMatrix4& Wheel::getModelMatrix() {
     return _modelMatrix;

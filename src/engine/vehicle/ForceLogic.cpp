@@ -23,26 +23,33 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
+    float centerMassZ = vehicle.getCenter().z;
+    // wheel forces
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) break;
-        Vector3 groundPoint = wheel.getGroundContactPoint(chassisUpNormal);
-        groundPoint.z = vehicle.getCenter().z;
-        vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), groundPoint);
-        vehicle.applyForceAtPoint(wheel.getLateralForce(), groundPoint);
-        //vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), groundPoint);
+        Vector3 wheelCenter = wheel.getCenter();
+        Vector3 applyPoint(wheelCenter.x, wheelCenter.y, centerMassZ);
+        vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
+        vehicle.applyForceAtPoint(wheel.getLateralForce(), applyPoint);
+        vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), applyPoint);
+    }
+    // spring forces
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Spring& spring = vehicle.getSpring(wheelIndex);
+        Vector3 springForce = chassisUpNormal;
+        springForce.mul(spring.getForce());
+        vehicle.applyForceAtPoint(springForce, spring.getPosition());
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
-    if (!vehicle.hasGroundContact()) {
-        vehicle.applyGravity();
-    }
+    vehicle.applyGravity();
     vehicle.updatePosition(dt);
 }
 
 void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Spring& spring = vehicle.getSpring(i);
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Spring& spring = vehicle.getSpring(wheelIndex);
         spring.calculateForce(dt);
     }
 }

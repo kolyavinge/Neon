@@ -26,6 +26,7 @@ private:
     static void printWheelTransferedWeight(Vehicle& vehicle);
     static void printWheelLoadWeight(Vehicle& vehicle);
     static void printSpringForce(Vehicle& vehicle);
+    static void printSpringLengths(Vehicle& vehicle);
     static void printBodyAngles(Vehicle& vehicle);
     static void paintText(DrivingInputData& inputData);
 };

@@ -10,8 +10,11 @@ PositionLogic::PositionLogic(
 
 void PositionLogic::updatePosition(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
-    vehicle.calculateCenterForAllWheels();
-    _vehicleCollisionLogic.updatePositionByGroundContact(vehicle);
+    vehicle.calculatePositionForAllSprings();
+    _vehicleCollisionLogic.resolveWheelGroundCollisions(vehicle);
+    vehicle.calculateLengthForAllSprings();
+    vehicle.correctBodyPositionByMinSpringLength();
+    vehicle.calculatePositionForAllSprings();
     vehicle.calculateCenterForAllWheels();
     vehicle.calculateBodyPosition(dt);
     _wheelLogic.updateFrontAndOutsideNormals(vehicle);

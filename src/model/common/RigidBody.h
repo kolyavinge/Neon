@@ -37,13 +37,12 @@ public:
     Vector3 getRotateAxis();
     CoordinateAxes& getCoordinateAxes();
     Vector3 getLinearVelocity();
+    void setLinearVelocity(Vector3 velocity);
     Vector3 getLinearAcceleration();
-    void setZeroLinearVelocity();
     Vector3 getAngularVelocity();
     TransformMatrix4& getModelMatrix();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
-    void applyGravity();
     void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal); // TODO может не нужон этот метод
     void updatePosition(float dt);
 

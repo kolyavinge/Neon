@@ -11,6 +11,7 @@ public:
 
 private:
     void transferWeightInStatic(Vehicle& vehicle);
+    void setWheelLoadWeight(Wheel& wheel, float loadWeight);
     void transferWeightAfterAccelerationOrBraking(Vehicle& vehicle, float throttleRatio);
     void transferWeightAfterSteering(Vehicle& vehicle, float steeringRatio);
     void calculateSpringLengths(Vehicle& vehicle);

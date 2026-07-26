@@ -7,6 +7,7 @@
 #include <model/vehicle/Wheel.h>
 
 void WeightTransferLogic::transferWeight(Vehicle& vehicle, DrivingInputData& inputData) {
+    return;
     transferWeightInStatic(vehicle);
     Vector3 longitudinalAcceleration = vehicle.getLongitudinalAcceleration();
     if (!longitudinalAcceleration.isZero()) {
@@ -24,14 +25,22 @@ void WeightTransferLogic::transferWeightInStatic(Vehicle& vehicle) {
     Body& body = vehicle.getBody();
     body.transferWeightOnRear(0.0f);
     body.transferWeightOnRight(0.0f);
-    float frontWheelsWeight = (vehicleData.rearWheelLengthToMassCenter / vehicleData.wheelbaseLength) * vehicleData.vehicleMass;
-    float rearWheelsWeight = vehicleData.vehicleMass - frontWheelsWeight;
-    float frontWheelWeight = frontWheelsWeight / VehicleConstants::nonDriveWheelsCount;
-    float rearWheelWeight = rearWheelsWeight / VehicleConstants::driveWheelsCount;
-    vehicle.getWheel(WheelPosition::frontLeft).setLoadWeight(frontWheelWeight);
-    vehicle.getWheel(WheelPosition::frontRight).setLoadWeight(frontWheelWeight);
-    vehicle.getWheel(WheelPosition::rearLeft).setLoadWeight(rearWheelWeight);
-    vehicle.getWheel(WheelPosition::rearRight).setLoadWeight(rearWheelWeight);
+    float bothFrontWheelsWeight = (vehicleData.rearWheelLengthToMassCenter / vehicleData.wheelbaseLength) * vehicleData.vehicleMass;
+    float bothRearWheelsWeight = vehicleData.vehicleMass - bothFrontWheelsWeight;
+    float frontWheelWeight = bothFrontWheelsWeight / VehicleConstants::nonDriveWheelsCount;
+    float rearWheelWeight = bothRearWheelsWeight / VehicleConstants::driveWheelsCount;
+    setWheelLoadWeight(vehicle.getWheel(WheelPosition::frontLeft), frontWheelWeight);
+    setWheelLoadWeight(vehicle.getWheel(WheelPosition::frontRight), frontWheelWeight);
+    setWheelLoadWeight(vehicle.getWheel(WheelPosition::rearLeft), rearWheelWeight);
+    setWheelLoadWeight(vehicle.getWheel(WheelPosition::rearRight), rearWheelWeight);
+}
+
+void WeightTransferLogic::setWheelLoadWeight(Wheel& wheel, float loadWeight) {
+    if (wheel.hasGroundContact()) {
+        wheel.setLoadWeight(loadWeight);
+    } else {
+        wheel.setLoadWeight(0.0f);
+    }
 }
 
 void WeightTransferLogic::transferWeightAfterAccelerationOrBraking(Vehicle& vehicle, float throttleRatio) {

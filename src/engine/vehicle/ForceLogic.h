@@ -19,9 +19,9 @@ public:
         WheelLogic& wheelLogic);
 
     void calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
-    void applyForces(Vehicle& vehicle);
 
 private:
+    void applyForces(Vehicle& vehicle);
     void calculateSpringForces(Vehicle& vehicle);
     void calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
     void calculateAirDragForce(Vehicle& vehicle);
