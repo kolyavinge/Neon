@@ -219,21 +219,23 @@ void Wheel::calculateLongitudinalForce(float springForce) {
         : 0.0f;
     // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
     _longitudinalForce.mul(forceCoeff * springForce);
+    _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
 }
 
 void Wheel::calculateLateralForce(float springForce) {
     _lateralForce = _outsideNormal;
+    //_lateralForce.z = 0;
+    //_lateralForce.normalize();
     float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
     _lateralForce.mul(forceCoeff * springForce);
+    _lateralForceBeforeNormalize = _lateralForce.getLength();
 }
 
 void Wheel::normalizeLongitudinalForce(float normalizedLength) {
-    _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
     _longitudinalForce.setLength(normalizedLength);
 }
 
 void Wheel::normalizeLateralForce(float normalizedLength) {
-    _lateralForceBeforeNormalize = _lateralForce.getLength();
     _lateralForce.setLength(normalizedLength);
 }
 
@@ -274,10 +276,10 @@ void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, floa
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
-void Wheel::calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength) {
-    _center = springPosition;
-    _center.subMultiplied(chassisUpNormal, springLength);
-}
+//void Wheel::calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength) {
+//    _center = springPosition;
+//    _center.subMultiplied(chassisUpNormal, springLength);
+//}
 
 bool Wheel::hasGroundContact() {
     return _hasGroundContact;

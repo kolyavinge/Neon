@@ -10,20 +10,21 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     //if ((_tick % 10) != 0) return;
 
     paintText(inputData);
-    printGear(vehicle);
+    //printGear(vehicle);
     //printThrottle(inputData);
     //printEngineRpm(vehicle);
     //printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
-    //printLongitudinalForce(vehicle);
-    //printLateralForce(vehicle);
+    printLongitudinalForce(vehicle);
+    printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printWheelTransferedWeight(vehicle);
     //printWheelLoadWeight(vehicle);
     //printSpringForce(vehicle);
-    printSpringLengths(vehicle);
+    //printSpringLengths(vehicle);
+    //printWheelsGroundContact(vehicle);
     //printBodyAngles(vehicle);
 
     printf("\r\n");
@@ -153,11 +154,19 @@ void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printSpringLengths(Vehicle& vehicle) {
-    printf("Spring %.2f %.2f %.2f %.2f|",
+    printf("Spring %.3f %.3f %.3f %.3f|",
         vehicle.getSpring(0).getLength(),
         vehicle.getSpring(1).getLength(),
         vehicle.getSpring(2).getLength(),
         vehicle.getSpring(3).getLength());
+}
+
+void VehicleDebuger::printWheelsGroundContact(Vehicle& vehicle) {
+    printf("Ground %i %i %i %i|",
+        vehicle.getWheel(0).hasGroundContact() ? 1 : 0,
+        vehicle.getWheel(1).hasGroundContact() ? 1 : 0,
+        vehicle.getWheel(2).hasGroundContact() ? 1 : 0,
+        vehicle.getWheel(3).hasGroundContact() ? 1 : 0);
 }
 
 void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {

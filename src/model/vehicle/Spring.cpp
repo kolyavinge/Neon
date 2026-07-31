@@ -35,6 +35,7 @@ void Spring::init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 whee
         _initPosition.subMultiplied(wheelFrontNormal, _data.rearWheelLengthToMassCenter);
         _initPosition.addMultiplied(wheelOutsideNormal, _data.rearTrackWidth / 2.0f);
     }
+    _initPosition.addMultiplied(CommonConstants::upAxis, 0.1f);
     _position.setZero();
     _prevLength = _maxLength;
     _currentLength = _prevLength;
@@ -75,6 +76,7 @@ void Spring::calculateLength(Vector3 wheelCenter) {
 void Spring::calculateForce(float dt) {
     float depth = _maxLength - _currentLength;
     float speed = (_prevLength - _currentLength) / dt;
+    // TODO сделать разные коэфф _damper на сжатие и на отбой
     _force = _stiffness * depth + _damper * speed;
     if (_force < 0.0f) _force = 0.0f;
 }

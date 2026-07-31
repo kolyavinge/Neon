@@ -124,11 +124,11 @@ void Vehicle::setZeroLinearVelocity() {
     _rigidBody.setLinearVelocity(Vector3());
 }
 
-void Vehicle::correctLinearVelocityByChassisFrontNormal() {
-    Vector3 velocity = getLinearVelocity();
-    velocity.z = getChassisFrontNormal().z;
-    _rigidBody.setLinearVelocity(velocity);
-}
+//void Vehicle::correctLinearVelocityByChassisFrontNormal() {
+//    Vector3 velocity = getLinearVelocity();
+//    velocity.z = getChassisFrontNormal().z;
+//    _rigidBody.setLinearVelocity(velocity);
+//}
 
 Vector3 Vehicle::getLongitudinalAcceleration() {
     Vector3 acceleration;
@@ -166,10 +166,9 @@ void Vehicle::calculateLengthForAllSprings() {
     }
 }
 
-void Vehicle::correctBodyPositionByMinSpringLength() {
+bool Vehicle::correctBodyPositionByMinSpringLength() {
     float maxCorrectionLength = 0.0f;
     Vector3 chassisUpNormal = getChassisUpNormal();
-    //chassisUpNormal = CommonConstants::upAxis;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = _wheels[i];
         Spring& spring = _springs[i];
@@ -185,17 +184,21 @@ void Vehicle::correctBodyPositionByMinSpringLength() {
         Vector3 center = _rigidBody.getCenter();
         center.add(correctionVector);
         _rigidBody.setCenter(center);
+
+        return true;
     }
+
+    return false;
 }
 
-void Vehicle::calculateCenterForAllWheels() {
-    Vector3 chassisUpNormal = getChassisUpNormal();
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = _wheels[i];
-        Spring& spring = _springs[i];
-        wheel.calculateCenter(chassisUpNormal, spring.getPosition(), spring.getLength());
-    }
-}
+//void Vehicle::calculateCenterForAllWheels() {
+//    Vector3 chassisUpNormal = getChassisUpNormal();
+//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+//        Wheel& wheel = _wheels[i];
+//        Spring& spring = _springs[i];
+//        wheel.calculateCenter(chassisUpNormal, spring.getPosition(), spring.getLength());
+//    }
+//}
 
 void Vehicle::calculateModelMatrixForAllWheels() {
     float chassisRotateAngle = getChassisRotateAngle();
@@ -206,12 +209,8 @@ void Vehicle::calculateModelMatrixForAllWheels() {
 }
 
 void Vehicle::calculateBodyPosition(float dt) {
-    Vector3 chassisRightNormal = getChassisRightNormal();
-    Vector3 chassisFrontNormal = getChassisFrontNormal();
-    Vector3 chassisUpNormal = getChassisUpNormal();
     TransformMatrix4& vehicleModelMatrix = getModelMatrix();
-    _body.calculateCenter(vehicleModelMatrix);
-    _body.calculateBox(chassisRightNormal, chassisFrontNormal, chassisUpNormal);
+    _body.calculateBox(_rigidBody.getCenter(), getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal());
     _body.calculateAngles(dt);
     _body.calculateModelMatrix(vehicleModelMatrix);
 }
@@ -272,14 +271,14 @@ float Vehicle::getAverageDriveWheelsRpm() {
     return averageWheelsRpm;
 }
 
-bool Vehicle::hasGroundContact() {
-    int contactedWheels = 0;
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        if (getWheel(i).hasGroundContact()) {
-            contactedWheels++;
-        }
-    }
-    // машинка стоит на земле, если хотя бы 3 колеса касаются земли
-
-    return contactedWheels >= 3;
-}
+//bool Vehicle::hasGroundContact() {
+//    int contactedWheels = 0;
+//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+//        if (getWheel(i).hasGroundContact()) {
+//            contactedWheels++;
+//        }
+//    }
+//    // машинка стоит на земле, если хотя бы 3 колеса касаются земли
+//
+//    return contactedWheels >= 3;
+//}

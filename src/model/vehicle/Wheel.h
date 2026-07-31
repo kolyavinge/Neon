@@ -95,7 +95,7 @@ public:
     void calculateLateralAcceleration();
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
-    void calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength);
+    //void calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength);
     bool hasGroundContact();
     void setGroundContact(bool value);
     //Vector3 getForceApplyPoint(Vector3 chassisUpNormal);

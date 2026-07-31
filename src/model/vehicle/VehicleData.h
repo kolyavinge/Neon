@@ -36,7 +36,6 @@ public:
     float wheelbaseLength;
     float frontTrackWidth;
     float rearTrackWidth;
-    float groundClearance;
 
     /* engine */
     EngineTorqueCurve engineTorqueCurve;

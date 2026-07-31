@@ -4,6 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
+// TODO переместить в model/common
 class Camera : public Object {
 
     Vector3 _position;

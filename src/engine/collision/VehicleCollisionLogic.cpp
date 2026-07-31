@@ -9,16 +9,16 @@ GroundCollisionResult::GroundCollisionResult() {
 GroundCollisionResult VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
     GroundCollisionResult result;
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
-    //chassisUpNormal = CommonConstants::upAxis;
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = vehicle.getWheel(i);
-        Spring& spring = vehicle.getSpring(i);
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Wheel& wheel = vehicle.getWheel(wheelIndex);
+        Spring& spring = vehicle.getSpring(wheelIndex);
         Vector3 rayFromPosition = spring.getPosition();
         Vector3 rayToPosition = rayFromPosition;
-        rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength() + wheel.getRadius());
+        rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
+        rayToPosition.subMultiplied(CommonConstants::upAxis, wheel.getRadius());
         if (rayToPosition.z <= 0.0f) {
             wheel.setGroundContact(true);
-            Vector3 wheelCenter = wheel.getCenter();
+            Vector3 wheelCenter = rayToPosition;
             wheelCenter.z = wheel.getRadius();
             wheel.setCenter(wheelCenter);
             result.hasAnyCollisions = true;

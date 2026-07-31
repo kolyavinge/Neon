@@ -49,13 +49,13 @@ public:
     TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
     void setZeroLinearVelocity();
-    void correctLinearVelocityByChassisFrontNormal();
+    //void correctLinearVelocityByChassisFrontNormal();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();
-    void correctBodyPositionByMinSpringLength();
-    void calculateCenterForAllWheels();
+    bool correctBodyPositionByMinSpringLength();
+    //void calculateCenterForAllWheels();
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition(float dt);
     bool isAccelerating();
@@ -65,7 +65,7 @@ public:
     float getFrontWheelsWeight();
     float getRearWheelsWeight();
     float getAverageDriveWheelsRpm();
-    bool hasGroundContact();
+    //bool hasGroundContact();
 
 private:
     void initWheelAndSpring(WheelPosition position);

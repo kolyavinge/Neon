@@ -13,8 +13,6 @@ class Body : public Object {
     Vector3 _airDragForce;
     SmoothValue<float> _pitchAngle;
     SmoothValue<float> _rollAngle;
-    Vector3 _initCenter;
-    Vector3 _center;
     Box3d _box;
     float _transferedWeightOnRear;
     float _transferedWeightOnRight;
@@ -30,8 +28,7 @@ public:
     void transferWeightOnRight(float onRight);
     Vector3 getAirDragForce();
     void calculateAirDragForce(Vector3 vehicleVelocity);
-    void calculateCenter(TransformMatrix4& vehicleModelMatrix);
-    void calculateBox(Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
+    void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
     void calculateAngles(float dt);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(TransformMatrix4& vehicleModelMatrix);

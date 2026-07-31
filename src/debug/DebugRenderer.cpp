@@ -117,6 +117,14 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glVertex3f(0.0f, 0.0f, -springForce);
         glEnd();
         glPopMatrix();
+        // spring
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3f(spring.getPosition());
+        Vector3 springTo = spring.getPosition();
+        springTo.subMultiplied(vehicle.getChassisUpNormal(), spring.getLength());
+        glVertex3f(springTo);
+        glEnd();
     }
 }
 

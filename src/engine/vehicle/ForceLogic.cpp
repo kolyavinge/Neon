@@ -27,7 +27,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     // wheel forces
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
-        if (!wheel.hasGroundContact()) break;
+        if (!wheel.hasGroundContact()) continue;
         Vector3 wheelCenter = wheel.getCenter();
         Vector3 applyPoint(wheelCenter.x, wheelCenter.y, centerMassZ);
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
@@ -36,6 +36,8 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     }
     // spring forces
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Wheel& wheel = vehicle.getWheel(wheelIndex);
+        if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
         Vector3 springForce = chassisUpNormal;
         springForce.mul(spring.getForce());
@@ -63,7 +65,7 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         wheel.clearAllForces();
-        if (!wheel.hasGroundContact()) break;
+        if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getForce();
         SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);

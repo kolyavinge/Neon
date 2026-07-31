@@ -3,7 +3,6 @@
 #include <model/vehicle/Body.h>
 
 Body::Body() {
-    _initCenter.addMultiplied(CommonConstants::upAxis, _data.groundClearance);
     _box.setMeasures(_data.bodyMeasures);
     _transferedWeightOnRear = 0.0f;
     _transferedWeightOnRight = 0.0f;
@@ -49,12 +48,8 @@ void Body::calculateAirDragForce(Vector3 vehicleVelocity) {
     _airDragForce.mul(-_data.airDragCoeff);
 }
 
-void Body::calculateCenter(TransformMatrix4& vehicleModelMatrix) {
-    _center = vehicleModelMatrix.mul(_initCenter, 1.0f);
-}
-
-void Body::calculateBox(Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {
-    _box.calculatePoints(_center, chassisRightNormal, chassisFrontNormal, chassisUpNormal);
+void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {
+    _box.calculatePoints(vehicleCenter, chassisRightNormal, chassisFrontNormal, chassisUpNormal);
 }
 
 void Body::calculateAngles(float dt) {
@@ -71,8 +66,6 @@ TransformMatrix4& Body::getModelMatrix() {
 }
 
 void Body::calculateModelMatrix(TransformMatrix4& vehicleModelMatrix) {
-    TransformMatrix4 translate;
-    translate.translate(0.0f, 0.0f, _data.groundClearance);
     float pitchAngle = _pitchAngle.getCurrentValue();
     TransformMatrix4 pitchRotate;
     pitchRotate.rotate(pitchAngle, CommonConstants::rightAxis);
@@ -80,7 +73,6 @@ void Body::calculateModelMatrix(TransformMatrix4& vehicleModelMatrix) {
     TransformMatrix4 rollRotate;
     rollRotate.rotate(_rollAngle.getCurrentValue(), rollRotateAxis);
     _modelMatrix = vehicleModelMatrix;
-    _modelMatrix.mul(translate);
     _modelMatrix.mul(pitchRotate);
     _modelMatrix.mul(rollRotate);
 }
