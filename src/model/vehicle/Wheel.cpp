@@ -214,6 +214,8 @@ Vector3 Wheel::getLateralAcceleration() {
 
 void Wheel::calculateLongitudinalForce(float springForce) {
     _longitudinalForce = _frontNormal;
+    _longitudinalForce.z = 0;
+    _longitudinalForce.normalize();
     float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
         : 0.0f;
@@ -224,8 +226,8 @@ void Wheel::calculateLongitudinalForce(float springForce) {
 
 void Wheel::calculateLateralForce(float springForce) {
     _lateralForce = _outsideNormal;
-    //_lateralForce.z = 0;
-    //_lateralForce.normalize();
+    _lateralForce.z = 0;
+    _lateralForce.normalize();
     float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
     _lateralForce.mul(forceCoeff * springForce);
     _lateralForceBeforeNormalize = _lateralForce.getLength();

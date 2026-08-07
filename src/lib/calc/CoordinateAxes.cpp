@@ -22,9 +22,9 @@ Vector3 CoordinateAxes::getUpAxis() {
     return _upAxis;
 }
 
-void CoordinateAxes::rotate(TransformMatrix4 m) {
-    _rightAxis = m.mul(_initRightAxis, 0.0f);
-    _frontAxis = m.mul(_initFrontAxis, 0.0f);
+void CoordinateAxes::rotate(TransformMatrix4& m) {
+    _rightAxis = m.mulVector(_initRightAxis);
+    _frontAxis = m.mulVector(_initFrontAxis);
     _rightAxis.normalize();
     _frontAxis.normalize();
     _upAxis = _rightAxis;

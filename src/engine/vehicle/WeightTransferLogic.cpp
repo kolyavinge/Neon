@@ -101,6 +101,6 @@ void WeightTransferLogic::calculateSpringLengths(Vehicle& vehicle) {
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Spring& spring = vehicle.getSpring(i);
         Wheel& wheel = vehicle.getWheel(i);
-        spring.calculateLength(wheel.getLoadWeight());
+        //spring.calculateLength(wheel.getLoadWeight());
     }
 }

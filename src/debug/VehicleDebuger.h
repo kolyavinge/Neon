@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Vehicle.h>
@@ -23,11 +24,14 @@ private:
     static void printLateralForce(Vehicle& vehicle);
     static void printLateralForce(Wheel& wheel, bool last = false);
     static void printVehicleLinearVelocity(Vehicle& vehicle);
+    static void printVehicleAngularVelocity(Vehicle& vehicle);
     static void printWheelTransferedWeight(Vehicle& vehicle);
     static void printWheelLoadWeight(Vehicle& vehicle);
     static void printSpringForce(Vehicle& vehicle);
     static void printSpringLengths(Vehicle& vehicle);
+    static void printSpringPositions(Vehicle& vehicle);
     static void printWheelsGroundContact(Vehicle& vehicle);
     static void printBodyAngles(Vehicle& vehicle);
+    static void printVector(Vector3 v);
     static void paintText(DrivingInputData& inputData);
 };

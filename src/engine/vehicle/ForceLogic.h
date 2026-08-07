@@ -3,7 +3,9 @@
 #include <engine/vehicle/WheelLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <model/vehicle/Spring.h>
 #include <model/vehicle/Vehicle.h>
+#include <model/vehicle/Wheel.h>
 
 class ForceLogic : public Object {
 
@@ -24,5 +26,7 @@ private:
     void applyForces(Vehicle& vehicle);
     void calculateSpringForces(Vehicle& vehicle);
     void calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
+    void calculateAntiRollBarForces(Vehicle& vehicle);
+    void calculateAntiRollBarForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
     void calculateAirDragForce(Vehicle& vehicle);
 };

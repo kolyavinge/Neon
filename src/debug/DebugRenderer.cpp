@@ -24,7 +24,7 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     Vehicle& vehicle = gameState.getPlayerVehicle();
     renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
-    renderVehicleChassis(vehicle);
+    //renderVehicleChassis(vehicle);
     //renderVehicleAxis(vehicle);
 }
 
@@ -61,13 +61,13 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         //glVertex3f(frontNormal);
         //glEnd();
         //glPopMatrix();
-        //// outside normal
+        // outside normal
         //glPushMatrix();
         //glTranslatef(wheel.getCenter());
         //glColor3f(0.0f, 0.8f, 0.0f);
         //glBegin(GL_LINES);
         //glVertex3f(0.0f, 0.0f, 0.0f);
-        //Vector3 outsideNormal = wheel.getOutsdteNormal();
+        //Vector3 outsideNormal = wheel.getOutsideNormal();
         //outsideNormal.setLength(0.5f);
         //glVertex3f(outsideNormal);
         //glEnd();
@@ -112,7 +112,7 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        float springForce = spring.getForce();
+        float springForce = spring.getSpringForce();
         springForce /= _forceDivider;
         glVertex3f(0.0f, 0.0f, -springForce);
         glEnd();
@@ -179,6 +179,19 @@ void DebugRenderer::renderVehicleChassis(Vehicle& vehicle) {
     Vector3 linearVelocity = vehicle.getLinearVelocity();
     linearVelocity.div(_velocityDivider);
     glVertex3f(linearVelocity);
+    glEnd();
+    glPopMatrix();
+
+    // vehicle angular velocity
+    glColor3f(0.0f, 1.0f, 1.0f);
+    glPushMatrix();
+    glTranslatef(vehicle.getCenter());
+    glTranslatef(0.0f, 0.0f, 0.1f);
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    Vector3 angularVelocity = vehicle.getAngularVelocity();
+    //angularVelocity.div(_velocityDivider);
+    glVertex3f(angularVelocity);
     glEnd();
     glPopMatrix();
 }

@@ -21,7 +21,7 @@ void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measu
         ixx,  0.0f, 0.0f, 0.0f,
         0.0f, iyy,  0.0f, 0.0f,
         0.0f, 0.0f, izz,  0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f,
     };
     _localInertiaInverse = TransformMatrix4(items);
 }
@@ -65,8 +65,6 @@ Vector3 RigidBody::getLinearVelocity() {
 
 void RigidBody::setLinearVelocity(Vector3 velocity) {
     _linearVelocity = velocity;
-    //_linearAcceleration.setZero();
-    //_angularVelocity.setZero();
 }
 
 Vector3 RigidBody::getLinearAcceleration() {
@@ -85,9 +83,9 @@ void RigidBody::applyForceAtCenter(Vector3 force) {
     _totalForce.add(force);
 }
 
-void RigidBody::applyForceAtPoint(Vector3 force, Vector3 point) {
+void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
     _totalForce.add(force);
-    Vector3 torque = _center.getDirectionTo(point);
+    Vector3 torque = _center.getDirectionTo(worldPoint);
     torque.vectorProduct(force);
     _totalTorque.add(torque);
 }
@@ -104,7 +102,7 @@ void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vec
     // angular adjustment
     dv = collisionPointDirection;
     dv.vectorProduct(impulseN);
-    dv = _localInertiaInverse.mul(dv, 0.0f);
+    dv = _localInertiaInverse.mulVector(dv);
     _angularVelocity.add(dv);
 }
 
@@ -122,14 +120,17 @@ void RigidBody::updatePosition(float dt) {
     _worldInertiaInverse = rotationMatrix;
     _worldInertiaInverse.mul(_localInertiaInverse);
     _worldInertiaInverse.mul(rotationMatrixTransposed);
-    Vector3 angularAcceleration = _worldInertiaInverse.mul(_totalTorque, 0.0f);
+    Vector3 angularAcceleration = _worldInertiaInverse.mulVector(_totalTorque);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
-    Quaternion w(0.0f, _angularVelocity.x, _angularVelocity.y, _angularVelocity.z);
-    Quaternion dq = w;
-    dq.mul(_rotation);
-    dq.mul(0.5f * dt);
-    _rotation.add(dq);
-    _rotation.normalize();
+    if (!_angularVelocity.isZero()) {
+        float angle = _angularVelocity.getLength();
+        Vector3 axis = _angularVelocity.getNormalized();
+        Quaternion deltaRotation(angle * dt, axis);
+        Quaternion newRotation = deltaRotation;
+        newRotation.mul(_rotation);
+        _rotation = newRotation;
+        _rotation.normalize();
+    }
 
     _totalForce.setZero();
     _totalTorque.setZero();

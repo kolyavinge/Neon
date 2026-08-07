@@ -34,6 +34,7 @@ public:
     Wheel& getDriveWheel(int i);
     Wheel& getNonDriveWheel(int i);
     Spring& getSpring(int i);
+    Spring& getSpring(WheelPosition p);
     Body& getBody();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
@@ -48,13 +49,14 @@ public:
     Vector3 getChassisRotateAxis();
     TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
+    Vector3 getAngularVelocity();
     void setZeroLinearVelocity();
     //void correctLinearVelocityByChassisFrontNormal();
     Vector3 getLongitudinalAcceleration();
     Vector3 getLateralAcceleration();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();
-    bool correctBodyPositionByMinSpringLength();
+    //bool correctBodyPositionByMinSpringLength();
     //void calculateCenterForAllWheels();
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition(float dt);

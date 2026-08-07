@@ -17,13 +17,15 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
-    printLongitudinalForce(vehicle);
-    printLateralForce(vehicle);
+    //printLongitudinalForce(vehicle);
+    //printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
+    //printVehicleAngularVelocity(vehicle);
     //printWheelTransferedWeight(vehicle);
     //printWheelLoadWeight(vehicle);
     //printSpringForce(vehicle);
-    //printSpringLengths(vehicle);
+    printSpringLengths(vehicle);
+    //printSpringPositions(vehicle);
     //printWheelsGroundContact(vehicle);
     //printBodyAngles(vehicle);
 
@@ -129,6 +131,12 @@ void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
     printf("V %i|", (int)v);
 }
 
+void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
+    printf("AngularV ");
+    printVector(vehicle.getAngularVelocity());
+    printf("|");
+}
+
 void VehicleDebuger::printWheelTransferedWeight(Vehicle& vehicle) {
     printf("WheelWeight %i %i %i %i|",
         (int)vehicle.getWheel(0).getTransferedWeight(),
@@ -147,18 +155,30 @@ void VehicleDebuger::printWheelLoadWeight(Vehicle& vehicle) {
 
 void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
     printf("Spring %i %i %i %i|",
-        (int)vehicle.getSpring(0).getForce(),
-        (int)vehicle.getSpring(1).getForce(),
-        (int)vehicle.getSpring(2).getForce(),
-        (int)vehicle.getSpring(3).getForce());
+        (int)vehicle.getSpring(0).getSpringForce(),
+        (int)vehicle.getSpring(1).getSpringForce(),
+        (int)vehicle.getSpring(2).getSpringForce(),
+        (int)vehicle.getSpring(3).getSpringForce());
 }
 
 void VehicleDebuger::printSpringLengths(Vehicle& vehicle) {
-    printf("Spring %.3f %.3f %.3f %.3f|",
+    printf("SpringLen %.3f %.3f %.3f %.3f|",
         vehicle.getSpring(0).getLength(),
         vehicle.getSpring(1).getLength(),
         vehicle.getSpring(2).getLength(),
         vehicle.getSpring(3).getLength());
+}
+
+void VehicleDebuger::printSpringPositions(Vehicle& vehicle) {
+    printf("SpringPos (");
+    printVector(vehicle.getSpring(0).getPosition());
+    printf(") (");
+    printVector(vehicle.getSpring(1).getPosition());
+    printf(") (");
+    printVector(vehicle.getSpring(2).getPosition());
+    printf(") (");
+    printVector(vehicle.getSpring(3).getPosition());
+    printf(")|");
 }
 
 void VehicleDebuger::printWheelsGroundContact(Vehicle& vehicle) {
@@ -172,6 +192,10 @@ void VehicleDebuger::printWheelsGroundContact(Vehicle& vehicle) {
 void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {
     printf("BodyPitch %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getPitchAngleRelateChassis()));
     printf("BodyRoll %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getRollAngleRelateChassis()));
+}
+
+void VehicleDebuger::printVector(Vector3 v) {
+    printf("%.3f %.3f %.3f", v.x, v.y, v.z);
 }
 
 void VehicleDebuger::paintText(DrivingInputData& inputData) {

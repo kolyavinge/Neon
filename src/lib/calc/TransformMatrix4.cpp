@@ -83,10 +83,18 @@ Vector4 TransformMatrix4::mul(Vector4 v) {
     return Vector4(x, y, z, w);
 }
 
-Vector3 TransformMatrix4::mul(Vector3 v, float valueW) {
-    float x = _items[0] * v.x + _items[4] * v.y + _items[8] * v.z + _items[12] * valueW;
-    float y = _items[1] * v.x + _items[5] * v.y + _items[9] * v.z + _items[13] * valueW;
-    float z = _items[2] * v.x + _items[6] * v.y + _items[10] * v.z + _items[14] * valueW;
+Vector3 TransformMatrix4::mulVector(Vector3 v) {
+    float x = _items[0] * v.x + _items[4] * v.y + _items[8] * v.z;
+    float y = _items[1] * v.x + _items[5] * v.y + _items[9] * v.z;
+    float z = _items[2] * v.x + _items[6] * v.y + _items[10] * v.z;
+
+    return Vector3(x, y, z);
+}
+
+Vector3 TransformMatrix4::mulPoint(Vector3 p) {
+    float x = _items[0] * p.x + _items[4] * p.y + _items[8] * p.z + _items[12];
+    float y = _items[1] * p.x + _items[5] * p.y + _items[9] * p.z + _items[13];
+    float z = _items[2] * p.x + _items[6] * p.y + _items[10] * p.z + _items[14];
 
     return Vector3(x, y, z);
 }

@@ -42,7 +42,7 @@ public:
     Vector3 getAngularVelocity();
     TransformMatrix4& getModelMatrix();
     void applyForceAtCenter(Vector3 force);
-    void applyForceAtPoint(Vector3 force, Vector3 point);
+    void applyForceAtPoint(Vector3 force, Vector3 worldPoint);
     void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal); // TODO может не нужон этот метод
     void updatePosition(float dt);
 

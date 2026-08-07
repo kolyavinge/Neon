@@ -17,5 +17,5 @@ public:
     Vector3 getRightAxis();
     Vector3 getFrontAxis();
     Vector3 getUpAxis();
-    void rotate(TransformMatrix4 m);
+    void rotate(TransformMatrix4& m);
 };

@@ -15,7 +15,7 @@ void RigidBodyCollisionResolver::resolveCollisionWithUnmovableBody(
 
     Vector3 p = collisionPointDirection;
     p.vectorProduct(collisionNormalToBody);
-    p = body.getLocalInertiaInverse().mul(p, 0.0f);
+    p = body.getLocalInertiaInverse().mulVector(p);
     p.vectorProduct(collisionPointDirection);
     float d = p.dotProduct(collisionNormalToBody);
 

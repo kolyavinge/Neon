@@ -12,14 +12,16 @@ class Spring : public Object {
     float _stiffness;
     float _damperCompression;
     float _damperRebound;
+    float _bumpStopStiffness;
     float _minLength;
     float _maxLength;
-    float _maxWeight;
+    //float _maxWeight;
     Vector3 _initPosition;
     Vector3 _position;
     float _prevLength;
     float _currentLength;
-    float _force;
+    float _springForce;
+    float _antiRollForce;
 
 public:
     Spring();
@@ -28,9 +30,11 @@ public:
     float getMaxLength();
     Vector3 getPosition();
     float getLength();
-    float getForce();
-    void calculateLength(float wheelLoadWeight);
+    float getSpringForce();
+    float getAntiRollForce();
+    void setAntiRollForce(float force);
+    //void calculateLength(float wheelLoadWeight);
     void calculateLength(Vector3 wheelCenter);
-    void calculateForce(float dt);
+    void calculateSpringForce(float dt);
     void calculatePosition(TransformMatrix4& vehicleModelMatrix);
 };

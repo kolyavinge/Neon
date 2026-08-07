@@ -62,6 +62,10 @@ Spring& Vehicle::getSpring(int i) {
     return _springs[i];
 }
 
+Spring& Vehicle::getSpring(WheelPosition p) {
+    return _springs[(int)p];
+}
+
 Body& Vehicle::getBody() {
     return _body;
 }
@@ -120,6 +124,10 @@ Vector3 Vehicle::getLinearVelocity() {
     return _rigidBody.getLinearVelocity();
 }
 
+Vector3 Vehicle::getAngularVelocity() {
+    return _rigidBody.getAngularVelocity();
+}
+
 void Vehicle::setZeroLinearVelocity() {
     _rigidBody.setLinearVelocity(Vector3());
 }
@@ -166,30 +174,30 @@ void Vehicle::calculateLengthForAllSprings() {
     }
 }
 
-bool Vehicle::correctBodyPositionByMinSpringLength() {
-    float maxCorrectionLength = 0.0f;
-    Vector3 chassisUpNormal = getChassisUpNormal();
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = _wheels[i];
-        Spring& spring = _springs[i];
-        Vector3 currentSpringLength = wheel.getCenter().getDirectionTo(spring.getPosition());
-        float springLengthProjection = currentSpringLength.dotProduct(chassisUpNormal);
-        if (springLengthProjection >= spring.getMinLength()) continue;
-        float correctionLength = spring.getMinLength() - springLengthProjection;
-        if (correctionLength > maxCorrectionLength) maxCorrectionLength = correctionLength;
-    }
-    if (maxCorrectionLength > 0.0f) {
-        Vector3 correctionVector = chassisUpNormal;
-        correctionVector.mul(maxCorrectionLength);
-        Vector3 center = _rigidBody.getCenter();
-        center.add(correctionVector);
-        _rigidBody.setCenter(center);
-
-        return true;
-    }
-
-    return false;
-}
+//bool Vehicle::correctBodyPositionByMinSpringLength() {
+//    float maxCorrectionLength = 0.0f;
+//    Vector3 chassisUpNormal = getChassisUpNormal();
+//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+//        Wheel& wheel = _wheels[i];
+//        Spring& spring = _springs[i];
+//        Vector3 currentSpringLength = wheel.getCenter().getDirectionTo(spring.getPosition());
+//        float springLengthProjection = currentSpringLength.dotProduct(chassisUpNormal);
+//        if (springLengthProjection >= spring.getMinLength()) continue;
+//        float correctionLength = spring.getMinLength() - springLengthProjection;
+//        if (correctionLength > maxCorrectionLength) maxCorrectionLength = correctionLength;
+//    }
+//    if (maxCorrectionLength > 0.0f) {
+//        Vector3 correctionVector = chassisUpNormal;
+//        correctionVector.mul(maxCorrectionLength);
+//        Vector3 center = _rigidBody.getCenter();
+//        center.add(correctionVector);
+//        _rigidBody.setCenter(center);
+//
+//        return true;
+//    }
+//
+//    return false;
+//}
 
 //void Vehicle::calculateCenterForAllWheels() {
 //    Vector3 chassisUpNormal = getChassisUpNormal();

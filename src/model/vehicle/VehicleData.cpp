@@ -63,21 +63,26 @@ VehicleData::VehicleData() {
     frontSpringDamperCompression = 2.0f * stiffnessMul;
     frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
-    frontSpringMaxLength = 0.5f;
-    frontSpringMaxWeight = 600.0f;
+    frontSpringMaxLength = 0.4f;
+    //frontSpringMaxWeight = 600.0f;
 
     rearSpringStiffness = 35.0f * stiffnessMul;
     rearSpringDamperCompression = 2.0f * stiffnessMul;
     rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
-    rearSpringMaxLength = 0.5f;
-    rearSpringMaxWeight = 600.0f;
+    rearSpringMaxLength = 0.4f;
+    //rearSpringMaxWeight = 600.0f;
 
+    springBumpStopStiffness = 5000.0f;
+    antiRollStiffness = 5000.0f;
+
+    /* wheel longitudinal force */
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, 1.0f, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, 1.0f, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, 1.0f, 0.8f);
 
+    /* wheel lateral force */
     _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, 0.25f, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, 0.25f, -0.2f);
     _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, 0.25f, -0.2f);
