@@ -246,7 +246,7 @@
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Camera.cpp">
+    <ClCompile Include="src\model\common\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\CameraUpdater.cpp">
@@ -584,7 +584,7 @@
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\Camera.h">
+    <ClInclude Include="src\model\common\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\CameraUpdater.h">

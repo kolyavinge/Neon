@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/Camera.h>
+#include <model/common/Camera.h>
 #include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Vehicle.h>
 

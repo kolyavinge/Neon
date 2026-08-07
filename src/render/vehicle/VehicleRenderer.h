@@ -3,7 +3,7 @@
 #include <common/constants.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/Camera.h>
+#include <model/common/Camera.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>

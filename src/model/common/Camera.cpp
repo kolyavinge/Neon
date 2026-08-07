@@ -1,5 +1,5 @@
 #include <common/constants.h>
-#include <model/Camera.h>
+#include <model/common/Camera.h>
 
 Camera::Camera() {
     _verticalViewAngle = 0.0f;
