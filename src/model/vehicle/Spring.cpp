@@ -3,7 +3,8 @@
 
 Spring::Spring() {
     _stiffness = 0.0f;
-    _damper = 0.0f;
+    _damperCompression = 0.0f;
+    _damperRebound = 0.0f;
     _minLength = 0.0f;
     _maxLength = 0.0f;
     _maxWeight = 0.0f;
@@ -16,13 +17,15 @@ void Spring::init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 whee
     bool isFrontWheel = position == WheelPosition::frontLeft || position == WheelPosition::frontRight;
     if (isFrontWheel) {
         _stiffness = _data.frontSpringStiffness;
-        _damper = _data.frontSpringDamper;
+        _damperCompression = _data.frontSpringDamperCompression;
+        _damperRebound = _data.frontSpringDamperRebound;
         _minLength = _data.frontSpringMinLength;
         _maxLength = _data.frontSpringMaxLength;
         _maxWeight = _data.frontSpringMaxWeight;
     } else {
         _stiffness = _data.rearSpringStiffness;
-        _damper = _data.rearSpringDamper;
+        _damperCompression = _data.rearSpringDamperCompression;
+        _damperRebound = _data.rearSpringDamperRebound;
         _minLength = _data.rearSpringMinLength;
         _maxLength = _data.rearSpringMaxLength;
         _maxWeight = _data.rearSpringMaxWeight;
@@ -76,8 +79,8 @@ void Spring::calculateLength(Vector3 wheelCenter) {
 void Spring::calculateForce(float dt) {
     float depth = _maxLength - _currentLength;
     float speed = (_prevLength - _currentLength) / dt;
-    // TODO сделать разные коэфф _damper на сжатие и на отбой
-    _force = _stiffness * depth + _damper * speed;
+    float damper = _currentLength < _prevLength ? _damperCompression : _damperRebound;
+    _force = _stiffness * depth + damper * speed;
     if (_force < 0.0f) _force = 0.0f;
 }
 

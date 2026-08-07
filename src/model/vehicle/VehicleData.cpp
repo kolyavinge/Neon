@@ -59,14 +59,16 @@ VehicleData::VehicleData() {
 
     /* spring */
     const float stiffnessMul = 1000.0f;
-    frontSpringStiffness = 50.0f * stiffnessMul;
-    frontSpringDamper = 2.0f * stiffnessMul;
+    frontSpringStiffness = 35.0f * stiffnessMul;
+    frontSpringDamperCompression = 2.0f * stiffnessMul;
+    frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
     frontSpringMaxLength = 0.5f;
     frontSpringMaxWeight = 600.0f;
 
-    rearSpringStiffness = 50.0f * stiffnessMul;
-    rearSpringDamper = 2.0f * stiffnessMul;
+    rearSpringStiffness = 35.0f * stiffnessMul;
+    rearSpringDamperCompression = 2.0f * stiffnessMul;
+    rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
     rearSpringMaxLength = 0.5f;
     rearSpringMaxWeight = 600.0f;

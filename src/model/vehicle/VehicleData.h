@@ -54,12 +54,14 @@ public:
 
     /* spring */
     float frontSpringStiffness;
-    float frontSpringDamper;
+    float frontSpringDamperCompression;
+    float frontSpringDamperRebound;
     float frontSpringMinLength;
     float frontSpringMaxLength;
     float frontSpringMaxWeight;
     float rearSpringStiffness;
-    float rearSpringDamper;
+    float rearSpringDamperCompression;
+    float rearSpringDamperRebound;
     float rearSpringMinLength;
     float rearSpringMaxLength;
     float rearSpringMaxWeight;

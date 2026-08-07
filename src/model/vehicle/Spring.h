@@ -10,7 +10,8 @@ class Spring : public Object {
 
     VehicleData _data;
     float _stiffness;
-    float _damper;
+    float _damperCompression;
+    float _damperRebound;
     float _minLength;
     float _maxLength;
     float _maxWeight;
