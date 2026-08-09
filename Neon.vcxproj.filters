@@ -270,9 +270,6 @@
     <ClCompile Include="src\lib\calc\Angles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\collision\RigidBodyCollisionResolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -609,9 +606,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\calc\Angles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\collision\RigidBodyCollisionResolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h">

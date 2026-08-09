@@ -90,22 +90,6 @@ void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
     _totalTorque.add(torque);
 }
 
-void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {
-    Vector3 impulseN = collisionNormal;
-    impulseN.mul(impulse);
-
-    // linear adjustment
-    Vector3 dv = impulseN;
-    dv.div(_mass);
-    _linearVelocity.add(dv);
-
-    // angular adjustment
-    dv = collisionPointDirection;
-    dv.vectorProduct(impulseN);
-    dv = _localInertiaInverse.mulVector(dv);
-    _angularVelocity.add(dv);
-}
-
 void RigidBody::updatePosition(float dt) {
     // linear movement
     _linearAcceleration = _totalForce;
@@ -137,10 +121,48 @@ void RigidBody::updatePosition(float dt) {
     updateModelMatrix();
 }
 
+void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
+    Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
+
+    Vector3 collisionVelocity = _angularVelocity;
+    collisionVelocity.vectorProduct(collisionPointDirection);
+    collisionVelocity.add(_linearVelocity);
+
+    Vector3 relativeVelocity = collisionVelocity;
+    float velocityNormal = relativeVelocity.dotProduct(collisionNormalToBody);
+    if (velocityNormal > 0.0f) return;
+
+    Vector3 p = collisionPointDirection;
+    p.vectorProduct(collisionNormalToBody);
+    p = _localInertiaInverse.mulVector(p);
+    p.vectorProduct(collisionPointDirection);
+    float d = p.dotProduct(collisionNormalToBody);
+
+    const float elastic = 0.0f;
+    float impulse = -(1.0f + elastic) * velocityNormal / (1.0f / _mass + d);
+    applyImpulse(impulse, collisionPointDirection, collisionNormalToBody);
+}
+
 void RigidBody::updateModelMatrix() {
     _rotation.getAngleAndAxis(output _rotateAngle, output _rotateAxis);
     TransformMatrix4 rotationMatrix = _rotation.getTransformMatrix4();
     _coordinateAxes.rotate(rotationMatrix);
     _modelMatrix.translate(_center);
     _modelMatrix.mul(rotationMatrix);
+}
+
+void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {
+    Vector3 impulseN = collisionNormal;
+    impulseN.mul(impulse);
+
+    // linear adjustment
+    Vector3 dv = impulseN;
+    dv.div(_mass);
+    _linearVelocity.add(dv);
+
+    // angular adjustment
+    dv = collisionPointDirection;
+    dv.vectorProduct(impulseN);
+    dv = _localInertiaInverse.mulVector(dv);
+    _angularVelocity.add(dv);
 }
