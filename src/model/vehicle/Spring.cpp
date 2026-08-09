@@ -8,7 +8,6 @@ Spring::Spring() {
     _bumpStopStiffness = 0.0f;
     _minLength = 0.0f;
     _maxLength = 0.0f;
-    //_maxWeight = 0.0f;
     _prevLength = 0.0f;
     _currentLength = 0.0f;
     _springForce = 0.0f;
@@ -23,14 +22,12 @@ void Spring::init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 whee
         _damperRebound = _data.frontSpringDamperRebound;
         _minLength = _data.frontSpringMinLength;
         _maxLength = _data.frontSpringMaxLength;
-        //_maxWeight = _data.frontSpringMaxWeight;
     } else {
         _stiffness = _data.rearSpringStiffness;
         _damperCompression = _data.rearSpringDamperCompression;
         _damperRebound = _data.rearSpringDamperRebound;
         _minLength = _data.rearSpringMinLength;
         _maxLength = _data.rearSpringMaxLength;
-        //_maxWeight = _data.rearSpringMaxWeight;
     }
     _bumpStopStiffness = _data.springBumpStopStiffness;
     _initPosition.setZero();
@@ -41,7 +38,6 @@ void Spring::init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 whee
         _initPosition.subMultiplied(wheelFrontNormal, _data.rearWheelLengthToMassCenter);
         _initPosition.addMultiplied(wheelOutsideNormal, _data.rearTrackWidth / 2.0f);
     }
-    _initPosition.addMultiplied(CommonConstants::upAxis, 0.1f);
     _position.setZero();
     _prevLength = _maxLength;
     _currentLength = _prevLength;
@@ -75,12 +71,6 @@ void Spring::setAntiRollForce(float force) {
     _antiRollForce = force;
 }
 
-//void Spring::calculateLength(float wheelLoadWeight) {
-//    _prevLength = _currentLength;
-//    _currentLength = _maxLength - _maxLength * (wheelLoadWeight / _maxWeight);
-//    _currentLength = Numeric::clamp(_currentLength, _minLength, _maxLength);
-//}
-
 void Spring::calculateLength(Vector3 wheelCenter) {
     _prevLength = _currentLength;
     _currentLength = _position.getLengthTo(wheelCenter);
@@ -91,7 +81,11 @@ void Spring::calculateSpringForce(float dt) {
     float depth = _maxLength - _currentLength;
     float speed = (_prevLength - _currentLength) / dt;
     float damper = _currentLength < _prevLength ? _damperCompression : _damperRebound;
-    _springForce = _stiffness * depth + damper * speed;
+    float springComponent = _stiffness * depth;
+    float damperComponent = damper * speed;
+    float maxSafeDamper = springComponent * 1.5f;
+    damperComponent = Numeric::clamp(damperComponent, -maxSafeDamper, maxSafeDamper);
+    _springForce = springComponent + damperComponent;
     float compressionPercent = depth / _maxLength;
     if (compressionPercent > 0.85f) {
         _springForce += _bumpStopStiffness * (depth - (_maxLength * 0.85f));

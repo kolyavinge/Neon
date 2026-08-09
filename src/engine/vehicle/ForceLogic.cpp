@@ -15,7 +15,7 @@ ForceLogic::ForceLogic(
 void ForceLogic::calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
     calculateSpringForces(vehicle);
     calculateWheelForces(vehicle, throttleRatio, brakeRatio);
-    calculateAntiRollBarForces(vehicle);
+    calculateAntiRollForces(vehicle);
     calculateAirDragForce(vehicle);
     applyForces(vehicle);
 }
@@ -24,13 +24,11 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
-    //float centerMassZ = vehicle.getCenter().z;
     // wheel forces
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
-        Vector3 wheelCenter = wheel.getCenter();
-        Vector3 applyPoint(wheelCenter.x, wheelCenter.y, 0.0f);
+        Vector3 applyPoint = wheel.getGroundContactPoint();
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getLateralForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), applyPoint);
@@ -40,8 +38,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
-        Vector3 wheelCenter = wheel.getCenter();
-        Vector3 applyPoint(wheelCenter.x, wheelCenter.y, 0.0f);
+        Vector3 applyPoint = wheel.getGroundContactPoint();
         Vector3 springForce = chassisUpNormal;
         springForce.mul(spring.getSpringForce() + spring.getAntiRollForce());
         vehicle.applyForceAtPoint(springForce, applyPoint);
@@ -84,19 +81,20 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
     }
 }
 
-void ForceLogic::calculateAntiRollBarForces(Vehicle& vehicle) {
-    calculateAntiRollBarForces(
+void ForceLogic::calculateAntiRollForces(Vehicle& vehicle) {
+    // front wheels
+    calculateAntiRollForces(
         vehicle.getWheel(WheelPosition::frontLeft), vehicle.getWheel(WheelPosition::frontRight),
         vehicle.getSpring(WheelPosition::frontLeft), vehicle.getSpring(WheelPosition::frontRight),
-        vehicle.getData().antiRollStiffness);
-
-    calculateAntiRollBarForces(
+        vehicle.getData().frontAntiRollStiffness);
+    // rear wheels
+    calculateAntiRollForces(
         vehicle.getWheel(WheelPosition::rearLeft), vehicle.getWheel(WheelPosition::rearRight),
         vehicle.getSpring(WheelPosition::rearLeft), vehicle.getSpring(WheelPosition::rearRight),
-        vehicle.getData().antiRollStiffness);
+        vehicle.getData().rearAntiRollStiffness);
 }
 
-void ForceLogic::calculateAntiRollBarForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness) {
+void ForceLogic::calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness) {
     float travelLeft = leftWheel.hasGroundContact() ? (leftSpring.getMaxLength() - leftSpring.getLength()) : 0.0f;
     float travelRight = rightWheel.hasGroundContact() ? (rightSpring.getMaxLength() - rightSpring.getLength()) : 0.0f;
     float antiRollForce = (travelLeft - travelRight) * antiRollStiffness;

@@ -4,7 +4,7 @@
 #include <model/vehicle/Wheel.h>
 
 VehicleData::VehicleData() {
-    vehicleMass = 1500.0f;
+    vehicleMass = 1200.0f;
 
     /* gearbox */
     finalGearRatio = 3.5f;
@@ -60,19 +60,20 @@ VehicleData::VehicleData() {
     /* spring */
     const float stiffnessMul = 1000.0f;
     frontSpringStiffness = 35.0f * stiffnessMul;
-    frontSpringDamperCompression = 2.0f * stiffnessMul;
+    frontSpringDamperCompression = 2.5f * stiffnessMul;
     frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
-    frontSpringMaxLength = 0.4f;
+    frontSpringMaxLength = 0.3f;
+    frontAntiRollStiffness = 5000.0f;
 
     rearSpringStiffness = 35.0f * stiffnessMul;
-    rearSpringDamperCompression = 2.0f * stiffnessMul;
+    rearSpringDamperCompression = 2.5f * stiffnessMul;
     rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
-    rearSpringMaxLength = 0.4f;
+    rearSpringMaxLength = 0.3f;
+    rearAntiRollStiffness = 3500.0f;
 
     springBumpStopStiffness = 5000.0f;
-    antiRollStiffness = 5000.0f;
 
     /* wheel longitudinal force */
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, 1.0f, 0.8f);

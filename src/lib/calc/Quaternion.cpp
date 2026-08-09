@@ -50,6 +50,7 @@ void Quaternion::getAngleAndAxis(output float& angle, output Vector3& axis) {
     if (axis.isZero()) {
         axis.set(0.0f, 0.0f, 1.0f);
     }
+    axis.normalize();
 }
 
 void Quaternion::setIdentity() {

@@ -26,7 +26,7 @@ private:
     void applyForces(Vehicle& vehicle);
     void calculateSpringForces(Vehicle& vehicle);
     void calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
-    void calculateAntiRollBarForces(Vehicle& vehicle);
-    void calculateAntiRollBarForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
+    void calculateAntiRollForces(Vehicle& vehicle);
+    void calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
     void calculateAirDragForce(Vehicle& vehicle);
 };

@@ -49,6 +49,7 @@ class Wheel : public Object {
     Vector3 _longitudinalAcceleration;
     Vector3 _lateralAcceleration;
     bool _hasGroundContact;
+    Vector3 _groundContactPoint;
     TransformMatrix4 _modelMatrix;
 
 public:
@@ -95,10 +96,10 @@ public:
     void calculateLateralAcceleration();
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
-    //void calculateCenter(Vector3 chassisUpNormal, Vector3 springPosition, float springLength);
     bool hasGroundContact();
     void setGroundContact(bool value);
-    //Vector3 getForceApplyPoint(Vector3 chassisUpNormal);
+    Vector3 getGroundContactPoint();
+    void setGroundContactPoint(Vector3 point);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);
 };

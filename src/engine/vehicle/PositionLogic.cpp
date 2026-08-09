@@ -13,11 +13,6 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.calculatePositionForAllSprings();
     _vehicleCollisionLogic.resolveWheelGroundCollisions(vehicle);
     vehicle.calculateLengthForAllSprings();
-    //bool corrected = vehicle.correctBodyPositionByMinSpringLength();
-    //if (corrected) {
-    //    vehicle.calculatePositionForAllSprings();
-    //}
-    //vehicle.calculateCenterForAllWheels();
     vehicle.calculateBodyPosition(dt);
     _wheelLogic.updateFrontAndOutsideNormals(vehicle);
     vehicle.calculateModelMatrixForAllWheels();

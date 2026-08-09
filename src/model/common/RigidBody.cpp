@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <model/common/RigidBody.h>
 
 RigidBody::RigidBody() {
@@ -85,7 +86,8 @@ void RigidBody::applyForceAtCenter(Vector3 force) {
 
 void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
     _totalForce.add(force);
-    Vector3 torque = _center.getDirectionTo(worldPoint);
+    Vector3 lever = _center.getDirectionTo(worldPoint);
+    Vector3 torque = lever;
     torque.vectorProduct(force);
     _totalTorque.add(torque);
 }
@@ -106,6 +108,7 @@ void RigidBody::updatePosition(float dt) {
     _worldInertiaInverse.mul(rotationMatrixTransposed);
     Vector3 angularAcceleration = _worldInertiaInverse.mulVector(_totalTorque);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
+    //_angularVelocity.mul(1.0f - 2.0f * dt);
     if (!_angularVelocity.isZero()) {
         float angle = _angularVelocity.getLength();
         Vector3 axis = _angularVelocity.getNormalized();
@@ -134,7 +137,7 @@ void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector
 
     Vector3 p = collisionPointDirection;
     p.vectorProduct(collisionNormalToBody);
-    p = _localInertiaInverse.mulVector(p);
+    p = _localInertiaInverse.mulVector(p); // _worldInertiaInverse ?
     p.vectorProduct(collisionPointDirection);
     float d = p.dotProduct(collisionNormalToBody);
 

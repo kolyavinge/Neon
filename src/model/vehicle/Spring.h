@@ -15,7 +15,6 @@ class Spring : public Object {
     float _bumpStopStiffness;
     float _minLength;
     float _maxLength;
-    //float _maxWeight;
     Vector3 _initPosition;
     Vector3 _position;
     float _prevLength;
@@ -33,7 +32,6 @@ public:
     float getSpringForce();
     float getAntiRollForce();
     void setAntiRollForce(float force);
-    //void calculateLength(float wheelLoadWeight);
     void calculateLength(Vector3 wheelCenter);
     void calculateSpringForce(float dt);
     void calculatePosition(TransformMatrix4& vehicleModelMatrix);

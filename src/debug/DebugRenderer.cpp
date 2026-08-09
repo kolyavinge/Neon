@@ -24,7 +24,7 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     Vehicle& vehicle = gameState.getPlayerVehicle();
     renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
-    //renderVehicleChassis(vehicle);
+    renderVehicleChassis(vehicle);
     //renderVehicleAxis(vehicle);
 }
 

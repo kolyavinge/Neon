@@ -58,13 +58,14 @@ public:
     float frontSpringDamperRebound;
     float frontSpringMinLength;
     float frontSpringMaxLength;
+    float frontAntiRollStiffness;
     float rearSpringStiffness;
     float rearSpringDamperCompression;
     float rearSpringDamperRebound;
     float rearSpringMinLength;
     float rearSpringMaxLength;
+    float rearAntiRollStiffness;
     float springBumpStopStiffness;
-    float antiRollStiffness;
 
     VehicleData();
     float getRoadFrictionCoeff(float linearVelocityNormalizedProjection);
