@@ -33,8 +33,6 @@ class Wheel : public Object {
     float _radius;
     float _rotateAngle;
     float _steeringAngle;
-    float _loadWeight;
-    float _transferedWeight;
     float _angularVelocity;
     Vector3 _frontNormal;
     Vector3 _outsideNormal;
@@ -46,8 +44,6 @@ class Wheel : public Object {
     float _lateralForceBeforeNormalize;
     SlipRatio _slipRatio;
     float _slipAngle;
-    Vector3 _longitudinalAcceleration;
-    Vector3 _lateralAcceleration;
     bool _hasGroundContact;
     Vector3 _groundContactPoint;
     TransformMatrix4 _modelMatrix;
@@ -67,10 +63,6 @@ public:
     void setOutsideNormal(Vector3 outsideNormal);
     Vector3 getCenter();
     void setCenter(Vector3 center);
-    float getLoadWeight();
-    void setLoadWeight(float weight);
-    float getTransferedWeight();
-    void transferWeight(float weight);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
     void synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear);
@@ -85,15 +77,11 @@ public:
     Vector3 getRoadFrictionForce();
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
-    Vector3 getLongitudinalAcceleration();
-    Vector3 getLateralAcceleration();
     void calculateLongitudinalForce(float springForce);
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
     void calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce);
-    void calculateLongitudinalAcceleration();
-    void calculateLateralAcceleration();
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
     bool hasGroundContact();

@@ -108,7 +108,6 @@ void RigidBody::updatePosition(float dt) {
     _worldInertiaInverse.mul(rotationMatrixTransposed);
     Vector3 angularAcceleration = _worldInertiaInverse.mulVector(_totalTorque);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
-    //_angularVelocity.mul(1.0f - 2.0f * dt);
     if (!_angularVelocity.isZero()) {
         float angle = _angularVelocity.getLength();
         Vector3 axis = _angularVelocity.getNormalized();

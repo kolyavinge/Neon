@@ -25,7 +25,7 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
     _shader.setColorFactor(1.0f);
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(false);
-    renderBody(vehicle.getBody());
+    renderBody(vehicle.getModelMatrix());
     renderWheel(vehicle, WheelPosition::frontLeft);
     renderWheel(vehicle, WheelPosition::frontRight);
     renderWheel(vehicle, WheelPosition::rearLeft);
@@ -34,8 +34,8 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
     glDisable(GL_DEPTH_TEST);
 }
 
-void VehicleRenderer::renderBody(Body& body) {
-    _shader.setModelMatrix(body.getModelMatrix());
+void VehicleRenderer::renderBody(TransformMatrix4& vehicleModelMatrix) {
+    _shader.setModelMatrix(vehicleModelMatrix);
     for (int i = 0; i < _vehicleBodyModel->getMeshes().getCount(); i++) {
         RenderMesh& mesh = _vehicleBodyModel->getMeshes()[i];
         //_mainSceneShader.setMaterial(mesh.material);

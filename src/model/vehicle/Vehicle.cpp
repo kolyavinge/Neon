@@ -132,32 +132,6 @@ void Vehicle::setZeroLinearVelocity() {
     _rigidBody.setLinearVelocity(Vector3());
 }
 
-//void Vehicle::correctLinearVelocityByChassisFrontNormal() {
-//    Vector3 velocity = getLinearVelocity();
-//    velocity.z = getChassisFrontNormal().z;
-//    _rigidBody.setLinearVelocity(velocity);
-//}
-
-Vector3 Vehicle::getLongitudinalAcceleration() {
-    Vector3 acceleration;
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = getWheel(i);
-        acceleration.add(wheel.getLongitudinalAcceleration());
-    }
-
-    return acceleration;
-}
-
-Vector3 Vehicle::getLateralAcceleration() {
-    Vector3 acceleration;
-    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-        Wheel& wheel = getWheel(i);
-        acceleration.add(wheel.getLateralAcceleration());
-    }
-
-    return acceleration;
-}
-
 void Vehicle::calculatePositionForAllSprings() {
     TransformMatrix4& vehicleModelMatrix = getModelMatrix();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
@@ -174,40 +148,6 @@ void Vehicle::calculateLengthForAllSprings() {
     }
 }
 
-//bool Vehicle::correctBodyPositionByMinSpringLength() {
-//    float maxCorrectionLength = 0.0f;
-//    Vector3 chassisUpNormal = getChassisUpNormal();
-//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-//        Wheel& wheel = _wheels[i];
-//        Spring& spring = _springs[i];
-//        Vector3 currentSpringLength = wheel.getCenter().getDirectionTo(spring.getPosition());
-//        float springLengthProjection = currentSpringLength.dotProduct(chassisUpNormal);
-//        if (springLengthProjection >= spring.getMinLength()) continue;
-//        float correctionLength = spring.getMinLength() - springLengthProjection;
-//        if (correctionLength > maxCorrectionLength) maxCorrectionLength = correctionLength;
-//    }
-//    if (maxCorrectionLength > 0.0f) {
-//        Vector3 correctionVector = chassisUpNormal;
-//        correctionVector.mul(maxCorrectionLength);
-//        Vector3 center = _rigidBody.getCenter();
-//        center.add(correctionVector);
-//        _rigidBody.setCenter(center);
-//
-//        return true;
-//    }
-//
-//    return false;
-//}
-
-//void Vehicle::calculateCenterForAllWheels() {
-//    Vector3 chassisUpNormal = getChassisUpNormal();
-//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-//        Wheel& wheel = _wheels[i];
-//        Spring& spring = _springs[i];
-//        wheel.calculateCenter(chassisUpNormal, spring.getPosition(), spring.getLength());
-//    }
-//}
-
 void Vehicle::calculateModelMatrixForAllWheels() {
     float chassisRotateAngle = getChassisRotateAngle();
     Vector3 chassisRotateAxis = getChassisRotateAxis();
@@ -216,53 +156,8 @@ void Vehicle::calculateModelMatrixForAllWheels() {
     }
 }
 
-void Vehicle::calculateBodyPosition(float dt) {
-    TransformMatrix4& vehicleModelMatrix = getModelMatrix();
+void Vehicle::calculateBodyPosition() {
     _body.calculateBox(_rigidBody.getCenter(), getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal());
-    _body.calculateAngles(dt);
-    _body.calculateModelMatrix(vehicleModelMatrix);
-}
-
-bool Vehicle::isAccelerating() {
-    Vector3 acceleration = getLongitudinalAcceleration();
-    if (acceleration.isZero()) return false;
-    Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
-
-    return frontNormal.isCollinear(accelerationDirection, 0.1f);
-}
-
-bool Vehicle::isBraking() {
-    Vector3 acceleration = getLongitudinalAcceleration();
-    if (acceleration.isZero()) return false;
-    Vector3 accelerationDirection = acceleration.getNormalized();
-    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
-
-    return !frontNormal.isCollinear(accelerationDirection, 0.1f);
-}
-
-bool Vehicle::isTurningLeft() {
-    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
-    Vector3 v = getLinearVelocity();
-    v.vectorProduct(frontNormal);
-
-    return v.z < 0.0f;
-}
-
-bool Vehicle::isTurningRight() {
-    Vector3 frontNormal = _rigidBody.getCoordinateAxes().getFrontAxis();
-    Vector3 v = getLinearVelocity();
-    v.vectorProduct(frontNormal);
-
-    return v.z > 0.0f;
-}
-
-float Vehicle::getFrontWheelsWeight() {
-    return getWheel(WheelPosition::frontLeft).getLoadWeight() + getWheel(WheelPosition::frontRight).getLoadWeight();
-}
-
-float Vehicle::getRearWheelsWeight() {
-    return getWheel(WheelPosition::rearLeft).getLoadWeight() + getWheel(WheelPosition::rearRight).getLoadWeight();
 }
 
 float Vehicle::getAverageDriveWheelsRpm() {
@@ -278,15 +173,3 @@ float Vehicle::getAverageDriveWheelsRpm() {
 
     return averageWheelsRpm;
 }
-
-//bool Vehicle::hasGroundContact() {
-//    int contactedWheels = 0;
-//    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
-//        if (getWheel(i).hasGroundContact()) {
-//            contactedWheels++;
-//        }
-//    }
-//    // машинка стоит на земле, если хотя бы 3 колеса касаются земли
-//
-//    return contactedWheels >= 3;
-//}

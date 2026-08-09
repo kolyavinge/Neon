@@ -30,8 +30,6 @@ Wheel::Wheel() {
     _radius = 0.0f;
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
-    _loadWeight = 0.0f;
-    _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
@@ -49,8 +47,6 @@ void Wheel::init(WheelPosition position) {
     }
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
-    _loadWeight = 250.0f;
-    _transferedWeight = 0.0f;
     _angularVelocity = 0.0f;
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
@@ -65,8 +61,6 @@ void Wheel::init(WheelPosition position) {
     _center.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
-    _longitudinalAcceleration.setZero();
-    _lateralAcceleration.setZero();
 }
 
 WheelPosition Wheel::getPosition() {
@@ -115,25 +109,6 @@ Vector3 Wheel::getCenter() {
 
 void Wheel::setCenter(Vector3 center) {
     _center = center;
-}
-
-float Wheel::getLoadWeight() {
-    return _loadWeight;
-}
-
-void Wheel::setLoadWeight(float weight) {
-    _transferedWeight = 0.0f;
-    _loadWeight = weight;
-}
-
-float Wheel::getTransferedWeight() {
-    return _transferedWeight;
-}
-
-void Wheel::transferWeight(float weight) {
-    _transferedWeight = weight;
-    _loadWeight += weight;
-    Assert::isTrue(_loadWeight > 0.0f);
 }
 
 float Wheel::getAngularVelocity() {
@@ -204,18 +179,8 @@ float Wheel::getLateralForceBeforeNormalize() {
     return _lateralForceBeforeNormalize;
 }
 
-Vector3 Wheel::getLongitudinalAcceleration() {
-    return _longitudinalAcceleration;
-}
-
-Vector3 Wheel::getLateralAcceleration() {
-    return _lateralAcceleration;
-}
-
 void Wheel::calculateLongitudinalForce(float springForce) {
     _longitudinalForce = _frontNormal;
-    _longitudinalForce.z = 0;
-    _longitudinalForce.normalize();
     float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
         : 0.0f;
@@ -226,8 +191,6 @@ void Wheel::calculateLongitudinalForce(float springForce) {
 
 void Wheel::calculateLateralForce(float springForce) {
     _lateralForce = _outsideNormal;
-    _lateralForce.z = 0;
-    _lateralForce.normalize();
     float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
     _lateralForce.mul(forceCoeff * springForce);
     _lateralForceBeforeNormalize = _lateralForce.getLength();
@@ -251,24 +214,12 @@ void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float spri
     _roadFrictionForce.mul(-1.0f * forceCoeff * springForce);
 }
 
-void Wheel::calculateLongitudinalAcceleration() {
-    _longitudinalAcceleration = _longitudinalForce;
-    _longitudinalAcceleration.div(_data.vehicleMass);
-}
-
-void Wheel::calculateLateralAcceleration() {
-    _lateralAcceleration = _lateralForce;
-    _lateralAcceleration.div(_data.vehicleMass);
-}
-
 void Wheel::clearAllForces() {
     _longitudinalForce.setZero();
     _lateralForce.setZero();
     _roadFrictionForce.setZero();
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
-    _longitudinalAcceleration.setZero();
-    _lateralAcceleration.setZero();
 }
 
 void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio) {

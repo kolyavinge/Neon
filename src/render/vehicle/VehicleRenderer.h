@@ -1,14 +1,15 @@
 #pragma once
 
 #include <common/constants.h>
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/Camera.h>
-#include <model/vehicle/Body.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderProgramCollection.h>
+#include <render/lib/RenderModel3d.h>
 #include <render/lib/VAORenderer.h>
 #include <render/shaderprograms/MeshShaderProgram.h>
 
@@ -35,6 +36,6 @@ public:
     void render(Vehicle& vehicle, Camera& camera);
 
 private:
-    void renderBody(Body& body);
+    void renderBody(TransformMatrix4& vehicleModelMatrix);
     void renderWheel(Vehicle& vehicle, WheelPosition wheelPosition);
 };

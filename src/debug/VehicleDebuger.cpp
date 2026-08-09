@@ -21,13 +21,10 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputDat
     printLateralForce(vehicle);
     //printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
-    //printWheelTransferedWeight(vehicle);
-    //printWheelLoadWeight(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
     //printSpringPositions(vehicle);
     //printWheelsGroundContact(vehicle);
-    //printBodyAngles(vehicle);
 
     printf("\r\n");
 }
@@ -137,22 +134,6 @@ void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
     printf("|");
 }
 
-void VehicleDebuger::printWheelTransferedWeight(Vehicle& vehicle) {
-    printf("WheelWeight %i %i %i %i|",
-        (int)vehicle.getWheel(0).getTransferedWeight(),
-        (int)vehicle.getWheel(1).getTransferedWeight(),
-        (int)vehicle.getWheel(2).getTransferedWeight(),
-        (int)vehicle.getWheel(3).getTransferedWeight());
-}
-
-void VehicleDebuger::printWheelLoadWeight(Vehicle& vehicle) {
-    printf("WheelWeight %i %i %i %i|",
-        (int)vehicle.getWheel(0).getLoadWeight(),
-        (int)vehicle.getWheel(1).getLoadWeight(),
-        (int)vehicle.getWheel(2).getLoadWeight(),
-        (int)vehicle.getWheel(3).getLoadWeight());
-}
-
 void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
     printf("Spring %i %i %i %i|",
         (int)vehicle.getSpring(0).getSpringForce(),
@@ -187,11 +168,6 @@ void VehicleDebuger::printWheelsGroundContact(Vehicle& vehicle) {
         vehicle.getWheel(1).hasGroundContact() ? 1 : 0,
         vehicle.getWheel(2).hasGroundContact() ? 1 : 0,
         vehicle.getWheel(3).hasGroundContact() ? 1 : 0);
-}
-
-void VehicleDebuger::printBodyAngles(Vehicle& vehicle) {
-    printf("BodyPitch %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getPitchAngleRelateChassis()));
-    printf("BodyRoll %.2f|", UnitConverter::radiansToDegrees(vehicle.getBody().getRollAngleRelateChassis()));
 }
 
 void VehicleDebuger::printVector(Vector3 v) {

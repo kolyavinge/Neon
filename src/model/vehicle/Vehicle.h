@@ -51,23 +51,11 @@ public:
     Vector3 getLinearVelocity();
     Vector3 getAngularVelocity();
     void setZeroLinearVelocity();
-    //void correctLinearVelocityByChassisFrontNormal();
-    Vector3 getLongitudinalAcceleration();
-    Vector3 getLateralAcceleration();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();
-    //bool correctBodyPositionByMinSpringLength();
-    //void calculateCenterForAllWheels();
     void calculateModelMatrixForAllWheels();
-    void calculateBodyPosition(float dt);
-    bool isAccelerating();
-    bool isBraking();
-    bool isTurningLeft();
-    bool isTurningRight();
-    float getFrontWheelsWeight();
-    float getRearWheelsWeight();
+    void calculateBodyPosition();
     float getAverageDriveWheelsRpm();
-    //bool hasGroundContact();
 
 private:
     void initWheelAndSpring(WheelPosition position);

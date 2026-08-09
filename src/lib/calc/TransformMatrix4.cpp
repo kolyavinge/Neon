@@ -118,8 +118,8 @@ void TransformMatrix4::transpose() {
     float i15 = _items[15];
 
     float transposed[16] = {
-        i0, i4, i8,  i12,
-        i1, i5, i9,  i13,
+        i0, i4,  i8, i12,
+        i1, i5,  i9, i13,
         i2, i6, i10, i14,
         i3, i7, i11, i15
     };
