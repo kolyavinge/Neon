@@ -39,7 +39,6 @@
     <ClCompile Include="src\engine\vehicle\PositionLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\VelocityLogic.cpp" />
-    <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
     <ClCompile Include="src\lib\calc\Angles.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="src\engine\vehicle\PositionLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
     <ClInclude Include="src\engine\vehicle\VelocityLogic.h" />
-    <ClInclude Include="src\engine\vehicle\WeightTransferLogic.h" />
     <ClInclude Include="src\lib\Assert.h" />
     <ClInclude Include="src\lib\calc\TransformMatrix4.h" />
     <ClInclude Include="src\lib\calc\UnitConverter.h" />

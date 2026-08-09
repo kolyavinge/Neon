@@ -64,14 +64,12 @@ VehicleData::VehicleData() {
     frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
     frontSpringMaxLength = 0.4f;
-    //frontSpringMaxWeight = 600.0f;
 
     rearSpringStiffness = 35.0f * stiffnessMul;
     rearSpringDamperCompression = 2.0f * stiffnessMul;
     rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
     rearSpringMaxLength = 0.4f;
-    //rearSpringMaxWeight = 600.0f;
 
     springBumpStopStiffness = 5000.0f;
     antiRollStiffness = 5000.0f;

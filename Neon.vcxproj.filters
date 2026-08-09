@@ -81,9 +81,6 @@
     <ClCompile Include="src\engine\vehicle\PositionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\WeightTransferLogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\vehicle\EngineTorqueCurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -390,9 +387,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\vehicle\PositionLogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\vehicle\WeightTransferLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\vehicle\EngineTorqueCurve.h">

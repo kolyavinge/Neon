@@ -58,13 +58,11 @@ public:
     float frontSpringDamperRebound;
     float frontSpringMinLength;
     float frontSpringMaxLength;
-    //float frontSpringMaxWeight;
     float rearSpringStiffness;
     float rearSpringDamperCompression;
     float rearSpringDamperRebound;
     float rearSpringMinLength;
     float rearSpringMaxLength;
-    //float rearSpringMaxWeight;
     float springBumpStopStiffness;
     float antiRollStiffness;
 
