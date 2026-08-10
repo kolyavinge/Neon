@@ -17,7 +17,13 @@ void Vehicle::init() {
     initWheelAndSpring(WheelPosition::rearLeft);
     initWheelAndSpring(WheelPosition::rearRight);
     _body.init();
-    _rigidBody.init(CommonConstants::rightAxis, CommonConstants::frontAxis, _data.vehicleMass, _data.bodyMeasures);
+    _rigidBody.init(
+        CommonConstants::rightAxis,
+        CommonConstants::frontAxis,
+        _data.vehicleMass,
+        _data.bodyMeasures,
+        VehicleConstants::minLinearVelocity,
+        VehicleConstants::minAngularVelocity);
     _rigidBody.setCenter(Vector3(0.0f, 0.0f, 1.0f));
 }
 
@@ -126,10 +132,6 @@ Vector3 Vehicle::getLinearVelocity() {
 
 Vector3 Vehicle::getAngularVelocity() {
     return _rigidBody.getAngularVelocity();
-}
-
-void Vehicle::setZeroLinearVelocity() {
-    _rigidBody.setLinearVelocity(Vector3());
 }
 
 void Vehicle::calculatePositionForAllSprings() {

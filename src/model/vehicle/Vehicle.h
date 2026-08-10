@@ -50,7 +50,6 @@ public:
     TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
     Vector3 getAngularVelocity();
-    void setZeroLinearVelocity();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();
     void calculateModelMatrixForAllWheels();

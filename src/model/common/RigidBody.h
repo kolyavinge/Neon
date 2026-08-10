@@ -19,15 +19,17 @@ class RigidBody : public Object {
     Vector3 _rotateAxis;
     CoordinateAxes _coordinateAxes;
     Vector3 _linearVelocity;
+    float _minLinearVelocity;
     Vector3 _linearAcceleration;
     Vector3 _angularVelocity;
+    float _minAngularVelocity;
     TransformMatrix4 _modelMatrix;
     Vector3 _totalForce;
     Vector3 _totalTorque;
 
 public:
     RigidBody();
-    void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures);
+    void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float minLinearVelocity, float minAngularVelocity);
     float getMass();
     TransformMatrix4& getLocalInertiaInverse();
     TransformMatrix4& getWorldInertiaInverse();

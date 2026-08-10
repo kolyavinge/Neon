@@ -4,14 +4,18 @@
 RigidBody::RigidBody() {
     _mass = 0.0f;
     _rotateAngle = 0.0f;
+    _minLinearVelocity = 0.0f;
+    _minAngularVelocity = 0.0f;
 }
 
-void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures) {
+void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float minLinearVelocity, float minAngularVelocity) {
     _mass = mass;
     _measures = measures;
     _rotateAngle = 0.0f;
     _coordinateAxes.setAxes(rightNormal, frontNormal);
-    // local inertia inverse matrix
+    _minLinearVelocity = minLinearVelocity;
+    _minAngularVelocity = minAngularVelocity;
+    // local inertia inverse matrix (for rectangle body)
     float ixx = (1.0f / 12.0f) * _mass * (_measures.yLength * _measures.yLength + _measures.zLength * _measures.zLength);
     float iyy = (1.0f / 12.0f) * _mass * (_measures.xLength * _measures.xLength + _measures.zLength * _measures.zLength);
     float izz = (1.0f / 12.0f) * _mass * (_measures.xLength * _measures.xLength + _measures.yLength * _measures.yLength);
@@ -19,9 +23,9 @@ void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measu
     iyy = 1.0f / iyy;
     izz = 1.0f / izz;
     float items[16] = {
-        ixx,  0.0f, 0.0f, 0.0f,
-        0.0f, iyy,  0.0f, 0.0f,
-        0.0f, 0.0f, izz,  0.0f,
+         ixx, 0.0f, 0.0f, 0.0f,
+        0.0f,  iyy, 0.0f, 0.0f,
+        0.0f, 0.0f,  izz, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f,
     };
     _localInertiaInverse = TransformMatrix4(items);
@@ -94,12 +98,18 @@ void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
 
 void RigidBody::updatePosition(float dt) {
     // linear movement
+    float oldLinearVelocityValue = _linearVelocity.getLength();
     _linearAcceleration = _totalForce;
     _linearAcceleration.div(_mass);
     _linearVelocity.addMultiplied(_linearAcceleration, dt);
+    float linearVelocityValue = _linearVelocity.getLength();
+    if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _minLinearVelocity) {
+        _linearVelocity.setZero();
+    }
     _center.addMultiplied(_linearVelocity, dt);
 
     // angular movement
+    float oldAngularVelocityValue = _angularVelocity.getLength();
     TransformMatrix4 rotationMatrix = _rotation.getTransformMatrix4();
     TransformMatrix4 rotationMatrixTransposed = rotationMatrix;
     rotationMatrixTransposed.transpose();
@@ -108,6 +118,10 @@ void RigidBody::updatePosition(float dt) {
     _worldInertiaInverse.mul(rotationMatrixTransposed);
     Vector3 angularAcceleration = _worldInertiaInverse.mulVector(_totalTorque);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
+    float angularVelocityValue = _angularVelocity.getLength();
+    if (angularVelocityValue < oldAngularVelocityValue && angularVelocityValue < _minAngularVelocity) {
+        _angularVelocity.setZero();
+    }
     if (!_angularVelocity.isZero()) {
         float angle = _angularVelocity.getLength();
         Vector3 axis = _angularVelocity.getNormalized();

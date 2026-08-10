@@ -9,15 +9,7 @@ void VelocityLogic::calculateVelocity(Vehicle& vehicle, float throttleRatio, flo
     const float dt = CommonConstants::deltaTimeSec;
     Gearbox& gearbox = vehicle.getGearbox();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
-
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    if (!isEngineAndWheelsConnected || throttleRatio == 0.0f) {
-        if (vehicleLinearVelocity.lengthEquals(0.0f, VehicleConstants::minLinearVelocityDelta)) {
-            vehicle.setZeroLinearVelocity();
-            vehicleLinearVelocity.setZero();
-        }
-    }
-
     bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
