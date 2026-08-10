@@ -5,7 +5,6 @@
 #include <engine/vehicle/GearboxLogic.h>
 #include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
-#include <engine/vehicle/VelocityLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/DrivingInputData.h>
@@ -18,7 +17,6 @@ class VehicleUpdater : public Object {
     GearboxLogic& _gearboxLogic;
     PositionLogic& _positionLogic;
     SteeringLogic& _steeringLogic;
-    VelocityLogic& _velocityLogic;
 
 public:
     static VehicleUpdater* resolve(Resolver& resolver) {
@@ -27,8 +25,7 @@ public:
             resolver.resolve<ForceLogic>(),
             resolver.resolve<GearboxLogic>(),
             resolver.resolve<PositionLogic>(),
-            resolver.resolve<SteeringLogic>(),
-            resolver.resolve<VelocityLogic>());
+            resolver.resolve<SteeringLogic>());
     }
 
     VehicleUpdater(
@@ -36,8 +33,7 @@ public:
         ForceLogic& forceLogic,
         GearboxLogic& gearboxLogic,
         PositionLogic& positionLogic,
-        SteeringLogic& steeringLogic,
-        VelocityLogic& velocityLogic);
+        SteeringLogic& steeringLogic);
 
     void updateVehicles(VehiclesArray& vehicles, DrivingInputData& inputData);
 

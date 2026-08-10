@@ -7,5 +7,5 @@ class EngineLogic : public Object {
 
 public:
     void synchEngineAndWheelsAfterShifting(Vehicle& vehicle, float throttleRatio);
-    void calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio);
+    void calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio);
 };

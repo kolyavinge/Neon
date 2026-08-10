@@ -6,14 +6,12 @@ VehicleUpdater::VehicleUpdater(
     ForceLogic& forceLogic,
     GearboxLogic& gearboxLogic,
     PositionLogic& positionLogic,
-    SteeringLogic& steeringLogic,
-    VelocityLogic& velocityLogic) :
+    SteeringLogic& steeringLogic) :
     _engineLogic(engineLogic),
     _forceLogic(forceLogic),
     _gearboxLogic(gearboxLogic),
     _positionLogic(positionLogic),
-    _steeringLogic(steeringLogic),
-    _velocityLogic(velocityLogic) {
+    _steeringLogic(steeringLogic) {
 }
 
 void VehicleUpdater::updateVehicles(VehiclesArray& vehicles, DrivingInputData& inputData) {
@@ -32,6 +30,5 @@ void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& inputData
     }
     _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
     _forceLogic.calculateAndApplyForces(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
-    _velocityLogic.calculateVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
     _positionLogic.updatePosition(vehicle);
 }

@@ -14,7 +14,7 @@ void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle, float thro
     engine.setRpm(expectedRpmByWheels, throttleRatio);
 }
 
-void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakingRatio) {
+void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
     const float dt = CommonConstants::deltaTimeSec;
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
@@ -23,6 +23,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     float expectedAngularVelocityByEngine = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
     float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
+
     // вычисляем обороты двигателя и синхронизируем их с ведущими колесами
     engine.calculateNewRpm(isEngineAndWheelsConnected, throttleRatio, expectedRpmByWheels, gear, gearRatio, dt);
     if (isEngineAndWheelsConnected) {
@@ -31,11 +32,23 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
             driveWheel.synchAngularVelocity(expectedAngularVelocityByEngine, gear);
         }
     }
-    if (brakingRatio > 0.0f) {
-        // обрабатываем торможение
+
+    // обрабатываем торможение
+    if (brakeRatio > 0.0f) {
         for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
             Wheel& wheel = vehicle.getWheel(i);
-            wheel.brake(brakingRatio, dt);
+            wheel.brake(brakeRatio, dt);
         }
+    }
+
+    // вычисляем угловую скорость колес
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = vehicle.getWheel(i);
+        if (!wheel.isDrive() || wheel.isDrive() && isBrakingByWheelsOrEngine) {
+            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, brakeRatio);
+        }
+        wheel.updateRotateAngle(dt);
     }
 }

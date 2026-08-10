@@ -90,9 +90,6 @@
     <ClCompile Include="src\lib\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\vehicle\VelocityLogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\lib\input\InputDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -396,9 +393,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\Random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\vehicle\VelocityLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\input\InputDevice.h">

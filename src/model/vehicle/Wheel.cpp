@@ -124,8 +124,8 @@ void Wheel::synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gea
     _angularVelocity += sign * expectedAngularVelocityByEngine - _angularVelocity;
 }
 
-void Wheel::brake(float brakingRatio, float dt) {
-    float brakingValue = _data.wheelBrakingCoeff * brakingRatio * dt;
+void Wheel::brake(float brakeRatio, float dt) {
+    float brakingValue = _data.wheelBrakingCoeff * brakeRatio * dt;
     float sign = Numeric::getSign(_angularVelocity);
     _angularVelocity += -sign * brakingValue;
     float newSign = Numeric::getSign(_angularVelocity);

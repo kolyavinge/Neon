@@ -15,7 +15,6 @@
 #include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
 #include <engine/vehicle/VehicleUpdater.h>
-#include <engine/vehicle/VelocityLogic.h>
 #include <engine/vehicle/WheelLogic.h>
 #include <lib/Environment.h>
 #include <lib/FileSystem.h>
@@ -48,7 +47,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<PositionLogic>(PositionLogic::resolve);
     binder.bindSingleton<SteeringLogic>(SteeringLogic::resolve);
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
-    binder.bindSingleton<VelocityLogic>();
     binder.bindSingleton<WheelLogic>();
     binder.bindSingleton<RenderInitializer>(RenderInitializer::resolve);
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);

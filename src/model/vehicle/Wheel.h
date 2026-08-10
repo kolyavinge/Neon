@@ -66,7 +66,7 @@ public:
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
     void synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear);
-    void brake(float brakingRatio, float dt);
+    void brake(float brakeRatio, float dt);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
     void setSlipRatio(SlipRatio slipRatio);
