@@ -185,10 +185,10 @@ void TransformMatrix4::lookAt(
     lookDirection.set(lookDirectionX, lookDirectionY, lookDirectionZ);
     up.set(upX, upY, upZ);
     Vector3 s = lookDirection;
-    s.vectorProduct(up);
+    s.crossProduct(up);
     s.normalize();
     Vector3 u = s;
-    u.vectorProduct(lookDirection);
+    u.crossProduct(lookDirection);
     // col 1
     _items[0] = s.x;
     _items[1] = u.x;

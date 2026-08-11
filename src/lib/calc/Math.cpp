@@ -89,7 +89,7 @@ Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3
     b.mul(1.0f - cos);
 
     Vector3 c(pivotAxis);
-    c.vectorProduct(point);
+    c.crossProduct(point);
     c.mul(sin);
 
     a.add(b);

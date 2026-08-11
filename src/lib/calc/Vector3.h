@@ -36,7 +36,7 @@ public:
     void div(Vector3 v);
     bool isCollinear(Vector3 v, float eps = Numeric::epsilonFloat);
     float dotProduct(Vector3 v);
-    void vectorProduct(Vector3 v);
+    void crossProduct(Vector3 v);
     void normalize();
     Vector3 getNormalized();
     void reflectBy(Vector3 normal);

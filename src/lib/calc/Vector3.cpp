@@ -149,7 +149,7 @@ float Vector3::dotProduct(Vector3 v) {
     return x * v.x + y * v.y + z * v.z;
 }
 
-void Vector3::vectorProduct(Vector3 v) {
+void Vector3::crossProduct(Vector3 v) {
     float px = y * v.z - z * v.y;
     float py = z * v.x - x * v.z;
     float pz = x * v.y - y * v.x;

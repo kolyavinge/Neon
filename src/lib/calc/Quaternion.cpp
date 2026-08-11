@@ -74,7 +74,7 @@ void Quaternion::setVectors(Vector3& from, Vector3& to) {
     cosAlpha = Numeric::clamp(cosAlpha, -1.0f, 1.0f);
     float alpha = Math::arccos(cosAlpha);
     Vector3 axis(from);
-    axis.vectorProduct(to);
+    axis.crossProduct(to);
     if (!axis.isZero()) {
         setAngleAndAxis(alpha, axis);
     } else {

@@ -92,7 +92,7 @@ void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
     _totalForce.add(force);
     Vector3 lever = _center.getDirectionTo(worldPoint);
     Vector3 torque = lever;
-    torque.vectorProduct(force);
+    torque.crossProduct(force);
     _totalTorque.add(torque);
 }
 
@@ -141,7 +141,7 @@ void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector
     Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
 
     Vector3 collisionVelocity = _angularVelocity;
-    collisionVelocity.vectorProduct(collisionPointDirection);
+    collisionVelocity.crossProduct(collisionPointDirection);
     collisionVelocity.add(_linearVelocity);
 
     Vector3 relativeVelocity = collisionVelocity;
@@ -149,9 +149,9 @@ void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector
     if (velocityNormal > 0.0f) return;
 
     Vector3 p = collisionPointDirection;
-    p.vectorProduct(collisionNormalToBody);
+    p.crossProduct(collisionNormalToBody);
     p = _localInertiaInverse.mulVector(p); // _worldInertiaInverse ?
-    p.vectorProduct(collisionPointDirection);
+    p.crossProduct(collisionPointDirection);
     float d = p.dotProduct(collisionNormalToBody);
 
     const float elastic = 0.0f;
@@ -162,7 +162,7 @@ void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector
 Vector3 RigidBody::getVelocityAtPoint(Vector3 worldPoint) {
     Vector3 lever = _center.getDirectionTo(worldPoint);
     Vector3 result = _angularVelocity;
-    result.vectorProduct(lever);
+    result.crossProduct(lever);
     result.add(_linearVelocity);
 
     return result;
@@ -187,7 +187,7 @@ void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vec
 
     // angular adjustment
     dv = collisionPointDirection;
-    dv.vectorProduct(impulseN);
+    dv.crossProduct(impulseN);
     dv = _localInertiaInverse.mulVector(dv);
     _angularVelocity.add(dv);
 }
