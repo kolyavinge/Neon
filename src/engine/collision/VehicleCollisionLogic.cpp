@@ -16,7 +16,7 @@ void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
         Vector3 groundContactPoint;
-        bool hasGroundContact = groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.001f, output groundContactPoint);
+        bool hasGroundContact = groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output groundContactPoint);
         wheel.setGroundContact(hasGroundContact);
         wheel.setGroundContactPoint(groundContactPoint);
         Vector3 newWheelCenter;

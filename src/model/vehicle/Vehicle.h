@@ -52,6 +52,7 @@ public:
     Vector3 getAngularVelocity();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();
+    void calculateCenterVelocityForAllWheels();
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition();
     float getAverageDriveWheelsRpm();

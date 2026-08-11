@@ -59,6 +59,7 @@ void Wheel::init(WheelPosition position) {
         _outsideNormal = CommonConstants::rightAxis;
     }
     _center.setZero();
+    _centerVelocity.setZero();
     _longitudinalForce.setZero();
     _lateralForce.setZero();
 }
@@ -109,6 +110,10 @@ Vector3 Wheel::getCenter() {
 
 void Wheel::setCenter(Vector3 center) {
     _center = center;
+}
+
+void Wheel::setCenterVelocity(Vector3 velocity) {
+    _centerVelocity = velocity;
 }
 
 float Wheel::getAngularVelocity() {
@@ -204,8 +209,8 @@ void Wheel::normalizeLateralForce(float normalizedLength) {
     _lateralForce.setLength(normalizedLength);
 }
 
-void Wheel::calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce) {
-    _roadFrictionForce = vehicleLinearVelocity;
+void Wheel::calculateRoadFrictionForce(float springForce) {
+    _roadFrictionForce = _centerVelocity;
     if (_roadFrictionForce.isZero()) return;
     float forceCoeff = Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, VehicleConstants::lockedWheelSlipRatio)

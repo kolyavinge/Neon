@@ -39,8 +39,6 @@ public:
 class VehicleConstants {
 
 public:
-    //inline static Vector3 initChassisRightNormal = CommonConstants::rightAxis;
-    //inline static Vector3 initChassisFrontNormal = CommonConstants::frontAxis;
     inline static const int wheelsCount = 4;
     inline static const int driveWheelsCount = 2;
     inline static const int nonDriveWheelsCount = 2;

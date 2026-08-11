@@ -47,6 +47,7 @@ public:
     void applyForceAtPoint(Vector3 force, Vector3 worldPoint);
     void updatePosition(float dt);
     void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
     void updateModelMatrix();

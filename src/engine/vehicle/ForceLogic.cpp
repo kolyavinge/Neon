@@ -74,7 +74,7 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
         wheel.setSlipAngle(slipAngle);
         wheel.calculateLongitudinalForce(springForce);
         wheel.calculateLateralForce(springForce);
-        wheel.calculateRoadFrictionForce(vehicleLinearVelocity, springForce);
+        wheel.calculateRoadFrictionForce(springForce);
         _wheelLogic.normalizeLongitudinalAndLateralForces(wheel, springForce);
     }
 }

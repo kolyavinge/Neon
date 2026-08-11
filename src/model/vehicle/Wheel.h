@@ -37,6 +37,7 @@ class Wheel : public Object {
     Vector3 _frontNormal;
     Vector3 _outsideNormal;
     Vector3 _center;
+    Vector3 _centerVelocity;
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
     Vector3 _roadFrictionForce;
@@ -63,6 +64,7 @@ public:
     void setOutsideNormal(Vector3 outsideNormal);
     Vector3 getCenter();
     void setCenter(Vector3 center);
+    void setCenterVelocity(Vector3 velocity);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
     void synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear);
@@ -81,7 +83,7 @@ public:
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
-    void calculateRoadFrictionForce(Vector3 vehicleLinearVelocity, float springForce);
+    void calculateRoadFrictionForce(float springForce);
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
     bool hasGroundContact();

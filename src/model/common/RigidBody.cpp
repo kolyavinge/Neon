@@ -159,6 +159,15 @@ void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector
     applyImpulse(impulse, collisionPointDirection, collisionNormalToBody);
 }
 
+Vector3 RigidBody::getVelocityAtPoint(Vector3 worldPoint) {
+    Vector3 lever = _center.getDirectionTo(worldPoint);
+    Vector3 result = _angularVelocity;
+    result.vectorProduct(lever);
+    result.add(_linearVelocity);
+
+    return result;
+}
+
 void RigidBody::updateModelMatrix() {
     _rotation.getAngleAndAxis(output _rotateAngle, output _rotateAxis);
     TransformMatrix4 rotationMatrix = _rotation.getTransformMatrix4();

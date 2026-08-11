@@ -150,6 +150,14 @@ void Vehicle::calculateLengthForAllSprings() {
     }
 }
 
+void Vehicle::calculateCenterVelocityForAllWheels() {
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = _wheels[i];
+        Vector3 centerVelocity = _rigidBody.getVelocityAtPoint(wheel.getCenter());
+        wheel.setCenterVelocity(centerVelocity);
+    }
+}
+
 void Vehicle::calculateModelMatrixForAllWheels() {
     float chassisRotateAngle = getChassisRotateAngle();
     Vector3 chassisRotateAxis = getChassisRotateAxis();
