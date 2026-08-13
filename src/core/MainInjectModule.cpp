@@ -35,9 +35,12 @@
 
 void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<AssetsDirectory>(AssetsDirectory::resolve);
-    binder.bindSingleton<Environment>();
-    binder.bindSingleton<FileSystem>();
-    binder.bindSingleton<ResourceManager>();
+    binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);
+    binder.bindSingleton<Game>(Game::resolve);
+    binder.bindSingleton<GameInitializer>(GameInitializer::resolve);
+    binder.bindSingleton<InputManager>();
+    binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
+    binder.bindSingleton<DebugRenderer>();
     binder.bindSingleton<CameraUpdater>();
     binder.bindSingleton<GameUpdater>(GameUpdater::resolve);
     binder.bindSingleton<VehicleCollisionLogic>();
@@ -48,23 +51,20 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<SteeringLogic>(SteeringLogic::resolve);
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
     binder.bindSingleton<WheelLogic>();
+    binder.bindSingleton<Environment>();
+    binder.bindSingleton<FileSystem>();
+    binder.bindSingleton<ResourceManager>();
     binder.bindSingleton<RenderInitializer>(RenderInitializer::resolve);
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);
     binder.bindSingleton<ShaderCollection>(ShaderCollection::resolve);
     binder.bindSingleton<ShaderProgramCollection>(ShaderProgramCollection::resolve);
-    binder.bindSingleton<ShaderCompiler>();
-    binder.bindSingleton<TextureLoader>(TextureLoader::resolve);
     binder.bindSingleton<Model3dLoader>(Model3dLoader::resolve);
     binder.bindSingleton<Model3dVAOBuilder>();
     binder.bindSingleton<RenderModel3dLoader>(RenderModel3dLoader::resolve);
+    binder.bindSingleton<ShaderCompiler>();
+    binder.bindSingleton<TextureLoader>(TextureLoader::resolve);
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
-    binder.bindSingleton<DebugRenderer>();
-    binder.bindSingleton<DrivingInputManager>(DrivingInputManager::resolve);
-    binder.bindSingleton<InputManager>();
-    binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
-    binder.bindSingleton<GameInitializer>(GameInitializer::resolve);
-    binder.bindSingleton<Game>(Game::resolve);
 }

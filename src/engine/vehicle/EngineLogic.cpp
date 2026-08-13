@@ -43,11 +43,12 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float
 
     // вычисляем угловую скорость колес
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         if (!wheel.isDrive() || wheel.isDrive() && isBrakingByWheelsOrEngine) {
-            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, brakeRatio);
+            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, chassisFrontNormal, brakeRatio);
         }
         wheel.updateRotateAngle(dt);
     }

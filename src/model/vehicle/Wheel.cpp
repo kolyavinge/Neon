@@ -35,6 +35,7 @@ Wheel::Wheel() {
     _lateralForceBeforeNormalize = 0.0f;
     _slipAngle = 0.0f;
     _hasGroundContact = false;
+    _groundPlane = nullptr;
 }
 
 void Wheel::init(WheelPosition position) {
@@ -52,6 +53,8 @@ void Wheel::init(WheelPosition position) {
     _lateralForceBeforeNormalize = 0.0f;
     _slipAngle = 0.0f;
     _hasGroundContact = false;
+    _groundContactPoint.setZero();
+    _groundPlane = nullptr;
     _frontNormal = CommonConstants::frontAxis;
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
         _outsideNormal = CommonConstants::leftAxis;
@@ -172,8 +175,8 @@ Vector3 Wheel::getLateralForce() {
     return _lateralForce;
 }
 
-Vector3 Wheel::getRoadFrictionForce() {
-    return _roadFrictionForce;
+Vector3 Wheel::getRollingResistanceForce() {
+    return _rollingResistanceForce;
 }
 
 float Wheel::getLongitudinalForceBeforeNormalize() {
@@ -185,7 +188,9 @@ float Wheel::getLateralForceBeforeNormalize() {
 }
 
 void Wheel::calculateLongitudinalForce(float springForce) {
-    _longitudinalForce = _frontNormal;
+    _longitudinalForce = _groundPlane->getProjectedPoint(_frontNormal);
+    if (_longitudinalForce.isZero()) return;
+    _longitudinalForce.normalize();
     float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
         : 0.0f;
@@ -195,7 +200,9 @@ void Wheel::calculateLongitudinalForce(float springForce) {
 }
 
 void Wheel::calculateLateralForce(float springForce) {
-    _lateralForce = _outsideNormal;
+    _lateralForce = _groundPlane->getProjectedPoint(_outsideNormal);
+    if (_lateralForce.isZero()) return;
+    _lateralForce.normalize();
     float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
     _lateralForce.mul(forceCoeff * springForce);
     _lateralForceBeforeNormalize = _lateralForce.getLength();
@@ -209,28 +216,28 @@ void Wheel::normalizeLateralForce(float normalizedLength) {
     _lateralForce.setLength(normalizedLength);
 }
 
-void Wheel::calculateRoadFrictionForce(float springForce) {
-    _roadFrictionForce = _centerVelocity;
-    if (_roadFrictionForce.isZero()) return;
+void Wheel::calculateRollingResistanceForce() {
+    _rollingResistanceForce = _groundPlane->getProjectedPoint(_centerVelocity);
+    if (_rollingResistanceForce.isZero()) return;
     float forceCoeff = Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, VehicleConstants::lockedWheelSlipRatio)
-        : _data.minRoadFrictionCoeff;
-    _roadFrictionForce.normalize();
-    _roadFrictionForce.mul(-1.0f * forceCoeff * springForce);
+        : _data.minRollingResistanceCoeff;
+    _rollingResistanceForce.normalize();
+    _rollingResistanceForce.mul(-forceCoeff * _data.vehicleMass * PhysixConstants::g);
 }
 
 void Wheel::clearAllForces() {
     _longitudinalForce.setZero();
     _lateralForce.setZero();
-    _roadFrictionForce.setZero();
+    _rollingResistanceForce.setZero();
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
 }
 
-void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio) {
+void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio) {
     bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f) && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
-    float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(_frontNormal) / getRadius();
+    float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 
@@ -246,8 +253,9 @@ Vector3 Wheel::getGroundContactPoint() {
     return _groundContactPoint;
 }
 
-void Wheel::setGroundContactPoint(Vector3 point) {
-    _groundContactPoint = point;
+void Wheel::setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane) {
+    _groundContactPoint = groundPoint;
+    _groundPlane = groundPlane;
 }
 
 TransformMatrix4& Wheel::getModelMatrix() {

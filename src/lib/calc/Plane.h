@@ -13,9 +13,10 @@ public:
     Plane(Vector3 frontNormal, Vector3 basePoint);
     Plane& operator=(const Plane& other);
     Plane(const Plane&) = default;
-    Vector3& getFrontNormal();
-    Vector3& getBasePoint();
+    Vector3 getFrontNormal();
+    Vector3 getBasePoint();
     bool isPointInFront(Vector3& point);
+    Vector3 getProjectedPoint(Vector3 point);
     virtual bool contains(Vector3& point, float eps);
     virtual bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
 };

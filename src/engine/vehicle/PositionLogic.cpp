@@ -1,4 +1,3 @@
-#include <common/constants.h>
 #include <engine/vehicle/PositionLogic.h>
 
 PositionLogic::PositionLogic(

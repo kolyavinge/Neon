@@ -49,7 +49,7 @@ public:
     float rearWheelRadius;
     float wheelBrakingCoeff;
     float maxSteeringAngle;
-    float minRoadFrictionCoeff;
+    float minRollingResistanceCoeff;
     float roadAdhesionCoeff;
 
     /* spring */
@@ -68,7 +68,7 @@ public:
     float springBumpStopStiffness;
 
     VehicleData();
-    float getRoadFrictionCoeff(float linearVelocityNormalizedProjection);
+    float getRollingResistanceCoeff(float linearVelocityNormalizedProjection);
     float getLongitudinalForceCoeff(int wheelIndex, float slipRatio);
     float getLateralForceCoeff(int wheelIndex, float slipAngle);
     float getLongitudinalForceMaxCoeff(int wheelIndex);

@@ -40,6 +40,7 @@ public:
     void normalize();
     Vector3 getNormalized();
     void reflectBy(Vector3 normal);
+    void round(float precision);
 
     static Vector3& getLongest(Collection<Vector3>& vectors);
 private:

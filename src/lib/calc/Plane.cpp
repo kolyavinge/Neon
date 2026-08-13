@@ -14,16 +14,24 @@ Plane& Plane::operator=(const Plane& other) {
     return *this;
 }
 
-Vector3& Plane::getFrontNormal() {
+Vector3 Plane::getFrontNormal() {
     return _frontNormal;
 }
 
-Vector3& Plane::getBasePoint() {
+Vector3 Plane::getBasePoint() {
     return _basePoint;
 }
 
 bool Plane::isPointInFront(Vector3& point) {
     return _basePoint.getDirectionTo(point).dotProduct(_frontNormal) >= 0.0f;
+}
+
+Vector3 Plane::getProjectedPoint(Vector3 point) {
+    point.sub(_basePoint);
+    float d = point.dotProduct(_frontNormal);
+    point.subMultiplied(_frontNormal, d);
+
+    return point;
 }
 
 bool Plane::contains(Vector3& point, float eps) {

@@ -5,6 +5,9 @@
 
 class VehicleCollisionLogic : public Object {
 
+    Plane _groundPlane;
+
 public:
+    VehicleCollisionLogic();
     void resolveWheelGroundCollisions(Vehicle& vehicle);
 };

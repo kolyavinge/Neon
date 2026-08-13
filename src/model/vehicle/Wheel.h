@@ -5,6 +5,7 @@
 #include <lib/system.h>
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
+#include <lib/calc/Plane.h>
 
 enum class WheelPosition {
     frontLeft = 0,
@@ -40,13 +41,14 @@ class Wheel : public Object {
     Vector3 _centerVelocity;
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
-    Vector3 _roadFrictionForce;
+    Vector3 _rollingResistanceForce;
     float _longitudinalForceBeforeNormalize;
     float _lateralForceBeforeNormalize;
     SlipRatio _slipRatio;
     float _slipAngle;
     bool _hasGroundContact;
     Vector3 _groundContactPoint;
+    Plane* _groundPlane;
     TransformMatrix4 _modelMatrix;
 
 public:
@@ -76,20 +78,20 @@ public:
     void setSlipAngle(float slipAngle);
     Vector3 getLongitudinalForce();
     Vector3 getLateralForce();
-    Vector3 getRoadFrictionForce();
+    Vector3 getRollingResistanceForce();
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
     void calculateLongitudinalForce(float springForce);
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
-    void calculateRoadFrictionForce(float springForce);
+    void calculateRollingResistanceForce();
     void clearAllForces();
-    void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, float brakeRatio);
+    void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio);
     bool hasGroundContact();
     void setGroundContact(bool value);
     Vector3 getGroundContactPoint();
-    void setGroundContactPoint(Vector3 point);
+    void setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane);
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);
 };

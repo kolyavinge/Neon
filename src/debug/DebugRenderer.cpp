@@ -78,9 +78,9 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 longitudinalForce = wheel.getLongitudinalForce();
-        longitudinalForce.div(_forceDivider);
-        glVertex3f(longitudinalForce);
+        Vector3 force = wheel.getLongitudinalForce();
+        force.div(_forceDivider);
+        glVertex3f(force);
         glEnd();
         glPopMatrix();
         // lateral force
@@ -89,9 +89,9 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 lateralForce = wheel.getLateralForce();
-        lateralForce.div(_forceDivider);
-        glVertex3f(lateralForce);
+        force = wheel.getLateralForce();
+        force.div(_forceDivider);
+        glVertex3f(force);
         glEnd();
         glPopMatrix();
         // road friction force
@@ -100,9 +100,9 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
         glTranslatef(wheel.getCenter());
         glBegin(GL_LINES);
         glVertex3f(0.0f, 0.0f, 0.0f);
-        Vector3 roadFrictionForce = wheel.getRoadFrictionForce();
-        roadFrictionForce.div(_forceDivider);
-        glVertex3f(roadFrictionForce);
+        force = wheel.getRollingResistanceForce();
+        force.div(_forceDivider);
+        glVertex3f(force);
         glEnd();
         glPopMatrix();
         // spring force

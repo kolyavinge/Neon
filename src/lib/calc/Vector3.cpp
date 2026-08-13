@@ -181,6 +181,12 @@ void Vector3::reflectBy(Vector3 normal) {
     z -= product * normal.z;
 }
 
+void Vector3::round(float precision) {
+    x = Math::round(x, precision);
+    y = Math::round(y, precision);
+    z = Math::round(z, precision);
+}
+
 Vector3& Vector3::getLongest(Collection<Vector3>& vectors) {
     Vector3* longest = &vectors[0];
     for (int i = 1; i < vectors.getCount(); i++) {

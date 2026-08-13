@@ -31,7 +31,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         Vector3 applyPoint = wheel.getGroundContactPoint();
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getLateralForce(), applyPoint);
-        vehicle.applyForceAtPoint(wheel.getRoadFrictionForce(), applyPoint);
+        vehicle.applyForceAtPoint(wheel.getRollingResistanceForce(), applyPoint);
     }
     // spring forces
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
@@ -74,7 +74,7 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, flo
         wheel.setSlipAngle(slipAngle);
         wheel.calculateLongitudinalForce(springForce);
         wheel.calculateLateralForce(springForce);
-        wheel.calculateRoadFrictionForce(springForce);
+        wheel.calculateRollingResistanceForce();
         _wheelLogic.normalizeLongitudinalAndLateralForces(wheel, springForce);
     }
 }

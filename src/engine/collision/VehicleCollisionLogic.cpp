@@ -5,8 +5,11 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
+VehicleCollisionLogic::VehicleCollisionLogic() :
+    _groundPlane(CommonConstants::upAxis, CommonConstants::axisOrigin) {
+}
+
 void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
-    Plane groundPlane(CommonConstants::upAxis, CommonConstants::axisOrigin);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
@@ -16,9 +19,13 @@ void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
         Vector3 groundContactPoint;
-        bool hasGroundContact = groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output groundContactPoint);
+        bool hasGroundContact = _groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.001f, output groundContactPoint);
         wheel.setGroundContact(hasGroundContact);
-        wheel.setGroundContactPoint(groundContactPoint);
+        if (hasGroundContact) {
+            wheel.setGroundContactPoint(groundContactPoint, &_groundPlane);
+        } else {
+            wheel.setGroundContactPoint(Vector3(), nullptr);
+        }
         Vector3 newWheelCenter;
         if (hasGroundContact) {
             newWheelCenter.set(groundContactPoint);
