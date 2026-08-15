@@ -12,9 +12,9 @@ ForceLogic::ForceLogic(
     _wheelLogic(wheelLogic) {
 }
 
-void ForceLogic::calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
     calculateSpringForces(vehicle);
-    calculateWheelForces(vehicle, throttleRatio, brakeRatio);
+    calculateWheelForces(vehicle);
     calculateAntiRollForces(vehicle);
     calculateAirDragForce(vehicle);
     applyForces(vehicle);
@@ -56,7 +56,9 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
     }
 }
 
-void ForceLogic::calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
+    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
+    float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     Gearbox& gearbox = vehicle.getGearbox();

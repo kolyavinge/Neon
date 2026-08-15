@@ -13,6 +13,7 @@ class DrivingInputData : public Object {
 
 public:
     DrivingInputData();
+    void init();
     float getThrottleRatio();
     void addThrottleRatio(float throttleRatio);
     void setThrottleRatio(float throttleRatio);

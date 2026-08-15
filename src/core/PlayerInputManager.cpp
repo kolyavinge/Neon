@@ -1,12 +1,12 @@
 #include <common/constants.h>
-#include <core/DrivingInputManager.h>
+#include <core/PlayerInputManager.h>
 
-DrivingInputManager::DrivingInputManager(
+PlayerInputManager::PlayerInputManager(
     InputManager& inputManager) :
     _inputManager(inputManager) {
 }
 
-void DrivingInputManager::update(DrivingInputData& inputData) {
+void PlayerInputManager::update(DrivingInputData& inputData) {
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::a) ||
         _inputManager.keyboard.isKeyPressedOrHeld(Keys::left)) {
         inputData.setSteeringRatio(-1.0f);

@@ -7,7 +7,6 @@
 #include <engine/vehicle/SteeringLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Vehicle.h>
 
 class VehicleUpdater : public Object {
@@ -35,8 +34,8 @@ public:
         PositionLogic& positionLogic,
         SteeringLogic& steeringLogic);
 
-    void updateVehicles(VehiclesArray& vehicles, DrivingInputData& inputData);
+    void updateVehicles(Collection<Vehicle>& vehicles);
 
 private:
-    void updateVehicle(Vehicle& vehicle, DrivingInputData& inputData);
+    void updateVehicle(Vehicle& vehicle);
 };

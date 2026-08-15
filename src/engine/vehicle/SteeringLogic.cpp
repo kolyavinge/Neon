@@ -6,7 +6,8 @@ SteeringLogic::SteeringLogic(
     WheelLogic& wheelLogic) :_wheelLogic(wheelLogic) {
 }
 
-void SteeringLogic::steer(Vehicle& vehicle, float steeringRatio) {
+void SteeringLogic::steer(Vehicle& vehicle) {
+    float steeringRatio = vehicle.getDrivingInputData().getSteeringRatio();
     float steeringAngle = -steeringRatio * vehicle.getData().maxSteeringAngle;
 
     Vector3 wheelFrontNormal, leftWheelOutsideNormal, rightWheelOutsideNormal;

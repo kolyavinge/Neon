@@ -5,7 +5,8 @@
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Wheel.h>
 
-void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle, float throttleRatio) {
+void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle) {
+    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
     if (!gearbox.isEngineAndWheelsConnected()) return;
@@ -14,8 +15,10 @@ void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle, float thro
     engine.setRpm(expectedRpmByWheels, throttleRatio);
 }
 
-void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle, float throttleRatio, float brakeRatio) {
+void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
+    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
+    float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
     Gear gear = gearbox.getCurrentGear();

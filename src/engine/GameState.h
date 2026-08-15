@@ -2,21 +2,20 @@
 
 #include <lib/system.h>
 #include <model/common/Camera.h>
-#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Vehicle.h>
+#include <model/common/PhysicalWorld.h>
 
 class GameState : public Object {
 
     Camera _camera;
-    VehiclesArray _vehicles;
+    Array<Vehicle, GameConstants::maxVehiclesCount> _vehicles;
     Vehicle* _playerVehicle;
-    DrivingInputData _drivingInputData;
+    //PhysicalWorld _physicalWorld;
 
 public:
     GameState();
     void init();
     Camera& getCamera();
-    VehiclesArray& getVehicles();
+    Collection<Vehicle>& getVehicles();
     Vehicle& getPlayerVehicle();
-    DrivingInputData& getDrivingInputData();
 };

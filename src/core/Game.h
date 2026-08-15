@@ -1,7 +1,7 @@
 #pragma once
 
+#include <common/InputManager.h>
 #include <core/GameInitializer.h>
-#include <core/InputManager.h>
 #include <core/ScreenManager.h>
 #include <engine/GameState.h>
 #include <lib/di/Resolver.h>
@@ -12,7 +12,11 @@ class Game : public Object {
     InputManager& _inputManager;
     ScreenManager& _screenManager;
     GameInitializer& _gameInitializer;
-    GameState _gameState;
+    //Camera _camera;
+    //DrivingInputData _drivingInputData;
+    GameState _gameState; // TODO класс GameState убрать
+    //GameWorld _gameWorld;
+    //Race _race;
 
 public:
     static Game* resolve(Resolver& resolver) {

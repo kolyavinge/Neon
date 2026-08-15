@@ -18,5 +18,5 @@ public:
     SteeringLogic(
         WheelLogic& wheelLogic);
 
-    void steer(Vehicle& vehicle, float steeringRatio);
+    void steer(Vehicle& vehicle);
 };

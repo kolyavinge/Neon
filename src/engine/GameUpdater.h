@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/DrivingInputManager.h>
+#include <core/PlayerInputManager.h>
 #include <engine/CameraUpdater.h>
 #include <engine/GameState.h>
 #include <engine/vehicle/VehicleUpdater.h>
@@ -9,20 +9,20 @@
 
 class GameUpdater : public Object {
 
-    DrivingInputManager& _drivingInputManager;
+    PlayerInputManager& _playerInputManager;
     CameraUpdater& _cameraUpdater;
     VehicleUpdater& _vehicleUpdater;
 
 public:
     static GameUpdater* resolve(Resolver& resolver) {
         return new GameUpdater(
-            resolver.resolve<DrivingInputManager>(),
+            resolver.resolve<PlayerInputManager>(),
             resolver.resolve<CameraUpdater>(),
             resolver.resolve<VehicleUpdater>());
     }
 
     GameUpdater(
-        DrivingInputManager& drivingInputManager,
+        PlayerInputManager& playerInputManager,
         CameraUpdater& cameraUpdater,
         VehicleUpdater& vehicleUpdater);
 

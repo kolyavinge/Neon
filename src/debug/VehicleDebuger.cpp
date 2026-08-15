@@ -5,11 +5,11 @@
 
 int VehicleDebuger::_tick = 0;
 
-void VehicleDebuger::printDebugInfo(Vehicle& vehicle, DrivingInputData& inputData) {
+void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     _tick++;
     //if ((_tick % 10) != 0) return;
 
-    paintText(inputData);
+    paintText(vehicle.getDrivingInputData());
     //printGear(vehicle);
     //printThrottle(inputData);
     //printEngineRpm(vehicle);

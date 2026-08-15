@@ -10,6 +10,7 @@ Vehicle::Vehicle() {
 }
 
 void Vehicle::init() {
+    _drivingInputData.init();
     _engine.init();
     _gearbox.init();
     initWheelAndSpring(WheelPosition::frontLeft);
@@ -36,6 +37,10 @@ void Vehicle::initWheelAndSpring(WheelPosition position) {
 
 VehicleData& Vehicle::getData() {
     return _data;
+}
+
+DrivingInputData& Vehicle::getDrivingInputData() {
+    return _drivingInputData;
 }
 
 Engine& Vehicle::getEngine() {

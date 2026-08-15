@@ -14,21 +14,21 @@ VehicleUpdater::VehicleUpdater(
     _steeringLogic(steeringLogic) {
 }
 
-void VehicleUpdater::updateVehicles(VehiclesArray& vehicles, DrivingInputData& inputData) {
+void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        updateVehicle(vehicle, inputData);
-        VehicleDebuger::printDebugInfo(vehicle, inputData);
+        updateVehicle(vehicle);
+        VehicleDebuger::printDebugInfo(vehicle);
     }
 }
 
-void VehicleUpdater::updateVehicle(Vehicle& vehicle, DrivingInputData& inputData) {
-    _steeringLogic.steer(vehicle, inputData.getSteeringRatio());
-    bool isShifted = _gearboxLogic.shift(vehicle, inputData);
+void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
+    _steeringLogic.steer(vehicle);
+    bool isShifted = _gearboxLogic.shift(vehicle);
     if (isShifted) {
-        _engineLogic.synchEngineAndWheelsAfterShifting(vehicle, inputData.getThrottleRatio());
+        _engineLogic.synchEngineAndWheelsAfterShifting(vehicle);
     }
-    _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
-    _forceLogic.calculateAndApplyForces(vehicle, inputData.getThrottleRatio(), inputData.getBrakeRatio());
+    _engineLogic.calculateNewEngineRpmAndWheelsVelocity(vehicle);
+    _forceLogic.calculateAndApplyForces(vehicle);
     _positionLogic.updatePosition(vehicle);
 }

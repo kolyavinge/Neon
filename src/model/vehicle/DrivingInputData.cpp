@@ -1,6 +1,13 @@
 #include <model/vehicle/DrivingInputData.h>
 
 DrivingInputData::DrivingInputData() {
+    init();
+}
+
+void DrivingInputData::init() {
+    _throttleRatio.set(0.0f);
+    _brakeRatio.set(0.0f);
+    _steeringRatio.set(0.0f);
     resetShifting();
 }
 

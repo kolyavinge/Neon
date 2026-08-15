@@ -9,10 +9,10 @@
 class GearboxLogic : public Object {
 
 public:
-    bool shift(Vehicle& vehicle, DrivingInputData& drivingInputData);
+    bool shift(Vehicle& vehicle);
 
 private:
-    bool shiftAutomatic(Vehicle& vehicle, float throttleRatio);
+    bool shiftAutomatic(Vehicle& vehicle);
     float getRpmOnLowerGear(Engine& engine, Gearbox& gearbox);
     bool shiftManual(Gearbox& gearbox, DrivingInputData& drivingInputData);
 };

@@ -15,14 +15,10 @@ Camera& GameState::getCamera() {
     return _camera;
 }
 
-VehiclesArray& GameState::getVehicles() {
+Collection<Vehicle>& GameState::getVehicles() {
     return _vehicles;
 }
 
 Vehicle& GameState::getPlayerVehicle() {
     return *_playerVehicle;
-}
-
-DrivingInputData& GameState::getDrivingInputData() {
-    return _drivingInputData;
 }

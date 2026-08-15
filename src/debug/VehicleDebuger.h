@@ -8,7 +8,7 @@
 class VehicleDebuger : public Object {
 
 public:
-    static void printDebugInfo(Vehicle& vehicle, DrivingInputData& inputData);
+    static void printDebugInfo(Vehicle& vehicle);
 
 private:
     static int _tick;

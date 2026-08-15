@@ -1,16 +1,16 @@
 #include <engine/GameUpdater.h>
 
 GameUpdater::GameUpdater(
-    DrivingInputManager& drivingInputManager,
+    PlayerInputManager& playerInputManager,
     CameraUpdater& cameraUpdater,
     VehicleUpdater& vehicleUpdater) :
-    _drivingInputManager(drivingInputManager),
+    _playerInputManager(playerInputManager),
     _cameraUpdater(cameraUpdater),
     _vehicleUpdater(vehicleUpdater) {
 }
 
 void GameUpdater::update(GameState& gameState) {
     _cameraUpdater.update(gameState.getCamera(), gameState.getPlayerVehicle());
-    _drivingInputManager.update(gameState.getDrivingInputData());
-    _vehicleUpdater.updateVehicles(gameState.getVehicles(), gameState.getDrivingInputData());
+    _playerInputManager.update(gameState.getPlayerVehicle().getDrivingInputData());
+    _vehicleUpdater.updateVehicles(gameState.getVehicles());
 }

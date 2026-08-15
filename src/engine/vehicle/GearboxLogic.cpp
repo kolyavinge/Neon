@@ -2,16 +2,17 @@
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
 
-bool GearboxLogic::shift(Vehicle& vehicle, DrivingInputData& drivingInputData) {
+bool GearboxLogic::shift(Vehicle& vehicle) {
     if (vehicle.getGearbox().getKind() == GearboxKind::automatic) {
-        return shiftAutomatic(vehicle, drivingInputData.getThrottleRatio());
+        return shiftAutomatic(vehicle);
     } else {
-        return shiftManual(vehicle.getGearbox(), drivingInputData);
+        return shiftManual(vehicle.getGearbox(), vehicle.getDrivingInputData());
     }
 }
 
-bool GearboxLogic::shiftAutomatic(Vehicle& vehicle, float throttleRatio) {
+bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
+    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
     bool isAccelerating = throttleRatio > 0.0f;

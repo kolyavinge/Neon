@@ -1,20 +1,20 @@
 #pragma once
 
-#include <core/InputManager.h>
+#include <common/InputManager.h>
 #include <lib/di/Resolver.h>
 #include <model/vehicle/DrivingInputData.h>
 
-class DrivingInputManager : public Object {
+class PlayerInputManager : public Object {
 
     InputManager& _inputManager;
 
 public:
-    static DrivingInputManager* resolve(Resolver& resolver) {
-        return new DrivingInputManager(
+    static PlayerInputManager* resolve(Resolver& resolver) {
+        return new PlayerInputManager(
             resolver.resolve<InputManager>());
     }
 
-    DrivingInputManager(
+    PlayerInputManager(
         InputManager& inputManager);
 
     void update(DrivingInputData& inputData);

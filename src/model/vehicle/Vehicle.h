@@ -11,11 +11,13 @@
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
+#include <model/vehicle/DrivingInputData.h>
 
 class Vehicle : public Object {
 
 private:
     VehicleData _data;
+    DrivingInputData _drivingInputData;
     Engine _engine;
     Gearbox _gearbox;
     Array<Wheel, VehicleConstants::wheelsCount> _wheels;
@@ -27,6 +29,7 @@ public:
     Vehicle();
     void init();
     VehicleData& getData();
+    DrivingInputData& getDrivingInputData();
     Engine& getEngine();
     Gearbox& getGearbox();
     Wheel& getWheel(int i);
@@ -60,5 +63,3 @@ public:
 private:
     void initWheelAndSpring(WheelPosition position);
 };
-
-typedef Array<Vehicle, GameConstants::maxVehiclesCount> VehiclesArray;

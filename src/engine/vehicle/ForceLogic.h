@@ -20,12 +20,12 @@ public:
     ForceLogic(
         WheelLogic& wheelLogic);
 
-    void calculateAndApplyForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
+    void calculateAndApplyForces(Vehicle& vehicle);
 
 private:
     void applyForces(Vehicle& vehicle);
     void calculateSpringForces(Vehicle& vehicle);
-    void calculateWheelForces(Vehicle& vehicle, float throttleRatio, float brakeRatio);
+    void calculateWheelForces(Vehicle& vehicle);
     void calculateAntiRollForces(Vehicle& vehicle);
     void calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
     void calculateAirDragForce(Vehicle& vehicle);

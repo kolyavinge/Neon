@@ -21,9 +21,9 @@
   <ItemGroup>
     <ClCompile Include="src\common\AssetsDirectory.cpp" />
     <ClCompile Include="src\core\MainInjectModule.cpp" />
-    <ClCompile Include="src\core\DrivingInputManager.cpp" />
+    <ClCompile Include="src\core\PlayerInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
-    <ClCompile Include="src\core\InputManager.cpp" />
+    <ClCompile Include="src\common\InputManager.cpp" />
     <ClCompile Include="src\core\GameInitializer.cpp" />
     <ClCompile Include="src\core\ScreenManager.cpp" />
     <ClCompile Include="src\debug\DebugRenderer.cpp" />
@@ -96,7 +96,6 @@
     <ClCompile Include="src\render\lib\VAO.cpp" />
     <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
-    <ClCompile Include="src\render\RenderInitializer.cpp" />
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
@@ -106,7 +105,7 @@
     <ClInclude Include="src\common\resource.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\common\AssetsDirectory.h" />
-    <ClInclude Include="src\core\DrivingInputManager.h" />
+    <ClInclude Include="src\core\PlayerInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\GameInitializer.h" />
     <ClInclude Include="src\debug\DebugRenderer.h" />
@@ -134,7 +133,9 @@
     <ClInclude Include="src\lib\windows.h" />
     <ClInclude Include="src\model\common\Camera.h" />
     <ClInclude Include="src\model\common\common.h" />
+    <ClInclude Include="src\model\common\PhysicalWorld.h" />
     <ClInclude Include="src\model\common\RigidBody.h" />
+    <ClInclude Include="src\model\common\WorldSegment.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />
@@ -154,7 +155,6 @@
     <ClInclude Include="src\render\lib\VAO.h" />
     <ClInclude Include="src\render\lib\Model3dVAOBuilder.h" />
     <ClInclude Include="src\render\lib\VAORenderer.h" />
-    <ClInclude Include="src\render\RenderInitializer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
     <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h" />
@@ -168,7 +168,7 @@
   <ItemGroup>
     <ClInclude Include="src\common\constants.h" />
     <ClInclude Include="src\core\MainInjectModule.h" />
-    <ClInclude Include="src\core\InputManager.h" />
+    <ClInclude Include="src\common\InputManager.h" />
     <ClInclude Include="src\engine\vehicle\ForceLogic.h" />
     <ClInclude Include="src\engine\vehicle\PositionLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
