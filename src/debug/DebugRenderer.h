@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/GameState.h>
 #include <lib/system.h>
+#include <model/GameWorld.h>
 #include <model/vehicle/Vehicle.h>
 
 class DebugRenderer : public Object {
@@ -10,7 +10,7 @@ class DebugRenderer : public Object {
     inline static const float _velocityDivider = 10.0f;
 
 public:
-    void renderDebugInfo(GameState& gameState);
+    void renderDebugInfo(GameWorld& gameWorld);
     void renderVehicleWheels(Vehicle& vehicle);
     void renderVehicleBody(Vehicle& vehicle);
     void renderVehicleChassis(Vehicle& vehicle);

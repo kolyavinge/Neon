@@ -1,11 +1,11 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/common/RigidBody.h>
+#include <model/vehicle/Vehicle.h>
 
 class WorldSegment : Object {
 
-    List<RigidBody*> _rigidBodies;
+    List<Vehicle*> _rigidBodies;
 
 public:
 };

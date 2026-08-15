@@ -15,7 +15,7 @@ void RaceScreenRenderer::setScreen(RaceScreen& screen) {
 
 void RaceScreenRenderer::render() {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    GameState& gameState = _screen->getGameState();
-    _vehicleRenderer.render(gameState.getPlayerVehicle(), gameState.getCamera());
-    _debugRenderer.renderDebugInfo(gameState);
+    GameWorld& gameWorld = _screen->getGameWorld();
+    _vehicleRenderer.render(gameWorld.getPlayerVehicle(), gameWorld.getCamera());
+    _debugRenderer.renderDebugInfo(gameWorld);
 }

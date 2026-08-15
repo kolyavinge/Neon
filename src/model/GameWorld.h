@@ -3,17 +3,17 @@
 #include <lib/system.h>
 #include <model/common/Camera.h>
 #include <model/vehicle/Vehicle.h>
-#include <model/common/PhysicalWorld.h>
 
-class GameState : public Object {
+class GameWorld : public Object {
 
     Camera _camera;
     Array<Vehicle, GameConstants::maxVehiclesCount> _vehicles;
     Vehicle* _playerVehicle;
-    //PhysicalWorld _physicalWorld;
+    //Track _track;
+    //RaceData _raceData;
 
 public:
-    GameState();
+    GameWorld();
     void init();
     Camera& getCamera();
     Collection<Vehicle>& getVehicles();

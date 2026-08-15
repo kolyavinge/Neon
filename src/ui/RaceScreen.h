@@ -1,25 +1,25 @@
 #pragma once
 
-#include <engine/GameUpdater.h>
+#include <engine/GameWorldUpdater.h>
 #include <lib/di/Resolver.h>
+#include <model/GameWorld.h>
 #include <ui/Screen.h>
-#include <engine/GameState.h>
 
 class RaceScreen : public Screen {
 
-    GameUpdater& _gameUpdater;
-    GameState* _gameState;
+    GameWorldUpdater& _gameWorldUpdater;
+    GameWorld* _gameWorld;
 
 public:
     static RaceScreen* resolve(Resolver& resolver) {
         return new RaceScreen(
-            resolver.resolve<GameUpdater>());
+            resolver.resolve<GameWorldUpdater>());
     }
 
     RaceScreen(
-        GameUpdater& gameUpdater);
+        GameWorldUpdater& gameWorldUpdater);
 
-    GameState& getGameState();
-    void setGameState(GameState& gameState);
+    GameWorld& getGameWorld();
+    void setGameWorld(GameWorld& gameWorld);
     void update();
 };

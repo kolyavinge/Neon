@@ -1,19 +1,19 @@
 #include <ui/RaceScreen.h>
 
 RaceScreen::RaceScreen(
-    GameUpdater& gameUpdater) :
-    _gameUpdater(gameUpdater) {
-    _gameState = nullptr;
+    GameWorldUpdater& gameWorldUpdater) :
+    _gameWorldUpdater(gameWorldUpdater) {
+    _gameWorld = nullptr;
 }
 
-GameState& RaceScreen::getGameState() {
-    return *_gameState;
+GameWorld& RaceScreen::getGameWorld() {
+    return *_gameWorld;
 }
 
-void RaceScreen::setGameState(GameState& gameState) {
-    _gameState = &gameState;
+void RaceScreen::setGameWorld(GameWorld& gameWorld) {
+    _gameWorld = &gameWorld;
 }
 
 void RaceScreen::update() {
-    _gameUpdater.update(*_gameState);
+    _gameWorldUpdater.update(*_gameWorld);
 }

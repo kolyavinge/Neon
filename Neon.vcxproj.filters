@@ -117,10 +117,10 @@
     <ClCompile Include="src\core\ScreenManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\GameState.cpp">
+    <ClCompile Include="src\model\GameWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\GameUpdater.cpp">
+    <ClCompile Include="src\engine\GameWorldUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp">
@@ -437,10 +437,10 @@
     <ClInclude Include="src\ui\Screens.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\GameState.h">
+    <ClInclude Include="src\model\GameWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\GameUpdater.h">
+    <ClInclude Include="src\engine\GameWorldUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h">
@@ -591,9 +591,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\common\PhysicalWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\common\WorldSegment.h">

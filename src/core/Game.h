@@ -3,20 +3,16 @@
 #include <common/InputManager.h>
 #include <core/GameInitializer.h>
 #include <core/ScreenManager.h>
-#include <engine/GameState.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <model/GameWorld.h>
 
 class Game : public Object {
 
     InputManager& _inputManager;
     ScreenManager& _screenManager;
     GameInitializer& _gameInitializer;
-    //Camera _camera;
-    //DrivingInputData _drivingInputData;
-    GameState _gameState; // TODO класс GameState убрать
-    //GameWorld _gameWorld;
-    //Race _race;
+    GameWorld _gameWorld;
 
 public:
     static Game* resolve(Resolver& resolver) {

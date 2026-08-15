@@ -2,29 +2,29 @@
 
 #include <core/PlayerInputManager.h>
 #include <engine/CameraUpdater.h>
-#include <engine/GameState.h>
 #include <engine/vehicle/VehicleUpdater.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
+#include <model/GameWorld.h>
 
-class GameUpdater : public Object {
+class GameWorldUpdater : public Object {
 
     PlayerInputManager& _playerInputManager;
     CameraUpdater& _cameraUpdater;
     VehicleUpdater& _vehicleUpdater;
 
 public:
-    static GameUpdater* resolve(Resolver& resolver) {
-        return new GameUpdater(
+    static GameWorldUpdater* resolve(Resolver& resolver) {
+        return new GameWorldUpdater(
             resolver.resolve<PlayerInputManager>(),
             resolver.resolve<CameraUpdater>(),
             resolver.resolve<VehicleUpdater>());
     }
 
-    GameUpdater(
+    GameWorldUpdater(
         PlayerInputManager& playerInputManager,
         CameraUpdater& cameraUpdater,
         VehicleUpdater& vehicleUpdater);
 
-    void update(GameState& gameState);
+    void update(GameWorld& gameWorld);
 };

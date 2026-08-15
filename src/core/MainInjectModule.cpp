@@ -7,7 +7,7 @@
 #include <core/ScreenManager.h>
 #include <debug/DebugRenderer.h>
 #include <engine/CameraUpdater.h>
-#include <engine/GameUpdater.h>
+#include <engine/GameWorldUpdater.h>
 #include <engine/collision/VehicleCollisionLogic.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
@@ -41,7 +41,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<DebugRenderer>();
     binder.bindSingleton<CameraUpdater>();
-    binder.bindSingleton<GameUpdater>(GameUpdater::resolve);
+    binder.bindSingleton<GameWorldUpdater>(GameWorldUpdater::resolve);
     binder.bindSingleton<VehicleCollisionLogic>();
     binder.bindSingleton<EngineLogic>();
     binder.bindSingleton<ForceLogic>(ForceLogic::resolve);

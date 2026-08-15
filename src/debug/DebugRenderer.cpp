@@ -7,10 +7,10 @@
 #include <model/vehicle/Wheel.h>
 #include <render/lib/opengl.h>
 
-void DebugRenderer::renderDebugInfo(GameState& gameState) {
+void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    Camera& camera = gameState.getCamera();
+    Camera& camera = gameWorld.getCamera();
     gluPerspective(
         UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()),
         CommonConstants::screenAspect,
@@ -21,7 +21,7 @@ void DebugRenderer::renderDebugInfo(GameState& gameState) {
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     renderGrid();
     //renderGlobalAxis();
-    Vehicle& vehicle = gameState.getPlayerVehicle();
+    Vehicle& vehicle = gameWorld.getPlayerVehicle();
     renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
     renderVehicleChassis(vehicle);
