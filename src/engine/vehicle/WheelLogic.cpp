@@ -8,30 +8,22 @@ SlipRatio WheelLogic::calculateSlipRatio(
     Vector3 chassisFrontNormal,
     bool isEngineAndWheelsConnected,
     float throttleRatio,
-    float brakeRatio,
-    Gear gear) {
+    float brakeRatio) {
     // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
-    float drivenVelocity = Math::abs(wheel.getAngularVelocity()) * wheel.getRadius();
-    float linearVelocity = Math::abs(vehicleLinearVelocity.dotProduct(chassisFrontNormal));
+    float drivenVelocity = wheel.getAngularVelocity() * wheel.getRadius();
+    float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
     }
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
-    float slipRatio = (drivenVelocity - linearVelocity) / linearVelocity;
+    float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
     // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
-    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
+    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected; // TODO вынести метод в класс Vehicle
     if (isBrakingByWheelsOrEngine) {
         float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
         // сила торможения направлена противоположно скорости
         if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
             slipRatio = -slipRatio;
-        }
-    } else {
-        // сила разгона направлена по ходу движения
-        if (gear >= Gear::first) {
-            Numeric::setPositiveSign(slipRatio);
-        } else if (gear == Gear::reverse) {
-            Numeric::setNegativeSign(slipRatio);
         }
     }
     slipRatio = Numeric::clamp(slipRatio, -VehicleConstants::slipRatioLimit, VehicleConstants::slipRatioLimit);

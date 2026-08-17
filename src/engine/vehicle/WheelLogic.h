@@ -17,8 +17,7 @@ public:
         Vector3 chassisFrontNormal,
         bool isEngineAndWheelsConnected,
         float throttleRatio,
-        float brakeRatio,
-        Gear gear);
+        float brakeRatio);
 
     float calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity);
     void updateFrontAndOutsideNormals(Vehicle& vehicle);

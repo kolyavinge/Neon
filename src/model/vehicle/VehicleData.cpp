@@ -7,16 +7,16 @@ VehicleData::VehicleData() {
     vehicleMass = 1200.0f;
 
     /* gearbox */
-    finalGearRatio = 3.5f;
-    gearRatios[0] = finalGearRatio * 2.5f;
-    gearRatios[1] = finalGearRatio * 0.0f;
-    gearRatios[2] = finalGearRatio * 3.5f;
-    gearRatios[3] = finalGearRatio * 2.8f;
-    gearRatios[4] = finalGearRatio * 2.2f;
-    gearRatios[5] = finalGearRatio * 1.5f;
+    gearboxEfficiency = 0.9f;
+    finalGearRatio = 3.85f;
+    gearRatios[0] = finalGearRatio * -2.5f;
+    gearRatios[1] = 0.0f;
+    gearRatios[2] = finalGearRatio * 2.6f;
+    gearRatios[3] = finalGearRatio * 1.9f;
+    gearRatios[4] = finalGearRatio * 1.5f;
+    gearRatios[5] = finalGearRatio * 1.2f;
     gearRatios[6] = finalGearRatio * 1.0f;
     gearRatios[7] = finalGearRatio * 0.8f;
-    neutralGearFakeRatio = 20.0f;
     autoShiftRpm = 7800.0f;
 
     /* body */
@@ -37,23 +37,27 @@ VehicleData::VehicleData() {
     rearTrackWidth = bodyMeasures.xLength - 0.25f;
 
     /* engine */
-    engineTorqueCurve.a = 500.0f;
-    engineTorqueCurve.b = 100.0f;
+    engineTorqueCurve.a = 500.0f; // max torque value
+    engineTorqueCurve.b = 50.0f;
     engineTorqueCurve.c = 1.0f;
     engineTorqueCurve.d = 6000.0f;
     engineTorqueCurve.f = 3000.0f;
-    engineMinRpm = 1000.0f;
+    engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
-    engineMaxReverseRpm = 2500.0f;
-    engineBrakingCoeff = 10000.0f;
+    engineNeutralGearTorque = 10.0f;
+    engineBrakingCoeff = 0.01f;
 
     /* wheel */
     frontWheelRadius = 0.22f;
     rearWheelRadius = 0.26f;
-    wheelBrakingCoeff = 250.0f;
+    wheelBrakingForce = 2000.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRollingResistanceCoeff = 0.01f;
-    roadAdhesionCoeff = 3.0f; // задает общее сцепление с дорогой (большее значение - больший держак)
+    wheelInertia = 0.6f;
+    tireStiffness = 50000.0f;
+    tireDamping = 1500.0f;
+    lowVelocityLimit = 1.5f;
+    roadAdhesionCoeff = 2.0f; // задает общее сцепление с дорогой (большее значение - больший держак)
 
     /* spring */
     const float stiffnessMul = 1000.0f;
@@ -74,7 +78,7 @@ VehicleData::VehicleData() {
     springBumpStopStiffness = 5000.0f;
 
     /* wheel longitudinal force */
-    float D = 0.6f;
+    float D = 0.8f;
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, D, 0.8f);

@@ -17,9 +17,9 @@ public:
     float vehicleMass;
 
     /* gearbox */
+    float gearboxEfficiency;
     float finalGearRatio;
     Array<float, (int)Gear::_count> gearRatios;
-    float neutralGearFakeRatio;
     float autoShiftRpm;
 
     /* body */
@@ -41,15 +41,19 @@ public:
     EngineTorqueCurve engineTorqueCurve;
     float engineMinRpm;
     float engineMaxRpm;
-    float engineMaxReverseRpm;
+    float engineNeutralGearTorque;
     float engineBrakingCoeff;
 
     /* wheel */
     float frontWheelRadius;
     float rearWheelRadius;
-    float wheelBrakingCoeff;
+    float wheelBrakingForce;
     float maxSteeringAngle;
     float minRollingResistanceCoeff;
+    float wheelInertia;
+    float tireStiffness;
+    float tireDamping;
+    float lowVelocityLimit;
     float roadAdhesionCoeff;
 
     /* spring */

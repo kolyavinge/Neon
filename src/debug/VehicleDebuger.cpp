@@ -10,16 +10,17 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     //if ((_tick % 10) != 0) return;
 
     paintText(vehicle.getDrivingInputData());
-    //printGear(vehicle);
-    //printThrottle(inputData);
-    //printEngineRpm(vehicle);
-    //printWheelAngularVelocity(vehicle);
+    printGear(vehicle);
+    printThrottle(vehicle.getDrivingInputData());
+    printEngineRpm(vehicle);
+    printEngineTorque(vehicle);
+    printWheelAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
-    //printLongitudinalForce(vehicle);
+    printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    //printVehicleLinearVelocity(vehicle);
+    printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
@@ -39,6 +40,10 @@ void VehicleDebuger::printThrottle(DrivingInputData& inputData) {
 
 void VehicleDebuger::printEngineRpm(Vehicle& vehicle) {
     printf("RPM %i|", (int)vehicle.getEngine().getRpm());
+}
+
+void VehicleDebuger::printEngineTorque(Vehicle& vehicle) {
+    printf("Trq %i|", (int)vehicle.getEngine().getTorque());
 }
 
 void VehicleDebuger::printWheelAngularVelocity(Vehicle& vehicle) {

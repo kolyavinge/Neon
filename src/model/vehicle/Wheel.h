@@ -1,11 +1,10 @@
 #pragma once
 
+#include <lib/calc/Plane.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
-#include <lib/calc/Plane.h>
 
 enum class WheelPosition {
     frontLeft = 0,
@@ -44,6 +43,7 @@ class Wheel : public Object {
     Vector3 _rollingResistanceForce;
     float _longitudinalForceBeforeNormalize;
     float _lateralForceBeforeNormalize;
+    float _accumulatedDeflection;
     SlipRatio _slipRatio;
     float _slipAngle;
     bool _hasGroundContact;
@@ -69,8 +69,8 @@ public:
     void setCenterVelocity(Vector3 velocity);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
-    void synchAngularVelocity(float expectedAngularVelocityByEngine, Gear gear);
-    void brake(float brakeRatio, float dt);
+    void calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float dt);
+    void brake(float brakeRatio);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
     void setSlipRatio(SlipRatio slipRatio);
@@ -81,7 +81,7 @@ public:
     Vector3 getRollingResistanceForce();
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
-    void calculateLongitudinalForce(float springForce);
+    void calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float springForce, float dt);
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);

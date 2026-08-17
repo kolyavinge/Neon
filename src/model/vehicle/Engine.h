@@ -1,7 +1,6 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
 
 class Engine : public Object {
@@ -15,12 +14,9 @@ public:
     void init();
     float getRpm();
     float getTorque();
-    void setRpm(float rpm, float throttleRatio);
-    void calculateNewRpm(bool isEngineAndWheelsConnected, float throttleRatio, float expectedRpmByWheels, Gear gear, float gearRatio, float dt);
+    void setRpm(float rpm);
+    float calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected);
 
 private:
-    void accelerate(float throttleRatio, Gear gear, float gearRatio, float dt);
-    void brake(float dt);
-    void calculateTorque(float throttleRatio);
-    void correctMinRpm();
+    void correctMinMaxRpm();
 };

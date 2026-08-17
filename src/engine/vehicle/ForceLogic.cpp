@@ -57,24 +57,24 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
+    const float dt = CommonConstants::deltaTimeSec;
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     Gearbox& gearbox = vehicle.getGearbox();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
-    Gear gear = vehicle.getGearbox().getCurrentGear();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         wheel.clearAllForces();
         if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getSpringForce();
-        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio, gear);
+        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio);
         float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity);
         wheel.setSlipRatio(slipRatio);
         wheel.setSlipAngle(slipAngle);
-        wheel.calculateLongitudinalForce(springForce);
+        wheel.calculateLongitudinalForce(vehicleLinearVelocity, chassisFrontNormal, springForce, dt);
         wheel.calculateLateralForce(springForce);
         wheel.calculateRollingResistanceForce();
         _wheelLogic.normalizeLongitudinalAndLateralForces(wheel, springForce);

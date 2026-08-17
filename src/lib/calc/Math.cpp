@@ -71,6 +71,10 @@ float Math::normalizeRadians(float radians) {
     return radians;
 }
 
+float Math::lerp(float start, float end, float t) {
+    return start + t * (end - start);
+}
+
 Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3 pivotPoint) {
     point.sub(pivotPoint);
 
