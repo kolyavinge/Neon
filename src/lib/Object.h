@@ -9,7 +9,7 @@ public:
     Object(const Object&) = default;
     Object(Object&&) noexcept = default;
 
-    // копирование по умолчанию запрещено
+    // РєРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ Р·Р°РїСЂРµС‰РµРЅРѕ
     Object& operator=(const Object&) = delete;
     Object& operator=(Object&&) noexcept = delete;
 
@@ -18,6 +18,6 @@ public:
     virtual bool equals(Object& x);
     virtual int getHashCode();
 
-    // не виртуальный, вызывает внутри себя equals
+    // РЅРµ РІРёСЂС‚СѓР°Р»СЊРЅС‹Р№, РІС‹Р·С‹РІР°РµС‚ РІРЅСѓС‚СЂРё СЃРµР±СЏ equals
     bool operator==(Object& x);
 };

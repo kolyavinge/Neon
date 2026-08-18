@@ -9,7 +9,7 @@ SlipRatio WheelLogic::calculateSlipRatio(
     bool isEngineAndWheelsConnected,
     float throttleRatio,
     float brakeRatio) {
-    // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
+    // slip ratio (РєРѕСЌС„С„РёС†РёРµРЅС‚ СЃРєРѕР»СЊР¶РµРЅРёСЏ) - СЃРѕРѕС‚РЅРѕС€РµРЅРёРµ СѓРіР»РѕРІРѕР№ СЃРєРѕСЂРѕСЃС‚Рё РєРѕР»РµСЃР° Рє Р»РёРЅРµР№РЅРѕР№
     float drivenVelocity = wheel.getAngularVelocity() * wheel.getRadius();
     float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
@@ -17,11 +17,11 @@ SlipRatio WheelLogic::calculateSlipRatio(
     }
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
     float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
-    // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
-    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected; // TODO вынести метод в класс Vehicle
+    // С‚РѕСЂРјРѕР¶РµРЅРёРµ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РІ РїРµСЂРІСѓСЋ РѕС‡РµСЂРµРґСЊ (РЅР° СЃР»СѓС‡Р°Р№ РµСЃР»Рё РјР°С€РёРЅРєР° Рё РіР°Р·СѓРµС‚ Рё С‚РѕСЂРјРѕР·РёС‚ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ)
+    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected; // TODO РІС‹РЅРµСЃС‚Рё РјРµС‚РѕРґ РІ РєР»Р°СЃСЃ Vehicle
     if (isBrakingByWheelsOrEngine) {
         float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
-        // сила торможения направлена противоположно скорости
+        // СЃРёР»Р° С‚РѕСЂРјРѕР¶РµРЅРёСЏ РЅР°РїСЂР°РІР»РµРЅР° РїСЂРѕС‚РёРІРѕРїРѕР»РѕР¶РЅРѕ СЃРєРѕСЂРѕСЃС‚Рё
         if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
             slipRatio = -slipRatio;
         }
@@ -32,10 +32,10 @@ SlipRatio WheelLogic::calculateSlipRatio(
 }
 
 float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity) {
-    // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
+    // slip angle (СѓРіРѕР» СѓРІРѕРґР°) - СѓРіРѕР» РјРµР¶РґСѓ РЅР°РїСЂР°РІР»РµРЅРёРµРј, РІ РєРѕС‚РѕСЂРѕРµ РїРѕРІРµСЂРЅСѓС‚Рѕ РєРѕР»РµСЃРѕ, Рё РЅР°РїСЂР°РІР»РµРЅРёРµРј РµРіРѕ РґРІРёР¶РµРЅРёСЏ
     if (vehicleLinearVelocity.isZero()) return 0.0f;
-    // знак lateralVelocity разный для левого и правого колеса
-    // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
+    // Р·РЅР°Рє lateralVelocity СЂР°Р·РЅС‹Р№ РґР»СЏ Р»РµРІРѕРіРѕ Рё РїСЂР°РІРѕРіРѕ РєРѕР»РµСЃР°
+    // longitudinalVelocity РІСЃРµРіРґР° РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№, РґР»СЏ slip angle РЅРµ РІР°Р¶РЅРѕ РµРґРµС‚ РєРѕР»РµСЃРѕ РІРїРµСЂРµРґ РёР»Рё РЅР°Р·Р°Рґ
     float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleLinearVelocity);
     float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleLinearVelocity));
     float slipAngle = -Math::arctan2(lateralVelocity, longitudinalVelocity);
@@ -45,21 +45,21 @@ float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity
 }
 
 void WheelLogic::normalizeLongitudinalAndLateralForces(Wheel& wheel, float springForce) {
-    // friction circle (Kamm's circle) круг сцепления (диаграмма Камма)
-    // на самом деле это эллипс, тк максимальные значения продольной (longitudinal) и поперечной (lateral) сил не равны друг другу
+    // friction circle (Kamm's circle) РєСЂСѓРі СЃС†РµРїР»РµРЅРёСЏ (РґРёР°РіСЂР°РјРјР° РљР°РјРјР°)
+    // РЅР° СЃР°РјРѕРј РґРµР»Рµ СЌС‚Рѕ СЌР»Р»РёРїСЃ, С‚Рє РјР°РєСЃРёРјР°Р»СЊРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РїСЂРѕРґРѕР»СЊРЅРѕР№ (longitudinal) Рё РїРѕРїРµСЂРµС‡РЅРѕР№ (lateral) СЃРёР» РЅРµ СЂР°РІРЅС‹ РґСЂСѓРі РґСЂСѓРіСѓ
     float curLater = wheel.getLateralForce().getLength();
     float curLong = wheel.getLongitudinalForce().getLength();
     if (Numeric::floatEquals(curLater, 0.0f) || Numeric::floatEquals(curLong, 0.0f)) return;
-    float maxLater = springForce * _data.roadAdhesionCoeff * _data.getLateralForceMaxCoeff((int)wheel.getPosition());
-    float maxLong = springForce * _data.roadAdhesionCoeff * _data.getLongitudinalForceMaxCoeff((int)wheel.getPosition());
+    float maxLater = springForce * _data.getLateralForceMaxCoeff((int)wheel.getPosition());
+    float maxLong = springForce * _data.getLongitudinalForceMaxCoeff((int)wheel.getPosition());
     float maxLater2 = maxLater * maxLater;
     float maxLong2 = maxLong * maxLong;
-    // уравнение эллипса
+    // СѓСЂР°РІРЅРµРЅРёРµ СЌР»Р»РёРїСЃР°
     bool inFrictionCircle = ((curLater * curLater) / maxLater2) + ((curLong * curLong) / maxLong2) < 1.0f;
     if (inFrictionCircle) return;
-    // находим любую точку пересечения прямой и эллипса
-    // подробности в 'docs\friction circle.jpg'
-    float k = curLong / curLater; // угловой коэфф прямой (вектора суммы сил)
+    // РЅР°С…РѕРґРёРј Р»СЋР±СѓСЋ С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ РїСЂСЏРјРѕР№ Рё СЌР»Р»РёРїСЃР°
+    // РїРѕРґСЂРѕР±РЅРѕСЃС‚Рё РІ 'docs\friction circle.jpg'
+    float k = curLong / curLater; // СѓРіР»РѕРІРѕР№ РєРѕСЌС„С„ РїСЂСЏРјРѕР№ (РІРµРєС‚РѕСЂР° СЃСѓРјРјС‹ СЃРёР»)
     float n = (1.0f / maxLater2) + ((k * k) / maxLong2);
     float x = Math::sqrt(1.0f / n);
     float y = k * x;
@@ -73,7 +73,7 @@ void WheelLogic::normalizeLongitudinalAndLateralForces(Wheel& wheel, float sprin
 }
 
 void WheelLogic::updateFrontAndOutsideNormals(Vehicle& vehicle) {
-    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // у обоих передних колес одинаковый угол поворота
+    float steeringAngle = vehicle.getNonDriveWheel(0).getSteeringAngle(); // Сѓ РѕР±РѕРёС… РїРµСЂРµРґРЅРёС… РєРѕР»РµСЃ РѕРґРёРЅР°РєРѕРІС‹Р№ СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р°
     Vector3 chassisRightNormal = vehicle.getChassisRightNormal();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();

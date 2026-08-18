@@ -86,7 +86,7 @@ Vector3 Vector3::getMiddleTo(Vector3 v) {
 void Vector3::setLength(float newLength) {
     if (newLength < 0.0f) throw InvalidVectorLengthException();
     float currentLength = getLength();
-    // не разрешаем менять длину нулевого вектора, даже на ноль
+    // РЅРµ СЂР°Р·СЂРµС€Р°РµРј РјРµРЅСЏС‚СЊ РґР»РёРЅСѓ РЅСѓР»РµРІРѕРіРѕ РІРµРєС‚РѕСЂР°, РґР°Р¶Рµ РЅР° РЅРѕР»СЊ
     raiseErrorIfCurrentLengthZero(currentLength);
     mul(newLength / currentLength);
 }

@@ -69,7 +69,7 @@ public:
     void setCenterVelocity(Vector3 velocity);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
-    void calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float dt);
+    void calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt);
     void brake(float brakeRatio);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();

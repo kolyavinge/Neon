@@ -54,7 +54,6 @@ public:
     float tireStiffness;
     float tireDamping;
     float lowVelocityLimit;
-    float roadAdhesionCoeff;
 
     /* spring */
     float frontSpringStiffness;

@@ -25,10 +25,10 @@ void Engine::setRpm(float rpm) {
 }
 
 float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected) {
-    if (_rpm == _data.engineMinRpm && throttleRatio == 0.0f) {
-        _torque = 0.0f;
-        return _torque;
-    }
+    //if (_rpm == _data.engineMinRpm && throttleRatio == 0.0f) {
+    //    _torque = 0.0f;
+    //    return _torque;
+    //}
 
     if (_rpm == _data.engineMaxRpm && throttleRatio > 0.0f && isEngineAndWheelsConnected) {
         _torque = 0.0f;
@@ -37,10 +37,10 @@ float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnect
 
     if (isEngineAndWheelsConnected) {
         if (throttleRatio > 0.0f) {
-            // набор скорости
+            // РЅР°Р±РѕСЂ СЃРєРѕСЂРѕСЃС‚Рё
             _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
         } else {
-            // торможение двигателем
+            // С‚РѕСЂРјРѕР¶РµРЅРёРµ РґРІРёРіР°С‚РµР»РµРј
             _torque = -(_data.engineNeutralGearTorque + _data.engineBrakingCoeff * _rpm);
         }
     } else {

@@ -39,7 +39,7 @@ float Quaternion::getMagnitude() {
 }
 
 void Quaternion::getAngleAndAxis(output float& angle, output Vector3& axis) {
-    // если параметр w не попадает в диапазон [-1;+1] - значит кватернион не нормализован
+    // РµСЃР»Рё РїР°СЂР°РјРµС‚СЂ w РЅРµ РїРѕРїР°РґР°РµС‚ РІ РґРёР°РїР°Р·РѕРЅ [-1;+1] - Р·РЅР°С‡РёС‚ РєРІР°С‚РµСЂРЅРёРѕРЅ РЅРµ РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅ
     float alphaHalf = Math::arccos(_w);
     angle = 2.0f * alphaHalf;
     axis.set(_x, _y, _z);

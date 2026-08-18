@@ -3,6 +3,7 @@
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
+#include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
 void EngineLogic::synchEngineAndWheelsAfterShifting(Vehicle& vehicle) {
@@ -24,22 +25,23 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
 
-    // вычисляем обороты ведущих колес и синхронизируем их с двигателем
+    // РІС‹С‡РёСЃР»СЏРµРј РѕР±РѕСЂРѕС‚С‹ РІРµРґСѓС‰РёС… РєРѕР»РµСЃ Рё СЃРёРЅС…СЂРѕРЅРёР·РёСЂСѓРµРј РёС… СЃ РґРІРёРіР°С‚РµР»РµРј
     if (isEngineAndWheelsConnected) {
         float expectedRpmByWheels = vehicle.getAverageDriveWheelsRpm() * gearRatio;
         engine.setRpm(expectedRpmByWheels);
     }
 
-    // вычисляем крутящий момент двигателя и угловые скорости ведущих колес
+    // РІС‹С‡РёСЃР»СЏРµРј РєСЂСѓС‚СЏС‰РёР№ РјРѕРјРµРЅС‚ РґРІРёРіР°С‚РµР»СЏ Рё СѓРіР»РѕРІС‹Рµ СЃРєРѕСЂРѕСЃС‚Рё РІРµРґСѓС‰РёС… РєРѕР»РµСЃ
     float engineTorque = engine.calculateTorque(throttleRatio, isEngineAndWheelsConnected);
     if (isEngineAndWheelsConnected) {
         for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
-            driveWheel.calculateAngularVelocity(vehicleLinearVelocity, engineTorque, gearRatio, dt);
+            Spring& spring = vehicle.getSpring(i);
+            driveWheel.calculateAngularVelocity(vehicleLinearVelocity, engineTorque, gearRatio, spring.getSpringForce(), dt);
         }
     }
 
-    // обрабатываем торможение колес
+    // РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј С‚РѕСЂРјРѕР¶РµРЅРёРµ РєРѕР»РµСЃ
     if (brakeRatio > 0.0f) {
         for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
             Wheel& wheel = vehicle.getWheel(i);
@@ -47,7 +49,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
         }
     }
 
-    // вычисляем угловую скорость колес
+    // РІС‹С‡РёСЃР»СЏРµРј СѓРіР»РѕРІСѓСЋ СЃРєРѕСЂРѕСЃС‚СЊ РєРѕР»РµСЃ
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {

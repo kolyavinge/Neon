@@ -35,7 +35,7 @@ Vector3 Plane::getProjectedPoint(Vector3 point) {
 }
 
 bool Plane::contains(Vector3& point, float eps) {
-    // уравнение плоскости
+    // СѓСЂР°РІРЅРµРЅРёРµ РїР»РѕСЃРєРѕСЃС‚Рё
     float a = _frontNormal.x;
     float b = _frontNormal.y;
     float c = _frontNormal.z;
@@ -50,21 +50,21 @@ bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output
     float startPointDotProduct = _basePoint.getDirectionTo(startPoint).dotProduct(_frontNormal);
     float endPointDotProduct = _basePoint.getDirectionTo(endPoint).dotProduct(_frontNormal);
 
-    // чтобы пересечение было, скалярные произведения должны иметь разные знаки
+    // С‡С‚РѕР±С‹ РїРµСЂРµСЃРµС‡РµРЅРёРµ Р±С‹Р»Рѕ, СЃРєР°Р»СЏСЂРЅС‹Рµ РїСЂРѕРёР·РІРµРґРµРЅРёСЏ РґРѕР»Р¶РЅС‹ РёРјРµС‚СЊ СЂР°Р·РЅС‹Рµ Р·РЅР°РєРё
     if (startPointDotProduct * endPointDotProduct > 0.0f) {
         return false;
     }
 
     Vector3 frontNormal = _frontNormal;
-    // для правильной работы алгоритма startPoint должна находится перед лицевой стороной плоскости (dotProduct > 0)
+    // РґР»СЏ РїСЂР°РІРёР»СЊРЅРѕР№ СЂР°Р±РѕС‚С‹ Р°Р»РіРѕСЂРёС‚РјР° startPoint РґРѕР»Р¶РЅР° РЅР°С…РѕРґРёС‚СЃСЏ РїРµСЂРµРґ Р»РёС†РµРІРѕР№ СЃС‚РѕСЂРѕРЅРѕР№ РїР»РѕСЃРєРѕСЃС‚Рё (dotProduct > 0)
     if (startPointDotProduct < 0.0f) {
-        // такая ситуация возможна, если мы находим пересечение с обьектом, представленным в виде пересекающихся плоскостей
-        // поворачивам плоскость на 180 градусов
-        // (лучше повернуть плоскость, а не менять местами startPoint и endPoint)
+        // С‚Р°РєР°СЏ СЃРёС‚СѓР°С†РёСЏ РІРѕР·РјРѕР¶РЅР°, РµСЃР»Рё РјС‹ РЅР°С…РѕРґРёРј РїРµСЂРµСЃРµС‡РµРЅРёРµ СЃ РѕР±СЊРµРєС‚РѕРј, РїСЂРµРґСЃС‚Р°РІР»РµРЅРЅС‹Рј РІ РІРёРґРµ РїРµСЂРµСЃРµРєР°СЋС‰РёС…СЃСЏ РїР»РѕСЃРєРѕСЃС‚РµР№
+        // РїРѕРІРѕСЂР°С‡РёРІР°Рј РїР»РѕСЃРєРѕСЃС‚СЊ РЅР° 180 РіСЂР°РґСѓСЃРѕРІ
+        // (Р»СѓС‡С€Рµ РїРѕРІРµСЂРЅСѓС‚СЊ РїР»РѕСЃРєРѕСЃС‚СЊ, Р° РЅРµ РјРµРЅСЏС‚СЊ РјРµСЃС‚Р°РјРё startPoint Рё endPoint)
         frontNormal.mul(-1.0f);
     }
 
-    // бинарный поиск
+    // Р±РёРЅР°СЂРЅС‹Р№ РїРѕРёСЃРє
     float length = startPoint.getLengthTo(endPoint);
     Vector3 middlePoint = startPoint.getMiddleTo(endPoint);
     while (length > eps) {
@@ -78,8 +78,8 @@ bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output
         middlePoint = startPoint.getMiddleTo(endPoint);
     }
 
-    // в качестве окончательной точки пересечения берем startPoint
-    // удобно, когда результирующая точка лежит перед лицевой стороной плоскости
+    // РІ РєР°С‡РµСЃС‚РІРµ РѕРєРѕРЅС‡Р°С‚РµР»СЊРЅРѕР№ С‚РѕС‡РєРё РїРµСЂРµСЃРµС‡РµРЅРёСЏ Р±РµСЂРµРј startPoint
+    // СѓРґРѕР±РЅРѕ, РєРѕРіРґР° СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰Р°СЏ С‚РѕС‡РєР° Р»РµР¶РёС‚ РїРµСЂРµРґ Р»РёС†РµРІРѕР№ СЃС‚РѕСЂРѕРЅРѕР№ РїР»РѕСЃРєРѕСЃС‚Рё
     collisionPoint = startPoint;
 
     return true;

@@ -24,8 +24,8 @@ public:
     template<class T>
     static void resize(T*& source, int currentItemsCount, int newItemsCount) {
         T* newSource = new T[(size_t)newItemsCount];
-        // если T простой тип - инициализируем память нулями
-        // если обьект - инициализировать нулями нельзя, ибо мы перезапишем vptr
+        // РµСЃР»Рё T РїСЂРѕСЃС‚РѕР№ С‚РёРї - РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїР°РјСЏС‚СЊ РЅСѓР»СЏРјРё
+        // РµСЃР»Рё РѕР±СЊРµРєС‚ - РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РЅСѓР»СЏРјРё РЅРµР»СЊР·СЏ, РёР±Рѕ РјС‹ РїРµСЂРµР·Р°РїРёС€РµРј vptr
         if (std::is_scalar_v<T>) {
             memset(newSource, 0, newItemsCount * sizeof(T));
         }

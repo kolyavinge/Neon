@@ -23,7 +23,7 @@ public:
         _capacity = capacity;
         if (_capacity > 0) {
             _items = new T[(size_t)_capacity];
-            // если T обьект - нельзя инициализировать нулями, ибо мы перезапишем vptr
+            // РµСЃР»Рё T РѕР±СЊРµРєС‚ - РЅРµР»СЊР·СЏ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РЅСѓР»СЏРјРё, РёР±Рѕ РјС‹ РїРµСЂРµР·Р°РїРёС€РµРј vptr
             if (std::is_scalar_v<T>) {
                 Memory::zero<T>(_items, _capacity);
             }
@@ -59,17 +59,17 @@ public:
         Memory::zero<T>(_items, _count);
     }
 
-    // для простых типов - передача по значению
+    // РґР»СЏ РїСЂРѕСЃС‚С‹С… С‚РёРїРѕРІ - РїРµСЂРµРґР°С‡Р° РїРѕ Р·РЅР°С‡РµРЅРёСЋ
     void add(T value) requires std::is_scalar_v<T> {
         addInternal(value);
     }
 
-    // для обьектов - передача по ссылке
+    // РґР»СЏ РѕР±СЊРµРєС‚РѕРІ - РїРµСЂРµРґР°С‡Р° РїРѕ СЃСЃС‹Р»РєРµ
     void add(T& value) requires !std::is_scalar_v<T> {
         addInternal(value);
     }
 
-    // и по значению, если понадобится
+    // Рё РїРѕ Р·РЅР°С‡РµРЅРёСЋ, РµСЃР»Рё РїРѕРЅР°РґРѕР±РёС‚СЃСЏ
     void addByValue(T value) requires !std::is_scalar_v<T> {
         addInternal(value);
     }

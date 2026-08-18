@@ -129,7 +129,7 @@ void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }
 
-void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float dt) {
+void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt) {
     float driveTorque = engineTorque * gearRatio * _data.gearboxEfficiency / VehicleConstants::driveWheelsCount;
     float roadTorque = _longitudinalForce.dotProduct(_frontNormal) * _radius;
     float wheelTorque = driveTorque - roadTorque;
@@ -141,13 +141,17 @@ void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engine
         float newSign = Numeric::getSign(_angularVelocity);
         if (sign != newSign) {
             _angularVelocity = 0.0f;
+            _accumulatedDeflection = 0.0f;
         }
     }
-    if (Math::abs(_angularVelocity) < VehicleConstants::minAngularVelocity && Math::abs(vehicleLinearVelocity.getLength()) < VehicleConstants::minLinearVelocity) {
-        //if (Math::abs(driveTorque) < Math::abs(maxStaticRoadForce * _radius)) {
-        _angularVelocity = 0.0f;
-        _accumulatedDeflection = 0.0f;
-        //}
+    if (Math::abs(_angularVelocity) < VehicleConstants::minAngularVelocity &&
+        Math::abs(vehicleLinearVelocity.getLength()) < VehicleConstants::minLinearVelocity) {
+        // РјРѕРјРµРЅС‚ РѕС‚ РґРІРёРіР°С‚РµР»В¤ СЃР»РёС€РєРѕРј СЃР»Р°Р±, С‡С‚РѕР±С‹ СЃРѕСЂРІР°С‚СЊ РїСЂСѓР¶РёРЅСѓ Р·Р°С†РµРїР°
+        float maxStaticRoadForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);;
+        if (Math::abs(driveTorque) < Math::abs(maxStaticRoadForce * _radius)) {
+            _angularVelocity = 0.0f;
+            _accumulatedDeflection = 0.0f;
+        }
     }
 }
 
@@ -211,10 +215,9 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
     if (_longitudinalForce.isZero()) return;
     _longitudinalForce.normalize();
 
-    float maxForce = springForce * _data.roadAdhesionCoeff * _data.getLongitudinalForceMaxCoeff((int)_position);
-    // TODO умножать на roadAdhesionCoeff внутри getLongitudinalForceMaxCoeff()
+    float maxForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);
 
-    // сила по модели упругой пружины (для низких скоростей)
+    // СЃРёР»Р° РїРѕ РјРѕРґРµР»Рё СѓРїСЂСѓРіРѕР№ РїСЂСѓР¶РёРЅС‹ (РґР»В¤ РЅРёР·РєРёС… СЃРєРѕСЂРѕСЃС‚РµР№)
     float drivenVelocity = _angularVelocity * _radius;
     float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     float deltaV = drivenVelocity - linearVelocity;
@@ -222,15 +225,15 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
     float slowVelocityForce = (_data.tireStiffness * _accumulatedDeflection) + (_data.tireDamping * deltaV);
     if (Math::abs(slowVelocityForce) > maxForce) {
         slowVelocityForce = Numeric::getSign(slowVelocityForce) * maxForce;
-        // корректируем деформацию, чтобы пружина не растягивалась бесконечноss
+        // РєРѕСЂСЂРµРєС‚РёСЂСѓРµРј РґРµС„РѕСЂРјР°С†РёСЋ, С‡С‚РѕР±С‹ РїСЂСѓР¶РёРЅР° РЅРµ СЂР°СЃС‚В¤РіРёРІР°Р»Р°СЃСЊ Р±РµСЃРєРѕРЅРµС‡РЅРѕss
         _accumulatedDeflection = (slowVelocityForce - (_data.tireDamping * deltaV)) / _data.tireStiffness;
     }
 
-    // сила по Пасейке (для высоких скоростей)
+    // СЃРёР»Р° РїРѕ С•Р°СЃРµР№РєРµ (РґР»В¤ РІС‹СЃРѕРєРёС… СЃРєРѕСЂРѕСЃС‚РµР№)
     float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
         : 0.0f;
-    // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
+    // РµСЃР»Рё РєРѕР»РµСЃРѕ РЅРµ РІСЂР°С‰Р°РµС‚СЃВ¤, С‚Рѕ РїСЂРѕРґРѕР»СЊРЅР°В¤ СЃРёР»Р° = 0, С‚РѕСЂРјРѕР¶РµРЅРёРµ РѕР±РµСЃРїРµС‡РёРІР°РµС‚СЃВ¤ Р·Р° СЃС‡РµС‚ СЃРёР»С‹ С‚СЂРµРЅРёВ¤
     float fastVelocityForce = forceCoeff * springForce;
 
     float blendFactor = Numeric::clamp(Math::abs(linearVelocity) / _data.lowVelocityLimit, 0.0f, 1.0f);

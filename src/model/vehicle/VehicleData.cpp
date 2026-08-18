@@ -57,7 +57,6 @@ VehicleData::VehicleData() {
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
     lowVelocityLimit = 1.5f;
-    roadAdhesionCoeff = 2.0f; // задает общее сцепление с дорогой (большее значение - больший держак)
 
     /* spring */
     const float stiffnessMul = 1000.0f;
@@ -102,7 +101,7 @@ float VehicleData::getLongitudinalForceCoeff(int wheelIndex, float slipRatio) {
 }
 
 float VehicleData::getLateralForceCoeff(int wheelIndex, float slipAngle) {
-    slipAngle = UnitConverter::radiansToDegrees(slipAngle); // формула рассчитана на градусы
+    slipAngle = UnitConverter::radiansToDegrees(slipAngle); // С„РѕСЂРјСѓР»Р° СЂР°СЃСЃС‡РёС‚Р°РЅР° РЅР° РіСЂР°РґСѓСЃС‹
     return _lateralForceCurve[wheelIndex].getValue(slipAngle);
 }
 

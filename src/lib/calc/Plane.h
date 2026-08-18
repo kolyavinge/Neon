@@ -2,7 +2,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
-// математическая плоскость
+// РјР°С‚РµРјР°С‚РёС‡РµСЃРєР°СЏ РїР»РѕСЃРєРѕСЃС‚СЊ
 class Plane : public Object {
 
     Vector3 _frontNormal;

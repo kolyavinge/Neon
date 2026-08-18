@@ -1,6 +1,6 @@
 #pragma once
 
-// в glfw3.h подключается gl.h, glew.h нужно подключить раньше
+// РІ glfw3.h РїРѕРґРєР»СЋС‡Р°РµС‚СЃСЏ gl.h, glew.h РЅСѓР¶РЅРѕ РїРѕРґРєР»СЋС‡РёС‚СЊ СЂР°РЅСЊС€Рµ
 #include <glew/glew.h>
 
 #include <glfw/glfw3.h>

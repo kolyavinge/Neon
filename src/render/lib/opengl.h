@@ -2,7 +2,7 @@
 
 #pragma warning(push)
 #pragma warning(disable : 5039 4668 5204 4100)
-// glew должен подключаться раньше gl
+// glew РґРѕР»Р¶РµРЅ РїРѕРґРєР»СЋС‡Р°С‚СЊСЃСЏ СЂР°РЅСЊС€Рµ gl
 #include <glew/glew.h>
 
 #include <gl/gl.h>

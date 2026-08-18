@@ -78,7 +78,7 @@ float Math::lerp(float start, float end, float t) {
 Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3 pivotPoint) {
     point.sub(pivotPoint);
 
-    // Формула Родрига
+    // Р¤РѕСЂРјСѓР»Р° Р РѕРґСЂРёРіР°
     // cos * point + (pivotAxis, point) * (1 - cos) * pivotAxis + sin * [pivotAxis, point]
     // a + b + c
 
@@ -99,7 +99,7 @@ Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3
     a.add(b);
     a.add(c);
 
-    // Формула Родрига
+    // Р¤РѕСЂРјСѓР»Р° Р РѕРґСЂРёРіР°
 
     a.add(pivotPoint);
 
