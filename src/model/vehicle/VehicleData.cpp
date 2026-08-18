@@ -91,10 +91,10 @@ VehicleData::VehicleData() {
     _lateralForceCurve[(int)WheelPosition::rearRight].set(0.714f, 1.4f, D, -0.2f);
 }
 
-float VehicleData::getRollingResistanceCoeff(float linearVelocityNormalizedProjection) {
-    float friction = (1.0f - linearVelocityNormalizedProjection) * 500.0f;
-    return Math::max(friction, minRollingResistanceCoeff);
-}
+//float VehicleData::getRollingResistanceCoeff(float linearVelocityNormalizedProjection) { TODO удалить
+//    float friction = (1.0f - linearVelocityNormalizedProjection) * 500.0f;
+//    return Math::max(friction, minRollingResistanceCoeff);
+//}
 
 float VehicleData::getLongitudinalForceCoeff(int wheelIndex, float slipRatio) {
     return _longitudinalForceCurve[wheelIndex].getValue(slipRatio);

@@ -16,7 +16,7 @@ private:
     static void printThrottle(DrivingInputData& inputData);
     static void printEngineRpm(Vehicle& vehicle);
     static void printEngineTorque(Vehicle& vehicle);
-    static void printWheelAngularVelocity(Vehicle& vehicle);
+    static void printWheelsAngularVelocity(Vehicle& vehicle);
     static void printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle);
     static void printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels);
     static void printSlipAngle(Vehicle& vehicle);

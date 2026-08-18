@@ -23,6 +23,7 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
 }
 
 void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
+    if (vehicle.isFrozen()) return;
     _steeringLogic.steer(vehicle);
     bool isShifted = _gearboxLogic.shift(vehicle);
     if (isShifted) {

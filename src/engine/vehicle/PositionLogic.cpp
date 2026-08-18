@@ -15,4 +15,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.calculateBodyPosition();
     _wheelLogic.updateFrontAndOutsideNormals(vehicle);
     vehicle.calculateModelMatrixForAllWheels();
+    if (vehicle.isFrozen()) {
+        vehicle.zeroAllVelocitiesAndForces();
+    }
 }

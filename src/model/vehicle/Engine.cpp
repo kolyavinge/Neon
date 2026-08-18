@@ -25,6 +25,7 @@ void Engine::setRpm(float rpm) {
 }
 
 float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected) {
+    // TODO убрать если не нужно
     //if (_rpm == _data.engineMinRpm && throttleRatio == 0.0f) {
     //    _torque = 0.0f;
     //    return _torque;

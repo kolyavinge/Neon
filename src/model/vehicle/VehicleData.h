@@ -71,7 +71,7 @@ public:
     float springBumpStopStiffness;
 
     VehicleData();
-    float getRollingResistanceCoeff(float linearVelocityNormalizedProjection);
+    //float getRollingResistanceCoeff(float linearVelocityNormalizedProjection);
     float getLongitudinalForceCoeff(int wheelIndex, float slipRatio);
     float getLateralForceCoeff(int wheelIndex, float slipAngle);
     float getLongitudinalForceMaxCoeff(int wheelIndex);

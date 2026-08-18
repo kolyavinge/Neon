@@ -2,8 +2,6 @@
 #include <engine/vehicle/ForceLogic.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
-#include <model/vehicle/Gear.h>
-#include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
@@ -59,6 +57,7 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    float vehicleLinearVelocityValue = vehicleLinearVelocity.getLength();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
@@ -73,7 +72,7 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
         wheel.setSlipAngle(slipAngle);
         wheel.calculateLongitudinalForce(vehicleLinearVelocity, chassisFrontNormal, springForce, dt);
         wheel.calculateLateralForce(springForce);
-        wheel.calculateRollingResistanceForce();
+        wheel.calculateRollingResistanceForce(vehicleLinearVelocityValue);
         _wheelLogic.normalizeLongitudinalAndLateralForces(wheel, springForce);
     }
 }

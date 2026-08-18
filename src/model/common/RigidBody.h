@@ -42,6 +42,7 @@ public:
     void setLinearVelocity(Vector3 velocity);
     Vector3 getLinearAcceleration();
     Vector3 getAngularVelocity();
+    void setAngularVelocity(Vector3 velocity);
     TransformMatrix4& getModelMatrix();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 worldPoint);

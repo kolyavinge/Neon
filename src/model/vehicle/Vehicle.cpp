@@ -195,3 +195,24 @@ float Vehicle::getAverageDriveWheelsRpm() {
 
     return averageWheelsRpm;
 }
+
+bool Vehicle::isFrozen() {
+    return
+        !_drivingInputData.anyInput() &&
+        Numeric::floatEquals(_rigidBody.getLinearVelocity().getLength(), 0.0f, VehicleConstants::minLinearVelocity) &&
+        Numeric::floatEquals(_rigidBody.getAngularVelocity().getLength(), 0.0f, VehicleConstants::minAngularVelocity) &&
+        Numeric::floatEquals(_wheels[(int)WheelPosition::frontLeft].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
+        Numeric::floatEquals(_wheels[(int)WheelPosition::frontRight].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
+        Numeric::floatEquals(_wheels[(int)WheelPosition::rearLeft].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
+        Numeric::floatEquals(_wheels[(int)WheelPosition::rearRight].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity);
+}
+
+void Vehicle::zeroAllVelocitiesAndForces() {
+    _rigidBody.setLinearVelocity(Vector3());
+    _rigidBody.setAngularVelocity(Vector3());
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        Wheel& wheel = getWheel(i);
+        wheel.setAngularVelocity(0.0f);
+        wheel.clearAllForces();
+    }
+}

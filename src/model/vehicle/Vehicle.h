@@ -60,6 +60,8 @@ public:
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition();
     float getAverageDriveWheelsRpm();
+    bool isFrozen();
+    void zeroAllVelocitiesAndForces();
 
 private:
     void initWheelAndSpring(WheelPosition position);

@@ -14,19 +14,19 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     //printThrottle(vehicle.getDrivingInputData());
     //printEngineRpm(vehicle);
     //printEngineTorque(vehicle);
-    //printWheelAngularVelocity(vehicle);
+    printWheelsAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
     //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    //printVehicleLinearVelocity(vehicle);
+    printVehicleLinearVelocity(vehicle);
     //printVehicleAngularVelocity(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
     //printSpringPositions(vehicle);
     //printWheelsGroundContactPoint(vehicle);
-    printWheelsGroundContactPointLength(vehicle);
+    //printWheelsGroundContactPointLength(vehicle);
     //printWheelsGroundContact(vehicle);
 
     printf("\r\n");
@@ -48,8 +48,12 @@ void VehicleDebuger::printEngineTorque(Vehicle& vehicle) {
     printf("Trq %i|", (int)vehicle.getEngine().getTorque());
 }
 
-void VehicleDebuger::printWheelAngularVelocity(Vehicle& vehicle) {
-    printf("Wh %i|", (int)vehicle.getDriveWheel(0).getAngularVelocity());
+void VehicleDebuger::printWheelsAngularVelocity(Vehicle& vehicle) {
+    printf("Wh %.4f %.4f %.4f %.4f|",
+        vehicle.getWheel(0).getAngularVelocity(),
+        vehicle.getWheel(1).getAngularVelocity(),
+        vehicle.getWheel(2).getAngularVelocity(),
+        vehicle.getWheel(3).getAngularVelocity());
 }
 
 void VehicleDebuger::printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle) {
@@ -132,7 +136,7 @@ void VehicleDebuger::printLateralForce(Wheel& wheel, bool last) {
 void VehicleDebuger::printVehicleLinearVelocity(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     float v = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength() * Numeric::getSign(vehicle.getChassisFrontNormal().dotProduct(vehicleLinearVelocity)));
-    printf("V %i|", (int)v);
+    printf("V %.3f|", v);
 }
 
 void VehicleDebuger::printVehicleAngularVelocity(Vehicle& vehicle) {
@@ -150,7 +154,7 @@ void VehicleDebuger::printSpringForce(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printSpringLengths(Vehicle& vehicle) {
-    printf("SpringLn %.3f %.3f %.3f %.3f|",
+    printf("SpringLn %.4f %.4f %.4f %.4f|",
         vehicle.getSpring(0).getLength(),
         vehicle.getSpring(1).getLength(),
         vehicle.getSpring(2).getLength(),

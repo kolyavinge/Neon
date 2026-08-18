@@ -26,5 +26,6 @@ public:
     bool isShiftedDown();
     void shiftDown();
     void resetShifting();
+    bool anyInput();
     void update(float dt);
 };

@@ -80,6 +80,10 @@ Vector3 RigidBody::getAngularVelocity() {
     return _angularVelocity;
 }
 
+void RigidBody::setAngularVelocity(Vector3 velocity) {
+    _angularVelocity = velocity;
+}
+
 TransformMatrix4& RigidBody::getModelMatrix() {
     return _modelMatrix;
 }
@@ -104,7 +108,7 @@ void RigidBody::updatePosition(float dt) {
     _linearVelocity.addMultiplied(_linearAcceleration, dt);
     float linearVelocityValue = _linearVelocity.getLength();
     if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _minLinearVelocity) {
-        _linearVelocity.setZero();
+        _linearVelocity.setZero(); // TODO наверное лишнее
     }
     _center.addMultiplied(_linearVelocity, dt);
 
@@ -120,7 +124,7 @@ void RigidBody::updatePosition(float dt) {
     _angularVelocity.addMultiplied(angularAcceleration, dt);
     float angularVelocityValue = _angularVelocity.getLength();
     if (angularVelocityValue < oldAngularVelocityValue && angularVelocityValue < _minAngularVelocity) {
-        _angularVelocity.setZero();
+        _angularVelocity.setZero(); // TODO наверное лишнее
     }
     if (!_angularVelocity.isZero()) {
         float angle = _angularVelocity.getLength();
