@@ -39,6 +39,7 @@ public:
     Spring& getSpring(int i);
     Spring& getSpring(WheelPosition p);
     Body& getBody();
+    bool isBrakingByWheelsOrEngine();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
     void applyGravity();

@@ -25,7 +25,7 @@ void Vehicle::init() {
         _data.bodyMeasures,
         VehicleConstants::minLinearVelocity,
         VehicleConstants::minAngularVelocity);
-    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 1.0f));
+    _rigidBody.setCenter(Vector3(0.0f, 0.0f, 0.5f));
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {
@@ -79,6 +79,13 @@ Spring& Vehicle::getSpring(WheelPosition p) {
 
 Body& Vehicle::getBody() {
     return _body;
+}
+
+bool Vehicle::isBrakingByWheelsOrEngine() {
+    return
+        _drivingInputData.getBrakeRatio() > 0.0f ||
+        _drivingInputData.getThrottleRatio() == 0.0f ||
+        !_gearbox.isEngineAndWheelsConnected();
 }
 
 void Vehicle::applyForceAtCenter(Vector3 force) {

@@ -51,7 +51,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
 
     // вычисляем угловую скорость колес
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
-    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected;
+    bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
         if (!wheel.isDrive() || wheel.isDrive() && isBrakingByWheelsOrEngine) {

@@ -2,7 +2,7 @@
 
 #include <lib/system.h>
 
-// проста¤ интерпол¤ци¤ двух значений
+// простая интерполяция двух значений
 template<class T>
 class SmoothValue : public Object {
 

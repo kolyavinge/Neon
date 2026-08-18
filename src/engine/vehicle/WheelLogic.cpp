@@ -6,9 +6,7 @@ SlipRatio WheelLogic::calculateSlipRatio(
     Wheel& wheel,
     Vector3 vehicleLinearVelocity,
     Vector3 chassisFrontNormal,
-    bool isEngineAndWheelsConnected,
-    float throttleRatio,
-    float brakeRatio) {
+    bool isBrakingByWheelsOrEngine) {
     // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
     float drivenVelocity = wheel.getAngularVelocity() * wheel.getRadius();
     float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
@@ -18,11 +16,9 @@ SlipRatio WheelLogic::calculateSlipRatio(
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
     float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
     // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
-    bool isBrakingByWheelsOrEngine = brakeRatio > 0.0f || throttleRatio == 0.0f || !isEngineAndWheelsConnected; // TODO вынести метод в класс Vehicle
     if (isBrakingByWheelsOrEngine) {
-        float linearVelocityProjection = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / linearVelocity;
         // сила торможения направлена противоположно скорости
-        if (Numeric::getSign(linearVelocityProjection) == Numeric::getSign(slipRatio)) {
+        if (Numeric::getSign(linearVelocity) == Numeric::getSign(slipRatio)) {
             slipRatio = -slipRatio;
         }
     }

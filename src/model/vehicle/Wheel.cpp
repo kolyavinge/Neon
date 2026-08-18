@@ -146,9 +146,9 @@ void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engine
     }
     if (Math::abs(_angularVelocity) < VehicleConstants::minAngularVelocity &&
         Math::abs(vehicleLinearVelocity.getLength()) < VehicleConstants::minLinearVelocity) {
-        // момент от двигател¤ слишком слаб, чтобы сорвать пружину зацепа
-        float maxStaticRoadForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);;
-        if (Math::abs(driveTorque) < Math::abs(maxStaticRoadForce * _radius)) {
+        // момент от двигателя слишком слаб, чтобы сорвать пружину зацепа
+        float maxForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);
+        if (Math::abs(driveTorque) < Math::abs(maxForce * _radius)) {
             _angularVelocity = 0.0f;
             _accumulatedDeflection = 0.0f;
         }
@@ -217,7 +217,7 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
 
     float maxForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);
 
-    // сила по модели упругой пружины (дл¤ низких скоростей)
+    // сила по модели упругой пружины (для низких скоростей)
     float drivenVelocity = _angularVelocity * _radius;
     float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     float deltaV = drivenVelocity - linearVelocity;
@@ -225,15 +225,15 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
     float slowVelocityForce = (_data.tireStiffness * _accumulatedDeflection) + (_data.tireDamping * deltaV);
     if (Math::abs(slowVelocityForce) > maxForce) {
         slowVelocityForce = Numeric::getSign(slowVelocityForce) * maxForce;
-        // корректируем деформацию, чтобы пружина не раст¤гивалась бесконечноss
+        // корректируем деформацию, чтобы пружина не растягивалась бесконечность
         _accumulatedDeflection = (slowVelocityForce - (_data.tireDamping * deltaV)) / _data.tireStiffness;
     }
 
-    // сила по ѕасейке (дл¤ высоких скоростей)
+    // сила по ѕасейке (для высоких скоростей)
     float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f)
         ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
         : 0.0f;
-    // если колесо не вращаетс¤, то продольна¤ сила = 0, торможение обеспечиваетс¤ за счет силы трени¤
+    // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
     float fastVelocityForce = forceCoeff * springForce;
 
     float blendFactor = Numeric::clamp(Math::abs(linearVelocity) / _data.lowVelocityLimit, 0.0f, 1.0f);

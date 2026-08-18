@@ -29,6 +29,8 @@ private:
     static void printSpringForce(Vehicle& vehicle);
     static void printSpringLengths(Vehicle& vehicle);
     static void printSpringPositions(Vehicle& vehicle);
+    static void printWheelsGroundContactPoint(Vehicle& vehicle);
+    static void printWheelsGroundContactPointLength(Vehicle& vehicle);
     static void printWheelsGroundContact(Vehicle& vehicle);
     static void printVector(Vector3 v);
     static void paintText(DrivingInputData& inputData);

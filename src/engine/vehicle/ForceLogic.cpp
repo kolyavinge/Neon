@@ -58,19 +58,16 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
-    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
-    float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
-    Gearbox& gearbox = vehicle.getGearbox();
-    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
+    bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         wheel.clearAllForces();
         if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getSpringForce();
-        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isEngineAndWheelsConnected, throttleRatio, brakeRatio);
+        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isBrakingByWheelsOrEngine);
         float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity);
         wheel.setSlipRatio(slipRatio);
         wheel.setSlipAngle(slipAngle);

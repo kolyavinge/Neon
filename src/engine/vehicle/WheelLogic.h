@@ -15,9 +15,7 @@ public:
         Wheel& wheel,
         Vector3 vehicleLinearVelocity,
         Vector3 chassisFrontNormal,
-        bool isEngineAndWheelsConnected,
-        float throttleRatio,
-        float brakeRatio);
+        bool isBrakingByWheelsOrEngine);
 
     float calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity);
     void updateFrontAndOutsideNormals(Vehicle& vehicle);
