@@ -11,7 +11,11 @@ class RigidBody : public Object {
 
     float _mass;
     Measures _measures;
+    float _minLinearVelocity;
+    float _minAngularVelocity;
     TransformMatrix4 _localInertiaInverse;
+
+    // current state
     TransformMatrix4 _worldInertiaInverse;
     Vector3 _center;
     Quaternion _rotation;
@@ -19,13 +23,21 @@ class RigidBody : public Object {
     Vector3 _rotateAxis;
     CoordinateAxes _coordinateAxes;
     Vector3 _linearVelocity;
-    float _minLinearVelocity;
-    Vector3 _linearAcceleration;
     Vector3 _angularVelocity;
-    float _minAngularVelocity;
     TransformMatrix4 _modelMatrix;
     Vector3 _totalForce;
     Vector3 _totalTorque;
+
+    // prev state
+    TransformMatrix4 _prevWorldInertiaInverse;
+    Vector3 _prevCenter;
+    Quaternion _prevRotation;
+    float _prevRotateAngle;
+    Vector3 _prevRotateAxis;
+    CoordinateAxes _prevCoordinateAxes;
+    Vector3 _prevLinearVelocity;
+    Vector3 _prevAngularVelocity;
+    TransformMatrix4 _prevModelMatrix;
 
 public:
     RigidBody();
@@ -40,7 +52,6 @@ public:
     CoordinateAxes& getCoordinateAxes();
     Vector3 getLinearVelocity();
     void setLinearVelocity(Vector3 velocity);
-    Vector3 getLinearAcceleration();
     Vector3 getAngularVelocity();
     void setAngularVelocity(Vector3 velocity);
     TransformMatrix4& getModelMatrix();
@@ -48,10 +59,12 @@ public:
     void applyForceAtPoint(Vector3 force, Vector3 worldPoint);
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
+    void resetToPrevPosition();
     void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
+    void saveState();
     void updateModelMatrix();
     void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
 };

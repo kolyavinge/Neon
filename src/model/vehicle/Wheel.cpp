@@ -323,7 +323,7 @@ bool Wheel::isFrozen() {
         Numeric::floatEquals(_centerVelocity.getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta);
 }
 
-void Wheel::zeroAllVelocitiesAndForces() {
+void Wheel::clearAllVelocitiesAndForces() {
     _angularVelocity = 0.0f;
     _slipRatio = SlipRatio();
     _slipAngle = 0.0f;

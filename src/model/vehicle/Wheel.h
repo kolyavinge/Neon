@@ -93,7 +93,7 @@ public:
     Vector3 getGroundContactPoint();
     void setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane);
     bool isFrozen();
-    void zeroAllVelocitiesAndForces();
+    void clearAllVelocitiesAndForces();
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);
 };

@@ -13,6 +13,9 @@ class CoordinateAxes : public Object {
     Vector3 _upAxis;
 
 public:
+    CoordinateAxes();
+    CoordinateAxes& operator=(const CoordinateAxes& other);
+    CoordinateAxes(const CoordinateAxes&) = default;
     void setAxes(Vector3 rightAxis, Vector3 frontAxis);
     Vector3 getRightAxis();
     Vector3 getFrontAxis();

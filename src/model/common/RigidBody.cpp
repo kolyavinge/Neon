@@ -6,6 +6,7 @@ RigidBody::RigidBody() {
     _rotateAngle = 0.0f;
     _minLinearVelocity = 0.0f;
     _minAngularVelocity = 0.0f;
+    _prevRotateAngle = 0.0f;
 }
 
 void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float minLinearVelocity, float minAngularVelocity) {
@@ -72,10 +73,6 @@ void RigidBody::setLinearVelocity(Vector3 velocity) {
     _linearVelocity = velocity;
 }
 
-Vector3 RigidBody::getLinearAcceleration() {
-    return _linearAcceleration;
-}
-
 Vector3 RigidBody::getAngularVelocity() {
     return _angularVelocity;
 }
@@ -105,11 +102,13 @@ void RigidBody::applyTorque(Vector3 torque) {
 }
 
 void RigidBody::updatePosition(float dt) {
+    saveState();
+
     // linear movement
     float oldLinearVelocityValue = _linearVelocity.getLength();
-    _linearAcceleration = _totalForce;
-    _linearAcceleration.div(_mass);
-    _linearVelocity.addMultiplied(_linearAcceleration, dt);
+    Vector3 linearAcceleration = _totalForce;
+    linearAcceleration.div(_mass);
+    _linearVelocity.addMultiplied(linearAcceleration, dt);
     float linearVelocityValue = _linearVelocity.getLength();
     if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _minLinearVelocity) {
         _linearVelocity.setZero();
@@ -145,6 +144,18 @@ void RigidBody::updatePosition(float dt) {
     updateModelMatrix();
 }
 
+void RigidBody::resetToPrevPosition() {
+    _worldInertiaInverse = _prevWorldInertiaInverse;
+    _center = _prevCenter;
+    _rotation = _prevRotation;
+    _rotateAngle = _prevRotateAngle;
+    _rotateAxis = _prevRotateAxis;
+    _coordinateAxes = _prevCoordinateAxes;
+    _linearVelocity = _prevLinearVelocity;
+    _angularVelocity = _prevAngularVelocity;
+    _modelMatrix = _prevModelMatrix;
+}
+
 void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
     Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
 
@@ -174,6 +185,18 @@ Vector3 RigidBody::getVelocityAtPoint(Vector3 worldPoint) {
     result.add(_linearVelocity);
 
     return result;
+}
+
+void RigidBody::saveState() {
+    _prevWorldInertiaInverse = _worldInertiaInverse;
+    _prevCenter = _center;
+    _prevRotation = _rotation;
+    _prevRotateAngle = _rotateAngle;
+    _prevRotateAxis = _rotateAxis;
+    _prevCoordinateAxes = _coordinateAxes;
+    _prevLinearVelocity = _linearVelocity;
+    _prevAngularVelocity = _angularVelocity;
+    _prevModelMatrix = _modelMatrix;
 }
 
 void RigidBody::updateModelMatrix() {

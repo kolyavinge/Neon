@@ -110,6 +110,10 @@ void Vehicle::updatePosition(float dt) {
     _rigidBody.updatePosition(dt);
 }
 
+void Vehicle::resetToPrevPosition() {
+    _rigidBody.resetToPrevPosition();
+}
+
 Vector3 Vehicle::getCenter() {
     return _rigidBody.getCenter();
 }
@@ -219,11 +223,11 @@ bool Vehicle::isFrozen() {
         _wheels[(int)WheelPosition::rearRight].isFrozen();
 }
 
-void Vehicle::zeroAllVelocitiesAndForces() {
+void Vehicle::clearAllVelocitiesAndForces() {
     _rigidBody.setLinearVelocity(Vector3());
     _rigidBody.setAngularVelocity(Vector3());
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = getWheel(i);
-        wheel.zeroAllVelocitiesAndForces();
+        wheel.clearAllVelocitiesAndForces();
     }
 }

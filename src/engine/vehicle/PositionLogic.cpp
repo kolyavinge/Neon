@@ -9,13 +9,19 @@ PositionLogic::PositionLogic(
 
 void PositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.calculatePositionForAllSprings();
-    _vehicleCollisionLogic.resolveWheelGroundCollisions(vehicle);
+    bool anyCollisions = _vehicleCollisionLogic.resolveWheelGroundCollisions(vehicle);
+    if (!anyCollisions) {
+        vehicle.resetToPrevPosition();
+        vehicle.calculatePositionForAllSprings();
+        vehicle.clearAllVelocitiesAndForces();
+        return;
+    }
     vehicle.calculateLengthForAllSprings();
     vehicle.calculateCenterVelocityForAllWheels();
     vehicle.calculateBodyPosition();
     _wheelLogic.updateFrontAndOutsideNormals(vehicle);
     vehicle.calculateModelMatrixForAllWheels();
     if (vehicle.isFrozen()) {
-        vehicle.zeroAllVelocitiesAndForces();
+        vehicle.clearAllVelocitiesAndForces();
     }
 }

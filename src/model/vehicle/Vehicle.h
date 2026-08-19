@@ -6,12 +6,12 @@
 #include <lib/system.h>
 #include <model/common/RigidBody.h>
 #include <model/vehicle/Body.h>
+#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Engine.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
-#include <model/vehicle/DrivingInputData.h>
 
 class Vehicle : public Object {
 
@@ -45,6 +45,7 @@ public:
     void applyGravity();
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
+    void resetToPrevPosition();
     Vector3 getCenter();
     void setCenter(Vector3 center);
     Vector3 getChassisRightNormal();
@@ -63,7 +64,7 @@ public:
     void calculateBodyPosition();
     float getAverageDriveWheelsRpm();
     bool isFrozen();
-    void zeroAllVelocitiesAndForces();
+    void clearAllVelocitiesAndForces();
 
 private:
     void initWheelAndSpring(WheelPosition position);

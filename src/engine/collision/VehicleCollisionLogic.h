@@ -9,5 +9,5 @@ class VehicleCollisionLogic : public Object {
 
 public:
     VehicleCollisionLogic();
-    void resolveWheelGroundCollisions(Vehicle& vehicle);
+    bool resolveWheelGroundCollisions(Vehicle& vehicle);
 };

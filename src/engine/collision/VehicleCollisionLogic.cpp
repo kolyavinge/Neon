@@ -9,7 +9,9 @@ VehicleCollisionLogic::VehicleCollisionLogic() :
     _groundPlane(CommonConstants::upAxis, CommonConstants::axisOrigin) {
 }
 
-void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
+bool VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
+    bool anyCollisions = false;
+    bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
@@ -18,17 +20,26 @@ void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
         Vector3 rayToPosition = rayFromPosition;
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
-        Vector3 groundContactPoint;
-        bool hasGroundContact = _groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.00001f, output groundContactPoint);
-        wheel.setGroundContact(hasGroundContact);
-        if (hasGroundContact) {
-            wheel.setGroundContactPoint(groundContactPoint, &_groundPlane);
+        Vector3 newGroundContactPoint;
+        bool hasNewGroundContact = _groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
+        bool noNeedUpdate =
+            vehicleStopped &&
+            hasNewGroundContact &&
+            wheel.hasGroundContact() &&
+            wheel.getGroundContactPoint().getLengthTo(newGroundContactPoint) < 0.0001f;
+        if (noNeedUpdate) {
+            continue;
+        }
+        anyCollisions = true;
+        wheel.setGroundContact(hasNewGroundContact);
+        if (hasNewGroundContact) {
+            wheel.setGroundContactPoint(newGroundContactPoint, &_groundPlane);
         } else {
             wheel.setGroundContactPoint(Vector3(), nullptr);
         }
         Vector3 newWheelCenter;
-        if (hasGroundContact) {
-            newWheelCenter.set(groundContactPoint);
+        if (hasNewGroundContact) {
+            newWheelCenter.set(newGroundContactPoint);
             newWheelCenter.addMultiplied(chassisUpNormal, wheel.getRadius());
         } else {
             newWheelCenter = spring.getPosition();
@@ -36,4 +47,6 @@ void VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
         }
         wheel.setCenter(newWheelCenter);
     }
+
+    return anyCollisions;
 }

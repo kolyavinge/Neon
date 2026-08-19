@@ -1,5 +1,17 @@
 #include <lib/calc/CoordinateAxes.h>
 
+CoordinateAxes::CoordinateAxes() {}
+
+CoordinateAxes& CoordinateAxes::operator=(const CoordinateAxes& other) {
+    _initRightAxis = other._initRightAxis;
+    _initFrontAxis = other._initFrontAxis;
+    _rightAxis = other._rightAxis;
+    _frontAxis = other._frontAxis;
+    _upAxis = other._upAxis;
+
+    return *this;
+}
+
 void CoordinateAxes::setAxes(Vector3 rightAxis, Vector3 frontAxis) {
     _initRightAxis = rightAxis;
     _initFrontAxis = frontAxis;
