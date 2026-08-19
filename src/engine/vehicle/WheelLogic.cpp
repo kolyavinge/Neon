@@ -27,13 +27,13 @@ SlipRatio WheelLogic::calculateSlipRatio(
     return SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
 
-float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity) {
+float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleFrontLinearVelocity) {
     // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
-    if (vehicleLinearVelocity.isZero()) return 0.0f;
+    if (Numeric::floatEquals(vehicleFrontLinearVelocity.getLength(), 0.0f, 0.5f)) return 0.0f;
     // знак lateralVelocity разный для левого и правого колеса
     // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
-    float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleLinearVelocity);
-    float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleLinearVelocity));
+    float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleFrontLinearVelocity);
+    float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleFrontLinearVelocity));
     float slipAngle = -Math::arctan2(lateralVelocity, longitudinalVelocity);
     if (Numeric::floatEquals(slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) return 0.0f;
 

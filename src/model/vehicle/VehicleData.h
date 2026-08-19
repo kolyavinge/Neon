@@ -29,6 +29,8 @@ public:
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;
+    float bodyBaseYawDamping;
+    float bodyAirYawDamping;
 
     /* chassis */
     float frontWheelLengthToMassCenter;

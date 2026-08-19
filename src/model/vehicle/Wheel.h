@@ -85,13 +85,15 @@ public:
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
-    void calculateRollingResistanceForce(float vehicleLinearVelocity);
+    void calculateRollingResistanceForce(Vector3 vehicleFrontLinearVelocity);
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio);
     bool hasGroundContact();
     void setGroundContact(bool value);
     Vector3 getGroundContactPoint();
     void setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane);
+    bool isFrozen();
+    void zeroAllVelocitiesAndForces();
     TransformMatrix4& getModelMatrix();
     void calculateModelMatrix(float chassisRotateAngle, Vector3 chassisRotateAxis);
 };

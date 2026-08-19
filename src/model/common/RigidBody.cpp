@@ -100,6 +100,10 @@ void RigidBody::applyForceAtPoint(Vector3 force, Vector3 worldPoint) {
     _totalTorque.add(torque);
 }
 
+void RigidBody::applyTorque(Vector3 torque) {
+    _totalTorque.add(torque);
+}
+
 void RigidBody::updatePosition(float dt) {
     // linear movement
     float oldLinearVelocityValue = _linearVelocity.getLength();
@@ -108,7 +112,7 @@ void RigidBody::updatePosition(float dt) {
     _linearVelocity.addMultiplied(_linearAcceleration, dt);
     float linearVelocityValue = _linearVelocity.getLength();
     if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _minLinearVelocity) {
-        _linearVelocity.setZero(); // TODO наверное лишнее
+        _linearVelocity.setZero();
     }
     _center.addMultiplied(_linearVelocity, dt);
 
@@ -124,7 +128,7 @@ void RigidBody::updatePosition(float dt) {
     _angularVelocity.addMultiplied(angularAcceleration, dt);
     float angularVelocityValue = _angularVelocity.getLength();
     if (angularVelocityValue < oldAngularVelocityValue && angularVelocityValue < _minAngularVelocity) {
-        _angularVelocity.setZero(); // TODO наверное лишнее
+        _angularVelocity.setZero();
     }
     if (!_angularVelocity.isZero()) {
         float angle = _angularVelocity.getLength();

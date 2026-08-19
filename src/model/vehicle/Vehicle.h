@@ -43,6 +43,7 @@ public:
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
     void applyGravity();
+    void applyTorque(Vector3 torque);
     void updatePosition(float dt);
     Vector3 getCenter();
     void setCenter(Vector3 center);
@@ -53,6 +54,7 @@ public:
     Vector3 getChassisRotateAxis();
     TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
+    Vector3 getLinearVelocityProjectedOnFrontNormal();
     Vector3 getAngularVelocity();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();

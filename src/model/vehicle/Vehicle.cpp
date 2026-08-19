@@ -23,8 +23,8 @@ void Vehicle::init() {
         CommonConstants::frontAxis,
         _data.vehicleMass,
         _data.bodyMeasures,
-        VehicleConstants::minLinearVelocity,
-        VehicleConstants::minAngularVelocity);
+        VehicleConstants::minLinearVelocityDelta,
+        VehicleConstants::minAngularVelocityDelta);
     _rigidBody.setCenter(Vector3(0.0f, 0.0f, 0.5f));
 }
 
@@ -102,6 +102,10 @@ void Vehicle::applyGravity() {
     _rigidBody.applyForceAtCenter(gravity);
 }
 
+void Vehicle::applyTorque(Vector3 torque) {
+    _rigidBody.applyTorque(torque);
+}
+
 void Vehicle::updatePosition(float dt) {
     _rigidBody.updatePosition(dt);
 }
@@ -140,6 +144,14 @@ TransformMatrix4& Vehicle::getModelMatrix() {
 
 Vector3 Vehicle::getLinearVelocity() {
     return _rigidBody.getLinearVelocity();
+}
+
+Vector3 Vehicle::getLinearVelocityProjectedOnFrontNormal() {
+    Vector3 result = getLinearVelocity();
+    if (result.isZero()) return Vector3();
+    result.projectOn(getChassisFrontNormal());
+
+    return result;
 }
 
 Vector3 Vehicle::getAngularVelocity() {
@@ -199,12 +211,12 @@ float Vehicle::getAverageDriveWheelsRpm() {
 bool Vehicle::isFrozen() {
     return
         !_drivingInputData.anyInput() &&
-        Numeric::floatEquals(_rigidBody.getLinearVelocity().getLength(), 0.0f, VehicleConstants::minLinearVelocity) &&
-        Numeric::floatEquals(_rigidBody.getAngularVelocity().getLength(), 0.0f, VehicleConstants::minAngularVelocity) &&
-        Numeric::floatEquals(_wheels[(int)WheelPosition::frontLeft].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
-        Numeric::floatEquals(_wheels[(int)WheelPosition::frontRight].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
-        Numeric::floatEquals(_wheels[(int)WheelPosition::rearLeft].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity) &&
-        Numeric::floatEquals(_wheels[(int)WheelPosition::rearRight].getAngularVelocity(), 0.0f, VehicleConstants::minAngularVelocity);
+        Numeric::floatEquals(_rigidBody.getLinearVelocity().getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta) &&
+        Numeric::floatEquals(_rigidBody.getAngularVelocity().getLength(), 0.0f, VehicleConstants::minAngularVelocityDelta) &&
+        _wheels[(int)WheelPosition::frontLeft].isFrozen() &&
+        _wheels[(int)WheelPosition::frontRight].isFrozen() &&
+        _wheels[(int)WheelPosition::rearLeft].isFrozen() &&
+        _wheels[(int)WheelPosition::rearRight].isFrozen();
 }
 
 void Vehicle::zeroAllVelocitiesAndForces() {
@@ -212,7 +224,6 @@ void Vehicle::zeroAllVelocitiesAndForces() {
     _rigidBody.setAngularVelocity(Vector3());
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = getWheel(i);
-        wheel.setAngularVelocity(0.0f);
-        wheel.clearAllForces();
+        wheel.zeroAllVelocitiesAndForces();
     }
 }

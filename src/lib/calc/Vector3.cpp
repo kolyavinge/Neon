@@ -181,6 +181,14 @@ void Vector3::reflectBy(Vector3 normal) {
     z -= product * normal.z;
 }
 
+void Vector3::projectOn(Vector3 normal) {
+    float currentLength = getLength();
+    raiseErrorIfCurrentLengthZero(currentLength);
+    float dot = dotProduct(normal);
+    normalize();
+    mul(dot);
+}
+
 void Vector3::round(float precision) {
     x = Math::round(x, precision);
     y = Math::round(y, precision);

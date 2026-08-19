@@ -8,6 +8,7 @@ Body::Body() {
 
 void Body::init() {
     _airDragForce.setZero();
+    _airDragTorque.setZero();
 }
 
 Box3d& Body::getBox() {
@@ -18,10 +19,22 @@ Vector3 Body::getAirDragForce() {
     return _airDragForce;
 }
 
-void Body::calculateAirDragForce(Vector3 vehicleVelocity) {
-    _airDragForce = vehicleVelocity;
-    _airDragForce.mul(vehicleVelocity.getLength());
+Vector3 Body::getAirDragTorque() {
+    return _airDragTorque;
+}
+
+void Body::calculateAirDragForce(Vector3 vehicleLinearVelocity) {
+    _airDragForce = vehicleLinearVelocity;
+    _airDragForce.mul(vehicleLinearVelocity.getLength());
     _airDragForce.mul(-_data.airDragCoeff);
+}
+
+void Body::calculateAirDragTorque(Vector3 vehicleLinearVelocity, Vector3 vehicleAngularVelocity, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {
+    float currentYawVelocity = vehicleAngularVelocity.dotProduct(chassisUpNormal);
+    float forwardSpeed = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
+    float dampingTorqueY = -currentYawVelocity * (_data.bodyBaseYawDamping + _data.bodyAirYawDamping * (forwardSpeed * forwardSpeed));
+    _airDragTorque = CommonConstants::upAxis;
+    _airDragTorque.mul(dampingTorqueY);
 }
 
 void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {

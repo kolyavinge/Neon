@@ -28,6 +28,8 @@ VehicleData::VehicleData() {
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
+    bodyBaseYawDamping = 500.0f; // Сопротивление вращению на месте/низкой скорости
+    bodyAirYawDamping = 10.0f;   // Насколько сильнее воздух держит машину на скорости
 
     /* chassis */
     wheelbaseLength = 2.0f;
@@ -84,11 +86,12 @@ VehicleData::VehicleData() {
     _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, D, 0.8f);
 
     /* wheel lateral force */
-    D = 0.2f;
-    _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, D, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, D, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, D, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::rearRight].set(0.714f, 1.4f, D, -0.2f);
+    float Dfront = 0.3f;
+    float Drear = 0.25f;
+    _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, Dfront, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, Dfront, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, Drear, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::rearRight].set(0.714f, 1.4f, Drear, -0.2f);
 }
 
 //float VehicleData::getRollingResistanceCoeff(float linearVelocityNormalizedProjection) { TODO удалить

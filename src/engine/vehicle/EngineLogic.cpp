@@ -23,7 +23,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     Gearbox& gearbox = vehicle.getGearbox();
     float gearRatio = gearbox.getCurrentGearRatio();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
-    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 vehicleFrontLinearVelocity = vehicle.getLinearVelocityProjectedOnFrontNormal();
 
     // вычисляем обороты ведущих колес и синхронизируем их с двигателем
     if (isEngineAndWheelsConnected) {
@@ -37,7 +37,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
         for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
             Spring& spring = vehicle.getSpring(i);
-            driveWheel.calculateAngularVelocity(vehicleLinearVelocity, engineTorque, gearRatio, spring.getSpringForce(), dt);
+            driveWheel.calculateAngularVelocity(vehicleFrontLinearVelocity, engineTorque, gearRatio, spring.getSpringForce(), dt);
         }
     }
 
@@ -50,6 +50,7 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     }
 
     // вычисляем угловую скорость колес
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {

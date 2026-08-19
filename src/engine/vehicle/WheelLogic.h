@@ -17,7 +17,7 @@ public:
         Vector3 chassisFrontNormal,
         bool isBrakingByWheelsOrEngine);
 
-    float calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity);
+    float calculateSlipAngle(Wheel& wheel, Vector3 vehicleFrontLinearVelocity);
     void updateFrontAndOutsideNormals(Vehicle& vehicle);
     void normalizeLongitudinalAndLateralForces(Wheel& wheel, float springForce);
 
