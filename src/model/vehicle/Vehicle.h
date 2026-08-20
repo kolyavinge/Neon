@@ -55,7 +55,7 @@ public:
     Vector3 getChassisRotateAxis();
     TransformMatrix4& getModelMatrix();
     Vector3 getLinearVelocity();
-    Vector3 getLinearVelocityProjectedOnFrontNormal();
+    //Vector3 getLinearVelocityProjectedOnFrontNormal();
     Vector3 getAngularVelocity();
     void calculatePositionForAllSprings();
     void calculateLengthForAllSprings();

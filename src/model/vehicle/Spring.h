@@ -30,7 +30,6 @@ public:
     Vector3 getPosition();
     float getLength();
     float getSpringForce();
-    float getAntiRollForce();
     void setAntiRollForce(float force);
     void calculateLength(Vector3 wheelCenter);
     void calculateSpringForce(float dt);

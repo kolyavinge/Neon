@@ -65,11 +65,11 @@ void DrivingInputData::resetShifting() {
 
 bool DrivingInputData::anyInput() {
     return
-        _throttleRatio.getCurrentValue() != 0.0 ||
+        _throttleRatio.getCurrentValue() != 0.0f ||
         _throttleRatio.getDestinationValue() != 0.0f ||
-        _brakeRatio.getCurrentValue() != 0.0 ||
+        _brakeRatio.getCurrentValue() != 0.0f ||
         _brakeRatio.getDestinationValue() != 0.0f ||
-        _steeringRatio.getCurrentValue() != 0.0 ||
+        _steeringRatio.getCurrentValue() != 0.0f ||
         _steeringRatio.getDestinationValue() != 0.0f ||
         _shiftUp ||
         _shiftDown;

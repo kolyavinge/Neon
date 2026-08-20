@@ -23,7 +23,9 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     Gearbox& gearbox = vehicle.getGearbox();
     float gearRatio = gearbox.getCurrentGearRatio();
     bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
-    Vector3 vehicleFrontLinearVelocity = vehicle.getLinearVelocityProjectedOnFrontNormal();
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
 
     // вычисляем обороты ведущих колес и синхронизируем их с двигателем
     if (isEngineAndWheelsConnected) {
@@ -33,12 +35,10 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
 
     // вычисляем крутящий момент двигателя и угловые скорости ведущих колес
     float engineTorque = engine.calculateTorque(throttleRatio, isEngineAndWheelsConnected);
-    if (isEngineAndWheelsConnected) {
-        for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
-            Wheel& driveWheel = vehicle.getDriveWheel(i);
-            Spring& spring = vehicle.getSpring(i);
-            driveWheel.calculateAngularVelocity(vehicleFrontLinearVelocity, engineTorque, gearRatio, spring.getSpringForce(), dt);
-        }
+    for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
+        Wheel& driveWheel = vehicle.getDriveWheel(i);
+        Spring& spring = vehicle.getSpring(i);
+        driveWheel.calculateAngularVelocity(vehicleFrontLinearVelocity, engineTorque, gearRatio, spring.getSpringForce(), dt);
     }
 
     // обрабатываем торможение колес
@@ -50,8 +50,6 @@ void EngineLogic::calculateNewEngineRpmAndWheelsVelocity(Vehicle& vehicle) {
     }
 
     // вычисляем угловую скорость колес
-    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);

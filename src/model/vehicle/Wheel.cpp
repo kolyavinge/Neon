@@ -129,7 +129,7 @@ void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }
 
-void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt) {
+void Wheel::calculateAngularVelocity(float vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt) {
     float driveTorque = engineTorque * gearRatio * _data.gearboxEfficiency / VehicleConstants::driveWheelsCount;
     float roadTorque = _longitudinalForce.dotProduct(_frontNormal) * _radius;
     float wheelTorque = driveTorque - roadTorque;
@@ -144,11 +144,11 @@ void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engine
             _accumulatedDeflection = 0.0f;
         }
     }
-    if (Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta) &&
-        Numeric::floatEquals(vehicleLinearVelocity.getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta)) {
+    if (Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::angularVelocityEps) &&
+        Numeric::floatEquals(vehicleLinearVelocity, 0.0f, VehicleConstants::linearVelocityEps)) {
         // момент от двигателя слишком слаб, чтобы сорвать пружину зацепа
-        float maxForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);
-        if (Math::abs(driveTorque) < Math::abs(maxForce * _radius)) {
+        float maxForceTorque = springForce * _data.getLongitudinalForceMaxCoeff((int)_position) * _radius;
+        if (Math::abs(driveTorque) < Math::abs(maxForceTorque)) {
             _angularVelocity = 0.0f;
             _accumulatedDeflection = 0.0f;
         }
@@ -156,7 +156,7 @@ void Wheel::calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engine
 }
 
 void Wheel::brake(float brakeRatio) {
-    bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta) && brakeRatio > 0.0f;
+    bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::angularVelocityEps) && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
     float sign = Numeric::getSign(_angularVelocity);
     float brakingTorque = -sign * brakeRatio * _data.wheelBrakingForce;
@@ -213,7 +213,11 @@ float Wheel::getLateralForceBeforeNormalize() {
 }
 
 void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float springForce, float dt) {
-    _longitudinalForce = _groundPlane->getProjectedPoint(_frontNormal);
+    if (_slipRatio.value == -VehicleConstants::lockedWheelSlipRatio) {
+        _longitudinalForce = _groundPlane->getProjectedPoint(vehicleLinearVelocity);
+    } else {
+        _longitudinalForce = _groundPlane->getProjectedPoint(_frontNormal);
+    }
     if (_longitudinalForce.isZero()) return;
     _longitudinalForce.normalize();
     float maxForce = springForce * _data.getLongitudinalForceMaxCoeff((int)_position);
@@ -231,11 +235,7 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
     }
 
     // сила по Пасейке (для высоких скоростей)
-    float forceCoeff = !Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta)
-        ? _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value)
-        : 0.0f;
-    // если колесо не вращается, то продольная сила = 0, торможение обеспечивается за счет силы трения
-    float fastVelocityForce = forceCoeff * springForce;
+    float fastVelocityForce = springForce * _data.getLongitudinalForceCoeff((int)_position, _slipRatio.value);
 
     float blendFactor = Numeric::clamp(Math::abs(linearVelocity) / _data.lowVelocityLimit, 0.0f, 1.0f);
     float resultForce = Math::lerp(slowVelocityForce, fastVelocityForce, blendFactor);
@@ -243,10 +243,10 @@ void Wheel::calculateLongitudinalForce(Vector3 vehicleLinearVelocity, Vector3 ch
         _accumulatedDeflection = fastVelocityForce / _data.tireStiffness;
     }
 
-    if (Numeric::floatEquals(resultForce, 0.0, VehicleConstants::minForceDelta)) {
-        resultForce = 0.0f;
-        _accumulatedDeflection = 0.0f;
-    }
+    //if (Numeric::floatEquals(resultForce, 0.0f, VehicleConstants::forceEps)) {
+    //    resultForce = 0.0f;
+    //    _accumulatedDeflection = 0.0f;
+    //}
     _longitudinalForce.mul(resultForce);
     _longitudinalForceBeforeNormalize = _longitudinalForce.getLength();
 }
@@ -255,11 +255,8 @@ void Wheel::calculateLateralForce(float springForce) {
     _lateralForce = _groundPlane->getProjectedPoint(_outsideNormal);
     if (_lateralForce.isZero()) return;
     _lateralForce.normalize();
-    float forceCoeff = _data.getLateralForceCoeff((int)_position, _slipAngle);
-    float force = forceCoeff * springForce;
-    if (Numeric::floatEquals(force, 0.0, VehicleConstants::minForceDelta)) {
-        force = 0.0f;
-    }
+    float force = springForce * _data.getLateralForceCoeff((int)_position, _slipAngle);
+    //if (Numeric::floatEquals(force, 0.0f, VehicleConstants::forceEps)) force = 0.0f;
     _lateralForce.mul(force);
     _lateralForceBeforeNormalize = _lateralForce.getLength();
 }
@@ -272,16 +269,14 @@ void Wheel::normalizeLateralForce(float normalizedLength) {
     _lateralForce.setLength(normalizedLength);
 }
 
-void Wheel::calculateRollingResistanceForce(Vector3 vehicleFrontLinearVelocity) {
+void Wheel::calculateRollingResistanceForce(float vehicleFrontLinearVelocity) {
     _rollingResistanceForce.setZero();
-    if (Numeric::floatEquals(vehicleFrontLinearVelocity.getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta)) return;
+    if (Numeric::floatEquals(vehicleFrontLinearVelocity, 0.0f, VehicleConstants::linearVelocityEps)) return;
     _rollingResistanceForce = _groundPlane->getProjectedPoint(_centerVelocity);
     if (_rollingResistanceForce.isZero()) return;
-    float forceCoeff = Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta)
-        ? _data.getLongitudinalForceCoeff((int)_position, VehicleConstants::lockedWheelSlipRatio)
-        : _data.minRollingResistanceCoeff;
+    float force = -1.0f * _data.minRollingResistanceCoeff * _data.vehicleMass * PhysixConstants::g;
     _rollingResistanceForce.normalize();
-    _rollingResistanceForce.mul(-forceCoeff * _data.vehicleMass * PhysixConstants::g);
+    _rollingResistanceForce.mul(force);
 }
 
 void Wheel::clearAllForces() {
@@ -293,7 +288,7 @@ void Wheel::clearAllForces() {
 }
 
 void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio) {
-    bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta) && brakeRatio > 0.0f;
+    bool lockedByBrakes = Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::angularVelocityEps) && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
     float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
@@ -311,6 +306,10 @@ Vector3 Wheel::getGroundContactPoint() {
     return _groundContactPoint;
 }
 
+Plane* Wheel::getGroundPlane() {
+    return _groundPlane;
+}
+
 void Wheel::setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane) {
     _groundContactPoint = groundPoint;
     _groundPlane = groundPlane;
@@ -319,8 +318,8 @@ void Wheel::setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane) {
 bool Wheel::isFrozen() {
     return
         _hasGroundContact &&
-        Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::minAngularVelocityDelta) &&
-        Numeric::floatEquals(_centerVelocity.getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta);
+        Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::angularVelocityEps) &&
+        Numeric::floatEquals(_centerVelocity.getLength(), 0.0f, VehicleConstants::linearVelocityEps);
 }
 
 void Wheel::clearAllVelocitiesAndForces() {

@@ -38,7 +38,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         Spring& spring = vehicle.getSpring(wheelIndex);
         Vector3 applyPoint = wheel.getGroundContactPoint();
         Vector3 springForce = chassisUpNormal;
-        springForce.mul(spring.getSpringForce() + spring.getAntiRollForce());
+        springForce.mul(spring.getSpringForce());
         vehicle.applyForceAtPoint(springForce, applyPoint);
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
@@ -58,17 +58,16 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    Vector3 vehicleFrontLinearVelocity = vehicle.getLinearVelocityProjectedOnFrontNormal();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
-    bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
+    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         wheel.clearAllForces();
         if (!wheel.hasGroundContact()) continue;
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getSpringForce();
-        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal, isBrakingByWheelsOrEngine);
-        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleFrontLinearVelocity);
+        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal);
+        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity, chassisFrontNormal);
         wheel.setSlipRatio(slipRatio);
         wheel.setSlipAngle(slipAngle);
         wheel.calculateLongitudinalForce(vehicleLinearVelocity, chassisFrontNormal, springForce, dt);

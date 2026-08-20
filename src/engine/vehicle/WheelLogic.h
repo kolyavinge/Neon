@@ -11,13 +11,8 @@ class WheelLogic : public Object {
     VehicleData _data;
 
 public:
-    SlipRatio calculateSlipRatio(
-        Wheel& wheel,
-        Vector3 vehicleLinearVelocity,
-        Vector3 chassisFrontNormal,
-        bool isBrakingByWheelsOrEngine);
-
-    float calculateSlipAngle(Wheel& wheel, Vector3 vehicleFrontLinearVelocity);
+    SlipRatio calculateSlipRatio(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
+    float calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void updateFrontAndOutsideNormals(Vehicle& vehicle);
     void normalizeLongitudinalAndLateralForces(Wheel& wheel, float springForce);
 

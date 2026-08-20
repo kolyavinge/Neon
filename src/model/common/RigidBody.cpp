@@ -4,18 +4,18 @@
 RigidBody::RigidBody() {
     _mass = 0.0f;
     _rotateAngle = 0.0f;
-    _minLinearVelocity = 0.0f;
-    _minAngularVelocity = 0.0f;
+    _linearVelocityEps = 0.0f;
+    _angularVelocityEps = 0.0f;
     _prevRotateAngle = 0.0f;
 }
 
-void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float minLinearVelocity, float minAngularVelocity) {
+void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float linearVelocityEps, float angularVelocityEps) {
     _mass = mass;
     _measures = measures;
     _rotateAngle = 0.0f;
     _coordinateAxes.setAxes(rightNormal, frontNormal);
-    _minLinearVelocity = minLinearVelocity;
-    _minAngularVelocity = minAngularVelocity;
+    _linearVelocityEps = linearVelocityEps;
+    _angularVelocityEps = angularVelocityEps;
     // local inertia inverse matrix (for rectangle body)
     float ixx = (1.0f / 12.0f) * _mass * (_measures.yLength * _measures.yLength + _measures.zLength * _measures.zLength);
     float iyy = (1.0f / 12.0f) * _mass * (_measures.xLength * _measures.xLength + _measures.zLength * _measures.zLength);
@@ -110,7 +110,7 @@ void RigidBody::updatePosition(float dt) {
     linearAcceleration.div(_mass);
     _linearVelocity.addMultiplied(linearAcceleration, dt);
     float linearVelocityValue = _linearVelocity.getLength();
-    if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _minLinearVelocity) {
+    if (linearVelocityValue < oldLinearVelocityValue && linearVelocityValue < _linearVelocityEps) {
         _linearVelocity.setZero();
     }
     _center.addMultiplied(_linearVelocity, dt);
@@ -126,7 +126,7 @@ void RigidBody::updatePosition(float dt) {
     Vector3 angularAcceleration = _worldInertiaInverse.mulVector(_totalTorque);
     _angularVelocity.addMultiplied(angularAcceleration, dt);
     float angularVelocityValue = _angularVelocity.getLength();
-    if (angularVelocityValue < oldAngularVelocityValue && angularVelocityValue < _minAngularVelocity) {
+    if (angularVelocityValue < oldAngularVelocityValue && angularVelocityValue < _angularVelocityEps) {
         _angularVelocity.setZero();
     }
     if (!_angularVelocity.isZero()) {

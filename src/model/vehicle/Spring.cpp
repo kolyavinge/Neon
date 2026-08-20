@@ -60,15 +60,12 @@ float Spring::getLength() {
 }
 
 float Spring::getSpringForce() {
-    return _springForce;
-}
-
-float Spring::getAntiRollForce() {
-    return _antiRollForce;
+    return _springForce + _antiRollForce;
 }
 
 void Spring::setAntiRollForce(float force) {
     _antiRollForce = force;
+    if (_antiRollForce < 0.0f) _antiRollForce = 0.0f;
 }
 
 void Spring::calculateLength(Vector3 wheelCenter) {
@@ -87,8 +84,8 @@ void Spring::calculateSpringForce(float dt) {
     damperComponent = Numeric::clamp(damperComponent, -maxSafeDamper, maxSafeDamper);
     _springForce = springComponent + damperComponent;
     float compressionPercent = depth / _maxLength;
-    if (compressionPercent > 0.85f) {
-        _springForce += _bumpStopStiffness * (depth - (_maxLength * 0.85f));
+    if (compressionPercent > 0.8f) {
+        _springForce += _bumpStopStiffness;
     }
     if (_springForce < 0.0f) _springForce = 0.0f;
 }

@@ -69,7 +69,7 @@ public:
     void setCenterVelocity(Vector3 velocity);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
-    void calculateAngularVelocity(Vector3 vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt);
+    void calculateAngularVelocity(float vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt);
     void brake(float brakeRatio);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
@@ -85,12 +85,13 @@ public:
     void calculateLateralForce(float springForce);
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
-    void calculateRollingResistanceForce(Vector3 vehicleFrontLinearVelocity);
+    void calculateRollingResistanceForce(float vehicleFrontLinearVelocity);
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio);
     bool hasGroundContact();
     void setGroundContact(bool value);
     Vector3 getGroundContactPoint();
+    Plane* getGroundPlane();
     void setGroundContactPoint(Vector3 groundPoint, Plane* groundPlane);
     bool isFrozen();
     void clearAllVelocitiesAndForces();

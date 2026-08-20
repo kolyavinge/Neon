@@ -10,18 +10,18 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     //if ((_tick % 10) != 0) return;
 
     paintText(vehicle.getDrivingInputData());
-    //printGear(vehicle);
+    printGear(vehicle);
     //printThrottle(vehicle.getDrivingInputData());
-    //printEngineRpm(vehicle);
+    printEngineRpm(vehicle);
     //printEngineTorque(vehicle);
-    printWheelsAngularVelocity(vehicle);
+    //printWheelsAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
-    //printSlipAngle(vehicle);
-    printLongitudinalForce(vehicle);
+    printSlipAngle(vehicle);
+    //printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    printVehicleLinearVelocity(vehicle);
-    printVehicleAngularVelocity(vehicle);
+    //printVehicleLinearVelocity(vehicle);
+    //printVehicleAngularVelocity(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
     //printSpringPositions(vehicle);

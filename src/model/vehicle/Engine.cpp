@@ -42,7 +42,7 @@ float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnect
             _torque = throttleRatio * _data.engineTorqueCurve.getValue(_rpm);
         } else {
             // торможение двигателем
-            _torque = -(_data.engineNeutralGearTorque + _data.engineBrakingCoeff * _rpm);
+            _torque = -(_data.engineBrakingTorque + _data.engineBrakingCoeff * _rpm);
         }
     } else {
         if (throttleRatio > 0.0f) {
@@ -50,7 +50,7 @@ float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnect
         } else {
             _rpm -= _data.engineTorqueCurve.getValue(_rpm);
         }
-        _torque = _data.engineNeutralGearTorque;
+        _torque = 0.0f;
         correctMinMaxRpm();
     }
 

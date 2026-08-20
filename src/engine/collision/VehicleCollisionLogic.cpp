@@ -11,7 +11,7 @@ VehicleCollisionLogic::VehicleCollisionLogic() :
 
 bool VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
     bool anyCollisions = false;
-    bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::minLinearVelocityDelta);
+    bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
@@ -22,10 +22,13 @@ bool VehicleCollisionLogic::resolveWheelGroundCollisions(Vehicle& vehicle) {
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = _groundPlane.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
+        Plane* newGroundPlane = &_groundPlane;
         bool noNeedUpdate =
             vehicleStopped &&
             hasNewGroundContact &&
             wheel.hasGroundContact() &&
+            Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::angularVelocityEps) &&
+            wheel.getGroundPlane() == newGroundPlane &&
             wheel.getGroundContactPoint().getLengthTo(newGroundContactPoint) < 0.0001f;
         if (noNeedUpdate) {
             continue;

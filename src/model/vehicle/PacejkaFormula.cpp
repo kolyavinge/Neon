@@ -2,7 +2,7 @@
 #include <model/vehicle/PacejkaFormula.h>
 
 PacejkaFormula::PacejkaFormula() {
-    b = c = d = e = 0.0;
+    b = c = d = e = 0.0f;
 }
 
 void PacejkaFormula::set(float valueB, float valueC, float valueD, float valueE) {

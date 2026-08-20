@@ -42,10 +42,9 @@ public:
     inline static const int wheelsCount = 4;
     inline static const int driveWheelsCount = 2;
     inline static const int nonDriveWheelsCount = 2;
-    inline static const float slipRatioLimit = 100.0f;
     inline static const float lockedWheelSlipRatio = 1.0f;
-    inline static const float minLinearVelocityDelta = 0.1f;
-    inline static const float minAngularVelocityDelta = 0.1f;
-    inline static const float minSlipAngleDelta = UnitConverter::degreesToRadians(0.1f);
-    inline static const float minForceDelta = 0.1f;
+    inline static const float linearVelocityEps = 0.1f;
+    inline static const float angularVelocityEps = 0.1f;
+    inline static const float slipAngleEps = UnitConverter::degreesToRadians(0.1f);
+    //inline static const float forceEps = 0.1f; // TODO возможно не нужно, слишком маленькое значение чтобы оно на что то повлияло
 };

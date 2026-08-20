@@ -43,7 +43,7 @@ public:
     EngineTorqueCurve engineTorqueCurve;
     float engineMinRpm;
     float engineMaxRpm;
-    float engineNeutralGearTorque;
+    float engineBrakingTorque;
     float engineBrakingCoeff;
 
     /* wheel */

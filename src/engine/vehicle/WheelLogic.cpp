@@ -2,40 +2,29 @@
 #include <engine/vehicle/WheelLogic.h>
 #include <lib/calc/Math.h>
 
-SlipRatio WheelLogic::calculateSlipRatio(
-    Wheel& wheel,
-    Vector3 vehicleLinearVelocity,
-    Vector3 chassisFrontNormal,
-    bool isBrakingByWheelsOrEngine) {
+SlipRatio WheelLogic::calculateSlipRatio(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal) {
     // slip ratio (коэффициент скольжения) - соотношение угловой скорости колеса к линейной
     float drivenVelocity = wheel.getAngularVelocity() * wheel.getRadius();
     float linearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
-    if (Numeric::floatEquals(drivenVelocity, 0.0f) && Numeric::floatEquals(linearVelocity, 0.0f)) {
+    if (Numeric::floatEquals(drivenVelocity, 0.0f, VehicleConstants::linearVelocityEps) &&
+        Numeric::floatEquals(linearVelocity, 0.0f, VehicleConstants::linearVelocityEps)) {
         return SlipRatio(drivenVelocity, linearVelocity, 0.0f);
     }
     if (Numeric::floatEquals(linearVelocity, 0.0f)) linearVelocity = 1e-2f;
     float slipRatio = (drivenVelocity - linearVelocity) / Math::abs(linearVelocity);
-    // торможение обрабатываем в первую очередь (на случай если машинка и газует и тормозит одновременно)
-    if (isBrakingByWheelsOrEngine) {
-        // сила торможения направлена противоположно скорости
-        if (Numeric::getSign(linearVelocity) == Numeric::getSign(slipRatio)) {
-            slipRatio = -slipRatio;
-        }
-    }
-    slipRatio = Numeric::clamp(slipRatio, -VehicleConstants::slipRatioLimit, VehicleConstants::slipRatioLimit);
 
     return SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
 
-float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleFrontLinearVelocity) {
+float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal) {
     // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
-    if (Numeric::floatEquals(vehicleFrontLinearVelocity.getLength(), 0.0f, 0.5f)) return 0.0f;
+    if (Numeric::floatEquals(vehicleLinearVelocity.dotProduct(chassisFrontNormal), 0.0f, 0.5f)) return 0.0f;
     // знак lateralVelocity разный для левого и правого колеса
     // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
-    float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleFrontLinearVelocity);
-    float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleFrontLinearVelocity));
+    float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleLinearVelocity);
+    float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleLinearVelocity));
     float slipAngle = -Math::arctan2(lateralVelocity, longitudinalVelocity);
-    if (Numeric::floatEquals(slipAngle, 0.0f, VehicleConstants::minSlipAngleDelta)) return 0.0f;
+    if (Numeric::floatEquals(slipAngle, 0.0f, VehicleConstants::slipAngleEps)) return 0.0f;
 
     return slipAngle;
 }

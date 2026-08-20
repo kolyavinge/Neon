@@ -9,9 +9,9 @@ VehicleData::VehicleData() {
     /* gearbox */
     gearboxEfficiency = 0.9f;
     finalGearRatio = 3.85f;
-    gearRatios[0] = finalGearRatio * -2.5f;
+    gearRatios[0] = finalGearRatio * -3.5f;
     gearRatios[1] = 0.0f;
-    gearRatios[2] = finalGearRatio * 2.6f;
+    gearRatios[2] = finalGearRatio * 2.8f;
     gearRatios[3] = finalGearRatio * 1.9f;
     gearRatios[4] = finalGearRatio * 1.5f;
     gearRatios[5] = finalGearRatio * 1.2f;
@@ -46,13 +46,13 @@ VehicleData::VehicleData() {
     engineTorqueCurve.f = 3000.0f;
     engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
-    engineNeutralGearTorque = 10.0f;
-    engineBrakingCoeff = 0.01f;
+    engineBrakingTorque = 20.0f;
+    engineBrakingCoeff = 0.05f;
 
     /* wheel */
     frontWheelRadius = 0.22f;
     rearWheelRadius = 0.26f;
-    wheelBrakingForce = 2000.0f;
+    wheelBrakingForce = 1000.0f;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRollingResistanceCoeff = 0.01f;
     wheelInertia = 0.6f;
@@ -76,7 +76,7 @@ VehicleData::VehicleData() {
     rearSpringMaxLength = 0.3f;
     rearAntiRollStiffness = 3500.0f;
 
-    springBumpStopStiffness = 5000.0f;
+    springBumpStopStiffness = 10.0f * stiffnessMul;
 
     /* wheel longitudinal force */
     float D = 0.8f;

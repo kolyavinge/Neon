@@ -11,8 +11,8 @@ class RigidBody : public Object {
 
     float _mass;
     Measures _measures;
-    float _minLinearVelocity;
-    float _minAngularVelocity;
+    float _linearVelocityEps;
+    float _angularVelocityEps;
     TransformMatrix4 _localInertiaInverse;
 
     // current state
@@ -41,7 +41,7 @@ class RigidBody : public Object {
 
 public:
     RigidBody();
-    void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float minLinearVelocity, float minAngularVelocity);
+    void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float linearVelocityEps, float angularVelocityEps);
     float getMass();
     TransformMatrix4& getLocalInertiaInverse();
     TransformMatrix4& getWorldInertiaInverse();
