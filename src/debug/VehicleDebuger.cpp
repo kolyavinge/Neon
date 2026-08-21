@@ -17,11 +17,11 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     //printWheelsAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);
     //printSlipRatio(vehicle, false);
-    printSlipAngle(vehicle);
+    //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    //printVehicleLinearVelocity(vehicle);
-    //printVehicleAngularVelocity(vehicle);
+    printVehicleLinearVelocity(vehicle);
+    printVehicleAngularVelocity(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
     //printSpringPositions(vehicle);

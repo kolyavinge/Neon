@@ -46,6 +46,7 @@ VehicleData::VehicleData() {
     engineTorqueCurve.f = 3000.0f;
     engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
+    engineMaxReverseRpm = 2500.0f;
     engineBrakingTorque = 20.0f;
     engineBrakingCoeff = 0.05f;
 

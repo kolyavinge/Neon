@@ -5,6 +5,7 @@
 #include <engine/vehicle/GearboxLogic.h>
 #include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
+#include <engine/vehicle/WheelLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
@@ -12,6 +13,7 @@
 class VehicleUpdater : public Object {
 
     EngineLogic& _engineLogic;
+    WheelLogic& _wheelLogic;
     ForceLogic& _forceLogic;
     GearboxLogic& _gearboxLogic;
     PositionLogic& _positionLogic;
@@ -21,6 +23,7 @@ public:
     static VehicleUpdater* resolve(Resolver& resolver) {
         return new VehicleUpdater(
             resolver.resolve<EngineLogic>(),
+            resolver.resolve<WheelLogic>(),
             resolver.resolve<ForceLogic>(),
             resolver.resolve<GearboxLogic>(),
             resolver.resolve<PositionLogic>(),
@@ -29,6 +32,7 @@ public:
 
     VehicleUpdater(
         EngineLogic& engineLogic,
+        WheelLogic& wheelLogic,
         ForceLogic& forceLogic,
         GearboxLogic& gearboxLogic,
         PositionLogic& positionLogic,

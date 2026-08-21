@@ -12,8 +12,8 @@ ForceLogic::ForceLogic(
 
 void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
     calculateSpringForces(vehicle);
-    calculateWheelForces(vehicle);
     calculateAntiRollForces(vehicle);
+    calculateWheelForces(vehicle);
     calculateAirDragForce(vehicle);
     applyForces(vehicle);
 }
@@ -55,28 +55,6 @@ void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
     }
 }
 
-void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
-    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
-    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
-    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
-    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
-        Wheel& wheel = vehicle.getWheel(wheelIndex);
-        wheel.clearAllForces();
-        if (!wheel.hasGroundContact()) continue;
-        Spring& spring = vehicle.getSpring(wheelIndex);
-        float springForce = spring.getSpringForce();
-        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal);
-        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity, chassisFrontNormal);
-        wheel.setSlipRatio(slipRatio);
-        wheel.setSlipAngle(slipAngle);
-        wheel.calculateLongitudinalForce(vehicleLinearVelocity, chassisFrontNormal, springForce, dt);
-        wheel.calculateLateralForce(springForce);
-        wheel.calculateRollingResistanceForce(vehicleFrontLinearVelocity);
-        _wheelLogic.normalizeLongitudinalAndLateralForces(wheel, springForce);
-    }
-}
-
 void ForceLogic::calculateAntiRollForces(Vehicle& vehicle) {
     // front wheels
     calculateAntiRollForces(
@@ -103,6 +81,31 @@ void ForceLogic::calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Sp
         rightSpring.setAntiRollForce(antiRollForce);
     } else {
         rightSpring.setAntiRollForce(0.0f);
+    }
+}
+
+void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
+    const float dt = CommonConstants::deltaTimeSec;
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        Wheel& wheel = vehicle.getWheel(wheelIndex);
+        wheel.clearAllForces();
+        if (!wheel.hasGroundContact()) continue;
+        Spring& spring = vehicle.getSpring(wheelIndex);
+        float springForce = spring.getSpringForce();
+        SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal);
+        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity, chassisFrontNormal);
+        wheel.setSlipRatio(slipRatio);
+        wheel.setSlipAngle(slipAngle);
+        Vector3 longitudinalForce = _wheelLogic.calculateLongitudinalForce(wheel, vehicleLinearVelocity, chassisFrontNormal, springForce, dt);
+        Vector3 lateralForce = _wheelLogic.calculateLateralForce(wheel, springForce);
+        Vector3 rollingResistanceForce = _wheelLogic.calculateRollingResistanceForce(wheel, vehicleFrontLinearVelocity);
+        float longitudinalForceBeforeNormalize = longitudinalForce.getLength();
+        float lateralForceBeforeNormalize = lateralForce.getLength();
+        _wheelLogic.normalizeLongitudinalAndLateralForces(longitudinalForce, lateralForce, springForce, wheel.getPosition());
+        wheel.setForces(longitudinalForce, lateralForce, rollingResistanceForce, longitudinalForceBeforeNormalize, lateralForceBeforeNormalize);
     }
 }
 

@@ -205,9 +205,7 @@ float Vehicle::getAverageDriveWheelsRpm() {
         wheelsAngularVelocity += wheel.getAngularVelocity();
     }
     float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / VehicleConstants::driveWheelsCount;
-    // угловая скорость колес может быть отрицательной
-    // обороты в минуту берем как положительное число, по-аналогии с двигателем
-    averageWheelsRpm = Math::abs(averageWheelsRpm);
+    // итоговая скорость может быть отрицательной если машинка едет назад
 
     return averageWheelsRpm;
 }

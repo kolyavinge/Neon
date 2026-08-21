@@ -43,6 +43,7 @@ public:
     EngineTorqueCurve engineTorqueCurve;
     float engineMinRpm;
     float engineMaxRpm;
+    float engineMaxReverseRpm;
     float engineBrakingTorque;
     float engineBrakingCoeff;
 

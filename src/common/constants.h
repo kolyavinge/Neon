@@ -46,5 +46,4 @@ public:
     inline static const float linearVelocityEps = 0.1f;
     inline static const float angularVelocityEps = 0.1f;
     inline static const float slipAngleEps = UnitConverter::degreesToRadians(0.1f);
-    //inline static const float forceEps = 0.1f; // TODO возможно не нужно, слишком маленькое значение чтобы оно на что то повлияло
 };

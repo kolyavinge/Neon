@@ -19,19 +19,15 @@ float Engine::getTorque() {
     return _torque;
 }
 
-void Engine::setRpm(float rpm) {
+void Engine::setRpm(float rpm, Gear gear) {
     _rpm = rpm;
-    correctMinMaxRpm();
+    correctMinMaxRpm(gear);
 }
 
-float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected) {
-    // TODO убрать если не нужно
-    //if (_rpm == _data.engineMinRpm && throttleRatio == 0.0f) {
-    //    _torque = 0.0f;
-    //    return _torque;
-    //}
-
-    if (_rpm == _data.engineMaxRpm && throttleRatio > 0.0f && isEngineAndWheelsConnected) {
+float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected, Gear gear) {
+    if ((gear != Gear::reverse && _rpm == _data.engineMaxRpm || gear == Gear::reverse && _rpm == _data.engineMaxReverseRpm) &&
+        throttleRatio > 0.0f &&
+        isEngineAndWheelsConnected) {
         _torque = 0.0f;
         return _torque;
     }
@@ -51,12 +47,16 @@ float Engine::calculateTorque(float throttleRatio, bool isEngineAndWheelsConnect
             _rpm -= _data.engineTorqueCurve.getValue(_rpm);
         }
         _torque = 0.0f;
-        correctMinMaxRpm();
+        correctMinMaxRpm(gear);
     }
 
     return _torque;
 }
 
-void Engine::correctMinMaxRpm() {
-    _rpm = Numeric::clamp(_rpm, _data.engineMinRpm, _data.engineMaxRpm);
+void Engine::correctMinMaxRpm(Gear gear) {
+    if (gear != Gear::reverse) {
+        _rpm = Numeric::clamp(_rpm, _data.engineMinRpm, _data.engineMaxRpm);
+    } else {
+        _rpm = Numeric::clamp(_rpm, _data.engineMinRpm, _data.engineMaxReverseRpm);
+    }
 }

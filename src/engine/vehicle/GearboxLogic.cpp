@@ -12,9 +12,9 @@ bool GearboxLogic::shift(Vehicle& vehicle) {
 
 bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
-    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
+    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     bool isAccelerating = throttleRatio > 0.0f;
     if (isAccelerating && engine.getRpm() > data.autoShiftRpm) {
         return gearbox.shiftUp();

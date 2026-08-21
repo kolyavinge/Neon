@@ -33,7 +33,7 @@ void Body::calculateAirDragTorque(Vector3 vehicleLinearVelocity, Vector3 vehicle
     float currentYawVelocity = vehicleAngularVelocity.dotProduct(chassisUpNormal);
     float forwardSpeed = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     float dampingTorqueY = -currentYawVelocity * (_data.bodyBaseYawDamping + _data.bodyAirYawDamping * (forwardSpeed * forwardSpeed));
-    _airDragTorque = CommonConstants::upAxis;
+    _airDragTorque = chassisUpNormal;
     _airDragTorque.mul(dampingTorqueY);
 }
 

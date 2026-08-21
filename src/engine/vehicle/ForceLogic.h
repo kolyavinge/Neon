@@ -25,8 +25,8 @@ public:
 private:
     void applyForces(Vehicle& vehicle);
     void calculateSpringForces(Vehicle& vehicle);
-    void calculateWheelForces(Vehicle& vehicle);
     void calculateAntiRollForces(Vehicle& vehicle);
     void calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
+    void calculateWheelForces(Vehicle& vehicle);
     void calculateAirDragForce(Vehicle& vehicle);
 };

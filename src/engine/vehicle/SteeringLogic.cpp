@@ -3,7 +3,8 @@
 #include <model/vehicle/Wheel.h>
 
 SteeringLogic::SteeringLogic(
-    WheelLogic& wheelLogic) :_wheelLogic(wheelLogic) {
+    WheelLogic& wheelLogic) :
+    _wheelLogic(wheelLogic) {
 }
 
 void SteeringLogic::steer(Vehicle& vehicle) {

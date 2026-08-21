@@ -9,7 +9,7 @@
 class GearboxLogic : public Object {
 
 public:
-    bool shift(Vehicle& vehicle);
+    bool shift(Vehicle& vehicle); // TODO можно сделать void
 
 private:
     bool shiftAutomatic(Vehicle& vehicle);
