@@ -19,7 +19,7 @@ public:
     Vector3 calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float springForce, float dt);
     Vector3 calculateLateralForce(Wheel& wheel, float springForce);
     Vector3 calculateRollingResistanceForce(Wheel& wheel, float vehicleFrontLinearVelocity);
-    void normalizeLongitudinalAndLateralForces(output Vector3 longitudinalForce, output Vector3 lateralForce, float springForce, WheelPosition position);
+    void normalizeLongitudinalAndLateralForces(output Vector3& longitudinalForce, output Vector3& lateralForce, float springForce, WheelPosition position);
     void updateFrontAndOutsideNormals(Vehicle& vehicle);
     void calculateNormalsBySteeringAngle(
         float steeringAngle,

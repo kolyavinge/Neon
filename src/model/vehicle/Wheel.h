@@ -86,6 +86,7 @@ public:
     void normalizeLongitudinalForce(float normalizedLength);
     void normalizeLateralForce(float normalizedLength);
     void setForces(Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize);
+    void mulLongitudinalForceBy(float coeff);
     void clearAllForces();
     void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio);
     bool hasGroundContact();

@@ -8,10 +8,10 @@ VehicleData::VehicleData() {
 
     /* gearbox */
     gearboxEfficiency = 0.9f;
-    finalGearRatio = 3.85f;
+    finalGearRatio = 3.5f;
     gearRatios[0] = finalGearRatio * -3.5f;
     gearRatios[1] = 0.0f;
-    gearRatios[2] = finalGearRatio * 2.8f;
+    gearRatios[2] = finalGearRatio * 2.5f;
     gearRatios[3] = finalGearRatio * 1.9f;
     gearRatios[4] = finalGearRatio * 1.5f;
     gearRatios[5] = finalGearRatio * 1.2f;

@@ -28,5 +28,6 @@ private:
     void calculateAntiRollForces(Vehicle& vehicle);
     void calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Spring& leftSpring, Spring& rightSpring, float antiRollStiffness);
     void calculateWheelForces(Vehicle& vehicle);
+    void adjustLongitudinalForces(Vehicle& vehicle);
     void calculateAirDragForce(Vehicle& vehicle);
 };

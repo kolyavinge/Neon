@@ -207,6 +207,10 @@ void Wheel::setForces(
     _lateralForceBeforeNormalize = lateralForceBeforeNormalize;
 }
 
+void Wheel::mulLongitudinalForceBy(float coeff) {
+    _longitudinalForce.mul(coeff);
+}
+
 void Wheel::clearAllForces() {
     _longitudinalForce.setZero();
     _lateralForce.setZero();

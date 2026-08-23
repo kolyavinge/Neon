@@ -172,7 +172,7 @@ Vector3 WheelLogic::calculateRollingResistanceForce(Wheel& wheel, float vehicleF
 }
 
 void WheelLogic::normalizeLongitudinalAndLateralForces(
-    output Vector3 longitudinalForce, output Vector3 lateralForce, float springForce, WheelPosition position) {
+    output Vector3& longitudinalForce, output Vector3& lateralForce, float springForce, WheelPosition position) {
     // friction circle (Kamm's circle) круг сцепления (диаграмма Камма)
     // на самом деле это эллипс, тк максимальные значения продольной (longitudinal) и поперечной (lateral) сил не равны друг другу
     float curLater = lateralForce.getLength();
@@ -195,6 +195,8 @@ void WheelLogic::normalizeLongitudinalAndLateralForces(
     sumForces.setLength(normalizedLength);
     Assert::isFalse(Numeric::floatEquals(sumForces.x, 0.0f));
     Assert::isFalse(Numeric::floatEquals(sumForces.y, 0.0f));
+    lateralForce.setLength(sumForces.x);
+    longitudinalForce.setLength(sumForces.y);
 }
 
 void WheelLogic::updateFrontAndOutsideNormals(Vehicle& vehicle) {

@@ -11,17 +11,17 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
 
     paintText(vehicle.getDrivingInputData());
     printGear(vehicle);
-    //printThrottle(vehicle.getDrivingInputData());
+    printThrottle(vehicle.getDrivingInputData());
     printEngineRpm(vehicle);
     //printEngineTorque(vehicle);
     //printWheelsAngularVelocity(vehicle);
-    //printDiffBetweenRpmAndAngularVelocity(vehicle);
-    //printSlipRatio(vehicle, false);
+    printDiffBetweenRpmAndAngularVelocity(vehicle);
+    printSlipRatio(vehicle, true);
     //printSlipAngle(vehicle);
     //printLongitudinalForce(vehicle);
     //printLateralForce(vehicle);
-    printVehicleLinearVelocity(vehicle);
-    printVehicleAngularVelocity(vehicle);
+    //printVehicleLinearVelocity(vehicle);
+    //printVehicleAngularVelocity(vehicle);
     //printSpringForce(vehicle);
     //printSpringLengths(vehicle);
     //printSpringPositions(vehicle);
@@ -57,15 +57,12 @@ void VehicleDebuger::printWheelsAngularVelocity(Vehicle& vehicle) {
 }
 
 void VehicleDebuger::printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle) {
-    float diff = vehicle.getEngine().getRpm() - UnitConverter::angularVelocityToRpm(vehicle.getDriveWheel(0).getAngularVelocity()) * vehicle.getGearbox().getCurrentGearRatio();
+    float diff = vehicle.getEngine().getRpm() - vehicle.getAverageDriveWheelsRpm() * vehicle.getGearbox().getCurrentGearRatio();
     printf("Df %i|", (int)diff);
 }
 
-void VehicleDebuger::printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels) {
-    if (onlyDriveWheels) {
-        SlipRatio slipRatio = vehicle.getDriveWheel(0).getSlipRatio();
-        printf("SR %.2f(%.2f %.2f)|", slipRatio.value, slipRatio.drivenVelocity, slipRatio.linearVelocity);
-    } else {
+void VehicleDebuger::printSlipRatio(Vehicle& vehicle, bool allWheels) {
+    if (allWheels) {
         SlipRatio nonDriveWheelSlipRatio = vehicle.getNonDriveWheel(0).getSlipRatio();
         SlipRatio driveWheelSlipRatio = vehicle.getDriveWheel(0).getSlipRatio();
         printf("SR %.2f(%.2f %.2f) %.2f(%.2f %.2f)|",
@@ -75,6 +72,9 @@ void VehicleDebuger::printSlipRatio(Vehicle& vehicle, bool onlyDriveWheels) {
             driveWheelSlipRatio.value,
             driveWheelSlipRatio.drivenVelocity,
             driveWheelSlipRatio.linearVelocity);
+    } else {
+        SlipRatio slipRatio = vehicle.getDriveWheel(0).getSlipRatio();
+        printf("SR %.2f(%.2f %.2f)|", slipRatio.value, slipRatio.drivenVelocity, slipRatio.linearVelocity);
     }
 }
 

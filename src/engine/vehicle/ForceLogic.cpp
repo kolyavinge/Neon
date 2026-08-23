@@ -14,6 +14,7 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
     calculateSpringForces(vehicle);
     calculateAntiRollForces(vehicle);
     calculateWheelForces(vehicle);
+    adjustLongitudinalForces(vehicle);
     calculateAirDragForce(vehicle);
     applyForces(vehicle);
 }
@@ -106,6 +107,30 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
         float lateralForceBeforeNormalize = lateralForce.getLength();
         _wheelLogic.normalizeLongitudinalAndLateralForces(longitudinalForce, lateralForce, springForce, wheel.getPosition());
         wheel.setForces(longitudinalForce, lateralForce, rollingResistanceForce, longitudinalForceBeforeNormalize, lateralForceBeforeNormalize);
+    }
+}
+
+void ForceLogic::adjustLongitudinalForces(Vehicle& vehicle) {
+    // при торможении суммарная продольная сила может превысеть линейную скорость и развернуть ее в обратном направлении
+    // чтобы этого избежать, пропорционально уменьшаем продольную силу каждого колеса
+    if (!vehicle.isBrakingByWheelsOrEngine()) return;
+    const float dt = CommonConstants::deltaTimeSec;
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
+    Vector3 longitudinalForceSum;
+    for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+        longitudinalForceSum.add(vehicle.getWheel(wheelIndex).getLongitudinalForce());
+    }
+    Vector3 longitudinalVelocity = longitudinalForceSum;
+    longitudinalVelocity.div(vehicle.getData().vehicleMass);
+    longitudinalVelocity.mul(dt);
+    float longitudinalVelocityLength = longitudinalVelocity.getLength();
+    if (longitudinalVelocityLength > vehicleFrontLinearVelocity) {
+        float adjCoeff = vehicleFrontLinearVelocity / longitudinalVelocityLength / VehicleConstants::wheelsCount;
+        for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
+            vehicle.getWheel(wheelIndex).mulLongitudinalForceBy(adjCoeff);
+        }
     }
 }
 
