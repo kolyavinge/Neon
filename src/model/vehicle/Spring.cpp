@@ -84,7 +84,7 @@ void Spring::calculateSpringForce(float dt) {
     damperComponent = Numeric::clamp(damperComponent, -maxSafeDamper, maxSafeDamper);
     _springForce = springComponent + damperComponent;
     float compressionPercent = depth / _maxLength;
-    if (compressionPercent > 0.8f) {
+    if (compressionPercent > 0.8f) { // TODO наверно не нужно
         _springForce += _bumpStopStiffness;
     }
     if (_springForce < 0.0f) _springForce = 0.0f;

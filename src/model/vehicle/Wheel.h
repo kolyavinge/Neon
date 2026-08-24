@@ -70,6 +70,7 @@ public:
     void setCenterVelocity(Vector3 velocity);
     float getAngularVelocity();
     void setAngularVelocity(float angularVelocity);
+    void mulAngularVelocityBy(float coeff);
     void updateRotateAngle(float dt);
     SlipRatio getSlipRatio();
     void setSlipRatio(SlipRatio slipRatio);

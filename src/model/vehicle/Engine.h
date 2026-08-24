@@ -9,6 +9,7 @@ class Engine : public Object {
     VehicleData _data;
     float _rpm;
     float _torque;
+    bool _isRpmExceeded;
 
 public:
     Engine();
@@ -16,6 +17,7 @@ public:
     float getRpm();
     float getTorque();
     void setRpm(float rpm, Gear gear);
+    bool isRpmExceeded();
     float calculateTorque(float throttleRatio, bool isEngineAndWheelsConnected, Gear gear);
 
 private:

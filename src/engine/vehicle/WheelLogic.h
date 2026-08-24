@@ -30,5 +30,5 @@ public:
         output Vector3& newRightWheelOutsideNormal);
 
 private:
-    void brake(Wheel& wheel, float brakeRatio);
+    void brake(Wheel& wheel, float brakeRatio, float dt);
 };

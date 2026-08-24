@@ -28,8 +28,8 @@ VehicleData::VehicleData() {
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
-    bodyBaseYawDamping = 500.0f; // Сопротивление вращению на месте/низкой скорости
-    bodyAirYawDamping = 10.0f;   // Насколько сильнее воздух держит машину на скорости
+    bodyBaseYawDamping = 500.0f; // сопротивление вращению на месте/низкой скорости
+    bodyAirYawDamping = 10.0f;   // насколько сильнее воздух держит машину на скорости
 
     /* chassis */
     wheelbaseLength = 2.0f;
@@ -47,7 +47,7 @@ VehicleData::VehicleData() {
     engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
     engineMaxReverseRpm = 2500.0f;
-    engineBrakingTorque = 20.0f;
+    engineBrakingTorque = 30.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
     engineBrakingCoeff = 0.05f;
 
     /* wheel */

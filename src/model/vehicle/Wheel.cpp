@@ -133,6 +133,10 @@ void Wheel::setAngularVelocity(float angularVelocity) {
     _angularVelocity = angularVelocity;
 }
 
+void Wheel::mulAngularVelocityBy(float coeff) {
+    _angularVelocity *= coeff;
+}
+
 void Wheel::updateRotateAngle(float dt) {
     if (_position == WheelPosition::frontRight || _position == WheelPosition::rearRight) {
         _rotateAngle -= _angularVelocity * dt;

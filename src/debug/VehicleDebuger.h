@@ -14,6 +14,7 @@ private:
     static int _tick;
     static void printGear(Vehicle& vehicle);
     static void printThrottle(DrivingInputData& inputData);
+    static void printBrake(DrivingInputData& inputData);
     static void printEngineRpm(Vehicle& vehicle);
     static void printEngineTorque(Vehicle& vehicle);
     static void printWheelsAngularVelocity(Vehicle& vehicle);

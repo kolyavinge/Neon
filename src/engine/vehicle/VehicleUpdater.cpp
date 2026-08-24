@@ -26,12 +26,15 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
 void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
     if (vehicle.isFrozen()) return;
     _steeringLogic.steer(vehicle);
-    _gearboxLogic.shift(vehicle);
-    _engineLogic.synchEngineAndWheels(vehicle);
+    bool isShifted = _gearboxLogic.shift(vehicle);
+    if (isShifted) {
+        _engineLogic.synchEngineAndWheels(vehicle);
+    }
     _engineLogic.applyEngineTorqueToWheels(vehicle);
     _wheelLogic.brakeByWheels(vehicle);
     _wheelLogic.calculateWheelAngularVelocityByLinear(vehicle);
     _forceLogic.calculateAndApplyForces(vehicle);
     _positionLogic.updatePosition(vehicle);
+    _engineLogic.synchEngineAndWheels(vehicle);
     VehicleDebuger::printDebugInfo(vehicle);
 }

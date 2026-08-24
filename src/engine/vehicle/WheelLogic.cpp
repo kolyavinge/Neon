@@ -33,24 +33,26 @@ void WheelLogic::calculateDriveWheelAngularVelocity(
 }
 
 void WheelLogic::brakeByWheels(Vehicle& vehicle) {
+    const float dt = CommonConstants::deltaTimeSec;
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     if (brakeRatio > 0.0f) {
         for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
             Wheel& wheel = vehicle.getWheel(i);
-            brake(wheel, brakeRatio);
+            brake(wheel, brakeRatio, dt);
         }
     }
 }
 
-void WheelLogic::brake(Wheel& wheel, float brakeRatio) {
+void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
     bool lockedByBrakes = !wheel.isSpinning() && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
     float angularVelocity = wheel.getAngularVelocity();
     float sign = Numeric::getSign(angularVelocity);
     float brakingTorque = -sign * brakeRatio * _data.wheelBrakingForce;
-    angularVelocity += brakingTorque / _data.wheelInertia;
+    float angularAcceleration = brakingTorque / _data.wheelInertia;
+    angularVelocity += angularAcceleration * dt;
     float newSign = Numeric::getSign(angularVelocity);
-    if (sign != newSign) {
+    if (sign != newSign) { // значение angularVelocity прошло через 0
         angularVelocity = 0.0f;
     }
     wheel.setAngularVelocity(angularVelocity);
