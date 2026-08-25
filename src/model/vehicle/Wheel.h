@@ -31,6 +31,7 @@ class Wheel : public Object {
     VehicleData _data;
     WheelPosition _position;
     float _radius;
+    float _brakeBias;
     float _rotateAngle;
     float _steeringAngle;
     float _angularVelocity;
@@ -57,6 +58,7 @@ public:
     WheelPosition getPosition();
     bool isDrive();
     float getRadius();
+    float getBrakeBias();
     float getRotateAngle();
     float getSteeringAngle();
     void setSteeringAngle(float steeringAngle);
@@ -84,8 +86,6 @@ public:
     Vector3 getRollingResistanceForce();
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
-    void normalizeLongitudinalForce(float normalizedLength);
-    void normalizeLateralForce(float normalizedLength);
     void setForces(Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize);
     void mulLongitudinalForceBy(float coeff);
     void clearAllForces();

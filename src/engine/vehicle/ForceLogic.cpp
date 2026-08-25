@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <engine/vehicle/ForceLogic.h>
+#include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Spring.h>
@@ -117,11 +118,12 @@ void ForceLogic::adjustLongitudinalForces(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
-    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
+    float vehicleFrontLinearVelocity = Math::abs(vehicleLinearVelocity.dotProduct(chassisFrontNormal));
     Vector3 longitudinalForceSum;
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         longitudinalForceSum.add(vehicle.getWheel(wheelIndex).getLongitudinalForce());
     }
+    if (longitudinalForceSum.isZero()) return;
     Vector3 longitudinalVelocity = longitudinalForceSum;
     longitudinalVelocity.div(vehicle.getData().vehicleMass);
     longitudinalVelocity.mul(dt);

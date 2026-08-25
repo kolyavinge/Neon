@@ -50,7 +50,9 @@ public:
     /* wheel */
     float frontWheelRadius;
     float rearWheelRadius;
-    float wheelBrakingForce;
+    float wheelTotalBrakingForce;
+    float frontBrakeBias;
+    float rearBrakeBias;
     float maxSteeringAngle;
     float minRollingResistanceCoeff;
     float wheelInertia;

@@ -40,8 +40,7 @@ class VehicleConstants {
 
 public:
     inline static const int wheelsCount = 4;
-    inline static const int driveWheelsCount = 2;
-    inline static const int nonDriveWheelsCount = 2;
+    inline static const int oneAxleWheelsCount = 2;
     inline static const float lockedWheelSlipRatio = 1.0f;
     inline static const float linearVelocityEps = 0.1f;
     inline static const float angularVelocityEps = 0.1f;

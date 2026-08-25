@@ -318,6 +318,7 @@
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
       <DisableSpecificWarnings>5045;4820;4514;5027;4626</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4244;4172</TreatSpecificWarningsAsErrors>
+      <FloatingPointExceptions>true</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

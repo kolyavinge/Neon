@@ -60,12 +60,12 @@ Wheel& Vehicle::getWheel(WheelPosition p) {
 }
 
 Wheel& Vehicle::getDriveWheel(int i) {
-    if (!Numeric::between(i, 0, VehicleConstants::driveWheelsCount - 1)) throw ArgumentException();
+    if (!Numeric::between(i, 0, VehicleConstants::oneAxleWheelsCount - 1)) throw ArgumentException();
     return _wheels[i + 2];
 }
 
 Wheel& Vehicle::getNonDriveWheel(int i) {
-    if (!Numeric::between(i, 0, VehicleConstants::nonDriveWheelsCount - 1)) throw ArgumentException();
+    if (!Numeric::between(i, 0, VehicleConstants::oneAxleWheelsCount - 1)) throw ArgumentException();
     return _wheels[i];
 }
 
@@ -150,14 +150,6 @@ Vector3 Vehicle::getLinearVelocity() {
     return _rigidBody.getLinearVelocity();
 }
 
-//Vector3 Vehicle::getLinearVelocityProjectedOnFrontNormal() {
-//    Vector3 result = getLinearVelocity();
-//    if (result.isZero()) return Vector3();
-//    result.projectOn(getChassisFrontNormal());
-//
-//    return result;
-//}
-
 Vector3 Vehicle::getAngularVelocity() {
     return _rigidBody.getAngularVelocity();
 }
@@ -200,11 +192,11 @@ void Vehicle::calculateBodyPosition() {
 
 float Vehicle::getAverageDriveWheelsRpm() {
     float wheelsAngularVelocity = 0.0f;
-    for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::oneAxleWheelsCount; i++) {
         Wheel& wheel = getDriveWheel(i);
         wheelsAngularVelocity += wheel.getAngularVelocity();
     }
-    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / VehicleConstants::driveWheelsCount;
+    float averageWheelsRpm = UnitConverter::angularVelocityToRpm(wheelsAngularVelocity) / VehicleConstants::oneAxleWheelsCount;
     // итоговая скорость может быть отрицательной если машинка едет назад
 
     return averageWheelsRpm;

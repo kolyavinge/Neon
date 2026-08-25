@@ -23,7 +23,7 @@ void EngineLogic::synchEngineAndWheels(Vehicle& vehicle) {
     engine.setRpm(expectedRpmByWheels, gear);
     if (engine.isRpmExceeded()) {
         float newAngularVelocity = UnitConverter::rpmToAngularVelocity(engine.getRpm() / gearRatio);
-        for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
+        for (int i = 0; i < VehicleConstants::oneAxleWheelsCount; i++) {
             Wheel& driveWheel = vehicle.getDriveWheel(i);
             driveWheel.setAngularVelocity(newAngularVelocity);
         }
@@ -43,7 +43,7 @@ void EngineLogic::applyEngineTorqueToWheels(Vehicle& vehicle) {
     float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     // вычисляем крутящий момент двигателя и угловые скорости ведущих колес
     float engineTorque = engine.calculateTorque(throttleRatio, isEngineAndWheelsConnected, gear);
-    for (int i = 0; i < VehicleConstants::driveWheelsCount; i++) {
+    for (int i = 0; i < VehicleConstants::oneAxleWheelsCount; i++) {
         Wheel& driveWheel = vehicle.getDriveWheel(i);
         Spring& spring = vehicle.getSpring(i);
         _wheelLogic.calculateDriveWheelAngularVelocity(

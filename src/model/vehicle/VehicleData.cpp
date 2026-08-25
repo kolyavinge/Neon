@@ -53,10 +53,12 @@ VehicleData::VehicleData() {
     /* wheel */
     frontWheelRadius = 0.22f;
     rearWheelRadius = 0.26f;
-    wheelBrakingForce = 1000.0f;
+    wheelTotalBrakingForce = 3500.0f;
+    frontBrakeBias = 0.6f;
+    rearBrakeBias = 1.0f - frontBrakeBias;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRollingResistanceCoeff = 0.01f;
-    wheelInertia = 0.6f;
+    wheelInertia = 1.2f;
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
     lowVelocityLimit = 1.5f;
@@ -80,7 +82,7 @@ VehicleData::VehicleData() {
     springBumpStopStiffness = 10.0f * stiffnessMul;
 
     /* wheel longitudinal force */
-    float D = 0.8f;
+    float D = 1.0f;
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, D, 0.8f);

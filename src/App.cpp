@@ -1,8 +1,9 @@
 #include <App.h>
 #include <common/constants.h>
 #include <core/Game.h>
-#include <lib/windows.h>
+#include <float.h>
 #include <lib/calc/CoordinateAxes.h>
+#include <lib/windows.h>
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
     glViewport(0, 0, width, (int)((float)width / CommonConstants::screenAspect));
@@ -55,6 +56,10 @@ void App::run() {
 }
 
 int main(int, char**) {
+    unsigned int state;
+    _controlfp_s(&state, 0, _EM_ZERODIVIDE | _EM_INVALID); // аппаратные исключения
+
     App::run();
+
     return 0;
 }

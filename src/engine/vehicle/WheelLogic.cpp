@@ -1,11 +1,12 @@
 #include <common/constants.h>
 #include <engine/vehicle/WheelLogic.h>
 #include <lib/calc/Math.h>
+#include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
 void WheelLogic::calculateDriveWheelAngularVelocity(
     Wheel& wheel, float vehicleLinearVelocity, float engineTorque, float gearRatio, float springForce, float dt) {
-    float driveTorque = engineTorque * gearRatio * _data.gearboxEfficiency / VehicleConstants::driveWheelsCount;
+    float driveTorque = engineTorque * gearRatio * _data.gearboxEfficiency / VehicleConstants::oneAxleWheelsCount;
     float roadTorque = wheel.getLongitudinalForce().dotProduct(wheel.getFrontNormal()) * wheel.getRadius();
     float wheelTorque = driveTorque - roadTorque;
     float angularAcceleration = wheelTorque / _data.wheelInertia;
@@ -48,7 +49,7 @@ void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
     if (lockedByBrakes) return;
     float angularVelocity = wheel.getAngularVelocity();
     float sign = Numeric::getSign(angularVelocity);
-    float brakingTorque = -sign * brakeRatio * _data.wheelBrakingForce;
+    float brakingTorque = -sign * brakeRatio * wheel.getBrakeBias() * _data.wheelTotalBrakingForce / VehicleConstants::oneAxleWheelsCount;
     float angularAcceleration = brakingTorque / _data.wheelInertia;
     angularVelocity += angularAcceleration * dt;
     float newSign = Numeric::getSign(angularVelocity);
@@ -63,10 +64,10 @@ void WheelLogic::calculateWheelAngularVelocityByLinear(Vehicle& vehicle) {
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
-    bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
+    //bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        if (!wheel.isDrive() || wheel.isDrive() && isBrakingByWheelsOrEngine) {
+        if (!wheel.isDrive()/* || wheel.isDrive() && isBrakingByWheelsOrEngine*/) {
             wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, chassisFrontNormal, brakeRatio);
         }
         wheel.updateRotateAngle(dt);
@@ -137,7 +138,7 @@ Vector3 WheelLogic::calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLine
 
     if (!wheel.isSpinning()) {
         // колесо заблокировано и скользит - сила всегда направлена против скорости
-        Numeric::setNegativeSign(resultForce);
+        Numeric::setNegativeSign(output resultForce);
     }
     longitudinalForce.mul(resultForce);
     wheel.setAccumulatedDeflection(accumulatedDeflection);

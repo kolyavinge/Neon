@@ -1,5 +1,3 @@
-#pragma once
-
 #include <common/constants.h>
 #include <lib/SmoothValue.h>
 #include <lib/calc/Math.h>
@@ -28,6 +26,7 @@ SlipRatio& SlipRatio::operator=(const SlipRatio& other) {
 Wheel::Wheel() {
     _position = (WheelPosition)-1; // unset position
     _radius = 0.0f;
+    _brakeBias = 0.0f;
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
     _angularVelocity = 0.0f;
@@ -44,8 +43,10 @@ void Wheel::init(WheelPosition position) {
     bool isFrontWheel = _position == WheelPosition::frontLeft || _position == WheelPosition::frontRight;
     if (isFrontWheel) {
         _radius = _data.frontWheelRadius;
+        _brakeBias = _data.frontBrakeBias;
     } else {
         _radius = _data.rearWheelRadius;
+        _brakeBias = _data.rearBrakeBias;
     }
     _rotateAngle = 0.0f;
     _steeringAngle = 0.0f;
@@ -79,6 +80,10 @@ bool Wheel::isDrive() {
 
 float Wheel::getRadius() {
     return _radius;
+}
+
+float Wheel::getBrakeBias() {
+    return _brakeBias;
 }
 
 float Wheel::getRotateAngle() {
@@ -194,14 +199,6 @@ float Wheel::getLateralForceBeforeNormalize() {
     return _lateralForceBeforeNormalize;
 }
 
-void Wheel::normalizeLongitudinalForce(float normalizedLength) {
-    _longitudinalForce.setLength(normalizedLength);
-}
-
-void Wheel::normalizeLateralForce(float normalizedLength) {
-    _lateralForce.setLength(normalizedLength);
-}
-
 void Wheel::setForces(
     Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize) {
     _longitudinalForce = longitudinalForce;
@@ -224,9 +221,7 @@ void Wheel::clearAllForces() {
 }
 
 void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio) {
-    bool lockedByBrakes =
-        Numeric::floatEquals(_angularVelocity, 0.0f, VehicleConstants::angularVelocityEps) &&
-        brakeRatio > 0.0f;
+    bool lockedByBrakes = !isSpinning() && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
     float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
