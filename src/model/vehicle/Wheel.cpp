@@ -220,10 +220,10 @@ void Wheel::clearAllForces() {
     _lateralForceBeforeNormalize = 0.0f;
 }
 
-void Wheel::calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio) {
+void Wheel::calculateAngularVelocityByLinear(float vehicleFrontLinearVelocity, float brakeRatio) {
     bool lockedByBrakes = !isSpinning() && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
-    float destinationAngularVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal) / getRadius();
+    float destinationAngularVelocity = vehicleFrontLinearVelocity / getRadius();
     _angularVelocity = SmoothValue<float>::getUpdated(_angularVelocity, destinationAngularVelocity, 1.0f);
 }
 

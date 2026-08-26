@@ -73,7 +73,10 @@ public:
     float rearSpringMinLength;
     float rearSpringMaxLength;
     float rearAntiRollStiffness;
-    float springBumpStopStiffness;
+    //float springBumpStopStiffness;
+
+    float optimalSlipRatioFrom;
+    float optimalSlipRatioTo;
 
     VehicleData();
     //float getRollingResistanceCoeff(float linearVelocityNormalizedProjection);

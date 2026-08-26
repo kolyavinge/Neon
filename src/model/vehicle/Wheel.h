@@ -89,7 +89,7 @@ public:
     void setForces(Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize);
     void mulLongitudinalForceBy(float coeff);
     void clearAllForces();
-    void calculateAngularVelocityByLinear(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal, float brakeRatio);
+    void calculateAngularVelocityByLinear(float vehicleFrontLinearVelocity, float brakeRatio);
     bool hasGroundContact();
     void setGroundContact(bool value);
     Vector3 getGroundContactPoint();

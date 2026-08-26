@@ -2,7 +2,6 @@
 #include <common/constants.h>
 #include <core/Game.h>
 #include <float.h>
-#include <lib/calc/CoordinateAxes.h>
 #include <lib/windows.h>
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {

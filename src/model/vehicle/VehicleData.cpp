@@ -11,11 +11,11 @@ VehicleData::VehicleData() {
     finalGearRatio = 3.5f;
     gearRatios[0] = finalGearRatio * -3.5f;
     gearRatios[1] = 0.0f;
-    gearRatios[2] = finalGearRatio * 2.5f;
-    gearRatios[3] = finalGearRatio * 1.9f;
-    gearRatios[4] = finalGearRatio * 1.5f;
-    gearRatios[5] = finalGearRatio * 1.2f;
-    gearRatios[6] = finalGearRatio * 1.0f;
+    gearRatios[2] = finalGearRatio * 3.5f;
+    gearRatios[3] = finalGearRatio * 2.5f;
+    gearRatios[4] = finalGearRatio * 2.0f;
+    gearRatios[5] = finalGearRatio * 1.8f;
+    gearRatios[6] = finalGearRatio * 1.2f;
     gearRatios[7] = finalGearRatio * 0.8f;
     autoShiftRpm = 7800.0f;
 
@@ -47,7 +47,7 @@ VehicleData::VehicleData() {
     engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
     engineMaxReverseRpm = 2500.0f;
-    engineBrakingTorque = 30.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
+    engineBrakingTorque = 20.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
     engineBrakingCoeff = 0.05f;
 
     /* wheel */
@@ -57,7 +57,7 @@ VehicleData::VehicleData() {
     frontBrakeBias = 0.6f;
     rearBrakeBias = 1.0f - frontBrakeBias;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRollingResistanceCoeff = 0.01f;
+    minRollingResistanceCoeff = 0.02f;
     wheelInertia = 1.2f;
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
@@ -79,7 +79,10 @@ VehicleData::VehicleData() {
     rearSpringMaxLength = 0.3f;
     rearAntiRollStiffness = 3500.0f;
 
-    springBumpStopStiffness = 10.0f * stiffnessMul;
+    //springBumpStopStiffness = 10.0f * stiffnessMul;
+
+    optimalSlipRatioFrom = 0.15f;
+    optimalSlipRatioTo = 0.25f;
 
     /* wheel longitudinal force */
     float D = 1.0f;

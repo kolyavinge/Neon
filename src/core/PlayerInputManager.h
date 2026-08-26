@@ -2,7 +2,7 @@
 
 #include <common/InputManager.h>
 #include <lib/di/Resolver.h>
-#include <model/vehicle/DrivingInputData.h>
+#include <model/vehicle/Vehicle.h>
 
 class PlayerInputManager : public Object {
 
@@ -17,5 +17,9 @@ public:
     PlayerInputManager(
         InputManager& inputManager);
 
-    void update(DrivingInputData& inputData);
+    void update(Vehicle& vehicle);
+
+private:
+    float getOptimalThrottleRatio(Vehicle& vehicle);
+    float getOptimalBrakeRatio(Vehicle& vehicle);
 };

@@ -12,7 +12,7 @@ class Spring : public Object {
     float _stiffness;
     float _damperCompression;
     float _damperRebound;
-    float _bumpStopStiffness;
+    //float _bumpStopStiffness;
     float _minLength;
     float _maxLength;
     Vector3 _initPosition;

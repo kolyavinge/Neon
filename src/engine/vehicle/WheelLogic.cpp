@@ -1,6 +1,7 @@
 #include <common/constants.h>
 #include <engine/vehicle/WheelLogic.h>
 #include <lib/calc/Math.h>
+#include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
 
@@ -61,14 +62,16 @@ void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
 
 void WheelLogic::calculateWheelAngularVelocityByLinear(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
+    Gearbox& gearbox = vehicle.getGearbox();
+    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
-    //bool isBrakingByWheelsOrEngine = vehicle.isBrakingByWheelsOrEngine();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        if (!wheel.isDrive()/* || wheel.isDrive() && isBrakingByWheelsOrEngine*/) {
-            wheel.calculateAngularVelocityByLinear(vehicleLinearVelocity, chassisFrontNormal, brakeRatio);
+        if (!wheel.isDrive() || wheel.isDrive() && isEngineAndWheelsConnected) {
+            wheel.calculateAngularVelocityByLinear(vehicleFrontLinearVelocity, brakeRatio);
         }
         wheel.updateRotateAngle(dt);
     }

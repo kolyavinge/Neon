@@ -14,6 +14,8 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
         vehicle.resetToPrevPosition();
         vehicle.calculatePositionForAllSprings();
         vehicle.clearAllVelocitiesAndForces();
+        // обновим матрицы для колес, на случай если игрок крутит руль стоя на месте
+        vehicle.calculateModelMatrixForAllWheels();
         return;
     }
     vehicle.calculateLengthForAllSprings();
