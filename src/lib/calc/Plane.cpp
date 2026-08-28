@@ -3,8 +3,7 @@
 Plane::Plane() {}
 
 Plane::Plane(Vector3 frontNormal, Vector3 basePoint) {
-    _frontNormal = frontNormal;
-    _basePoint = basePoint;
+    set(frontNormal, basePoint);
 }
 
 Plane& Plane::operator=(const Plane& other) {
@@ -12,6 +11,11 @@ Plane& Plane::operator=(const Plane& other) {
     _basePoint = other._basePoint;
 
     return *this;
+}
+
+void Plane::set(Vector3 frontNormal, Vector3 basePoint) {
+    _frontNormal = frontNormal;
+    _basePoint = basePoint;
 }
 
 Vector3 Plane::getFrontNormal() {

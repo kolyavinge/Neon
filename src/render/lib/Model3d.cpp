@@ -10,6 +10,19 @@ Mesh::Mesh() :
     texture = &Texture::empty;
 }
 
+Mesh& Mesh::operator=(const Mesh& other) {
+    id = other.id;
+    name = other.name;
+    vertices = other.vertices;
+    normals = other.normals;
+    colors = other.colors;
+    texCoords = other.texCoords;
+    faces = other.faces;
+    texture = other.texture;
+
+    return *this;
+}
+
 void Model3d::prepareEnoughCapacityForMeshes(int meshesCount) {
     _meshes.prepareEnoughCapacity(meshesCount);
 }

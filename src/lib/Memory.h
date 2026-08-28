@@ -28,11 +28,15 @@ public:
         // если обьект - инициализировать нулями нельзя, ибо мы перезапишем vptr
         if (std::is_scalar_v<T>) {
             memset(newSource, 0, newItemsCount * sizeof(T));
+            if (currentItemsCount > 0) {
+                copy<T>(source, newSource, currentItemsCount);
+            }
+        } else {
+            for (int i = 0; i < currentItemsCount; i++) {
+                newSource[i] = source[i];
+            }
         }
-        if (currentItemsCount > 0) {
-            copy<T>(source, newSource, currentItemsCount);
-            delete[] source;
-        }
+        delete[] source;
         source = newSource;
     }
 };

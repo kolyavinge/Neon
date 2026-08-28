@@ -14,6 +14,8 @@ public:
     Material material;
 
     RenderMesh();
+    RenderMesh& operator=(const RenderMesh& other);
+    RenderMesh(const RenderMesh&) = default;
 };
 
 class RenderModel3d : public Object {

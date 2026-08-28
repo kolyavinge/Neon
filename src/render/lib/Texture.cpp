@@ -8,6 +8,14 @@ Texture::Texture() {
     _height = 0;
 }
 
+Texture& Texture::operator=(const Texture& other) {
+    _id = other._id;
+    _width = other._width;
+    _height = other._height;
+
+    return *this;
+}
+
 Texture::~Texture() {
     glDeleteTextures(1, &_id);
 }

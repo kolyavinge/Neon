@@ -5,7 +5,7 @@
 
 class WorldSegment : Object {
 
-    List<Vehicle*> _rigidBodies;
+    List<Vehicle*> _vehicles;
 
 public:
 };

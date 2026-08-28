@@ -5,6 +5,15 @@ RenderMesh::RenderMesh() {
     material = Material::standard;
 }
 
+RenderMesh& RenderMesh::operator=(const RenderMesh& other) {
+    name = other.name;
+    vao = other.vao;
+    texture = other.texture;
+    material = other.material;
+
+    return *this;
+}
+
 RenderModel3d::RenderModel3d() :
     _meshes(0) {
 }

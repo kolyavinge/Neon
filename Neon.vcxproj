@@ -69,6 +69,8 @@
     <ClCompile Include="src\model\common\Camera.cpp" />
     <ClCompile Include="src\model\common\common.cpp" />
     <ClCompile Include="src\model\common\RigidBody.cpp" />
+    <ClCompile Include="src\model\tracks\MoonlightRide.cpp" />
+    <ClCompile Include="src\engine\TrackCollection.cpp" />
     <ClCompile Include="src\model\vehicle\Body.cpp" />
     <ClCompile Include="src\model\vehicle\DrivingInputData.cpp" />
     <ClCompile Include="src\model\vehicle\Engine.cpp" />
@@ -79,6 +81,9 @@
     <ClCompile Include="src\model\vehicle\VehicleData.cpp" />
     <ClCompile Include="src\model\vehicle\Wheel.cpp" />
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
+    <ClCompile Include="src\model\world\GroundBuilder.cpp" />
+    <ClCompile Include="src\model\world\RectElement.cpp" />
+    <ClCompile Include="src\model\world\Track.cpp" />
     <ClCompile Include="src\render\common\RenderModel3dCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
@@ -112,6 +117,9 @@
     <ClInclude Include="src\debug\VehicleDebuger.h" />
     <ClInclude Include="src\engine\CameraUpdater.h" />
     <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h" />
+    <ClInclude Include="src\model\tracks\MoonlightRide.h" />
+    <ClInclude Include="src\engine\TrackCollection.h" />
+    <ClInclude Include="src\model\world\GroundBuilder.h" />
     <ClInclude Include="src\model\GameWorld.h" />
     <ClInclude Include="src\engine\GameWorldUpdater.h" />
     <ClInclude Include="src\engine\vehicle\EngineLogic.h" />
@@ -134,7 +142,9 @@
     <ClInclude Include="src\model\common\Camera.h" />
     <ClInclude Include="src\model\common\common.h" />
     <ClInclude Include="src\model\common\RigidBody.h" />
-    <ClInclude Include="src\model\common\WorldSegment.h" />
+    <ClInclude Include="src\model\world\RectElement.h" />
+    <ClInclude Include="src\model\world\Track.h" />
+    <ClInclude Include="src\model\world\WorldSegment.h" />
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />

@@ -13,6 +13,8 @@ public:
     static Texture empty;
 
     Texture();
+    Texture& operator=(const Texture& other);
+    Texture(const Texture&) = default;
     ~Texture();
     void init(GLuint id, GLint width, GLint height);
     GLint getWidth();

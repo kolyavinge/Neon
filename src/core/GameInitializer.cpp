@@ -1,11 +1,13 @@
 #include <core/GameInitializer.h>
 
 GameInitializer::GameInitializer(
+    TrackCollection& trackCollection,
     RaceScreen& debugScreen,
     ShaderCollection& shaderCollection,
     ShaderProgramCollection& shaderProgramCollection,
     RenderModel3dCollection& renderModel3dCollection,
     VehicleRenderer& vehicleRenderer) :
+    _trackCollection(trackCollection),
     _debugScreen(debugScreen),
     _shaderCollection(shaderCollection),
     _shaderProgramCollection(shaderProgramCollection),
@@ -15,6 +17,7 @@ GameInitializer::GameInitializer(
 
 void GameInitializer::initGame(GameWorld& gameWorld) {
     gameWorld.init();
+    gameWorld.setTrack(_trackCollection.get(Tracks::moonlightRide));
     _debugScreen.setGameWorld(gameWorld);
     _shaderCollection.loadAllShaders();
     _shaderProgramCollection.initAllPrograms();

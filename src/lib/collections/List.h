@@ -87,6 +87,13 @@ public:
         _count += range.getCount();
     }
 
+    void addRange(Collection<T>& range) {
+        resizeIfNeeded(range.getCount());
+        for (int i = 0; i < range.getCount(); i++) {
+            add(range[i]);
+        }
+    }
+
     void addRange(T* range, int count) {
         resizeIfNeeded(count);
         Memory::copy<T>(range, _items + _count, count);

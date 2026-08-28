@@ -17,6 +17,8 @@ public:
     Texture* texture;
 
     Mesh();
+    Mesh& operator=(const Mesh& other);
+    Mesh(const Mesh&) = default;
 };
 
 class Model3d : public Object {

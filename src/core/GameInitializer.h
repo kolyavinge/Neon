@@ -1,5 +1,6 @@
 #pragma once
 
+#include <engine/TrackCollection.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/GameWorld.h>
@@ -11,6 +12,7 @@
 
 class GameInitializer : public Object {
 
+    TrackCollection& _trackCollection;
     RaceScreen& _debugScreen;
     ShaderCollection& _shaderCollection;
     ShaderProgramCollection& _shaderProgramCollection;
@@ -20,6 +22,7 @@ class GameInitializer : public Object {
 public:
     static GameInitializer* resolve(Resolver& resolver) {
         return new GameInitializer(
+            resolver.resolve<TrackCollection>(),
             resolver.resolve<RaceScreen>(),
             resolver.resolve<ShaderCollection>(),
             resolver.resolve<ShaderProgramCollection>(),
@@ -28,6 +31,7 @@ public:
     }
 
     GameInitializer(
+        TrackCollection& trackCollection,
         RaceScreen& debugScreen,
         ShaderCollection& shaderCollection,
         ShaderProgramCollection& shaderProgramCollection,

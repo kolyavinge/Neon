@@ -10,9 +10,12 @@ class Plane : public Object {
 
 public:
     Plane();
+    // плоскость лучше всегда задавать через нормаль и точку
+    // если задавать по трем точкам, то сложнее контролировать нормаль
     Plane(Vector3 frontNormal, Vector3 basePoint);
     Plane& operator=(const Plane& other);
     Plane(const Plane&) = default;
+    void set(Vector3 frontNormal, Vector3 basePoint);
     Vector3 getFrontNormal();
     Vector3 getBasePoint();
     bool isPointInFront(Vector3& point);
