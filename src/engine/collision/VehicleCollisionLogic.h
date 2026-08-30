@@ -1,13 +1,18 @@
 #pragma once
 
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/vehicle/Spring.h>
 #include <model/vehicle/Vehicle.h>
+#include <model/vehicle/Wheel.h>
+#include <model/world/RectElement.h>
 
 class VehicleCollisionLogic : public Object {
 
-    Plane _groundPlane;
-
 public:
-    VehicleCollisionLogic();
-    bool resolveWheelGroundCollisions(Vehicle& vehicle);
+    void resolveWheelGroundContacts(Vehicle& vehicle, Collection<RectElement>& groundElements, output bool& allWheelsHaveSameGroundContact);
+
+private:
+    void setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, RectElement& groundElement, Vector3 chassisUpNormal);
+    void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
 };

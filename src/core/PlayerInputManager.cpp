@@ -28,7 +28,9 @@ void PlayerInputManager::update(Vehicle& vehicle) {
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::w)) {
         float throttleRatio = getOptimalThrottleRatio(vehicle);
         inputData.setThrottleRatio(throttleRatio);
-    } else if (_inputManager.keyboard.isKeyReleased(Keys::w)) {
+    } else if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::r)) {
+        inputData.setThrottleRatio(1.0f);
+    } else if (_inputManager.keyboard.isKeyUnpressed(Keys::w) && _inputManager.keyboard.isKeyUnpressed(Keys::r)) {
         inputData.setThrottleRatio(0.0f);
     }
 
@@ -59,13 +61,6 @@ void PlayerInputManager::update(Vehicle& vehicle) {
 }
 
 float PlayerInputManager::getOptimalThrottleRatio(Vehicle& vehicle) {
-    float velocityKmh = UnitConverter::msToKmh(vehicle.getLinearVelocity().getLength());
-    if (vehicle.getGearbox().getCurrentGear() == Gear::first) {
-        if (velocityKmh < 5.0f) return 0.6f;
-        if (velocityKmh < 8.0f) return 0.4f;
-    } else {
-        if (velocityKmh < 8.0f) return 1.0f;
-    }
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     VehicleData& data = vehicle.getData();
     float slipRatio = vehicle.getDriveWheel(0).getSlipRatio().value;

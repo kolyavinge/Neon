@@ -18,4 +18,6 @@ public:
     RectElement& operator=(const RectElement& other);
     RectElement(const RectElement&) = default;
     Collection<Vector3>& getPoints();
+    Vector3 getProjectedVector(Vector3 v);
+    bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
 };

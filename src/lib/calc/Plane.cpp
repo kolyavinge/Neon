@@ -30,12 +30,11 @@ bool Plane::isPointInFront(Vector3& point) {
     return _basePoint.getDirectionTo(point).dotProduct(_frontNormal) >= 0.0f;
 }
 
-Vector3 Plane::getProjectedPoint(Vector3 point) {
-    point.sub(_basePoint);
-    float d = point.dotProduct(_frontNormal);
-    point.subMultiplied(_frontNormal, d);
+Vector3 Plane::getProjectedVector(Vector3 v) {
+    float d = v.dotProduct(_frontNormal);
+    v.subMultiplied(_frontNormal, d);
 
-    return point;
+    return v;
 }
 
 bool Plane::contains(Vector3& point, float eps) {

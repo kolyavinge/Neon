@@ -16,12 +16,13 @@ public:
 
 void Keyboard::updatePressedKeys() {
     Assert::isTrue(GetKeyboardState(_winKeyStates.getItemsPointer()));
-    _pressedKeys[(int)Keys::w] = isKeyboardKeyPressed('W');
     _pressedKeys[(int)Keys::a] = isKeyboardKeyPressed('A');
-    _pressedKeys[(int)Keys::s] = isKeyboardKeyPressed('S');
     _pressedKeys[(int)Keys::d] = isKeyboardKeyPressed('D');
-    _pressedKeys[(int)Keys::q] = isKeyboardKeyPressed('Q');
     _pressedKeys[(int)Keys::e] = isKeyboardKeyPressed('E');
+    _pressedKeys[(int)Keys::q] = isKeyboardKeyPressed('Q');
+    _pressedKeys[(int)Keys::r] = isKeyboardKeyPressed('R');
+    _pressedKeys[(int)Keys::s] = isKeyboardKeyPressed('S');
+    _pressedKeys[(int)Keys::w] = isKeyboardKeyPressed('W');
     _pressedKeys[(int)Keys::left] = isKeyboardKeyPressed(KeyboardKeys::left);
     _pressedKeys[(int)Keys::up] = isKeyboardKeyPressed(KeyboardKeys::up);
     _pressedKeys[(int)Keys::right] = isKeyboardKeyPressed(KeyboardKeys::right);

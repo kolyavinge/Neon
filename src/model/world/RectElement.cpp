@@ -30,3 +30,11 @@ RectElement& RectElement::operator=(const RectElement& other) {
 Collection<Vector3>& RectElement::getPoints() {
     return _points;
 }
+
+Vector3 RectElement::getProjectedVector(Vector3 v) {
+    return _plane.getProjectedVector(v);
+}
+
+bool RectElement::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
+    return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint);
+}

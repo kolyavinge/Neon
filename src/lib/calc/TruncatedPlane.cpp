@@ -7,7 +7,7 @@ TruncatedPlane::TruncatedPlane(Vector3 frontNormal, Vector3 basePoint) :
 }
 
 TruncatedPlane& TruncatedPlane::operator=(const TruncatedPlane& other) {
-    set(getFrontNormal(), getBasePoint());
+    set(other._frontNormal, other._basePoint);
     _cuttingPlanes = other._cuttingPlanes;
 
     return *this;

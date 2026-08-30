@@ -16,14 +16,14 @@ VehicleUpdater::VehicleUpdater(
     _steeringLogic(steeringLogic) {
 }
 
-void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
+void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles, Collection<RectElement>& groundElements) {
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        updateVehicle(vehicle);
+        updateVehicle(vehicle, groundElements);
     }
 }
 
-void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
+void VehicleUpdater::updateVehicle(Vehicle& vehicle, Collection<RectElement>& groundElements) {
     if (vehicle.isFrozen()) return;
     _steeringLogic.steer(vehicle);
     bool isShifted = _gearboxLogic.shift(vehicle);
@@ -34,7 +34,7 @@ void VehicleUpdater::updateVehicle(Vehicle& vehicle) {
     _wheelLogic.brakeByWheels(vehicle);
     _wheelLogic.calculateWheelAngularVelocityByLinear(vehicle);
     _forceLogic.calculateAndApplyForces(vehicle);
-    _positionLogic.updatePosition(vehicle);
+    _positionLogic.updatePosition(vehicle, groundElements);
     _engineLogic.synchEngineAndWheels(vehicle);
     VehicleDebuger::printDebugInfo(vehicle);
 }

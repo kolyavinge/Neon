@@ -5,6 +5,7 @@
 // математическая плоскость
 class Plane : public Object {
 
+protected:
     Vector3 _frontNormal;
     Vector3 _basePoint;
 
@@ -19,7 +20,7 @@ public:
     Vector3 getFrontNormal();
     Vector3 getBasePoint();
     bool isPointInFront(Vector3& point);
-    Vector3 getProjectedPoint(Vector3 point);
+    Vector3 getProjectedVector(Vector3 v);
     virtual bool contains(Vector3& point, float eps);
     virtual bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
 };
