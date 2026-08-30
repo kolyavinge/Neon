@@ -22,7 +22,7 @@ public:
     }
 
     template<class T>
-    static void resize(T*& source, int currentItemsCount, int newItemsCount) {
+    _NODISCARD static T* resize(T* source, int currentItemsCount, int newItemsCount) {
         T* newSource = new T[(size_t)newItemsCount];
         // если T простой тип - инициализируем память нулями
         // если обьект - инициализировать нулями нельзя, ибо мы перезапишем vptr
@@ -37,6 +37,7 @@ public:
             }
         }
         delete[] source;
-        source = newSource;
+
+        return newSource;
     }
 };

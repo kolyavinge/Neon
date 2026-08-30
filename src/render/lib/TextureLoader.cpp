@@ -7,9 +7,11 @@ TextureLoader::TextureLoader(
 }
 
 void TextureLoader::loadTexture(String& filePath, output Texture& texture) {
+    char filePathBuf[1024];
+    filePath.getCharPointer(filePathBuf, 1024);
     unsigned int textureId = SOIL_load_OGL_texture
     (
-        filePath.getCharPointer(),
+        filePathBuf,
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y

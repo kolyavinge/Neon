@@ -6,6 +6,10 @@
 
 class ShaderCompiler : public Object {
 
+    inline static const int maxShaderSourceCodeBufSize = 1024 * 1024;
+    char* _shaderSourceCodeBuf;
+
 public:
+    ShaderCompiler();
     void compile(String& shaderSourceCode, ShaderType shaderType, output Shader& shader);
 };

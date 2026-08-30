@@ -195,14 +195,12 @@ void String::prepareEnoughCapacity(int enoughCapacity) {
     if (enoughCapacity <= 0) throw ArgumentException(L"enoughCapacity must be greater than zero.");
     if (_capacity > enoughCapacity) return;
     _capacity = enoughCapacity;
-    Memory::resize<wchar_t>(_symb, _count, _capacity);
+    _symb = Memory::resize<wchar_t>(_symb, _count, _capacity);
 }
 
-const char* String::getCharPointer() {
+void String::getCharPointer(char* buf, unsigned int bufSize) {
     _bstr_t bstr = _symb; // convert wchar_t -> char
-    strcpy_s(_tmp, bstr);
-
-    return _tmp;
+    strcpy_s(buf, bufSize, bstr);
 }
 
 wchar_t* String::getWCharPointer() {
@@ -234,6 +232,6 @@ int String::getLength(const char* str) {
 void String::resizeIfNeeded(int newCount) {
     if (newCount > _capacity) {
         _capacity = 2 * newCount;
-        Memory::resize<wchar_t>(_symb, _count, _capacity);
+        _symb = Memory::resize<wchar_t>(_symb, _count, _capacity);
     }
 }

@@ -21,7 +21,7 @@ public:
 
 class Model3d : public Object {
 
-    Array<Mesh, 20> _meshes;
+    Array<Mesh, 12> _meshes;
     Array<Texture, 10> _textures;
     int _meshesCount;
     int _texturesCount;

@@ -13,7 +13,6 @@ class String : public Object {
     wchar_t* _symb;
     int _count;
     int _capacity;
-    char _tmp[1024];
 
 public:
     static String empty;
@@ -43,7 +42,7 @@ public:
     void clear();
     void fillZero(int count);
     void prepareEnoughCapacity(int enoughCapacity);
-    const char* getCharPointer();
+    void getCharPointer(char* buf, unsigned int bufSize);
     wchar_t* getWCharPointer();
 
 private:

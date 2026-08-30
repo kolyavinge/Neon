@@ -1,10 +1,15 @@
 #include <render/lib/ShaderCompiler.h>
 #include <render/lib/opengl.h>
 
+ShaderCompiler::ShaderCompiler() {
+    _shaderSourceCodeBuf = new char[maxShaderSourceCodeBufSize];
+}
+
 void ShaderCompiler::compile(String& shaderSourceCode, ShaderType shaderType, output Shader& shader) {
     GLuint shaderId = glCreateShader((GLenum)shaderType);
-    const GLchar* shaderSourceCodeBuf = shaderSourceCode.getCharPointer();
-    glShaderSource(shaderId, 1, &shaderSourceCodeBuf, nullptr);
+    shaderSourceCode.getCharPointer(_shaderSourceCodeBuf, maxShaderSourceCodeBufSize);
+    const GLchar* sourceCodeBuf = _shaderSourceCodeBuf;
+    glShaderSource(shaderId, 1, &sourceCodeBuf, nullptr);
     glCompileShader(shaderId);
     GLint isCompiled = GL_FALSE;
     glGetShaderiv(shaderId, GL_COMPILE_STATUS, &isCompiled);

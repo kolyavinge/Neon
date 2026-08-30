@@ -18,7 +18,7 @@ public:
 
 class RenderModel3d : public Object {
 
-    Array<RenderMesh, 20> _meshes;
+    Array<RenderMesh, 12> _meshes;
     int _meshesCount;
 
 public:

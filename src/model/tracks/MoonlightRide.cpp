@@ -12,7 +12,7 @@ String MoonlightRide::getName() {
 
 void MoonlightRide::makeGround() {
     GetZFunc getZFunc = [](Vector3 p, int row, int col, int segmentsCountDownToUp, int segmentsCountLeftToRight) {
-        return p.z + col * 0.0f + row * 0.5f + 0.01f;
+        return p.z + (float)col * 0.0f + (float)row * 0.5f + 0.01f;
     };
     GroundBuilder builder;
     builder

@@ -193,6 +193,6 @@ private:
     }
 
     void resizeItems() {
-        Memory::resize<T>(_items, _count, _capacity);
+        _items = Memory::resize<T>(_items, _count, _capacity);
     }
 };

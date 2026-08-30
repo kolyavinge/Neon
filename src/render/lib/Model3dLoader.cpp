@@ -17,7 +17,9 @@ Model3dLoader::Model3dLoader(
 
 void Model3dLoader::load(String& modelFilePath, output Model3d& model3d) {
     Assimp::Importer importer;
-    const aiScene& aiScene = *importer.ReadFile(modelFilePath.getCharPointer(), aiProcess_Triangulate);
+    char filePath[1024];
+    modelFilePath.getCharPointer(filePath, 1024);
+    const aiScene& aiScene = *importer.ReadFile(filePath, aiProcess_Triangulate);
     loadTextures(modelFilePath, output model3d);
     loadMeshes(aiScene, output model3d);
 }
