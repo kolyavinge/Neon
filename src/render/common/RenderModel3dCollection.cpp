@@ -53,9 +53,8 @@ void RenderModel3dCollection::loadAllModels() {
 float RenderModel3dCollection::getWheelRadius(Model3d& wheelModel) {
     // после того как колесо отцентровано, радиус - это максимальное значение по оси z (или y)
     float wheelRadius = 0.0f;
-    Collection<Mesh>& meshes = wheelModel.getMeshes();
-    for (int meshIndex = 0; meshIndex < meshes.getCount(); meshIndex++) {
-        Mesh& mesh = meshes[meshIndex];
+    for (int meshIndex = 0; meshIndex < wheelModel.getMeshesCount(); meshIndex++) {
+        Mesh& mesh = wheelModel.getMesh(meshIndex);
         for (int vertexIndex = 2; vertexIndex < mesh.vertices.getCount(); vertexIndex += 3) {
             float z = mesh.vertices[vertexIndex];
             if (wheelRadius < z) wheelRadius = z;

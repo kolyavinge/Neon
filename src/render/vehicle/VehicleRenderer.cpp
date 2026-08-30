@@ -36,8 +36,8 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera) {
 
 void VehicleRenderer::renderBody(TransformMatrix4& vehicleModelMatrix) {
     _shader.setModelMatrix(vehicleModelMatrix);
-    for (int i = 0; i < _vehicleBodyModel->getMeshes().getCount(); i++) {
-        RenderMesh& mesh = _vehicleBodyModel->getMeshes()[i];
+    for (int i = 0; i < _vehicleBodyModel->getMeshesCount(); i++) {
+        RenderMesh& mesh = _vehicleBodyModel->getMesh(i);
         //_mainSceneShader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
@@ -47,8 +47,8 @@ void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition)
     Wheel& wheel = vehicle.getWheel(wheelPosition);
     RenderModel3d* wheelModel = _wheelModels[(int)wheelPosition];
     _shader.setModelMatrix(wheel.getModelMatrix());
-    for (int i = 0; i < wheelModel->getMeshes().getCount(); i++) {
-        RenderMesh& mesh = wheelModel->getMeshes()[i];
+    for (int i = 0; i < wheelModel->getMeshesCount(); i++) {
+        RenderMesh& mesh = wheelModel->getMesh(i);
         //_mainSceneShader.setMaterial(wheelMesh->material);
         _vaoRenderer.render(mesh.vao);
     }

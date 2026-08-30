@@ -6,15 +6,6 @@ VAO::VAO() {
     _elementsCount = 0;
 }
 
-VAO& VAO::operator=(const VAO& other) {
-    _id = other._id;
-    _vboIds = other._vboIds;
-    _format = other._format;
-    _elementsCount = other._elementsCount;
-
-    return *this;
-}
-
 VAO::~VAO() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

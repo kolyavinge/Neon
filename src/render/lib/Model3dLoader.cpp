@@ -23,7 +23,6 @@ void Model3dLoader::load(String& modelFilePath, output Model3d& model3d) {
 }
 
 void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) {
-    model3d.prepareEnoughCapacityForMeshes((int)aiScene.mNumMeshes);
     for (int meshIndex = 0; meshIndex < (int)aiScene.mNumMeshes; meshIndex++) {
         aiMesh& aiMesh = *aiScene.mMeshes[meshIndex];
         Mesh& mesh = model3d.createNewMesh();
@@ -59,8 +58,8 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
             mesh.faces.add(face.mIndices[1]);
             mesh.faces.add(face.mIndices[2]);
         }
-        if (model3d.getTextures().getCount() > 0) {
-            mesh.texture = &model3d.getTextures().first();
+        if (model3d.getTexturesCount() > 0) {
+            mesh.texture = &model3d.getTexture(0);
         }
     }
 }

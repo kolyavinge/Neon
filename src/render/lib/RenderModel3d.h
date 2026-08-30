@@ -14,18 +14,17 @@ public:
     Material material;
 
     RenderMesh();
-    RenderMesh& operator=(const RenderMesh& other);
-    RenderMesh(const RenderMesh&) = default;
 };
 
 class RenderModel3d : public Object {
 
-    List<RenderMesh> _meshes;
+    Array<RenderMesh, 20> _meshes;
+    int _meshesCount;
 
 public:
     RenderModel3d();
-    void prepareEnoughCapacityForMeshes(int meshesCount);
     RenderMesh& createNewMesh();
-    Collection<RenderMesh>& getMeshes();
+    RenderMesh& getMesh(int index);
+    int getMeshesCount();
     RenderMesh& getMeshByName(String meshName);
 };

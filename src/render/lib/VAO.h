@@ -22,8 +22,6 @@ class VAO : public Object {
 
 public:
     VAO();
-    VAO& operator=(const VAO& other);
-    VAO(const VAO&) = default;
     ~VAO();
     void init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount);
     GLuint getId();

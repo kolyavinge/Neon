@@ -17,14 +17,14 @@ public:
     Texture* texture;
 
     Mesh();
-    Mesh& operator=(const Mesh& other);
-    Mesh(const Mesh&) = default;
 };
 
 class Model3d : public Object {
 
-    List<Mesh> _meshes;
-    List<Texture> _textures;
+    Array<Mesh, 20> _meshes;
+    Array<Texture, 10> _textures;
+    int _meshesCount;
+    int _texturesCount;
 
 public:
     enum class Axis {
@@ -33,11 +33,13 @@ public:
         z = 4
     };
 
-    void prepareEnoughCapacityForMeshes(int meshesCount);
+    Model3d();
     Mesh& createNewMesh();
-    Collection<Mesh>& getMeshes();
+    Mesh& getMesh(int index);
+    int getMeshesCount();
     Texture& createNewTexture();
-    Collection<Texture>& getTextures();
+    Texture& getTexture(int index);
+    int getTexturesCount();
     void moveToOrigin(int axis = 0);
     void moveToCenter(int axis = 0);
     void scale(float scale);

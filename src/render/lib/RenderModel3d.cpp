@@ -5,29 +5,20 @@ RenderMesh::RenderMesh() {
     material = Material::standard;
 }
 
-RenderMesh& RenderMesh::operator=(const RenderMesh& other) {
-    name = other.name;
-    vao = other.vao;
-    texture = other.texture;
-    material = other.material;
-
-    return *this;
-}
-
-RenderModel3d::RenderModel3d() :
-    _meshes(0) {
-}
-
-void RenderModel3d::prepareEnoughCapacityForMeshes(int meshesCount) {
-    _meshes.prepareEnoughCapacity(meshesCount);
+RenderModel3d::RenderModel3d() {
+    _meshesCount = 0;
 }
 
 RenderMesh& RenderModel3d::createNewMesh() {
-    return _meshes.addNew();
+    return _meshes[_meshesCount++];
 }
 
-Collection<RenderMesh>& RenderModel3d::getMeshes() {
-    return _meshes;
+RenderMesh& RenderModel3d::getMesh(int index) {
+    return _meshes[index];
+}
+
+int RenderModel3d::getMeshesCount() {
+    return _meshesCount;
 }
 
 RenderMesh& RenderModel3d::getMeshByName(String meshName) {

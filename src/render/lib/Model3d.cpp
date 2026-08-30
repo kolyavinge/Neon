@@ -10,37 +10,33 @@ Mesh::Mesh() :
     texture = &Texture::empty;
 }
 
-Mesh& Mesh::operator=(const Mesh& other) {
-    id = other.id;
-    name = other.name;
-    vertices = other.vertices;
-    normals = other.normals;
-    colors = other.colors;
-    texCoords = other.texCoords;
-    faces = other.faces;
-    texture = other.texture;
-
-    return *this;
-}
-
-void Model3d::prepareEnoughCapacityForMeshes(int meshesCount) {
-    _meshes.prepareEnoughCapacity(meshesCount);
+Model3d::Model3d() {
+    _meshesCount = 0;
+    _texturesCount = 0;
 }
 
 Mesh& Model3d::createNewMesh() {
-    return _meshes.addNew();
+    return _meshes[_meshesCount++];
 }
 
-Collection<Mesh>& Model3d::getMeshes() {
-    return _meshes;
+Mesh& Model3d::getMesh(int index) {
+    return _meshes[index];
+}
+
+int Model3d::getMeshesCount() {
+    return _meshesCount;
 }
 
 Texture& Model3d::createNewTexture() {
-    return _textures.addNew();
+    return _textures[_texturesCount++];
 }
 
-Collection<Texture>& Model3d::getTextures() {
-    return _textures;
+Texture& Model3d::getTexture(int index) {
+    return _textures[index];
+}
+
+int Model3d::getTexturesCount() {
+    return _texturesCount;
 }
 
 void Model3d::moveToOrigin(int axis) {
