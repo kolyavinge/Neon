@@ -92,8 +92,8 @@ VehicleData::VehicleData() {
     _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, D, 0.8f);
 
     /* wheel lateral force */
-    float Dfront = 0.3f;
-    float Drear = 0.25f;
+    float Dfront = 0.4f;
+    float Drear = 0.35f;
     _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, Dfront, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, Dfront, -0.2f);
     _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, Drear, -0.2f);

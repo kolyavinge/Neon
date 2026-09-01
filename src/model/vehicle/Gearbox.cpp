@@ -4,18 +4,23 @@
 
 Gearbox::Gearbox() {
     _gearRatios = _data.gearRatios;
+    _kind = GearboxKind::automatic;
     init();
 }
 
 void Gearbox::init() {
+    _kind = GearboxKind::automatic;
     _prevGearIndex = 1;
     _currentGearIndex = 1;
     _isClutchActive = true;
 }
 
 GearboxKind Gearbox::getKind() {
-    return GearboxKind::manual;
-    return GearboxKind::automatic;
+    return _kind;
+}
+
+void Gearbox::setKind(GearboxKind kind) {
+    _kind = kind;
 }
 
 Gear Gearbox::getPrevGear() {

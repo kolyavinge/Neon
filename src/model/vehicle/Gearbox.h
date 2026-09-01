@@ -15,6 +15,7 @@ class Gearbox : public Object {
 
     VehicleData _data;
     Array<float, (int)Gear::_count> _gearRatios;
+    GearboxKind _kind;
     int _prevGearIndex;
     int _currentGearIndex;
     bool _isClutchActive;
@@ -23,6 +24,7 @@ public:
     Gearbox();
     void init();
     GearboxKind getKind();
+    void setKind(GearboxKind kind);
     Gear getPrevGear();
     Gear getCurrentGear();
     float getLowerGearRatio();

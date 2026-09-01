@@ -23,6 +23,7 @@ void Keyboard::updatePressedKeys() {
     _pressedKeys[(int)Keys::r] = isKeyboardKeyPressed('R');
     _pressedKeys[(int)Keys::s] = isKeyboardKeyPressed('S');
     _pressedKeys[(int)Keys::w] = isKeyboardKeyPressed('W');
+    _pressedKeys[(int)Keys::z] = isKeyboardKeyPressed('Z');
     _pressedKeys[(int)Keys::left] = isKeyboardKeyPressed(KeyboardKeys::left);
     _pressedKeys[(int)Keys::up] = isKeyboardKeyPressed(KeyboardKeys::up);
     _pressedKeys[(int)Keys::right] = isKeyboardKeyPressed(KeyboardKeys::right);

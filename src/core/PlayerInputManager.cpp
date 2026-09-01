@@ -2,7 +2,6 @@
 #include <core/PlayerInputManager.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/DrivingInputData.h>
-#include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
@@ -54,6 +53,11 @@ void PlayerInputManager::update(Vehicle& vehicle) {
         inputData.shiftUp();
     } else if (_inputManager.keyboard.isKeyPressed(Keys::down)) {
         inputData.shiftDown();
+    }
+
+    if (_inputManager.keyboard.isKeyPressed(Keys::z)) {
+        Gearbox& gearbox = vehicle.getGearbox();
+        gearbox.setKind(gearbox.getKind() == GearboxKind::manual ? GearboxKind::automatic : GearboxKind::manual);
     }
 
     const float dt = CommonConstants::deltaTimeSec;

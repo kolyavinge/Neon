@@ -14,6 +14,7 @@ enum class Keys {
     r,
     s,
     w,
+    z,
     space,
     enter,
     escape,
