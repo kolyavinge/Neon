@@ -3,7 +3,7 @@
 #include <lib/system.h>
 #include <model/GameWorld.h>
 #include <model/vehicle/Vehicle.h>
-#include <model/world/RectElement.h>
+#include <model/world/WorldPrimitive.h>
 
 class DebugRenderer : public Object {
 
@@ -16,7 +16,7 @@ public:
     void renderVehicleBody(Vehicle& vehicle);
     void renderVehicleChassis(Vehicle& vehicle);
     void renderVehicleAxis(Vehicle& vehicle);
-    void renderGround(Collection<RectElement>& ground);
+    void renderGround(Collection<WorldPrimitive>& ground);
     void renderGrid();
     void renderGlobalAxis();
 };

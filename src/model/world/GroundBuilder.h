@@ -2,7 +2,7 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/world/RectElement.h>
+#include <model/world/WorldPrimitive.h>
 
 typedef float (*GetZFunc)(Vector3 p, int row, int col, int segmentsCountDownToUp, int segmentsCountLeftToRight);
 
@@ -14,7 +14,7 @@ class GroundBuilder : public Object {
     int _segmentsCountLeftToRight;
     int _segmentsCountDownToUp;
     GetZFunc _getZFunc;
-    List<RectElement> _resultElements;
+    List<WorldPrimitive> _resultPrimitives;
 
 public:
     GroundBuilder();
@@ -23,7 +23,7 @@ public:
     GroundBuilder& splitDownToUp(int segmentsCount);
     GroundBuilder& setZFunc(GetZFunc getZ);
     GroundBuilder& build();
-    Collection<RectElement>& getResultElements();
+    Collection<WorldPrimitive>& getResultPrimitives();
 
 private:
     void init();

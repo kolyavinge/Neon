@@ -1,16 +1,16 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/world/RectElement.h>
+#include <model/world/WorldPrimitive.h>
 
 class Track : public Object {
 
-    List<RectElement> _groundElements;
+    List<WorldPrimitive> _groundPrimitives;
 
 public:
     virtual String getName() = 0;
-    Collection<RectElement>& getGroundElements();
+    Collection<WorldPrimitive>& getGroundPrimitives();
 
 protected:
-    void addGroundElements(Collection<RectElement>& ground);
+    void addGroundPrimitives(Collection<WorldPrimitive>& groundPrimitives);
 };

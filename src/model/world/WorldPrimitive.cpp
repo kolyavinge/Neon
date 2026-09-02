@@ -1,9 +1,9 @@
 #include <lib/calc/Plane.h>
-#include <model/world/RectElement.h>
+#include <model/world/WorldPrimitive.h>
 
-RectElement::RectElement() {}
+WorldPrimitive::WorldPrimitive() {}
 
-RectElement::RectElement(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+WorldPrimitive::WorldPrimitive(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     _points[0] = p1;
     _points[1] = p2;
     _points[2] = p3;
@@ -20,21 +20,21 @@ RectElement::RectElement(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     _plane.addCuttingPlane(Plane(p3.getDirectionTo(p4).getNormalized(), p3));
 }
 
-RectElement& RectElement::operator=(const RectElement& other) {
+WorldPrimitive& WorldPrimitive::operator=(const WorldPrimitive& other) {
     _points = other._points;
     _plane = other._plane;
 
     return *this;
 }
 
-Collection<Vector3>& RectElement::getPoints() {
+Collection<Vector3>& WorldPrimitive::getPoints() {
     return _points;
 }
 
-Vector3 RectElement::getProjectedVector(Vector3 v) {
+Vector3 WorldPrimitive::getProjectedVector(Vector3 v) {
     return _plane.getProjectedVector(v);
 }
 
-bool RectElement::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
+bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
     return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint);
 }

@@ -3,7 +3,7 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Wheel.h>
 
-void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collection<RectElement>& groundElements, output bool& allWheelsHaveSameGroundContact) {
+void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, output bool& allWheelsHaveSameGroundContact) {
     int wheelsWithSameGroundContact = 0;
     bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
@@ -16,21 +16,21 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collect
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = false;
-        for (int groundIndex = 0; groundIndex < groundElements.getCount(); groundIndex++) {
-            RectElement& groundElement = groundElements[groundIndex];
-            hasNewGroundContact = groundElement.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
+        for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {
+            WorldPrimitive& groundPrimitive = groundPrimitives[groundIndex];
+            hasNewGroundContact = groundPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
             if (!hasNewGroundContact) continue;
             bool sameGroundContact =
                 vehicleStopped &&
                 hasNewGroundContact &&
                 wheel.hasGroundContact() &&
                 Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::angularVelocityEps) &&
-                Object::referenceEquals(*wheel.getGroundElement(), groundElement) &&
+                Object::referenceEquals(*wheel.getGroundPrimitive(), groundPrimitive) &&
                 wheel.getGroundContactPoint().getLengthTo(newGroundContactPoint) < 0.0001f;
             if (sameGroundContact) {
                 wheelsWithSameGroundContact++;
             } else {
-                setGroundContact(wheel, newGroundContactPoint, groundElement, chassisUpNormal);
+                setGroundContact(wheel, newGroundContactPoint, groundPrimitive, chassisUpNormal);
             }
             break;
         }
@@ -41,9 +41,9 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collect
     allWheelsHaveSameGroundContact = wheelsWithSameGroundContact == VehicleConstants::wheelsCount;
 }
 
-void VehicleCollisionLogic::setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, RectElement& groundElement, Vector3 chassisUpNormal) {
+void VehicleCollisionLogic::setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitive, Vector3 chassisUpNormal) {
     wheel.setGroundContact(true);
-    wheel.setGroundContactPoint(newGroundContactPoint, &groundElement);
+    wheel.setGroundContactPoint(newGroundContactPoint, &groundPrimitive);
     Vector3 newWheelCenter = newGroundContactPoint;
     newWheelCenter.addMultiplied(chassisUpNormal, wheel.getRadius());
     wheel.setCenter(newWheelCenter);

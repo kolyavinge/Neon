@@ -15,7 +15,7 @@ GroundBuilder& GroundBuilder::setBasePlane(Vector3 downLeft, Vector3 downRight, 
     _basePlaneDownLeft = downLeft;
     _basePlaneDownRight = downRight;
     _basePlaneUpLeft = upLeft;
-    _resultElements.clear();
+    _resultPrimitives.clear();
 
     return *this;
 }
@@ -78,13 +78,13 @@ GroundBuilder& GroundBuilder::build() {
             Vector3 p2 = getBasePlanePoint(row, col + 1);
             Vector3 p3 = getBasePlanePoint(row + 1, col + 1);
             Vector3 p4 = getBasePlanePoint(row + 1, col);
-            _resultElements.addByValue(RectElement(p1, p2, p3, p4));
+            _resultPrimitives.addByValue(WorldPrimitive(p1, p2, p3, p4));
         }
     }
 
     return *this;
 }
 
-Collection<RectElement>& GroundBuilder::getResultElements() {
-    return _resultElements;
+Collection<WorldPrimitive>& GroundBuilder::getResultPrimitives() {
+    return _resultPrimitives;
 }

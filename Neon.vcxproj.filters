@@ -264,7 +264,7 @@
     <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\world\RectElement.cpp">
+    <ClCompile Include="src\model\world\WorldPrimitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\world\GroundBuilder.cpp">
@@ -617,7 +617,7 @@
     <ClInclude Include="src\model\world\GroundBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\world\RectElement.h">
+    <ClInclude Include="src\model\world\WorldPrimitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\tracks\MoonlightRide.h">

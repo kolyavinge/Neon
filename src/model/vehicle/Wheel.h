@@ -4,7 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/vehicle/VehicleData.h>
-#include <model/world/RectElement.h>
+#include <model/world/WorldPrimitive.h>
 
 enum class WheelPosition {
     frontLeft = 0,
@@ -49,7 +49,7 @@ class Wheel : public Object {
     float _slipAngle;
     bool _hasGroundContact;
     Vector3 _groundContactPoint;
-    RectElement* _groundElement;
+    WorldPrimitive* _groundPrimitive;
     TransformMatrix4 _modelMatrix;
 
 public:
@@ -93,8 +93,8 @@ public:
     bool hasGroundContact();
     void setGroundContact(bool value);
     Vector3 getGroundContactPoint();
-    RectElement* getGroundElement();
-    void setGroundContactPoint(Vector3 groundPoint, RectElement* groundElement);
+    WorldPrimitive* getGroundPrimitive();
+    void setGroundContactPoint(Vector3 groundPoint, WorldPrimitive* groundPrimitive);
     bool isFrozen();
     bool isSpinning();
     void clearAllVelocitiesAndForces();

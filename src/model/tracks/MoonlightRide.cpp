@@ -23,5 +23,5 @@ void MoonlightRide::makeGround() {
         .setZFunc(getZFunc)
         .build();
 
-    addGroundElements(builder.getResultElements());
+    addGroundPrimitives(builder.getResultPrimitives());
 }

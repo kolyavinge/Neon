@@ -19,7 +19,7 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
-    renderGround(gameWorld.getTrack().getGroundElements());
+    renderGround(gameWorld.getTrack().getGroundPrimitives());
     renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameWorld.getPlayerVehicle();
@@ -218,16 +218,16 @@ void DebugRenderer::renderVehicleAxis(Vehicle& vehicle) {
     glPopMatrix();
 }
 
-void DebugRenderer::renderGround(Collection<RectElement>& ground) {
+void DebugRenderer::renderGround(Collection<WorldPrimitive>& ground) {
     glEnable(GL_DEPTH_TEST);
     glColor3f(0.1f, 0.1f, 0.4f);
     for (int i = 0; i < ground.getCount(); i++) {
-        RectElement& rect = ground[i];
+        WorldPrimitive& pr = ground[i];
         glBegin(GL_LINE_LOOP);
-        glVertex3f(rect.getPoints()[0]);
-        glVertex3f(rect.getPoints()[1]);
-        glVertex3f(rect.getPoints()[2]);
-        glVertex3f(rect.getPoints()[3]);
+        glVertex3f(pr.getPoints()[0]);
+        glVertex3f(pr.getPoints()[1]);
+        glVertex3f(pr.getPoints()[2]);
+        glVertex3f(pr.getPoints()[3]);
         glEnd();
     }
     glDisable(GL_DEPTH_TEST);

@@ -35,7 +35,7 @@ Wheel::Wheel() {
     _accumulatedDeflection = 0.0f;
     _slipAngle = 0.0f;
     _hasGroundContact = false;
-    _groundElement = nullptr;
+    _groundPrimitive = nullptr;
 }
 
 void Wheel::init(WheelPosition position) {
@@ -57,7 +57,7 @@ void Wheel::init(WheelPosition position) {
     _slipAngle = 0.0f;
     _hasGroundContact = false;
     _groundContactPoint.setZero();
-    _groundElement = nullptr;
+    _groundPrimitive = nullptr;
     _frontNormal = CommonConstants::frontAxis;
     if (position == WheelPosition::frontLeft || position == WheelPosition::rearLeft) {
         _outsideNormal = CommonConstants::leftAxis;
@@ -239,13 +239,13 @@ Vector3 Wheel::getGroundContactPoint() {
     return _groundContactPoint;
 }
 
-RectElement* Wheel::getGroundElement() {
-    return _groundElement;
+WorldPrimitive* Wheel::getGroundPrimitive() {
+    return _groundPrimitive;
 }
 
-void Wheel::setGroundContactPoint(Vector3 groundPoint, RectElement* groundElement) {
+void Wheel::setGroundContactPoint(Vector3 groundPoint, WorldPrimitive* groundPrimitive) {
     _groundContactPoint = groundPoint;
-    _groundElement = groundElement;
+    _groundPrimitive = groundPrimitive;
 }
 
 bool Wheel::isFrozen() {

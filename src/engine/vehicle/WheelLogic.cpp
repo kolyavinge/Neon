@@ -108,10 +108,10 @@ Vector3 WheelLogic::calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLine
     Vector3 longitudinalForce;
     if (wheel.isSpinning()) {
         // колесо вращается - силу ориентируем по нормали колеса
-        longitudinalForce = wheel.getGroundElement()->getProjectedVector(wheel.getFrontNormal());
+        longitudinalForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getFrontNormal());
     } else {
         // колесо заблокировано - силу ориентируем по скорости машины
-        longitudinalForce = wheel.getGroundElement()->getProjectedVector(vehicleLinearVelocity);
+        longitudinalForce = wheel.getGroundPrimitive()->getProjectedVector(vehicleLinearVelocity);
     }
 
     if (longitudinalForce.isZero()) return longitudinalForce;
@@ -156,7 +156,7 @@ Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, float springForce) {
         // TODO попробовать сделать это через нормализацию
         return lateralForce;
     }
-    lateralForce = wheel.getGroundElement()->getProjectedVector(wheel.getOutsideNormal());
+    lateralForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getOutsideNormal());
     if (lateralForce.isZero()) return lateralForce;
     lateralForce.normalize();
     float force = springForce * _data.getLateralForceCoeff((int)wheel.getPosition(), wheel.getSlipAngle());
@@ -168,7 +168,7 @@ Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, float springForce) {
 Vector3 WheelLogic::calculateRollingResistanceForce(Wheel& wheel, float vehicleFrontLinearVelocity) {
     Vector3 rollingResistanceForce;
     if (Numeric::floatEquals(vehicleFrontLinearVelocity, 0.0f, VehicleConstants::linearVelocityEps)) return rollingResistanceForce;
-    rollingResistanceForce = wheel.getGroundElement()->getProjectedVector(wheel.getCenterVelocity());
+    rollingResistanceForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getCenterVelocity());
     if (rollingResistanceForce.isZero()) return rollingResistanceForce;
     float force = -1.0f * _data.minRollingResistanceCoeff * _data.vehicleMass * PhysixConstants::g;
     rollingResistanceForce.normalize();
