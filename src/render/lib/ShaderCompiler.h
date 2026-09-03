@@ -11,5 +11,6 @@ class ShaderCompiler : public Object {
 
 public:
     ShaderCompiler();
+    ~ShaderCompiler();
     void compile(String& shaderSourceCode, ShaderType shaderType, output Shader& shader);
 };

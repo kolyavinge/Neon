@@ -8,22 +8,24 @@ typedef float (*GetZFunc)(Vector3 p, int row, int col, int segmentsCountDownToUp
 
 class GroundBuilder : public Object {
 
+    WorldPrimitiveKind _kind;
     Vector3 _basePlaneDownLeft;
     Vector3 _basePlaneDownRight;
     Vector3 _basePlaneUpLeft;
     int _segmentsCountLeftToRight;
     int _segmentsCountDownToUp;
     GetZFunc _getZFunc;
-    List<WorldPrimitive> _resultPrimitives;
+    List<WorldPrimitive>* _resultPrimitives;
 
 public:
     GroundBuilder();
+    GroundBuilder& setResultList(List<WorldPrimitive>& resultPrimitives);
+    GroundBuilder& setKind(WorldPrimitiveKind kind);
     GroundBuilder& setBasePlane(Vector3 downLeft, Vector3 downRight, Vector3 upLeft);
     GroundBuilder& splitLeftToRight(int segmentsCount);
     GroundBuilder& splitDownToUp(int segmentsCount);
     GroundBuilder& setZFunc(GetZFunc getZ);
     GroundBuilder& build();
-    Collection<WorldPrimitive>& getResultPrimitives();
 
 private:
     void init();

@@ -1,6 +1,8 @@
 #include <model/world/GroundBuilder.h>
 
 GroundBuilder::GroundBuilder() {
+    _kind = (WorldPrimitiveKind)-1;
+    _resultPrimitives = nullptr;
     init();
 }
 
@@ -10,12 +12,21 @@ void GroundBuilder::init() {
     _getZFunc = nullptr;
 }
 
+GroundBuilder& GroundBuilder::setResultList(List<WorldPrimitive>& resultPrimitives) {
+    _resultPrimitives = &resultPrimitives;
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setKind(WorldPrimitiveKind kind) {
+    _kind = kind;
+    return *this;
+}
+
 GroundBuilder& GroundBuilder::setBasePlane(Vector3 downLeft, Vector3 downRight, Vector3 upLeft) {
     init();
     _basePlaneDownLeft = downLeft;
     _basePlaneDownRight = downRight;
     _basePlaneUpLeft = upLeft;
-    _resultPrimitives.clear();
 
     return *this;
 }
@@ -78,13 +89,9 @@ GroundBuilder& GroundBuilder::build() {
             Vector3 p2 = getBasePlanePoint(row, col + 1);
             Vector3 p3 = getBasePlanePoint(row + 1, col + 1);
             Vector3 p4 = getBasePlanePoint(row + 1, col);
-            _resultPrimitives.addByValue(WorldPrimitive(p1, p2, p3, p4));
+            _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4));
         }
     }
 
     return *this;
-}
-
-Collection<WorldPrimitive>& GroundBuilder::getResultPrimitives() {
-    return _resultPrimitives;
 }

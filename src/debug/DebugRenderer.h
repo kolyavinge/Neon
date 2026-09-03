@@ -17,6 +17,7 @@ public:
     void renderVehicleChassis(Vehicle& vehicle);
     void renderVehicleAxis(Vehicle& vehicle);
     void renderGround(Collection<WorldPrimitive>& ground);
+    void renderBarriers(Collection<WorldPrimitive>& barriers);
     void renderGrid();
     void renderGlobalAxis();
 };

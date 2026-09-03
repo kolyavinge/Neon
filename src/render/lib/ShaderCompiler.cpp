@@ -5,6 +5,10 @@ ShaderCompiler::ShaderCompiler() {
     _shaderSourceCodeBuf = new char[maxShaderSourceCodeBufSize];
 }
 
+ShaderCompiler::~ShaderCompiler() {
+    delete[] _shaderSourceCodeBuf;
+}
+
 void ShaderCompiler::compile(String& shaderSourceCode, ShaderType shaderType, output Shader& shader) {
     GLuint shaderId = glCreateShader((GLenum)shaderType);
     shaderSourceCode.getCharPointer(_shaderSourceCodeBuf, maxShaderSourceCodeBufSize);

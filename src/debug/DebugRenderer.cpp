@@ -20,6 +20,7 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     renderGround(gameWorld.getTrack().getGroundPrimitives());
+    renderBarriers(gameWorld.getTrack().getBarrierPrimitives());
     renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameWorld.getPlayerVehicle();
@@ -229,6 +230,43 @@ void DebugRenderer::renderGround(Collection<WorldPrimitive>& ground) {
         glVertex3f(pr.getPoints()[2]);
         glVertex3f(pr.getPoints()[3]);
         glEnd();
+        // front normal
+        //glPushMatrix();
+        //glTranslatef(pr.getPoints()[0]);
+        //glBegin(GL_LINES);
+        //glVertex3f(Vector3());
+        //glVertex3f(pr.getFrontNormal());
+        //glEnd();
+        //glPopMatrix();
+    }
+    glDisable(GL_DEPTH_TEST);
+}
+
+void DebugRenderer::renderBarriers(Collection<WorldPrimitive>& barriers) {
+    glEnable(GL_DEPTH_TEST);
+    glColor3f(0.4f, 0.1f, 0.1f);
+    for (int i = 0; i < barriers.getCount(); i++) {
+        WorldPrimitive& pr = barriers[i];
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(pr.getPoints()[0]);
+        glVertex3f(pr.getPoints()[1]);
+        glVertex3f(pr.getPoints()[2]);
+        glVertex3f(pr.getPoints()[3]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pr.getPoints()[0]);
+        glVertex3f(pr.getPoints()[2]);
+        glVertex3f(pr.getPoints()[1]);
+        glVertex3f(pr.getPoints()[3]);
+        glEnd();
+        // front normal
+        //glPushMatrix();
+        //glTranslatef(pr.getPoints()[0]);
+        //glBegin(GL_LINES);
+        //glVertex3f(Vector3());
+        //glVertex3f(pr.getFrontNormal());
+        //glEnd();
+        //glPopMatrix();
     }
     glDisable(GL_DEPTH_TEST);
 }
