@@ -23,5 +23,5 @@ public:
         WheelLogic& wheelLogic,
         VehicleCollisionLogic& vehicleCollisionLogic);
 
-    void updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives);
+    void updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives);
 };

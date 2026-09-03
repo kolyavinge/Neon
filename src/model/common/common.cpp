@@ -79,3 +79,7 @@ void Box3d::calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& fron
     _topRect = _bottomRect;
     _topRect.addMultiplied(upNormal, _measures.zLength);
 }
+
+Collection<Vector3*>& Box3d::getPoints() {
+    return _points;
+}

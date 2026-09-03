@@ -40,4 +40,5 @@ public:
     Rect2d& getTopRect();
     void setMeasures(Measures& measures);
     void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal);
+    Collection<Vector3*>& getPoints();
 };

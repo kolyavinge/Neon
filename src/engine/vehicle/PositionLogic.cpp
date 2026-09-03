@@ -7,7 +7,12 @@ PositionLogic::PositionLogic(
     _vehicleCollisionLogic(vehicleCollisionLogic) {
 }
 
-void PositionLogic::updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives) {
+void PositionLogic::updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives) {
+    vehicle.calculateBodyPosition();
+    bool anyCollisions = _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, barrierPrimitives);
+    if (anyCollisions) {
+        //vehicle.calculateBodyPosition();
+    }
     vehicle.calculatePositionForAllSprings();
     bool allWheelsHaveSameGroundContact = false;
     _vehicleCollisionLogic.resolveWheelGroundContacts(vehicle, groundPrimitives, output allWheelsHaveSameGroundContact);

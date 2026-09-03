@@ -261,7 +261,7 @@ void DebugRenderer::renderBarriers(Collection<WorldPrimitive>& barriers) {
         glEnd();
         // front normal
         //glPushMatrix();
-        //glTranslatef(pr.getPoints()[0]);
+        //glTranslatef(pr.getPoints()[3]);
         //glBegin(GL_LINES);
         //glVertex3f(Vector3());
         //glVertex3f(pr.getFrontNormal());

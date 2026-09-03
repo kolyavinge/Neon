@@ -16,14 +16,16 @@ VehicleUpdater::VehicleUpdater(
     _steeringLogic(steeringLogic) {
 }
 
-void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles, Collection<WorldPrimitive>& groundPrimitives) {
+void VehicleUpdater::updateVehicles(
+    Collection<Vehicle>& vehicles, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives) {
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        updateVehicle(vehicle, groundPrimitives);
+        updateVehicle(vehicle, groundPrimitives, barrierPrimitives);
     }
 }
 
-void VehicleUpdater::updateVehicle(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives) {
+void VehicleUpdater::updateVehicle(
+    Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives) {
     if (vehicle.isFrozen()) return;
     _steeringLogic.steer(vehicle);
     bool isShifted = _gearboxLogic.shift(vehicle);
@@ -34,7 +36,7 @@ void VehicleUpdater::updateVehicle(Vehicle& vehicle, Collection<WorldPrimitive>&
     _wheelLogic.brakeByWheels(vehicle);
     _wheelLogic.calculateWheelAngularVelocityByLinear(vehicle);
     _forceLogic.calculateAndApplyForces(vehicle);
-    _positionLogic.updatePosition(vehicle, groundPrimitives);
+    _positionLogic.updatePosition(vehicle, groundPrimitives, barrierPrimitives);
     _engineLogic.synchEngineAndWheels(vehicle);
     VehicleDebuger::printDebugInfo(vehicle);
 }

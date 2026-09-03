@@ -11,6 +11,6 @@ GameWorldUpdater::GameWorldUpdater(
 
 void GameWorldUpdater::update(GameWorld& gameWorld) {
     _playerInputManager.update(gameWorld.getPlayerVehicle());
-    _vehicleUpdater.updateVehicles(gameWorld.getVehicles(), gameWorld.getTrack().getGroundPrimitives());
+    _vehicleUpdater.updateVehicles(gameWorld.getVehicles(), gameWorld.getTrack().getGroundPrimitives(), gameWorld.getTrack().getBarrierPrimitives());
     _cameraUpdater.update(gameWorld.getCamera(), gameWorld.getPlayerVehicle());
 }

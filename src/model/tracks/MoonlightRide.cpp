@@ -24,7 +24,7 @@ void MoonlightRide::makeGround() {
 
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlane(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, -10.0f, 0.0f), Vector3(-10.0f, 10.0f, 0.0f))
+        .setBasePlane(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, -10.0f, 0.0f), Vector3(-10.0f, 100.0f, 0.0f))
         .splitLeftToRight(10)
         .splitDownToUp(10)
         .setZFunc(getZFunc)
@@ -37,7 +37,7 @@ void MoonlightRide::makeRoadBarriers() {
 
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(-2.0f, 2.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
+        .setPosition(Vector3(-2.0f, 10.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
         .setCount(5)
         .build();
 }

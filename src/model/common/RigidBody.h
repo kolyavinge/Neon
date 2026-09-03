@@ -43,8 +43,6 @@ public:
     RigidBody();
     void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float linearVelocityEps, float angularVelocityEps);
     float getMass();
-    TransformMatrix4& getLocalInertiaInverse();
-    TransformMatrix4& getWorldInertiaInverse();
     Vector3 getCenter();
     void setCenter(Vector3 center);
     float getRotateAngle();
@@ -60,11 +58,11 @@ public:
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
     void resetToPrevPosition();
-    void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    //void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody); TODO удалить если не нужно
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
     void saveState();
     void updateModelMatrix();
-    void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
+    //void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
 };

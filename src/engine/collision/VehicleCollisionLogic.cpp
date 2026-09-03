@@ -56,3 +56,27 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
     newWheelCenter.subMultiplied(chassisUpNormal, spring.getMaxLength());
     wheel.setCenter(newWheelCenter);
 }
+
+bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
+    float velocity = vehicle.getLinearVelocity().getLength();
+    Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
+    for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
+        Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
+        for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
+            WorldPrimitive& barrierPrimitive = barrierPrimitives[barrierIndex];
+            Vector3 rayToPosition = rayFromPosition;
+            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), velocity);
+            Vector3 collisionPoint;
+            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.001f, output collisionPoint);
+            if (!hasCollision) continue;
+            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
+            Vector3 newCenter = vehicle.getCenter();
+            newCenter.add(collisionDepth);
+            vehicle.setCenter(newCenter);
+
+            return true;
+        }
+    }
+
+    return false;
+}

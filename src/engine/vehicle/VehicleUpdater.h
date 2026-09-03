@@ -39,8 +39,8 @@ public:
         PositionLogic& positionLogic,
         SteeringLogic& steeringLogic);
 
-    void updateVehicles(Collection<Vehicle>& vehicles, Collection<WorldPrimitive>& groundPrimitives);
+    void updateVehicles(Collection<Vehicle>& vehicles, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives);
 
 private:
-    void updateVehicle(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives);
+    void updateVehicle(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives);
 };
