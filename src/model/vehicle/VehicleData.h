@@ -73,7 +73,6 @@ public:
     float rearSpringMinLength;
     float rearSpringMaxLength;
     float rearAntiRollStiffness;
-    //float springBumpStopStiffness;
 
     float optimalSlipRatioFrom;
     float optimalSlipRatioTo;

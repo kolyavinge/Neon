@@ -5,7 +5,6 @@ Spring::Spring() {
     _stiffness = 0.0f;
     _damperCompression = 0.0f;
     _damperRebound = 0.0f;
-    //_bumpStopStiffness = 0.0f;
     _minLength = 0.0f;
     _maxLength = 0.0f;
     _prevLength = 0.0f;
@@ -29,7 +28,6 @@ void Spring::init(WheelPosition position, Vector3 wheelFrontNormal, Vector3 whee
         _minLength = _data.rearSpringMinLength;
         _maxLength = _data.rearSpringMaxLength;
     }
-    //_bumpStopStiffness = _data.springBumpStopStiffness;
     _initPosition.setZero();
     if (isFrontWheel) {
         _initPosition.addMultiplied(wheelFrontNormal, _data.frontWheelLengthToMassCenter);
@@ -83,10 +81,6 @@ void Spring::calculateSpringForce(float dt) {
     float maxSafeDamper = springComponent * 1.5f;
     damperComponent = Numeric::clamp(damperComponent, -maxSafeDamper, maxSafeDamper);
     _springForce = springComponent + damperComponent;
-    //float compressionPercent = depth / _maxLength;
-    //if (compressionPercent > 0.8f) { // TODO наверно не нужно
-    //    _springForce += _bumpStopStiffness;
-    //}
     if (_springForce < 0.0f) _springForce = 0.0f;
 }
 

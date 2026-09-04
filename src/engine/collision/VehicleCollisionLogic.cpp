@@ -58,8 +58,11 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
 }
 
 bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
+    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
+    // точка пересечения - это точка на которую должна переместиться точка кузова
     float velocity = vehicle.getLinearVelocity().getLength();
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
+    Vector3 totalCollisionDepth;
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
@@ -67,16 +70,22 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collectio
             Vector3 rayToPosition = rayFromPosition;
             rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), velocity);
             Vector3 collisionPoint;
-            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.001f, output collisionPoint);
+            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
             if (!hasCollision) continue;
+            // collisionDepth направлен из препядствия наружу
             Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
-            Vector3 newCenter = vehicle.getCenter();
-            newCenter.add(collisionDepth);
-            vehicle.setCenter(newCenter);
-
-            return true;
+            totalCollisionDepth.add(collisionDepth);
+            for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(collisionDepth);
         }
     }
 
-    return false;
+    if (totalCollisionDepth.isZero()) {
+        return false;
+    }
+
+    Vector3 newCenter = vehicle.getCenter();
+    newCenter.add(totalCollisionDepth);
+    vehicle.setCenter(newCenter);
+
+    return true;
 }

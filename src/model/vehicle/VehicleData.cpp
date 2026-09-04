@@ -79,8 +79,6 @@ VehicleData::VehicleData() {
     rearSpringMaxLength = 0.3f;
     rearAntiRollStiffness = 3500.0f;
 
-    //springBumpStopStiffness = 10.0f * stiffnessMul;
-
     optimalSlipRatioFrom = 0.15f;
     optimalSlipRatioTo = 0.25f;
 
