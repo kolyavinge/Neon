@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <lib/Assert.h>
 #include <lib/exceptions.h>
 #include <string.h>
 
@@ -23,6 +24,7 @@ public:
 
     template<class T>
     _NODISCARD static T* resize(T* source, int currentItemsCount, int newItemsCount) {
+        Assert::isTrue(currentItemsCount < newItemsCount);
         T* newSource = new T[(size_t)newItemsCount];
         // если T простой тип - инициализируем память нулями
         // если обьект - инициализировать нулями нельзя, ибо мы перезапишем vptr

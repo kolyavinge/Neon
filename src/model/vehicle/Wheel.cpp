@@ -221,6 +221,7 @@ void Wheel::clearAllForces() {
 }
 
 void Wheel::calculateAngularVelocityByLinear(float vehicleFrontLinearVelocity, float brakeRatio) {
+    if (!_hasGroundContact) return;
     bool lockedByBrakes = !isSpinning() && brakeRatio > 0.0f;
     if (lockedByBrakes) return;
     float destinationAngularVelocity = vehicleFrontLinearVelocity / getRadius();

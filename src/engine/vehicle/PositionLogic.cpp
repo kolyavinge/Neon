@@ -9,11 +9,8 @@ PositionLogic::PositionLogic(
 
 void PositionLogic::updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives) {
     vehicle.calculateBodyPosition();
-    bool anyBarrierCollisions = _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, barrierPrimitives);
-    if (!anyBarrierCollisions) {
-        // тут рассматриваем землю как преп€дствие
-        _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, groundPrimitives);
-    }
+    _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, barrierPrimitives);
+    _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, groundPrimitives); // рассматриваем землю как преп€дствие
     // после поиска соударений вызывать vehicle.calculateBodyPosition() не нужно
     // точки кузова и так будут скорректированы с учетом соударений
     vehicle.calculatePositionForAllSprings();

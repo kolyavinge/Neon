@@ -23,6 +23,7 @@ public:
     float getLength();
     float getLengthSquared();
     float getLengthTo(Vector3 v);
+    float getLengthSquaredTo(Vector3 v);
     Vector3 getDirectionTo(Vector3 v);
     Vector3 getMiddleTo(Vector3 v);
     void setLength(float newLength);

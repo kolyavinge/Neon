@@ -9,6 +9,7 @@
 
 class RigidBody : public Object {
 
+    float _elastic;
     float _mass;
     Measures _measures;
     float _linearVelocityEps;
@@ -42,6 +43,7 @@ class RigidBody : public Object {
 public:
     RigidBody();
     void init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float linearVelocityEps, float angularVelocityEps);
+    void setElastic(float elastic);
     float getMass();
     Vector3 getCenter();
     void setCenter(Vector3 center);
@@ -58,11 +60,11 @@ public:
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
     void resetToPrevPosition();
-    //void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody); TODO удалить если не нужно
+    void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
     void saveState();
     void updateModelMatrix();
-    //void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
+    void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
 };

@@ -15,7 +15,7 @@ String MoonlightRide::getName() {
 void MoonlightRide::makeGround() {
     GetZFunc getZFunc = [](Vector3 p, int row, int col, int segmentsCountDownToUp, int segmentsCountLeftToRight) {
         //if (row <= 3) return p.z + 0.01f;
-        //return p.z + (float)(col % 2) * 0.1f + (float)(row % 2) * 0.1f + 0.01f;
+        //return p.z + (float)(col % 2) * 0.05f + (float)(row % 2) * 0.05f + 0.01f;
         return p.z + 0.01f;
     };
 
@@ -25,8 +25,8 @@ void MoonlightRide::makeGround() {
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlane(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, -10.0f, 0.0f), Vector3(-10.0f, 100.0f, 0.0f))
-        .splitLeftToRight(10)
-        .splitDownToUp(10)
+        .splitLeftToRight(20)
+        .splitDownToUp(40)
         .setZFunc(getZFunc)
         .build();
 }

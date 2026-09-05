@@ -25,7 +25,9 @@ void Vehicle::init() {
         _data.bodyMeasures,
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
+    _rigidBody.setElastic(0.1f);
     _rigidBody.setCenter(Vector3(0.0f, 0.0f, 0.6f));
+    //_rigidBody.applyForceAtPoint(Vector3(0, 0, -20000), Vector3(0, 2, 0));
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {
@@ -220,4 +222,8 @@ void Vehicle::clearAllVelocitiesAndForces() {
         Wheel& wheel = getWheel(i);
         wheel.clearAllVelocitiesAndForces();
     }
+}
+
+void Vehicle::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
+    _rigidBody.resolveCollisionWithUnmovableBody(collisionPoint, collisionNormalToBody);
 }

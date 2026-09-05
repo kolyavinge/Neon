@@ -2,6 +2,7 @@
 #include <model/common/RigidBody.h>
 
 RigidBody::RigidBody() {
+    _elastic = 0.0f;
     _mass = 0.0f;
     _rotateAngle = 0.0f;
     _linearVelocityEps = 0.0f;
@@ -10,6 +11,7 @@ RigidBody::RigidBody() {
 }
 
 void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measures measures, float linearVelocityEps, float angularVelocityEps) {
+    _elastic = 0.0f;
     _mass = mass;
     _measures = measures;
     _rotateAngle = 0.0f;
@@ -27,9 +29,14 @@ void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measu
          ixx, 0.0f, 0.0f, 0.0f,
         0.0f,  iyy, 0.0f, 0.0f,
         0.0f, 0.0f,  izz, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
     };
     _localInertiaInverse = TransformMatrix4(items);
+}
+
+void RigidBody::setElastic(float elastic) {
+    if (!Numeric::between(elastic, 0.0f, 1.0f)) throw ArgumentException(L"Elastic coeff must be from 0 to 1.");
+    _elastic = elastic;
 }
 
 float RigidBody::getMass() {
@@ -148,27 +155,42 @@ void RigidBody::resetToPrevPosition() {
     _modelMatrix = _prevModelMatrix;
 }
 
-//void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
-//    Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
-//
-//    Vector3 collisionVelocity = _angularVelocity;
-//    collisionVelocity.crossProduct(collisionPointDirection);
-//    collisionVelocity.add(_linearVelocity);
-//
-//    Vector3 relativeVelocity = collisionVelocity;
-//    float velocityNormal = relativeVelocity.dotProduct(collisionNormalToBody);
-//    if (velocityNormal > 0.0f) return;
-//
-//    Vector3 p = collisionPointDirection;
-//    p.crossProduct(collisionNormalToBody);
-//    p = _localInertiaInverse.mulVector(p); // _worldInertiaInverse ?
-//    p.crossProduct(collisionPointDirection);
-//    float d = p.dotProduct(collisionNormalToBody);
-//
-//    const float elastic = 0.0f;
-//    float impulse = -(1.0f + elastic) * velocityNormal / (1.0f / _mass + d);
-//    applyImpulse(impulse, collisionPointDirection, collisionNormalToBody);
-//}
+void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
+    Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
+
+    Vector3 collisionVelocity = _angularVelocity;
+    collisionVelocity.crossProduct(collisionPointDirection);
+    collisionVelocity.add(_linearVelocity);
+
+    Vector3 relativeVelocity = collisionVelocity;
+    float velocityNormal = relativeVelocity.dotProduct(collisionNormalToBody);
+    if (velocityNormal > 0.0f) return;
+
+    Vector3 p = collisionPointDirection;
+    p.crossProduct(collisionNormalToBody);
+    p = _worldInertiaInverse.mulVector(p);
+    p.crossProduct(collisionPointDirection);
+    float d = p.dotProduct(collisionNormalToBody);
+
+    float impulse = -(1.0f + _elastic) * velocityNormal / (1.0f / _mass + d);
+    applyImpulse(impulse, collisionPointDirection, collisionNormalToBody);
+}
+
+void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {
+    Vector3 impulseN = collisionNormal;
+    impulseN.mul(impulse);
+
+    // linear adjustment
+    Vector3 dv = impulseN;
+    dv.div(_mass);
+    _linearVelocity.add(dv);
+
+    // angular adjustment
+    dv = collisionPointDirection;
+    dv.crossProduct(impulseN);
+    dv = _worldInertiaInverse.mulVector(dv);
+    _angularVelocity.add(dv);
+}
 
 Vector3 RigidBody::getVelocityAtPoint(Vector3 worldPoint) {
     Vector3 lever = _center.getDirectionTo(worldPoint);
@@ -198,19 +220,3 @@ void RigidBody::updateModelMatrix() {
     _modelMatrix.translate(_center);
     _modelMatrix.mul(rotationMatrix);
 }
-
-//void RigidBody::applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal) {
-//    Vector3 impulseN = collisionNormal;
-//    impulseN.mul(impulse);
-//
-//    // linear adjustment
-//    Vector3 dv = impulseN;
-//    dv.div(_mass);
-//    _linearVelocity.add(dv);
-//
-//    // angular adjustment
-//    dv = collisionPointDirection;
-//    dv.crossProduct(impulseN);
-//    dv = _localInertiaInverse.mulVector(dv);
-//    _angularVelocity.add(dv);
-//}

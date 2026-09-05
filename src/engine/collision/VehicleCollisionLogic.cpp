@@ -58,11 +58,37 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
 }
 
 bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
+    findAllCollisionPoints(vehicle, barrierPrimitives);
+    if (_collisionPoints.getCount() == 0) return false;
+
+    for (int i = 0; i < _collisionPoints.getCount(); i++) {
+        vehicle.resolveCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
+    }
+
+    Vector3 totalCollisionDepth;
+    Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
+    for (int i = 0; i < _collisionDepths.getCount(); i++) {
+        Vector3 collisionDepth = _collisionDepths[i];
+        totalCollisionDepth.add(collisionDepth);
+        for (int j = 0; j < bodyPoints.getCount(); j++) bodyPoints[j]->add(collisionDepth);
+    }
+    Vector3 newCenter = vehicle.getCenter();
+    newCenter.add(totalCollisionDepth);
+    vehicle.setCenter(newCenter);
+
+    return true;
+}
+
+void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
+    _collisionPoints.clear();
+    _collisionDepths.clear();
+    _collisionNormalsToBody.clear();
+
     // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
     // точка пересечения - это точка на которую должна переместиться точка кузова
+
     float velocity = vehicle.getLinearVelocity().getLength();
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
-    Vector3 totalCollisionDepth;
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
@@ -72,20 +98,10 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collectio
             Vector3 collisionPoint;
             bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
             if (!hasCollision) continue;
-            // collisionDepth направлен из препядствия наружу
-            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
-            totalCollisionDepth.add(collisionDepth);
-            for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(collisionDepth);
+            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
+            _collisionPoints.addByValue(collisionPoint);
+            _collisionDepths.addByValue(collisionDepth);
+            _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
         }
     }
-
-    if (totalCollisionDepth.isZero()) {
-        return false;
-    }
-
-    Vector3 newCenter = vehicle.getCenter();
-    newCenter.add(totalCollisionDepth);
-    vehicle.setCenter(newCenter);
-
-    return true;
 }

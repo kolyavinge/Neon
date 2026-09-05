@@ -70,6 +70,14 @@ float Vector3::getLengthTo(Vector3 v) {
     return Math::sqrt(dx * dx + dy * dy + dz * dz);
 }
 
+float Vector3::getLengthSquaredTo(Vector3 v) {
+    float dx = x - v.x;
+    float dy = y - v.y;
+    float dz = z - v.z;
+
+    return dx * dx + dy * dy + dz * dz;
+}
+
 Vector3 Vector3::getDirectionTo(Vector3 v) {
     v.sub(*this);
     return v;
