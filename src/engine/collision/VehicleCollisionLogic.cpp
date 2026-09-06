@@ -70,6 +70,7 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collectio
     for (int i = 0; i < _collisionDepths.getCount(); i++) {
         Vector3 collisionDepth = _collisionDepths[i];
         totalCollisionDepth.add(collisionDepth);
+        // корректируем точки кузова
         for (int j = 0; j < bodyPoints.getCount(); j++) bodyPoints[j]->add(collisionDepth);
     }
     Vector3 newCenter = vehicle.getCenter();

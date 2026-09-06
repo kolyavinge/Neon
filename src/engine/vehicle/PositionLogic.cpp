@@ -11,8 +11,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>&
     vehicle.calculateBodyPosition();
     _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, barrierPrimitives);
     _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, groundPrimitives); // рассматриваем землю как препядствие
-    // после поиска соударений вызывать vehicle.calculateBodyPosition() не нужно
-    // точки кузова и так будут скорректированы с учетом соударений
+    // после поиска соударений габаритные точки кузова будут скорректированы
     vehicle.calculatePositionForAllSprings();
     bool allWheelsHaveSameGroundContact = false;
     _vehicleCollisionLogic.resolveWheelGroundContacts(vehicle, groundPrimitives, output allWheelsHaveSameGroundContact);

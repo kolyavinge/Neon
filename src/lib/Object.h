@@ -6,12 +6,6 @@ public:
     static bool referenceEquals(Object& x, Object& y);
 
     Object() = default;
-    Object(const Object&) = default;
-    Object(Object&&) noexcept = default;
-
-    // копирование по умолчанию запрещено
-    Object& operator=(const Object&) = delete;
-    Object& operator=(Object&&) noexcept = delete;
 
     virtual ~Object() = default;
 
@@ -20,4 +14,9 @@ public:
 
     // не виртуальный, вызывает внутри себя equals
     bool operator==(Object& x);
+
+protected:
+    // копирование разрешено только наследникам
+    Object(const Object&) = default;
+    Object& operator=(const Object&) = default;
 };

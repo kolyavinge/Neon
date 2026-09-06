@@ -18,18 +18,10 @@ public:
     List() : List(_initCapacity) {}
 
     List(int capacity) {
-        if (capacity < 0) throw ArgumentException();
+        if (capacity <= 0) throw ArgumentException();
         _count = 0;
         _capacity = capacity;
-        if (_capacity > 0) {
-            _items = new T[(size_t)_capacity];
-            // если T обьект - нельзя инициализировать нулями, ибо мы перезапишем vptr
-            if (std::is_scalar_v<T>) {
-                Memory::zero<T>(_items, _capacity);
-            }
-        } else {
-            _items = nullptr;
-        }
+        _items = new T[(size_t)_capacity]();
     }
 
     List(const List<T>& copy) {
@@ -38,7 +30,9 @@ public:
     }
 
     ~List() override {
-        delete[] _items;
+        if (_items != nullptr) {
+            delete[] _items;
+        }
     }
 
     List<T>& operator=(const List<T>& other) {
@@ -55,7 +49,7 @@ public:
         return _count;
     }
 
-    void fillZero() {
+    void fillZero() requires std::is_scalar_v<T> {
         Memory::zero<T>(_items, _count);
     }
 
@@ -83,7 +77,9 @@ public:
 
     void addRange(List<T>& range) {
         resizeIfNeeded(range.getCount());
-        Memory::copy<T>(range._items, _items + _count, range.getCount());
+        for (int i = 0; i < range.getCount(); i++) {
+            _items[_count + i] = range[i];
+        }
         _count += range.getCount();
     }
 
@@ -96,7 +92,9 @@ public:
 
     void addRange(T* range, int count) {
         resizeIfNeeded(count);
-        Memory::copy<T>(range, _items + _count, count);
+        for (int i = 0; i < count; i++) {
+            _items[_count + i] = range[i];
+        }
         _count += count;
     }
 
@@ -172,7 +170,9 @@ private:
         }
         if (_capacity > 0) {
             _items = new T[(size_t)_capacity];
-            Memory::copy<T>(copy._items, _items, _capacity);
+            for (int i = 0; i < _count; i++) {
+                _items[i] = copy._items[i];
+            }
         }
     }
 

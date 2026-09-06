@@ -9,7 +9,7 @@ Gearbox::Gearbox() {
 }
 
 void Gearbox::init() {
-    _kind = GearboxKind::automatic;
+    _kind = GearboxKind::manual;
     _prevGearIndex = 1;
     _currentGearIndex = 1;
     _isClutchActive = true;

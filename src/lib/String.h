@@ -10,6 +10,8 @@ enum class Encoding {
 
 class String : public Object {
 
+    static const int _initCapacity = 16;
+
     wchar_t* _symb;
     int _count;
     int _capacity;

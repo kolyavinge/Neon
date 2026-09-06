@@ -17,8 +17,11 @@ String::String(const wchar_t* str) {
     _symb = nullptr;
     _capacity = 0;
     _count = getLength(str);
-    if (_count == 0) return;
-    _capacity = _count + ZERO_SYMB;
+    if (_count > 0) {
+        _capacity = _count + ZERO_SYMB;
+    } else {
+        _capacity = _initCapacity;
+    }
     _symb = new wchar_t[(size_t)_capacity];
     Memory::zero<wchar_t>(_symb, _capacity);
     Memory::copy<wchar_t>(str, _symb, _count);
@@ -28,8 +31,11 @@ String::String(const char* str, Encoding encoding) {
     _symb = nullptr;
     _capacity = 0;
     _count = getLength(str);
-    if (_count == 0) return;
-    _capacity = _count + ZERO_SYMB;
+    if (_count > 0) {
+        _capacity = _count + ZERO_SYMB;
+    } else {
+        _capacity = _initCapacity;
+    }
     _symb = new wchar_t[(size_t)_capacity];
     Memory::zero<wchar_t>(_symb, _capacity);
     MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);

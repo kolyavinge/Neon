@@ -5,7 +5,7 @@
 
 MoonlightRide::MoonlightRide() {
     makeGround();
-    makeRoadBarriers();
+    //makeRoadBarriers();
 }
 
 String MoonlightRide::getName() {
@@ -24,7 +24,7 @@ void MoonlightRide::makeGround() {
 
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlane(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, -10.0f, 0.0f), Vector3(-10.0f, 100.0f, 0.0f))
+        .setBasePlane(Vector3(-100.0f, -100.0f, 0.0f), Vector3(100.0f, -100.0f, 0.0f), Vector3(-100.0f, 100.0f, 0.0f))
         .splitLeftToRight(20)
         .splitDownToUp(40)
         .setZFunc(getZFunc)

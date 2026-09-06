@@ -1,11 +1,6 @@
 #include <render/lib/Model3d.h>
 
-Mesh::Mesh() :
-    vertices(0),
-    normals(0),
-    colors(0),
-    texCoords(0),
-    faces(0) {
+Mesh::Mesh() {
     id = 0;
     texture = &Texture::empty;
 }

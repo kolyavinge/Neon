@@ -32,6 +32,7 @@ void RigidBody::init(Vector3 rightNormal, Vector3 frontNormal, float mass, Measu
         0.0f, 0.0f, 0.0f, 0.0f,
     };
     _localInertiaInverse = TransformMatrix4(items);
+    // _localInertiaInverse работает только с вращением -> последний элемент в диагонали равен 0
 }
 
 void RigidBody::setElastic(float elastic) {
