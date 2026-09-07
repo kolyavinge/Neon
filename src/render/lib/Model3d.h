@@ -17,16 +17,17 @@ public:
     Texture* texture;
 
     Mesh();
-    Mesh(const Mesh&) = delete; // запрещаем копирование, потому что класс хранит много данных
+    Mesh(const Mesh&) = delete; // запрещаем копирование - большой тяжелый класс
     Mesh& operator=(const Mesh&) = delete;
 };
 
 class Model3d : public Object {
 
     Array<Mesh, 12> _meshes;
-    Array<Texture, 10> _textures;
     int _meshesCount;
-    int _texturesCount;
+    // текстуры хранятся как указатели, чтобы их проще было передать в RenderModel3d
+    // и не вызывать деструктор в этом классе
+    List<Texture*> _textures;
 
 public:
     enum class Axis {
@@ -41,6 +42,7 @@ public:
     int getMeshesCount();
     Texture& createNewTexture();
     Texture& getTexture(int index);
+    Collection<Texture*>& getTextures();
     int getTexturesCount();
     void moveToOrigin(int axis = 0);
     void moveToCenter(int axis = 0);

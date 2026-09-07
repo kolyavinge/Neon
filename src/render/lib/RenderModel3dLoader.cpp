@@ -13,4 +13,6 @@ void RenderModel3dLoader::load(Model3d& model3d, output RenderModel3d& renderMod
         _model3dVAOBuilder.build(mesh, output renderMesh.vao);
         renderMesh.texture = mesh.texture;
     }
+
+    renderModel3d.setTextures(model3d.getTextures());
 }

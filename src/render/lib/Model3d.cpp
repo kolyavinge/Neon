@@ -7,7 +7,6 @@ Mesh::Mesh() {
 
 Model3d::Model3d() {
     _meshesCount = 0;
-    _texturesCount = 0;
 }
 
 Mesh& Model3d::createNewMesh() {
@@ -23,15 +22,22 @@ int Model3d::getMeshesCount() {
 }
 
 Texture& Model3d::createNewTexture() {
-    return _textures[_texturesCount++];
+    Texture* tex = new Texture();
+    _textures.add(tex);
+
+    return *tex;
 }
 
 Texture& Model3d::getTexture(int index) {
-    return _textures[index];
+    return *_textures[index];
+}
+
+Collection<Texture*>& Model3d::getTextures() {
+    return _textures;
 }
 
 int Model3d::getTexturesCount() {
-    return _texturesCount;
+    return _textures.getCount();
 }
 
 void Model3d::moveToOrigin(int axis) {

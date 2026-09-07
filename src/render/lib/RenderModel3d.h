@@ -18,13 +18,14 @@ public:
 
 class RenderModel3d : public Object {
 
-    Array<RenderMesh, 12> _meshes;
-    int _meshesCount;
+    List<RenderMesh*> _meshes;
+    List<Texture*> _textures;
 
 public:
-    RenderModel3d();
+    ~RenderModel3d();
     RenderMesh& createNewMesh();
     RenderMesh& getMesh(int index);
     int getMeshesCount();
     RenderMesh& getMeshByName(String meshName);
+    void setTextures(Collection<Texture*>& textures);
 };
