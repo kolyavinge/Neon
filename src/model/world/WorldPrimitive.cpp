@@ -23,13 +23,6 @@ WorldPrimitive::WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, 
     _plane.addCuttingPlane(Plane(p3.getDirectionTo(p4).getNormalized(), p3));
 }
 
-WorldPrimitive& WorldPrimitive::operator=(const WorldPrimitive& other) {
-    _points = other._points;
-    _plane = other._plane;
-
-    return *this;
-}
-
 WorldPrimitiveKind WorldPrimitive::getKind() {
     return _kind;
 }

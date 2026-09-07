@@ -17,6 +17,8 @@ public:
     Texture* texture;
 
     Mesh();
+    Mesh(const Mesh&) = delete; // запрещаем копирование, потому что класс хранит много данных
+    Mesh& operator=(const Mesh&) = delete;
 };
 
 class Model3d : public Object {

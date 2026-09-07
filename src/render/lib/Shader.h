@@ -27,6 +27,8 @@ class Shader : public Object {
 
 public:
     Shader();
+    Shader(const Shader&) = delete; // классы использующие ресурсы opengl запрещены к копированию
+    Shader& operator=(const Shader&) = delete;
     ~Shader();
     void init(GLuint id, ShaderType type);
     GLuint getId();

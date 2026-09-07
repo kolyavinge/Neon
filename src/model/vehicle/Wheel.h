@@ -22,8 +22,6 @@ public:
 
     SlipRatio();
     SlipRatio(float driven, float linear, float slipRatio);
-    SlipRatio& operator=(const SlipRatio& other);
-    SlipRatio(const SlipRatio&) = default;
 };
 
 class Wheel : public Object {

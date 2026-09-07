@@ -6,23 +6,6 @@ Measures::Measures() {
     zLength = 0.0f;
 }
 
-Measures& Measures::operator=(const Measures& other) {
-    xLength = other.xLength;
-    yLength = other.yLength;
-    zLength = other.zLength;
-
-    return *this;
-}
-
-Rect2d& Rect2d::operator=(const Rect2d& other) {
-    downLeft = other.downLeft;
-    downRight = other.downRight;
-    upLeft = other.upLeft;
-    upRight = other.upRight;
-
-    return *this;
-}
-
 void Rect2d::addMultiplied(Vector3& v, float multipliedBy) {
     downLeft.addMultiplied(v, multipliedBy);
     downRight.addMultiplied(v, multipliedBy);

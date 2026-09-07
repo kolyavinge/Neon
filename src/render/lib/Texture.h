@@ -13,6 +13,8 @@ public:
     static Texture empty;
 
     Texture();
+    Texture(const Texture&) = delete; // классы использующие ресурсы opengl запрещены к копированию
+    Texture& operator=(const Texture&) = delete;
     ~Texture();
     void init(GLuint id, GLint width, GLint height);
     GLint getWidth();

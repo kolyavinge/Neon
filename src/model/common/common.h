@@ -11,8 +11,6 @@ public:
     float zLength;
 
     Measures();
-    Measures& operator=(const Measures& other);
-    Measures(const Measures&) = default;
 };
 
 class Rect2d : public Object {
@@ -22,7 +20,6 @@ public:
     Vector3 downRight;
     Vector3 upLeft;
     Vector3 upRight;
-    Rect2d& operator=(const Rect2d& other);
     void addMultiplied(Vector3& v, float multipliedBy);
     void subMultiplied(Vector3& v, float multipliedBy);
 };

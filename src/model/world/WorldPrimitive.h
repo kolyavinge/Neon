@@ -21,8 +21,6 @@ public:
     WorldPrimitive();
     // обход точек против часовой стрелки, чтобы они хорошо соединялись в полигоны
     WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4);
-    WorldPrimitive& operator=(const WorldPrimitive& other);
-    WorldPrimitive(const WorldPrimitive&) = default;
     WorldPrimitiveKind getKind();
     Collection<Vector3>& getPoints();
     Vector3 getFrontNormal();

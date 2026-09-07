@@ -10,10 +10,6 @@ class Array : public Collection<T> {
     T _items[Count] = {};
 
 public:
-    Array() {}
-    Array(const Array&) = default;
-    Array& operator=(const Array&) = default;
-
     T& operator[](int index) override {
         checkBounds(index);
         return _items[index];

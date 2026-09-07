@@ -26,6 +26,8 @@ public:
 
     List(const List<T>& copy) {
         _items = nullptr;
+        _count = 0;
+        _capacity = 0;
         set(copy);
     }
 
@@ -36,7 +38,10 @@ public:
     }
 
     List<T>& operator=(const List<T>& other) {
-        set(other);
+        if (this != &other) {
+            set(other);
+        }
+
         return *this;
     }
 
@@ -91,6 +96,8 @@ public:
     }
 
     void addRange(T* range, int count) {
+        if (range == nullptr) throw ArgumentException(L"range cannot be null.");
+        if (count < 0) throw ArgumentException(L"count must be greater than zero.");
         resizeIfNeeded(count);
         for (int i = 0; i < count; i++) {
             _items[_count + i] = range[i];
@@ -169,8 +176,8 @@ private:
             delete[] _items;
         }
         if (_capacity > 0) {
-            _items = new T[(size_t)_capacity];
-            for (int i = 0; i < _count; i++) {
+            _items = new T[(size_t)_capacity]();
+            for (int i = 0; i < copy._count; i++) {
                 _items[i] = copy._items[i];
             }
         }
@@ -188,6 +195,7 @@ private:
     }
 
     void checkBounds(int index, int count) {
+        if (index < 0) throw ArgumentException(L"index cannot be negative.");
         bool inBounds = 0 <= index && index < count;
         if (!inBounds) throw IndexOutOfBoundsException();
     }

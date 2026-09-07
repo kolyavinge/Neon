@@ -15,14 +15,6 @@ SlipRatio::SlipRatio(float driven, float linear, float slipRatio) {
     value = slipRatio;
 }
 
-SlipRatio& SlipRatio::operator=(const SlipRatio& other) {
-    drivenVelocity = other.drivenVelocity;
-    linearVelocity = other.linearVelocity;
-    value = other.value;
-
-    return *this;
-}
-
 Wheel::Wheel() {
     _position = (WheelPosition)-1; // unset position
     _radius = 0.0f;

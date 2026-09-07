@@ -19,11 +19,6 @@ void Vector3::set(const Vector3 v) {
     set(v.x, v.y, v.z);
 }
 
-Vector3& Vector3::operator=(const Vector3& other) {
-    set(other);
-    return *this;
-}
-
 void Vector3::setZero() {
     set(0.0f, 0.0f, 0.0f);
 }

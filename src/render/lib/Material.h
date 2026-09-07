@@ -14,7 +14,6 @@ public:
 
     Material();
     Material(float ambient, float diffuse, float specular, float shininess);
-    Material& operator=(const Material& other);
     float getAmbient();
     float getDiffuse();
     float getSpecular();
