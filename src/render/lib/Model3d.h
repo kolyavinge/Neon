@@ -16,9 +16,8 @@ public:
     List<unsigned int> faces;
     Texture* texture;
 
+    DENY_COPYING(Mesh) // потому что большой тяжелый класс
     Mesh();
-    Mesh(const Mesh&) = delete; // запрещаем копирование - большой тяжелый класс
-    Mesh& operator=(const Mesh&) = delete;
 };
 
 class Model3d : public Object {

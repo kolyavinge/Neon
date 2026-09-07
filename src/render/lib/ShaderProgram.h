@@ -12,9 +12,8 @@ class ShaderProgram : public Object {
     List<GLuint> _shaderIds;
 
 public:
+    DENY_COPYING(ShaderProgram) // классы использующие ресурсы opengl запрещены к копированию
     ShaderProgram();
-    ShaderProgram(const ShaderProgram&) = delete; // классы использующие ресурсы opengl запрещены к копированию
-    ShaderProgram& operator=(const ShaderProgram&) = delete;
     ~ShaderProgram();
     void init(Collection<Shader*>& shaders);
     void use();
