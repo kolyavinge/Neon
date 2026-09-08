@@ -12,3 +12,7 @@ Collection<WorldPrimitive>& Track::getGroundPrimitives() {
 Collection<WorldPrimitive>& Track::getBarrierPrimitives() {
     return _barrierPrimitives;
 }
+
+Collection<Plane>& Track::getSplitPlanes() {
+    return _splitPlanes;
+}

@@ -30,6 +30,8 @@
     <ClCompile Include="src\debug\VehicleDebuger.cpp" />
     <ClCompile Include="src\engine\CameraUpdater.cpp" />
     <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp" />
+    <ClCompile Include="src\engine\GameWorldInitializer.cpp" />
+    <ClCompile Include="src\engine\WorldSegmentVisibilityUpdater.cpp" />
     <ClCompile Include="src\model\GameWorld.cpp" />
     <ClCompile Include="src\engine\GameWorldUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\EngineLogic.cpp" />
@@ -85,6 +87,8 @@
     <ClCompile Include="src\model\world\RoadBarrierBuilder.cpp" />
     <ClCompile Include="src\model\world\WorldPrimitive.cpp" />
     <ClCompile Include="src\model\world\Track.cpp" />
+    <ClCompile Include="src\engine\WorldSegmentTreeBuilder.cpp" />
+    <ClCompile Include="src\model\world\WorldSegment.cpp" />
     <ClCompile Include="src\render\common\RenderModel3dCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
@@ -118,6 +122,8 @@
     <ClInclude Include="src\debug\VehicleDebuger.h" />
     <ClInclude Include="src\engine\CameraUpdater.h" />
     <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h" />
+    <ClInclude Include="src\engine\GameWorldInitializer.h" />
+    <ClInclude Include="src\engine\WorldSegmentVisibilityUpdater.h" />
     <ClInclude Include="src\model\tracks\MoonlightRide.h" />
     <ClInclude Include="src\engine\TrackCollection.h" />
     <ClInclude Include="src\model\world\GroundBuilder.h" />
@@ -150,6 +156,7 @@
     <ClInclude Include="src\model\vehicle\DrivingInputData.h" />
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />
+    <ClInclude Include="src\engine\WorldSegmentTreeBuilder.h" />
     <ClInclude Include="src\render\common\RenderModel3dCollection.h" />
     <ClInclude Include="src\render\common\ShaderCollection.h" />
     <ClInclude Include="src\render\common\ShaderProgramCollection.h" />

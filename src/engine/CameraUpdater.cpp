@@ -5,6 +5,7 @@
 
 void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
     camera.setVerticalViewAngle(CommonConstants::verticalFieldOfView);
+
     //setLeftSideView(camera, playerVehicle);
     //setRightSideView(camera, playerVehicle);
     setBackView(camera, playerVehicle);
@@ -12,8 +13,10 @@ void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
     //setTopView(camera, playerVehicle);
     //setWheelCenterView(camera, playerVehicle);
     //setRightSideStaticView(camera, playerVehicle);
+
     camera.calculateViewMatrix();
     camera.calculateProjectionMatrix();
+    camera.calculateFrustumPlanes();
 }
 
 void CameraUpdater::setLeftSideView(Camera& camera, Vehicle& playerVehicle) {

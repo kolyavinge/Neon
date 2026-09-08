@@ -8,9 +8,9 @@ template<class TNodeData>
 class IBSPTreeBuilder {
 
 public:
-    virtual ~IBSPTreeBuilder() {}
+    virtual ~IBSPTreeBuilder() = default;
     virtual void initRoot(TNodeData& rootNodeData) = 0;
-    virtual void initNodes(TNodeData& parentNodeData, Plane& splitPlane, TNodeData& leftNodeData, TNodeData& rightNodeData) = 0;
+    virtual void initNodes(TNodeData& parentNodeData, Plane& splitPlane, TNodeData& frontNodeData, TNodeData& backNodeData) = 0;
 };
 
 template<class TNodeData>
@@ -18,19 +18,19 @@ class BSPTreeNode : public Object {
 
 public:
     Plane splitPlane;
-    BSPTreeNode* leftNode;
-    BSPTreeNode* rightNode;
+    BSPTreeNode* frontNode;
+    BSPTreeNode* backNode;
     bool isLeaf;
-    TNodeData data;
+    TNodeData data = {};
 
     BSPTreeNode() {
         init();
     }
 
     void init() {
-        leftNode = nullptr;
-        rightNode = nullptr;
-        isLeaf = true;
+        frontNode = nullptr;
+        backNode = nullptr;
+        isLeaf = false;
     }
 };
 
@@ -46,6 +46,10 @@ public:
 
     ~BSPTree() override {
         releaseAllNodes();
+    }
+
+    BSPTreeNode<TNodeData>& getRoot() {
+        return _root;
     }
 
     void build(IBSPTreeBuilder<TNodeData>& builder, Collection<Plane>& splitPlanes) {
@@ -67,22 +71,23 @@ private:
         }
 
         parent.splitPlane = splitPlanes.first();
-        parent.leftNode = new BSPTreeNode<TNodeData>();
-        parent.rightNode = new BSPTreeNode<TNodeData>();
-        builder.initNodes(parent.data, parent.splitPlane, parent.leftNode->data, parent.rightNode->data);
+        parent.frontNode = new BSPTreeNode<TNodeData>();
+        parent.backNode = new BSPTreeNode<TNodeData>();
+        builder.initNodes(parent.data, parent.splitPlane, parent.frontNode->data, parent.backNode->data);
 
-        List<Plane> leftNodeSplitPlanes, rightNodeSplitPlanes;
+        List<Plane> frontNodeSplitPlanes, backNodeSplitPlanes;
         for (int i = 1; i < splitPlanes.getCount(); i++) {
             Plane& splitPlane = splitPlanes[i];
-            if (parent.splitPlane.isPointInFront(splitPlane.getBasePoint())) {
-                rightNodeSplitPlanes.add(splitPlane);
+            Vector3 basePoint = splitPlane.getBasePoint();
+            if (parent.splitPlane.isPointInFront(basePoint)) {
+                frontNodeSplitPlanes.add(splitPlane);
             } else {
-                leftNodeSplitPlanes.add(splitPlane);
+                backNodeSplitPlanes.add(splitPlane);
             }
         }
 
-        buildRec(builder, *parent.leftNode, leftNodeSplitPlanes);
-        buildRec(builder, *parent.rightNode, rightNodeSplitPlanes);
+        buildRec(builder, *parent.frontNode, frontNodeSplitPlanes);
+        buildRec(builder, *parent.backNode, backNodeSplitPlanes);
     }
 
     TNodeData& findNodeDataByPoint(BSPTreeNode<TNodeData>& parent, Vector3& point) {
@@ -90,16 +95,16 @@ private:
             return parent.data;
         } else {
             if (parent.splitPlane.isPointInFront(point)) {
-                return findNodeDataByPoint(*parent.rightNode, point);
+                return findNodeDataByPoint(*parent.frontNode, point);
             } else {
-                return findNodeDataByPoint(*parent.leftNode, point);
+                return findNodeDataByPoint(*parent.backNode, point);
             }
         }
     }
 
     void releaseAllNodes() {
-        releaseNode(_root.leftNode);
-        releaseNode(_root.rightNode);
+        releaseNode(_root.frontNode);
+        releaseNode(_root.backNode);
         _root.init();
     }
 
@@ -109,8 +114,8 @@ private:
         } else if (node->isLeaf) {
             delete node;
         } else {
-            releaseNode(node->leftNode);
-            releaseNode(node->rightNode);
+            releaseNode(node->frontNode);
+            releaseNode(node->backNode);
         }
     }
 };

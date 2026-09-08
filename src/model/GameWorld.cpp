@@ -22,14 +22,22 @@ void GameWorld::setTrack(Track& track) {
     _track = &track;
 }
 
-Camera& GameWorld::getCamera() {
-    return _camera;
-}
-
 Collection<Vehicle>& GameWorld::getVehicles() {
     return _vehicles;
 }
 
 Vehicle& GameWorld::getPlayerVehicle() {
     return *_playerVehicle;
+}
+
+BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
+    return _segmentTree;
+}
+
+List<WorldSegment*>& GameWorld::getVisibleWorldSegments() {
+    return _visibleWorldSegments;
+}
+
+Camera& GameWorld::getCamera() {
+    return _camera;
 }

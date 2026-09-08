@@ -5,7 +5,8 @@
 
 MoonlightRide::MoonlightRide() {
     makeGround();
-    //makeRoadBarriers();
+    makeRoadBarriers();
+    makeSplitPlanes();
 }
 
 String MoonlightRide::getName() {
@@ -46,4 +47,10 @@ void MoonlightRide::makeRoadBarriers() {
         .setPosition(Vector3(-2.0f, 5.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
         .setCount(5)
         .build();
+}
+
+void MoonlightRide::makeSplitPlanes() {
+    _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f)));
+    _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f)));
+    _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f)));
 }
