@@ -6,8 +6,10 @@
 class MoonlightRide : public Track {
 
 public:
-    MoonlightRide();
     String getName() override;
+
+protected:
+    void buildInternal() override;
 
 private:
     void makeGround();

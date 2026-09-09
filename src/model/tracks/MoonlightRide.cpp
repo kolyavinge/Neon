@@ -3,14 +3,14 @@
 #include <model/world/GroundBuilder.h>
 #include <model/world/RoadBarrierBuilder.h>
 
-MoonlightRide::MoonlightRide() {
+String MoonlightRide::getName() {
+    return String("Moonlight ride");
+}
+
+void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
     makeSplitPlanes();
-}
-
-String MoonlightRide::getName() {
-    return String("Moonlight ride");
 }
 
 void MoonlightRide::makeGround() {

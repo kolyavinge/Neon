@@ -5,7 +5,8 @@
 #include <model/vehicle/Wheel.h>
 #include <model/world/WorldSegment.h>
 
-void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData, output bool& allWheelsHaveSameGroundContact) {
+void VehicleCollisionLogic::resolveWheelGroundContacts(
+    Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData, output bool& allWheelsHaveSameGroundContact) {
     int wheelsWithSameGroundContact = 0;
     bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
@@ -24,14 +25,7 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Vehicle
             WorldPrimitive& groundPrimitive = *groundPrimitives[groundIndex];
             hasNewGroundContact = groundPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
             if (!hasNewGroundContact) continue;
-            bool sameGroundContact =
-                vehicleStopped &&
-                hasNewGroundContact &&
-                wheel.hasGroundContact() &&
-                Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::angularVelocityEps) &&
-                Object::referenceEquals(*wheel.getGroundPrimitive(), groundPrimitive) &&
-                wheel.getGroundContactPoint().getLengthTo(newGroundContactPoint) < 0.0001f;
-            if (sameGroundContact) {
+            if (wheelHasSameGroundContact(vehicleStopped, hasNewGroundContact, wheel, groundPrimitive, newGroundContactPoint)) {
                 wheelsWithSameGroundContact++;
             } else {
                 setGroundContact(wheel, newGroundContactPoint, groundPrimitive, chassisUpNormal);
@@ -43,6 +37,17 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Vehicle
         }
     }
     allWheelsHaveSameGroundContact = wheelsWithSameGroundContact == VehicleConstants::wheelsCount;
+}
+
+bool VehicleCollisionLogic::wheelHasSameGroundContact(
+    bool vehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint) {
+    return
+        vehicleStopped &&
+        hasNewGroundContact &&
+        wheel.hasGroundContact() &&
+        Numeric::floatEquals(wheel.getAngularVelocity(), 0.0f, VehicleConstants::angularVelocityEps) &&
+        Object::referenceEquals(*wheel.getGroundPrimitive(), groundPrimitive) &&
+        wheel.getGroundContactPoint().getLengthTo(newGroundContactPoint) < 0.0001f;
 }
 
 void VehicleCollisionLogic::setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitive, Vector3 chassisUpNormal) {
@@ -65,10 +70,14 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, VehicleWo
     findAllCollisionPoints(vehicle, vehicleSegmentData);
     if (_collisionPoints.getCount() == 0) return false;
 
+    // устраняем коллизии
+
+    // расчитываем новые скорости в точках соударения
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
         vehicle.resolveCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
     }
 
+    // вытаскиваем точки из препядствий
     Vector3 totalCollisionDepth;
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
     for (int i = 0; i < _collisionDepths.getCount(); i++) {
@@ -98,23 +107,17 @@ void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, VehicleWorl
         Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
         WorldSegment& worldSegment = vehicleSegmentData.getSegmentForBodyPoint((Box3dPoint)bodyPointIndex);
         Collection<WorldPrimitive*>& barrierPrimitives = worldSegment.getBarrierPrimitives();
-        findBarrierCollisionPoints(vehicleVelocity, rayFromPosition, barrierPrimitives);
-        Collection<WorldPrimitive*>& groundPrimitives = worldSegment.getGroundPrimitives();
-        findBarrierCollisionPoints(vehicleVelocity, rayFromPosition, groundPrimitives);
-    }
-}
-
-void VehicleCollisionLogic::findBarrierCollisionPoints(float vehicleVelocity, Vector3 rayFromPosition, Collection<WorldPrimitive*>& barrierPrimitives) {
-    for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
-        WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
-        Vector3 rayToPosition = rayFromPosition;
-        rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), vehicleVelocity);
-        Vector3 collisionPoint;
-        bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
-        if (!hasCollision) continue;
-        Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
-        _collisionPoints.addByValue(collisionPoint);
-        _collisionDepths.addByValue(collisionDepth);
-        _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
+        for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
+            WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
+            Vector3 rayToPosition = rayFromPosition;
+            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), vehicleVelocity);
+            Vector3 collisionPoint;
+            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
+            if (!hasCollision) continue;
+            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
+            _collisionPoints.addByValue(collisionPoint);
+            _collisionDepths.addByValue(collisionDepth);
+            _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
+        }
     }
 }

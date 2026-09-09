@@ -21,7 +21,7 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     for (int segmentIndex = 0; segmentIndex < gameWorld.getVisibleWorldSegments().getCount(); segmentIndex++) {
         WorldSegment& visibleSegment = *gameWorld.getVisibleWorldSegments()[segmentIndex];
-        renderGround(visibleSegment.getGroundPrimitives());
+        //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
     }
     renderGrid();
@@ -247,7 +247,7 @@ void DebugRenderer::renderGround(Collection<WorldPrimitive*>& ground) {
 
 void DebugRenderer::renderBarriers(Collection<WorldPrimitive*>& barriers) {
     glEnable(GL_DEPTH_TEST);
-    glColor3f(0.4f, 0.1f, 0.1f);
+    glColor3f(0.1f, 0.1f, 0.4f);
     for (int i = 0; i < barriers.getCount(); i++) {
         WorldPrimitive& pr = *barriers[i];
         glBegin(GL_LINE_LOOP);
@@ -256,12 +256,12 @@ void DebugRenderer::renderBarriers(Collection<WorldPrimitive*>& barriers) {
         glVertex3f(pr.getPoints()[2]);
         glVertex3f(pr.getPoints()[3]);
         glEnd();
-        glBegin(GL_LINES);
-        glVertex3f(pr.getPoints()[0]);
-        glVertex3f(pr.getPoints()[2]);
-        glVertex3f(pr.getPoints()[1]);
-        glVertex3f(pr.getPoints()[3]);
-        glEnd();
+        //glBegin(GL_LINES);
+        //glVertex3f(pr.getPoints()[0]);
+        //glVertex3f(pr.getPoints()[2]);
+        //glVertex3f(pr.getPoints()[1]);
+        //glVertex3f(pr.getPoints()[3]);
+        //glEnd();
         // front normal
         //glPushMatrix();
         //glTranslatef(pr.getPoints()[3]);

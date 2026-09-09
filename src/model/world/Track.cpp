@@ -16,3 +16,10 @@ Collection<WorldPrimitive>& Track::getBarrierPrimitives() {
 Collection<Plane>& Track::getSplitPlanes() {
     return _splitPlanes;
 }
+
+void Track::build() {
+    buildInternal();
+
+    // доп инициализация после построения трека
+    _barrierPrimitives.addRange(_groundPrimitives); // земля тоже является препядствием
+}

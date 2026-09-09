@@ -19,8 +19,8 @@ public:
     bool resolveBarrierCollisions(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData);
 
 private:
+    bool wheelHasSameGroundContact(bool vehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint);
     void setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitives, Vector3 chassisUpNormal);
     void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
     void findAllCollisionPoints(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData);
-    void findBarrierCollisionPoints(float vehicleVelocity, Vector3 rayFromPosition, Collection<WorldPrimitive*>& barrierPrimitives);
 };

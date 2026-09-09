@@ -17,4 +17,8 @@ public:
     Collection<WorldPrimitive>& getGroundPrimitives();
     Collection<WorldPrimitive>& getBarrierPrimitives();
     Collection<Plane>& getSplitPlanes();
+    void build();
+
+protected:
+    virtual void buildInternal() = 0;
 };
