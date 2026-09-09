@@ -1,9 +1,11 @@
 #include <common/constants.h>
 #include <engine/world/VehicleCollisionLogic.h>
 #include <lib/calc/Vector3.h>
+#include <model/common/common.h>
 #include <model/vehicle/Wheel.h>
+#include <model/world/WorldSegment.h>
 
-void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, output bool& allWheelsHaveSameGroundContact) {
+void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData, output bool& allWheelsHaveSameGroundContact) {
     int wheelsWithSameGroundContact = 0;
     bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
@@ -14,10 +16,12 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, Collect
         Vector3 rayToPosition = rayFromPosition;
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
+        WorldSegment& worldSegment = vehicleSegmentData.getSegmentForWheel((WheelPosition)wheelIndex);
+        Collection<WorldPrimitive*>& groundPrimitives = worldSegment.getGroundPrimitives();
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = false;
         for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {
-            WorldPrimitive& groundPrimitive = groundPrimitives[groundIndex];
+            WorldPrimitive& groundPrimitive = *groundPrimitives[groundIndex];
             hasNewGroundContact = groundPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
             if (!hasNewGroundContact) continue;
             bool sameGroundContact =
@@ -57,8 +61,8 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
     wheel.setCenter(newWheelCenter);
 }
 
-bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
-    findAllCollisionPoints(vehicle, barrierPrimitives);
+bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData) {
+    findAllCollisionPoints(vehicle, vehicleSegmentData);
     if (_collisionPoints.getCount() == 0) return false;
 
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
@@ -80,29 +84,37 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, Collectio
     return true;
 }
 
-void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, Collection<WorldPrimitive>& barrierPrimitives) {
+void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData) {
     _collisionPoints.clear();
     _collisionDepths.clear();
     _collisionNormalsToBody.clear();
 
-    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия/.
+    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
     // точка пересечения - это точка на которую должна переместиться точка кузова
 
-    float velocity = vehicle.getLinearVelocity().getLength();
+    float vehicleVelocity = vehicle.getLinearVelocity().getLength();
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
-        for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
-            WorldPrimitive& barrierPrimitive = barrierPrimitives[barrierIndex];
-            Vector3 rayToPosition = rayFromPosition;
-            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), velocity);
-            Vector3 collisionPoint;
-            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
-            if (!hasCollision) continue;
-            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
-            _collisionPoints.addByValue(collisionPoint);
-            _collisionDepths.addByValue(collisionDepth);
-            _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
-        }
+        WorldSegment& worldSegment = vehicleSegmentData.getSegmentForBodyPoint((Box3dPoint)bodyPointIndex);
+        Collection<WorldPrimitive*>& barrierPrimitives = worldSegment.getBarrierPrimitives();
+        findBarrierCollisionPoints(vehicleVelocity, rayFromPosition, barrierPrimitives);
+        Collection<WorldPrimitive*>& groundPrimitives = worldSegment.getGroundPrimitives();
+        findBarrierCollisionPoints(vehicleVelocity, rayFromPosition, groundPrimitives);
+    }
+}
+
+void VehicleCollisionLogic::findBarrierCollisionPoints(float vehicleVelocity, Vector3 rayFromPosition, Collection<WorldPrimitive*>& barrierPrimitives) {
+    for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
+        WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
+        Vector3 rayToPosition = rayFromPosition;
+        rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), vehicleVelocity);
+        Vector3 collisionPoint;
+        bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
+        if (!hasCollision) continue;
+        Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
+        _collisionPoints.addByValue(collisionPoint);
+        _collisionDepths.addByValue(collisionDepth);
+        _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
     }
 }

@@ -5,7 +5,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
-#include <model/world/WorldPrimitive.h>
+#include <model/world/VehicleWorldSegmentData.h>
 
 class PositionLogic : public Object {
 
@@ -23,5 +23,5 @@ public:
         WheelLogic& wheelLogic,
         VehicleCollisionLogic& vehicleCollisionLogic);
 
-    void updatePosition(Vehicle& vehicle, Collection<WorldPrimitive>& groundPrimitives, Collection<WorldPrimitive>& barrierPrimitives);
+    void updatePosition(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData);
 };

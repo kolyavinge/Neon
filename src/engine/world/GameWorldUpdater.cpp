@@ -15,8 +15,8 @@ GameWorldUpdater::GameWorldUpdater(
 
 void GameWorldUpdater::update(GameWorld& gameWorld) {
     _playerInputManager.update(gameWorld.getPlayerVehicle());
-    _vehicleUpdater.updateVehicles(gameWorld.getVehicles(), gameWorld.getTrack().getGroundPrimitives(), gameWorld.getTrack().getBarrierPrimitives());
     _vehicleWorldSegmentUpdater.update(gameWorld.getSegmentTree(), gameWorld.getVehicles(), gameWorld.getVehicleWorldSegmentData());
+    _vehicleUpdater.updateVehicles(gameWorld.getVehicles(), gameWorld.getVehicleWorldSegmentData());
     _cameraUpdater.update(gameWorld.getCamera(), gameWorld.getPlayerVehicle());
     _worldSegmentVisibilityUpdater.update(gameWorld.getSegmentTree().getRoot(), gameWorld.getCamera(), gameWorld.getVisibleWorldSegmentsData());
 }
