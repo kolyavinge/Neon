@@ -16,6 +16,7 @@
 class Vehicle : public Object {
 
 private:
+    int _id;
     VehicleData _data;
     DrivingInputData _drivingInputData;
     Engine _engine;
@@ -27,6 +28,8 @@ private:
 
 public:
     Vehicle();
+    int getId();
+    void setId(int id);
     void init();
     VehicleData& getData();
     DrivingInputData& getDrivingInputData();

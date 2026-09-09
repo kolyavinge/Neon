@@ -31,6 +31,7 @@
     <ClCompile Include="src\engine\common\CameraUpdater.cpp" />
     <ClCompile Include="src\engine\world\VehicleCollisionLogic.cpp" />
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp" />
+    <ClCompile Include="src\engine\world\VehicleWorldSegmentUpdater.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp" />
     <ClCompile Include="src\model\world\GameWorld.cpp" />
     <ClCompile Include="src\engine\world\GameWorldUpdater.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
     <ClCompile Include="src\model\world\GroundBuilder.cpp" />
     <ClCompile Include="src\model\world\RoadBarrierBuilder.cpp" />
+    <ClCompile Include="src\model\world\VehicleWorldSegmentData.cpp" />
     <ClCompile Include="src\model\world\WorldPrimitive.cpp" />
     <ClCompile Include="src\model\world\Track.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentTreeBuilder.cpp" />
@@ -123,6 +125,7 @@
     <ClInclude Include="src\engine\common\CameraUpdater.h" />
     <ClInclude Include="src\engine\world\VehicleCollisionLogic.h" />
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />
+    <ClInclude Include="src\engine\world\VehicleWorldSegmentUpdater.h" />
     <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h" />
     <ClInclude Include="src\model\tracks\MoonlightRide.h" />
     <ClInclude Include="src\engine\world\TrackCollection.h" />
@@ -150,6 +153,7 @@
     <ClInclude Include="src\model\common\common.h" />
     <ClInclude Include="src\model\common\RigidBody.h" />
     <ClInclude Include="src\model\world\RoadBarrierBuilder.h" />
+    <ClInclude Include="src\model\world\VehicleWorldSegmentData.h" />
     <ClInclude Include="src\model\world\WorldPrimitive.h" />
     <ClInclude Include="src\model\world\Track.h" />
     <ClInclude Include="src\model\world\WorldSegment.h" />

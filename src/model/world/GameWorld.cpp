@@ -4,6 +4,9 @@ GameWorld::GameWorld() {
     _track = nullptr;
     init();
     _playerVehicle = &_vehicles[0];
+    for (int i = 0; i < _vehicles.getCount(); i++) {
+        _vehicles[i].setId(i);
+    }
 }
 
 void GameWorld::init() {
@@ -32,6 +35,10 @@ Vehicle& GameWorld::getPlayerVehicle() {
 
 BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
     return _segmentTree;
+}
+
+Collection<VehicleWorldSegmentData>& GameWorld::getVehicleWorldSegmentData() {
+    return _vehicleWorldSegmentData;
 }
 
 List<WorldSegment*>& GameWorld::getVisibleWorldSegments() {

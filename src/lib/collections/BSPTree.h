@@ -59,7 +59,7 @@ public:
         buildRec(builder, _root, splitPlanes);
     }
 
-    TNodeData& findNodeDataByPoint(Vector3& point) {
+    TNodeData& findNodeDataByPoint(Vector3 point) {
         return findNodeDataByPoint(_root, point);
     }
 

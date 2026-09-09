@@ -9,6 +9,14 @@ Vehicle::Vehicle() {
     init();
 }
 
+int Vehicle::getId() {
+    return _id;
+}
+
+void Vehicle::setId(int id) {
+    _id = id;
+}
+
 void Vehicle::init() {
     _drivingInputData.init();
     _engine.init();

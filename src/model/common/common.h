@@ -26,12 +26,24 @@ public:
     void subMultiplied(Vector3& v, float multipliedBy);
 };
 
+enum class Box3dPoint {
+    bottomDownLeft = 0,
+    bottomDownRight = 1,
+    bottomUpLeft = 2,
+    bottomUpRight = 3,
+    topDownLeft = 4,
+    topDownRight = 5,
+    topUpLeft = 6,
+    topUpRight = 7,
+    _count
+};
+
 class Box3d : public Object {
 
     Measures _measures;
     Rect2d _bottomRect;
     Rect2d _topRect;
-    Array<Vector3*, 8> _points;
+    Array<Vector3*, (int)Box3dPoint::_count> _points;
 
 public:
     Box3d();

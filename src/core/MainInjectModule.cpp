@@ -18,6 +18,7 @@
 #include <engine/world/GameWorldUpdater.h>
 #include <engine/world/TrackCollection.h>
 #include <engine/world/VehicleCollisionLogic.h>
+#include <engine/world/VehicleWorldSegmentUpdater.h>
 #include <engine/world/WorldSegmentTreeBuilder.h>
 #include <engine/world/WorldSegmentVisibilityUpdater.h>
 #include <lib/Environment.h>
@@ -56,6 +57,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<GameWorldUpdater>(GameWorldUpdater::resolve);
     binder.bindSingleton<TrackCollection>();
     binder.bindSingleton<VehicleCollisionLogic>();
+    binder.bindSingleton<VehicleWorldSegmentUpdater>();
     binder.bindSingleton<WorldSegmentTreeBuilder>();
     binder.bindSingleton<WorldSegmentVisibilityUpdater>();
     binder.bindSingleton<Environment>();

@@ -21,14 +21,14 @@ void Rect2d::subMultiplied(Vector3& v, float multipliedBy) {
 }
 
 Box3d::Box3d() {
-    _points[0] = &_bottomRect.downLeft;
-    _points[1] = &_bottomRect.downRight;
-    _points[2] = &_bottomRect.upLeft;
-    _points[3] = &_bottomRect.upRight;
-    _points[4] = &_topRect.downLeft;
-    _points[5] = &_topRect.downRight;
-    _points[6] = &_topRect.upLeft;
-    _points[7] = &_topRect.upRight;
+    _points[(int)Box3dPoint::bottomDownLeft] = &_bottomRect.downLeft;
+    _points[(int)Box3dPoint::bottomDownRight] = &_bottomRect.downRight;
+    _points[(int)Box3dPoint::bottomUpLeft] = &_bottomRect.upLeft;
+    _points[(int)Box3dPoint::bottomUpRight] = &_bottomRect.upRight;
+    _points[(int)Box3dPoint::topDownLeft] = &_topRect.downLeft;
+    _points[(int)Box3dPoint::topDownRight] = &_topRect.downRight;
+    _points[(int)Box3dPoint::topUpLeft] = &_topRect.upLeft;
+    _points[(int)Box3dPoint::topUpRight] = &_topRect.upRight;
 }
 
 Rect2d& Box3d::getBottomRect() {
