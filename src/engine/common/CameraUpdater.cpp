@@ -1,5 +1,5 @@
 #include <common/constants.h>
-#include <engine/CameraUpdater.h>
+#include <engine/common/CameraUpdater.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 

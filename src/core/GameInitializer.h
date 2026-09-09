@@ -3,7 +3,7 @@
 #include <engine/world/GameWorldInitializer.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>

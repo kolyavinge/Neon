@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/WorldPrimitive.h>
 

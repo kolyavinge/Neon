@@ -6,7 +6,7 @@
 #include <core/PlayerInputManager.h>
 #include <core/ScreenManager.h>
 #include <debug/DebugRenderer.h>
-#include <engine/CameraUpdater.h>
+#include <engine/common/CameraUpdater.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>

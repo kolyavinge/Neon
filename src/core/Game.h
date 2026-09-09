@@ -5,7 +5,7 @@
 #include <core/ScreenManager.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 
 class Game : public Object {
 

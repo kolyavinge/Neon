@@ -4,7 +4,7 @@
 #include <engine/world/WorldSegmentTreeBuilder.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 
 class GameWorldInitializer : public Object {
 

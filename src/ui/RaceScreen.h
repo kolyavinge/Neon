@@ -2,7 +2,7 @@
 
 #include <engine/world/GameWorldUpdater.h>
 #include <lib/di/Resolver.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 #include <ui/Screen.h>
 
 class RaceScreen : public Screen {

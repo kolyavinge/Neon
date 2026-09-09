@@ -2,7 +2,7 @@
 
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 #include <model/common/Camera.h>
 #include <model/common/common.h>
 #include <model/world/WorldSegment.h>

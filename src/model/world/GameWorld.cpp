@@ -1,4 +1,4 @@
-#include <model/GameWorld.h>
+#include <model/world/GameWorld.h>
 
 GameWorld::GameWorld() {
     _track = nullptr;
