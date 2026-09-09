@@ -1,12 +1,14 @@
 #include <common/constants.h>
 #include <engine/world/VehicleCollisionLogic.h>
 #include <lib/calc/Vector3.h>
-#include <model/common/common.h>
 #include <model/vehicle/Wheel.h>
-#include <model/world/WorldSegment.h>
 
-void VehicleCollisionLogic::resolveWheelGroundContacts(
-    Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData, output bool& allWheelsHaveSameGroundContact) {
+VehicleCollisionLogic::VehicleCollisionLogic(
+    WorldSegmentDataFinder& segmentDataFinder) :
+    _segmentDataFinder(segmentDataFinder) {
+}
+
+void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact) {
     int wheelsWithSameGroundContact = 0;
     bool vehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
@@ -17,8 +19,7 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(
         Vector3 rayToPosition = rayFromPosition;
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
-        WorldSegment& worldSegment = vehicleSegmentData.getSegmentForWheel((WheelPosition)wheelIndex);
-        Collection<WorldPrimitive*>& groundPrimitives = worldSegment.getGroundPrimitives();
+        Collection<WorldPrimitive*>& groundPrimitives = _segmentDataFinder.getGroundPrimitivesForWheel(wheel);
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = false;
         for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {
@@ -66,8 +67,8 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
     wheel.setCenter(newWheelCenter);
 }
 
-bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData) {
-    findAllCollisionPoints(vehicle, vehicleSegmentData);
+bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
+    findAllCollisionPoints(vehicle);
     if (_collisionPoints.getCount() == 0) return false;
 
     // устраняем коллизии
@@ -93,20 +94,23 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle, VehicleWo
     return true;
 }
 
-void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData) {
+void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle) {
     _collisionPoints.clear();
     _collisionDepths.clear();
     _collisionNormalsToBody.clear();
 
+    Box3d& bodyBox = vehicle.getBody().getBox();
+    Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count> barrierPrimitivesForPoint;
+    getBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
+
+    // проверяем на соударение 8 точек кузова в 4 сегментах
     // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
     // точка пересечения - это точка на которую должна переместиться точка кузова
-
     float vehicleVelocity = vehicle.getLinearVelocity().getLength();
-    Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
+    Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
-        WorldSegment& worldSegment = vehicleSegmentData.getSegmentForBodyPoint((Box3dPoint)bodyPointIndex);
-        Collection<WorldPrimitive*>& barrierPrimitives = worldSegment.getBarrierPrimitives();
+        Collection<WorldPrimitive*>& barrierPrimitives = *barrierPrimitivesForPoint[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
             Vector3 rayToPosition = rayFromPosition;
@@ -120,4 +124,18 @@ void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, VehicleWorl
             _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
         }
     }
+}
+
+void VehicleCollisionLogic::getBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
+    Rect2d& bottomRect = bodyBox.getBottomRect();
+    // находим сегменты для 4 нижних точек кузова
+    result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.downLeft);
+    result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.downRight);
+    result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.upLeft);
+    result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.upRight);
+    // считаем что верхние точки находятся в тех же сегментах что и нижние
+    result[(int)Box3dPoint::topDownLeft] = result[(int)Box3dPoint::bottomDownLeft];
+    result[(int)Box3dPoint::topDownRight] = result[(int)Box3dPoint::bottomDownRight];
+    result[(int)Box3dPoint::topUpLeft] = result[(int)Box3dPoint::bottomUpLeft];
+    result[(int)Box3dPoint::topUpRight] = result[(int)Box3dPoint::bottomUpRight];
 }

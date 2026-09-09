@@ -12,7 +12,7 @@ class TruncatedPlane : public Plane {
     List<Plane> _cuttingPlanes;
 
 public:
-    TruncatedPlane();
+    TruncatedPlane(int initCuttingPlanesCount = 1);
     TruncatedPlane(Vector3 frontNormal, Vector3 basePoint);
     void addCuttingPlane(Plane cuttingPlane);
     virtual bool contains(Vector3& point, float eps) override;

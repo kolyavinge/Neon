@@ -3,9 +3,11 @@
 
 GameWorldInitializer::GameWorldInitializer(
     TrackCollection& trackCollection,
-    WorldSegmentTreeBuilder& worldSegmentTreeBuilder) :
+    WorldSegmentTreeBuilder& worldSegmentTreeBuilder,
+    WorldSegmentDataFinder& segmentDataFinder) :
     _trackCollection(trackCollection),
-    _worldSegmentTreeBuilder(worldSegmentTreeBuilder) {
+    _worldSegmentTreeBuilder(worldSegmentTreeBuilder),
+    _segmentDataFinder(segmentDataFinder) {
 }
 
 void GameWorldInitializer::init(GameWorld& gameWorld) {
@@ -13,4 +15,5 @@ void GameWorldInitializer::init(GameWorld& gameWorld) {
     Track& track = _trackCollection.get(Tracks::moonlightRide);
     gameWorld.setTrack(track);
     _worldSegmentTreeBuilder.build(track, gameWorld.getSegmentTree());
+    _segmentDataFinder.init(gameWorld.getSegmentTree());
 }

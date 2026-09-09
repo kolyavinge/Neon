@@ -1,6 +1,8 @@
 #include <lib/calc/TruncatedPlane.h>
 
-TruncatedPlane::TruncatedPlane() {}
+TruncatedPlane::TruncatedPlane(int initCuttingPlanesCount) :
+    _cuttingPlanes(initCuttingPlanesCount) {
+}
 
 TruncatedPlane::TruncatedPlane(Vector3 frontNormal, Vector3 basePoint) :
     Plane(frontNormal, basePoint) {

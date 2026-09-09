@@ -7,13 +7,13 @@ PositionLogic::PositionLogic(
     _vehicleCollisionLogic(vehicleCollisionLogic) {
 }
 
-void PositionLogic::updatePosition(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData) {
+void PositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.calculateBodyPosition();
-    _vehicleCollisionLogic.resolveBarrierCollisions(vehicle, vehicleSegmentData);
+    _vehicleCollisionLogic.resolveBarrierCollisions(vehicle);
     // после поиска соударений габаритные точки кузова будут скорректированы
     vehicle.calculatePositionForAllSprings();
     bool allWheelsHaveSameGroundContact = false;
-    _vehicleCollisionLogic.resolveWheelGroundContacts(vehicle, vehicleSegmentData, output allWheelsHaveSameGroundContact);
+    _vehicleCollisionLogic.resolveWheelGroundContacts(vehicle, output allWheelsHaveSameGroundContact);
     if (allWheelsHaveSameGroundContact) {
         vehicle.resetToPrevPosition();
         vehicle.calculatePositionForAllSprings();

@@ -9,7 +9,6 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
-#include <model/world/VehicleWorldSegmentData.h>
 
 class VehicleUpdater : public Object {
 
@@ -39,8 +38,8 @@ public:
         PositionLogic& positionLogic,
         SteeringLogic& steeringLogic);
 
-    void updateVehicles(Collection<Vehicle>& vehicles, Collection<VehicleWorldSegmentData>& vehicleSegmentData);
+    void updateVehicles(Collection<Vehicle>& vehicles);
 
 private:
-    void updateVehicle(Vehicle& vehicle, VehicleWorldSegmentData& vehicleSegmentData);
+    void updateVehicle(Vehicle& vehicle);
 };

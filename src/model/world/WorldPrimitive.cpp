@@ -1,7 +1,8 @@
 #include <lib/calc/Plane.h>
 #include <model/world/WorldPrimitive.h>
 
-WorldPrimitive::WorldPrimitive() {
+WorldPrimitive::WorldPrimitive() :
+    _plane(4) {
     _kind = (WorldPrimitiveKind)-1;
 }
 

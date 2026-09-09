@@ -83,6 +83,7 @@ GroundBuilder& GroundBuilder::build() {
         return result;
     };
 
+    _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _segmentsCountDownToUp * _segmentsCountLeftToRight);
     for (int row = 0; row < _segmentsCountDownToUp; row++) {
         for (int col = 0; col < _segmentsCountLeftToRight; col++) {
             Vector3 p1 = getBasePlanePoint(row, col);

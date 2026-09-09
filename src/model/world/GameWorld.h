@@ -7,7 +7,6 @@
 #include <model/common/Camera.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/Track.h>
-#include <model/world/VehicleWorldSegmentData.h>
 #include <model/world/WorldSegment.h>
 
 class VisibleWorldSegmentsData : public Object {
@@ -23,7 +22,6 @@ class GameWorld : public Object {
     Array<Vehicle, GameConstants::maxVehiclesCount> _vehicles;
     Vehicle* _playerVehicle;
     BSPTree<WorldSegment> _segmentTree;
-    Array<VehicleWorldSegmentData, GameConstants::maxVehiclesCount> _vehicleWorldSegmentData;
     VisibleWorldSegmentsData _visibleWorldSegmentsData;
     Camera _camera;
     //RaceData _raceData;
@@ -36,7 +34,6 @@ public:
     Collection<Vehicle>& getVehicles();
     Vehicle& getPlayerVehicle();
     BSPTree<WorldSegment>& getSegmentTree();
-    Collection<VehicleWorldSegmentData>& getVehicleWorldSegmentData();
     List<WorldSegment*>& getVisibleWorldSegments();
     VisibleWorldSegmentsData& getVisibleWorldSegmentsData();
     Camera& getCamera();

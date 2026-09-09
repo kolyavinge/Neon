@@ -37,10 +37,6 @@ BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
     return _segmentTree;
 }
 
-Collection<VehicleWorldSegmentData>& GameWorld::getVehicleWorldSegmentData() {
-    return _vehicleWorldSegmentData;
-}
-
 List<WorldSegment*>& GameWorld::getVisibleWorldSegments() {
     return _visibleWorldSegmentsData.visibleSegments;
 }

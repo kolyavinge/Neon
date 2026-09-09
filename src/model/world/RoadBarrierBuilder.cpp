@@ -41,6 +41,7 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         frontNormal.mul(-1.0f);
     }
 
+    _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _count);
     Vector3 p1 = _position;
     for (int i = 0; i < _count; i++) {
         Vector3 p2 = p1;

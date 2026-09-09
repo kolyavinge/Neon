@@ -294,10 +294,7 @@
     <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\world\VehicleWorldSegmentUpdater.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\model\world\VehicleWorldSegmentData.cpp">
+    <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -659,10 +656,7 @@
     <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\world\VehicleWorldSegmentUpdater.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\world\VehicleWorldSegmentData.h">
+    <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
