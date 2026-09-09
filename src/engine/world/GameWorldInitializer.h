@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/TrackCollection.h>
-#include <engine/WorldSegmentTreeBuilder.h>
+#include <engine/world/TrackCollection.h>
+#include <engine/world/WorldSegmentTreeBuilder.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/GameWorld.h>

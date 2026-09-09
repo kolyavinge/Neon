@@ -1,5 +1,5 @@
 #include <common/constants.h>
-#include <engine/collision/VehicleCollisionLogic.h>
+#include <engine/world/VehicleCollisionLogic.h>
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Wheel.h>
 

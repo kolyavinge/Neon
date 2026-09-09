@@ -1,4 +1,4 @@
-#include <engine/WorldSegmentVisibilityUpdater.h>
+#include <engine/world/WorldSegmentVisibilityUpdater.h>
 #include <lib/calc/Plane.h>
 
 WorldSegmentVisibilityUpdater::WorldSegmentVisibilityUpdater() {

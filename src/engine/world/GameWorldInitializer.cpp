@@ -1,4 +1,4 @@
-#include <engine/GameWorldInitializer.h>
+#include <engine/world/GameWorldInitializer.h>
 #include <model/world/Track.h>
 
 GameWorldInitializer::GameWorldInitializer(

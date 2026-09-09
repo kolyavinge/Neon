@@ -1,4 +1,4 @@
-#include <engine/GameWorldUpdater.h>
+#include <engine/world/GameWorldUpdater.h>
 
 GameWorldUpdater::GameWorldUpdater(
     PlayerInputManager& playerInputManager,

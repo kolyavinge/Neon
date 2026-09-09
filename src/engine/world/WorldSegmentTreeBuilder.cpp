@@ -1,4 +1,4 @@
-#include <engine/WorldSegmentTreeBuilder.h>
+#include <engine/world/WorldSegmentTreeBuilder.h>
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;

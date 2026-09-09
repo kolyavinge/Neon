@@ -120,7 +120,7 @@
     <ClCompile Include="src\model\GameWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\GameWorldUpdater.cpp">
+    <ClCompile Include="src\engine\world\GameWorldUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp">
@@ -261,7 +261,7 @@
     <ClCompile Include="src\lib\calc\Angles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\collision\VehicleCollisionLogic.cpp">
+    <ClCompile Include="src\engine\world\VehicleCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\world\WorldPrimitive.cpp">
@@ -276,22 +276,22 @@
     <ClCompile Include="src\model\world\Track.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\TrackCollection.cpp">
+    <ClCompile Include="src\engine\world\TrackCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\world\RoadBarrierBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\WorldSegmentTreeBuilder.cpp">
+    <ClCompile Include="src\engine\world\WorldSegmentTreeBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\world\WorldSegment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\GameWorldInitializer.cpp">
+    <ClCompile Include="src\engine\world\GameWorldInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\WorldSegmentVisibilityUpdater.cpp">
+    <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -470,7 +470,7 @@
     <ClInclude Include="src\model\GameWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\GameWorldUpdater.h">
+    <ClInclude Include="src\engine\world\GameWorldUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h">
@@ -620,7 +620,7 @@
     <ClInclude Include="src\lib\calc\Angles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\collision\VehicleCollisionLogic.h">
+    <ClInclude Include="src\engine\world\VehicleCollisionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\world\WorldSegment.h">
@@ -638,19 +638,19 @@
     <ClInclude Include="src\model\tracks\MoonlightRide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\TrackCollection.h">
+    <ClInclude Include="src\engine\world\TrackCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\world\RoadBarrierBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\WorldSegmentTreeBuilder.h">
+    <ClInclude Include="src\engine\world\WorldSegmentTreeBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\GameWorldInitializer.h">
+    <ClInclude Include="src\engine\world\GameWorldInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\WorldSegmentVisibilityUpdater.h">
+    <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

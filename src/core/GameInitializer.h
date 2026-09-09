@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/GameWorldInitializer.h>
+#include <engine/world/GameWorldInitializer.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/GameWorld.h>

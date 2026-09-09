@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/collision/VehicleCollisionLogic.h>
 #include <engine/vehicle/WheelLogic.h>
+#include <engine/world/VehicleCollisionLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>

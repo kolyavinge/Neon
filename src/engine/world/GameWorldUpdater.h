@@ -2,8 +2,8 @@
 
 #include <core/PlayerInputManager.h>
 #include <engine/CameraUpdater.h>
-#include <engine/WorldSegmentVisibilityUpdater.h>
 #include <engine/vehicle/VehicleUpdater.h>
+#include <engine/world/WorldSegmentVisibilityUpdater.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/GameWorld.h>

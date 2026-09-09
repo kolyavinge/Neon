@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/GameWorldUpdater.h>
+#include <engine/world/GameWorldUpdater.h>
 #include <lib/di/Resolver.h>
 #include <model/GameWorld.h>
 #include <ui/Screen.h>
