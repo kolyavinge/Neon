@@ -35,7 +35,11 @@ BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
 }
 
 List<WorldSegment*>& GameWorld::getVisibleWorldSegments() {
-    return _visibleWorldSegments;
+    return _visibleWorldSegmentsData.visibleSegments;
+}
+
+VisibleWorldSegmentsData& GameWorld::getVisibleWorldSegmentsData() {
+    return _visibleWorldSegmentsData;
 }
 
 Camera& GameWorld::getCamera() {

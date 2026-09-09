@@ -16,6 +16,8 @@ public:
 class Rect2d : public Object {
 
 public:
+    inline static const int pointsCount = 4;
+
     Vector3 downLeft;
     Vector3 downRight;
     Vector3 upLeft;

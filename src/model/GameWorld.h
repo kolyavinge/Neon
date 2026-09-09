@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/Vector3.h>
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
 #include <model/common/Camera.h>
@@ -7,13 +8,20 @@
 #include <model/world/Track.h>
 #include <model/world/WorldSegment.h>
 
+class VisibleWorldSegmentsData : public Object {
+
+public:
+    List<WorldSegment*> visibleSegments;
+    Vector3 cameraLookDirection;
+};
+
 class GameWorld : public Object {
 
     Track* _track;
     Array<Vehicle, GameConstants::maxVehiclesCount> _vehicles;
     Vehicle* _playerVehicle;
     BSPTree<WorldSegment> _segmentTree;
-    List<WorldSegment*> _visibleWorldSegments;
+    VisibleWorldSegmentsData _visibleWorldSegmentsData;
     Camera _camera;
     //RaceData _raceData;
 
@@ -26,5 +34,6 @@ public:
     Vehicle& getPlayerVehicle();
     BSPTree<WorldSegment>& getSegmentTree();
     List<WorldSegment*>& getVisibleWorldSegments();
+    VisibleWorldSegmentsData& getVisibleWorldSegmentsData();
     Camera& getCamera();
 };

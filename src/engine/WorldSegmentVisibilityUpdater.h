@@ -2,6 +2,7 @@
 
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
+#include <model/GameWorld.h>
 #include <model/common/Camera.h>
 #include <model/common/common.h>
 #include <model/world/WorldSegment.h>
@@ -13,7 +14,7 @@ class WorldSegmentVisibilityUpdater : public Object {
 
 public:
     WorldSegmentVisibilityUpdater();
-    void update(BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, output List<WorldSegment*>& visibleSegments);
+    void update(BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, VisibleWorldSegmentsData& segmentsData);
 
 private:
     void findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node);

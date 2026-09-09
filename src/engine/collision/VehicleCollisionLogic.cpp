@@ -85,7 +85,7 @@ void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle, Collection<
     _collisionDepths.clear();
     _collisionNormalsToBody.clear();
 
-    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
+    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия/.
     // точка пересечения - это точка на которую должна переместиться точка кузова
 
     float velocity = vehicle.getLinearVelocity().getLength();

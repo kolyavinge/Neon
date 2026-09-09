@@ -7,12 +7,15 @@ WorldSegmentVisibilityUpdater::WorldSegmentVisibilityUpdater() {
 }
 
 void WorldSegmentVisibilityUpdater::update(
-    BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, output List<WorldSegment*>& visibleSegments) {
+    BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, VisibleWorldSegmentsData& segmentsData) {
+    bool needUpdate = segmentsData.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.95f;
+    if (!needUpdate) return;
     _camera = &camera;
-    _visibleSegments = &visibleSegments;
+    _visibleSegments = &segmentsData.visibleSegments;
     _visibleSegments->clear();
     findVisibleSegmentsFor(*segmentTreeRoot.frontNode);
     findVisibleSegmentsFor(*segmentTreeRoot.backNode);
+    segmentsData.cameraLookDirection = camera.getLookDirection();
 }
 
 void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node) {
@@ -28,7 +31,7 @@ void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegm
     if (rightPoints == 0) return;
 
     // сегмент полностью виден вместе с дочерними (видно по 4 точки для каждой плоскости камеры)
-    if (frontPoints + leftPoints + rightPoints == 4 * 3) {
+    if (frontPoints + leftPoints + rightPoints == 3 * Rect2d::pointsCount) {
         _visibleSegments->add(&node.data);
     } else {
         // виден частично
