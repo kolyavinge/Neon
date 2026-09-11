@@ -1,3 +1,4 @@
+#include <lib/calc/Vector2.h>
 #include <model/world/GroundBuilder.h>
 
 GroundBuilder::GroundBuilder() {
@@ -83,6 +84,16 @@ GroundBuilder& GroundBuilder::build() {
         return result;
     };
 
+    auto getTexCoord = [&](int row, int col) {
+        Vector2 result;
+        if (col == _segmentsCountLeftToRight) result.x = 1.0f;
+        else result.x = (float)col / (float)_segmentsCountLeftToRight;
+        if (row == _segmentsCountDownToUp) result.y = 1.0f;
+        else result.y = (float)row / (float)_segmentsCountDownToUp;
+
+        return result;
+    };
+
     _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _segmentsCountDownToUp * _segmentsCountLeftToRight);
     for (int row = 0; row < _segmentsCountDownToUp; row++) {
         for (int col = 0; col < _segmentsCountLeftToRight; col++) {
@@ -90,7 +101,11 @@ GroundBuilder& GroundBuilder::build() {
             Vector3 p2 = getBasePlanePoint(row, col + 1);
             Vector3 p3 = getBasePlanePoint(row + 1, col + 1);
             Vector3 p4 = getBasePlanePoint(row + 1, col);
-            _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4));
+            Vector2 tc1 = getTexCoord(row, col);
+            Vector2 tc2 = getTexCoord(row, col + 1);
+            Vector2 tc3 = getTexCoord(row + 1, col + 1);
+            Vector2 tc4 = getTexCoord(row + 1, col);
+            _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4, tc1, tc2, tc3, tc4));
         }
     }
 

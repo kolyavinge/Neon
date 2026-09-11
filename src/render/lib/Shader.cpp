@@ -7,6 +7,7 @@ Shader::Shader() {
 
 Shader::~Shader() {
     glDeleteShader(_id);
+    init(0, ShaderType::unset);
 }
 
 void Shader::init(GLuint id, ShaderType type) {

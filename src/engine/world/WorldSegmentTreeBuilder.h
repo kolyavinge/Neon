@@ -10,6 +10,7 @@
 class WorldSegmentTreeBuilder : public Object, private IBSPTreeBuilder<WorldSegment> {
 
     Track* _track;
+    int _lastSegmentId;
 
 public:
 

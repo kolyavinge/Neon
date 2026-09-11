@@ -25,9 +25,9 @@ void MoonlightRide::makeGround() {
 
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlane(Vector3(-100.0f, -100.0f, 0.0f), Vector3(100.0f, -100.0f, 0.0f), Vector3(-100.0f, 100.0f, 0.0f))
-        .splitLeftToRight(20)
-        .splitDownToUp(40)
+        .setBasePlane(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, -10.0f, 0.0f), Vector3(-10.0f, 10.0f, 0.0f))
+        .splitLeftToRight(5)
+        .splitDownToUp(5)
         .setZFunc(getZFunc)
         .build();
 }

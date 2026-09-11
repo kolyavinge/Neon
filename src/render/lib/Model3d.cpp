@@ -1,7 +1,59 @@
 #include <render/lib/Model3d.h>
 
 Mesh::Mesh() {
-    id = 0;
+    //id = 0;
+    texture = &Texture::empty;
+}
+
+void Mesh::prepareEnoughCapacity(int elementsCount, int pointsByElement) {
+    vertices.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
+    normals.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
+    colors.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
+    texCoords.prepareEnoughCapacity(2 * elementsCount * pointsByElement);
+    faces.prepareEnoughCapacity(6 * elementsCount);
+}
+
+void Mesh::addVertex(Vector3 v) {
+    vertices.add(v.x);
+    vertices.add(v.y);
+    vertices.add(v.z);
+}
+
+void Mesh::addNormal(Vector3 n) {
+    normals.add(n.x);
+    normals.add(n.y);
+    normals.add(n.z);
+}
+
+void Mesh::addColor(float r, float g, float b, float a) {
+    colors.add(r);
+    colors.add(g);
+    colors.add(b);
+    colors.add(a);
+}
+
+void Mesh::addTexCoord(Vector2 t) {
+    texCoords.add(t.x);
+    texCoords.add(t.y);
+}
+
+void Mesh::addFacesForElement(int elementIndex, int pointsByElement) {
+    unsigned int stride = (unsigned int)(elementIndex * pointsByElement);
+    faces.add(stride + 0);
+    faces.add(stride + 1);
+    faces.add(stride + 2);
+    faces.add(stride + 0);
+    faces.add(stride + 2);
+    faces.add(stride + 3);
+}
+
+void Mesh::clear() {
+    name.clear();
+    vertices.clear();
+    normals.clear();
+    colors.clear();
+    texCoords.clear();
+    faces.clear();
     texture = &Texture::empty;
 }
 
@@ -107,6 +159,14 @@ void Model3d::invertAxis(int axis) {
             mesh.normals[j + 2] *= invert.z;
         }
     }
+}
+
+void Model3d::clear() {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        _meshes[i].clear();
+    }
+    _meshesCount = 0;
+    _textures.clear();
 }
 
 Vector3 Model3d::getMinVertex() {

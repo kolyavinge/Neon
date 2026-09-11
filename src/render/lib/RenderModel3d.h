@@ -23,9 +23,11 @@ class RenderModel3d : public Object {
 
 public:
     ~RenderModel3d();
+    RenderModel3d& operator=(const RenderModel3d& other);
     RenderMesh& createNewMesh();
     RenderMesh& getMesh(int index);
     int getMeshesCount();
     RenderMesh& getMeshByName(String meshName);
     void setTextures(Collection<Texture*>& textures);
+    void release();
 };

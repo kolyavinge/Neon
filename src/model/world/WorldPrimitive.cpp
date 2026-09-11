@@ -2,11 +2,14 @@
 #include <model/world/WorldPrimitive.h>
 
 WorldPrimitive::WorldPrimitive() :
-    _plane(4) {
+    _plane(pointsCount) {
     _kind = (WorldPrimitiveKind)-1;
 }
 
-WorldPrimitive::WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+WorldPrimitive::WorldPrimitive(
+    WorldPrimitiveKind kind,
+    Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,
+    Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4) {
     _kind = kind;
     _points[0] = p1;
     _points[1] = p2;
@@ -22,6 +25,10 @@ WorldPrimitive::WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, 
     _plane.addCuttingPlane(Plane(p1.getDirectionTo(p4).getNormalized(), p1));
     _plane.addCuttingPlane(Plane(p3.getDirectionTo(p2).getNormalized(), p3));
     _plane.addCuttingPlane(Plane(p3.getDirectionTo(p4).getNormalized(), p3));
+    _texCoords[0] = texCoord1;
+    _texCoords[1] = texCoord2;
+    _texCoords[2] = texCoord3;
+    _texCoords[3] = texCoord4;
 }
 
 WorldPrimitiveKind WorldPrimitive::getKind() {
@@ -30,6 +37,10 @@ WorldPrimitiveKind WorldPrimitive::getKind() {
 
 Collection<Vector3>& WorldPrimitive::getPoints() {
     return _points;
+}
+
+Collection<Vector2>& WorldPrimitive::getTexCoords() {
+    return _texCoords;
 }
 
 Vector3 WorldPrimitive::getFrontNormal() {

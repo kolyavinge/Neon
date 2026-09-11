@@ -6,11 +6,15 @@
 
 class WorldSegment : Object {
 
+    int _id;
     List<WorldPrimitive*> _groundPrimitives;
     List<WorldPrimitive*> _barrierPrimitives;
     Rect2d _boundaryBox;
 
 public:
+    WorldSegment();
+    int getId();
+    void setId(int id);
     Collection<WorldPrimitive*>& getGroundPrimitives();
     Collection<WorldPrimitive*>& getBarrierPrimitives();
     Rect2d& getBoundaryBox();

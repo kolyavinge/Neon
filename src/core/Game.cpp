@@ -13,7 +13,8 @@ Game::Game(
 }
 
 void Game::init() {
-    _gameInitializer.initGame(_gameWorld);
+    _gameInitializer.initGame();
+    _gameInitializer.initGameWorld(_gameWorld);
 }
 
 void Game::update() {

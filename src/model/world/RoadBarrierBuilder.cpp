@@ -50,7 +50,11 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         p3.addMultiplied(_upNormal, barrierHeight);
         Vector3 p4 = p1;
         p4.addMultiplied(_upNormal, barrierHeight);
-        _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4));
+        Vector2 tc1(0.0f, 0.0f);
+        Vector2 tc2(1.0f, 0.0f);
+        Vector2 tc3(1.0f, 1.0f);
+        Vector2 tc4(0.0f, 1.0f);
+        _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4, tc1, tc2, tc3, tc4));
         p1 = p2;
     }
 

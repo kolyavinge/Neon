@@ -9,8 +9,10 @@ ShaderProgram::~ShaderProgram() {
     glUseProgram(0);
     for (int i = 0; i < _shaderIds.getCount(); i++) {
         glDetachShader(_id, _shaderIds[i]);
+        _shaderIds[i] = 0;
     }
     glDeleteProgram(_id);
+    _id = 0;
 }
 
 void ShaderProgram::init(Collection<Shader*>& shaders) {

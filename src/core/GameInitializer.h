@@ -8,6 +8,7 @@
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
 #include <render/vehicle/VehicleRenderer.h>
+#include <render/world/TrackRenderer.h>
 #include <ui/RaceScreen.h>
 
 class GameInitializer : public Object {
@@ -18,6 +19,7 @@ class GameInitializer : public Object {
     ShaderProgramCollection& _shaderProgramCollection;
     RenderModel3dCollection& _renderModel3dCollection;
     VehicleRenderer& _vehicleRenderer;
+    TrackRenderer& _trackRenderer;
 
 public:
     static GameInitializer* resolve(Resolver& resolver) {
@@ -27,7 +29,8 @@ public:
             resolver.resolve<ShaderCollection>(),
             resolver.resolve<ShaderProgramCollection>(),
             resolver.resolve<RenderModel3dCollection>(),
-            resolver.resolve<VehicleRenderer>());
+            resolver.resolve<VehicleRenderer>(),
+            resolver.resolve<TrackRenderer>());
     }
 
     GameInitializer(
@@ -36,7 +39,9 @@ public:
         ShaderCollection& shaderCollection,
         ShaderProgramCollection& shaderProgramCollection,
         RenderModel3dCollection& renderModel3dCollection,
-        VehicleRenderer& vehicleRenderer);
+        VehicleRenderer& vehicleRenderer,
+        TrackRenderer& trackRenderer);
 
-    void initGame(GameWorld& gameWorld);
+    void initGame();
+    void initGameWorld(GameWorld& gameWorld);
 };

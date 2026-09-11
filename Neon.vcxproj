@@ -90,6 +90,7 @@
     <ClCompile Include="src\model\world\Track.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentTreeBuilder.cpp" />
     <ClCompile Include="src\model\world\WorldSegment.cpp" />
+    <ClCompile Include="src\render\common\Model3dConverter.cpp" />
     <ClCompile Include="src\render\common\RenderModel3dCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
     <ClCompile Include="src\render\vehicle\VehicleRenderer.cpp" />
+    <ClCompile Include="src\render\world\TrackRenderer.cpp" />
     <ClCompile Include="src\ui\RaceScreen.cpp" />
     <ClCompile Include="src\ui\Screen.cpp" />
     <ClInclude Include="src\common\resource.h" />
@@ -159,6 +161,7 @@
     <ClInclude Include="src\model\vehicle\Gear.h" />
     <ClInclude Include="src\model\vehicle\VehicleData.h" />
     <ClInclude Include="src\engine\world\WorldSegmentTreeBuilder.h" />
+    <ClInclude Include="src\render\common\Model3dConverter.h" />
     <ClInclude Include="src\render\common\RenderModel3dCollection.h" />
     <ClInclude Include="src\render\common\ShaderCollection.h" />
     <ClInclude Include="src\render\common\ShaderProgramCollection.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
     <ClInclude Include="src\render\vehicle\VehicleRenderer.h" />
+    <ClInclude Include="src\render\world\TrackRenderer.h" />
     <ClInclude Include="src\ui\RaceScreen.h" />
     <ClInclude Include="src\ui\IScreenSwitcher.h" />
     <ClInclude Include="src\ui\Screens.h" />

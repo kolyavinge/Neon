@@ -1,6 +1,18 @@
 #include <lib/calc/Vector3.h>
 #include <model/world/WorldSegment.h>
 
+WorldSegment::WorldSegment() {
+    _id = 0;
+}
+
+int WorldSegment::getId() {
+    return _id;
+}
+
+void WorldSegment::setId(int id) {
+    _id = id;
+}
+
 Collection<WorldPrimitive*>& WorldSegment::getGroundPrimitives() {
     return _groundPrimitives;
 }

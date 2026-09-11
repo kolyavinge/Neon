@@ -32,9 +32,7 @@ public:
     }
 
     ~List() override {
-        if (_items != nullptr) {
-            delete[] _items;
-        }
+        delete[] _items;
     }
 
     List<T>& operator=(const List<T>& other) {
@@ -148,7 +146,7 @@ public:
     }
 
     void clear() {
-        _count = 0;
+        _count = 0; // TODO нужно вызывать деструктор для классов?
     }
 
     void prepareEnoughCapacity(int enoughCapacity) {
@@ -172,14 +170,11 @@ private:
     void set(const List<T>& copy) {
         _count = copy._count;
         _capacity = copy._capacity;
-        if (_items != nullptr) {
-            delete[] _items;
-        }
-        if (_capacity > 0) {
-            _items = new T[(size_t)_capacity]();
-            for (int i = 0; i < copy._count; i++) {
-                _items[i] = copy._items[i];
-            }
+        delete[] _items;
+        _items = new T[(size_t)_capacity]();
+        for (int i = 0; i < copy._count; i++) {
+            // TODO Buffer overrun while writing to '_items':  the writable size is '(unsigned __int64 size_t)_capacity*8' bytes, but '16' bytes might be written.
+            _items[i] = copy._items[i];
         }
     }
 

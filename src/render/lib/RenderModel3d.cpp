@@ -6,13 +6,14 @@ RenderMesh::RenderMesh() {
 }
 
 RenderModel3d::~RenderModel3d() {
-    for (int i = 0; i < _textures.getCount(); i++) {
-        delete _textures[i];
-    }
+    release();
+}
 
-    for (int i = 0; i < _meshes.getCount(); i++) {
-        delete _meshes[i];
-    }
+RenderModel3d& RenderModel3d::operator=(const RenderModel3d& other) {
+    _meshes = other._meshes;
+    _textures = other._textures;
+
+    return *this;
 }
 
 RenderMesh& RenderModel3d::createNewMesh() {
@@ -43,4 +44,15 @@ RenderMesh& RenderModel3d::getMeshByName(String meshName) {
 
 void RenderModel3d::setTextures(Collection<Texture*>& textures) {
     _textures.addRange(textures);
+}
+
+void RenderModel3d::release() {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        delete _meshes[i];
+    }
+    for (int i = 0; i < _textures.getCount(); i++) {
+        delete _textures[i];
+    }
+    _meshes.clear();
+    _textures.clear();
 }

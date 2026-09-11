@@ -26,7 +26,7 @@ class Shader : public Object {
     ShaderType _type;
 
 public:
-    DENY_COPYING(Shader) // классы использующие ресурсы opengl запрещены к копированию
+    DENY_COPYING(Shader); // классы использующие ресурсы opengl запрещены к копированию
     Shader();
     ~Shader();
     void init(GLuint id, ShaderType type);

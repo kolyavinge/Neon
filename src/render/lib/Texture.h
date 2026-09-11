@@ -12,7 +12,7 @@ class Texture : public Object {
 public:
     static Texture empty;
 
-    DENY_COPYING(Texture) // классы использующие ресурсы opengl запрещены к копированию
+    DENY_COPYING(Texture); // классы использующие ресурсы opengl запрещены к копированию
     Texture();
     ~Texture();
     void init(GLuint id, GLint width, GLint height);

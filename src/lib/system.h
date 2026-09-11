@@ -16,4 +16,4 @@
 
 #define DENY_COPYING(className) \
     className(const className&) = delete; \
-    className& operator=(const className&) = delete;
+    className& operator=(const className&) = delete

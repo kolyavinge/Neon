@@ -24,6 +24,7 @@
 #include <lib/Environment.h>
 #include <lib/FileSystem.h>
 #include <lib/ResourceManager.h>
+#include <render/common/Model3dConverter.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
@@ -35,6 +36,7 @@
 #include <render/lib/VAORenderer.h>
 #include <render/ui/RaceScreenRenderer.h>
 #include <render/vehicle/VehicleRenderer.h>
+#include <render/world/TrackRenderer.h>
 #include <ui/RaceScreen.h>
 
 void MainInjectModule::init(Binder& binder) {
@@ -63,6 +65,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();
     binder.bindSingleton<ResourceManager>();
+    binder.bindSingleton<Model3dConverter>();
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);
     binder.bindSingleton<ShaderCollection>(ShaderCollection::resolve);
     binder.bindSingleton<ShaderProgramCollection>(ShaderProgramCollection::resolve);
@@ -74,5 +77,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
+    binder.bindSingleton<TrackRenderer>(TrackRenderer::resolve);
     binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
 }

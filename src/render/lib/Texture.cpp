@@ -3,13 +3,12 @@
 Texture Texture::empty;
 
 Texture::Texture() {
-    _id = 0;
-    _width = 0;
-    _height = 0;
+    init(0, 0, 0);
 }
 
 Texture::~Texture() {
     glDeleteTextures(1, &_id);
+    init(0, 0, 0);
 }
 
 void Texture::init(GLuint id, GLint width, GLint height) {

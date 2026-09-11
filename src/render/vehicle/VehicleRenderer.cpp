@@ -1,4 +1,5 @@
 #include <lib/calc/TransformMatrix4.h>
+#include <render/lib/opengl.h>
 #include <render/vehicle/VehicleRenderer.h>
 
 VehicleRenderer::VehicleRenderer(

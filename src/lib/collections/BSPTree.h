@@ -63,6 +63,10 @@ public:
         return findNodeDataByPoint(_root, point);
     }
 
+    void getDataForAllNodes(output List<TNodeData*>& result) {
+        getDataForAllNodesRec(_root, output result);
+    }
+
 private:
     void buildRec(IBSPTreeBuilder<TNodeData>& builder, BSPTreeNode<TNodeData>& parent, Collection<Plane>& splitPlanes) {
         if (splitPlanes.getCount() == 0) {
@@ -99,6 +103,14 @@ private:
             } else {
                 return findNodeDataByPoint(*parent.backNode, point);
             }
+        }
+    }
+
+    void getDataForAllNodesRec(BSPTreeNode<TNodeData>& node, output List<TNodeData*>& result) {
+        result.add(&node.data);
+        if (!node.isLeaf) {
+            getDataForAllNodesRec(*node.frontNode, result);
+            getDataForAllNodesRec(*node.backNode, result);
         }
     }
 

@@ -2,9 +2,11 @@
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;
+    _lastSegmentId = 0;
 }
 
 void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segmentTree) {
+    _lastSegmentId = 0;
     _track = &track;
     Collection<Plane>& splitPlanes = track.getSplitPlanes();
     segmentTree.build(*this, splitPlanes);
@@ -17,6 +19,8 @@ void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
 }
 
 void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment) {
+    parentSegment.setId(_lastSegmentId++);
+
     // ground primitives
     Collection<WorldPrimitive*>& groundPrimitives = parentSegment.getGroundPrimitives();
     for (int i = 0; i < groundPrimitives.getCount(); i++) {
