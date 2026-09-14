@@ -147,7 +147,7 @@ public:
     }
 
     void clear() {
-        _count = 0; // TODO нужно вызывать деструктор для классов?
+        _count = 0;
     }
 
     void prepareEnoughCapacity(int enoughCapacity) {

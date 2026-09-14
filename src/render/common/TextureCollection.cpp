@@ -10,17 +10,15 @@ TextureCollection::TextureCollection(
 void TextureCollection::loadAllTextures() {
     String texturesDirectory = _assetsDirectory.getTextures();
 
-    String texturePath = texturesDirectory;
-    texturePath.append("asphalt1.png");
-    _textureLoader.loadTexture(texturePath, output _worldPrimitiveTextures[(int)WorldPrimitiveKind::asphalt1]);
+    auto loadWorldPrimitiveTextures = [&](const wchar_t* fileName, WorldPrimitiveKind kind) {
+        String texturePath = texturesDirectory;
+        texturePath.append(fileName);
+        _textureLoader.loadTexture(texturePath, output _worldPrimitiveTextures[(int)kind]);
+    };
 
-    texturePath = texturesDirectory;
-    texturePath.append("asphalt2.png");
-    _textureLoader.loadTexture(texturePath, output _worldPrimitiveTextures[(int)WorldPrimitiveKind::asphalt2]);
-
-    texturePath = texturesDirectory;
-    texturePath.append("metalBarrier1.png");
-    _textureLoader.loadTexture(texturePath, output _worldPrimitiveTextures[(int)WorldPrimitiveKind::metalBarrier1]);
+    loadWorldPrimitiveTextures(L"asphalt1.png", WorldPrimitiveKind::asphalt1);
+    loadWorldPrimitiveTextures(L"asphalt2.png", WorldPrimitiveKind::asphalt2);
+    loadWorldPrimitiveTextures(L"metalBarrier1.png", WorldPrimitiveKind::metalBarrier1);
 }
 
 Texture& TextureCollection::getByWorldPrimitiveKind(WorldPrimitiveKind kind) {

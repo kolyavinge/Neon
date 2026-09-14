@@ -1,7 +1,6 @@
 #include <render/lib/Model3d.h>
 
 Mesh::Mesh() {
-    //id = 0;
     texture = &Texture::empty;
 }
 

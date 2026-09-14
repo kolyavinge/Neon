@@ -75,7 +75,7 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     // расчитываем новые скорости в точках соударения
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
-        vehicle.resolveCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
+        vehicle.calculateVelocitiesAfterCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
     }
 
     // вытаскиваем точки из препядствий

@@ -60,7 +60,7 @@ public:
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
     void resetToPrevPosition();
-    void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    void calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:

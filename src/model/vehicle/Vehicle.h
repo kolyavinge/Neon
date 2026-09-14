@@ -67,7 +67,7 @@ public:
     float getAverageDriveWheelsRpm();
     bool isFrozen();
     void clearAllVelocitiesAndForces();
-    void resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    void calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
 
 private:
     void initWheelAndSpring(WheelPosition position);

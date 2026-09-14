@@ -232,6 +232,6 @@ void Vehicle::clearAllVelocitiesAndForces() {
     }
 }
 
-void Vehicle::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
-    _rigidBody.resolveCollisionWithUnmovableBody(collisionPoint, collisionNormalToBody);
+void Vehicle::calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
+    _rigidBody.calculateVelocitiesAfterCollisionWithUnmovableBody(collisionPoint, collisionNormalToBody);
 }

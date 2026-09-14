@@ -156,7 +156,7 @@ void RigidBody::resetToPrevPosition() {
     _modelMatrix = _prevModelMatrix;
 }
 
-void RigidBody::resolveCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
+void RigidBody::calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
     Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
 
     Vector3 collisionVelocity = _angularVelocity;

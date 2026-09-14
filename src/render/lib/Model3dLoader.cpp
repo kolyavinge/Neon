@@ -28,7 +28,6 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
     for (int meshIndex = 0; meshIndex < (int)aiScene.mNumMeshes; meshIndex++) {
         aiMesh& aiMesh = *aiScene.mMeshes[meshIndex];
         Mesh& mesh = model3d.createNewMesh();
-        //mesh.id = meshIndex; TODO удалить
         mesh.name = String(aiMesh.mName.C_Str());
         mesh.vertices.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
         mesh.normals.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);

@@ -8,7 +8,6 @@
 class Mesh : public Object {
 
 public:
-    //int id; // TODO удалить если не нужно
     String name;
     List<float> vertices;
     List<float> normals;
