@@ -7,7 +7,9 @@
 
 enum class WorldPrimitiveKind {
     asphalt1,
+    asphalt2,
     metalBarrier1,
+    _count
 };
 
 // базовый строительный элемент игрового мира

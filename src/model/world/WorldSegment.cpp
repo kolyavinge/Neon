@@ -46,6 +46,8 @@ void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
 }
 
 void WorldSegment::calculateBoundaryBox() {
+    if (_groundPrimitives.getCount() == 0) return;
+
     Vector3 min = _groundPrimitives[0]->getPoints()[0];
     Vector3 max = _groundPrimitives[0]->getPoints()[0];
 

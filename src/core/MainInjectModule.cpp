@@ -28,6 +28,7 @@
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
+#include <render/common/TextureCollection.h>
 #include <render/lib/Model3dLoader.h>
 #include <render/lib/Model3dVAOBuilder.h>
 #include <render/lib/RenderModel3dLoader.h>
@@ -65,10 +66,11 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();
     binder.bindSingleton<ResourceManager>();
-    binder.bindSingleton<Model3dConverter>();
+    binder.bindSingleton<Model3dConverter>(Model3dConverter::resolve);
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);
     binder.bindSingleton<ShaderCollection>(ShaderCollection::resolve);
     binder.bindSingleton<ShaderProgramCollection>(ShaderProgramCollection::resolve);
+    binder.bindSingleton<TextureCollection>(TextureCollection::resolve);
     binder.bindSingleton<Model3dLoader>(Model3dLoader::resolve);
     binder.bindSingleton<Model3dVAOBuilder>();
     binder.bindSingleton<RenderModel3dLoader>(RenderModel3dLoader::resolve);

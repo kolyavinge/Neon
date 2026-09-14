@@ -9,6 +9,7 @@ class AssetsDirectory : public Object {
 
     FileSystem& _fileSystem;
     String _assets;
+    String _textures;
     String _models3d;
 
 public:
@@ -22,6 +23,7 @@ public:
         Environment& environment,
         FileSystem& fileSystem);
 
+    String& getTextures();
     String& getModels3d();
 
 private:

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <concepts>
 #include <lib/Memory.h>
 #include <lib/collections/Collection.h>
@@ -170,10 +171,10 @@ private:
     void set(const List<T>& copy) {
         _count = copy._count;
         _capacity = copy._capacity;
+        assert(_count <= _capacity); // чтобы не возникал warning 'Buffer overrun'
         delete[] _items;
         _items = new T[(size_t)_capacity]();
         for (int i = 0; i < copy._count; i++) {
-            // TODO Buffer overrun while writing to '_items':  the writable size is '(unsigned __int64 size_t)_capacity*8' bytes, but '16' bytes might be written.
             _items[i] = copy._items[i];
         }
     }

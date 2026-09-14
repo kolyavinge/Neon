@@ -303,6 +303,9 @@
     <ClCompile Include="src\render\common\Model3dConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\common\TextureCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -320,7 +323,7 @@
     <ClInclude Include="src\lib\exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\lib\collections\IComparator.h">
+    <ClInclude Include="src\lib\collections\comparators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\collections\Dictionary.h">
@@ -669,6 +672,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\Model3dConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\common\TextureCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

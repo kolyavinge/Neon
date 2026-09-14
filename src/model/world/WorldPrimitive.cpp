@@ -1,3 +1,5 @@
+#include <common/constants.h>
+#include <lib/calc/Math.h>
 #include <lib/calc/Plane.h>
 #include <model/world/WorldPrimitive.h>
 
@@ -21,10 +23,14 @@ WorldPrimitive::WorldPrimitive(
     frontNormal.crossProduct(up);
     frontNormal.normalize();
     _plane.set(frontNormal, p1);
-    _plane.addCuttingPlane(Plane(p1.getDirectionTo(p2).getNormalized(), p1));
-    _plane.addCuttingPlane(Plane(p1.getDirectionTo(p4).getNormalized(), p1));
-    _plane.addCuttingPlane(Plane(p3.getDirectionTo(p2).getNormalized(), p3));
-    _plane.addCuttingPlane(Plane(p3.getDirectionTo(p4).getNormalized(), p3));
+    Vector3 downCuttingPlaneFrontNormal = Math::rotatePoint(p1.getDirectionTo(p2), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
+    Vector3 upCuttingPlaneFrontNormal = Math::rotatePoint(p3.getDirectionTo(p4), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
+    Vector3 leftCuttingPlaneFrontNormal = Math::rotatePoint(p1.getDirectionTo(p4), -Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
+    Vector3 rightCuttingPlaneFrontNormal = Math::rotatePoint(p2.getDirectionTo(p3), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
+    _plane.addCuttingPlane(Plane(downCuttingPlaneFrontNormal, p1));
+    _plane.addCuttingPlane(Plane(upCuttingPlaneFrontNormal, p3));
+    _plane.addCuttingPlane(Plane(leftCuttingPlaneFrontNormal, p1));
+    _plane.addCuttingPlane(Plane(rightCuttingPlaneFrontNormal, p2));
     _texCoords[0] = texCoord1;
     _texCoords[1] = texCoord2;
     _texCoords[2] = texCoord3;

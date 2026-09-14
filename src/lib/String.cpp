@@ -41,9 +41,9 @@ String::String(const char* str, Encoding encoding) {
     MultiByteToWideChar((unsigned int)encoding, 0, str, _count, _symb, _count);
 }
 
-String::String(const String& copy) {
+String::String(const String& other) {
     _symb = nullptr;
-    set(copy);
+    set(other);
 }
 
 String::~String() {
@@ -74,12 +74,14 @@ int String::getHashCode() {
     return result;
 }
 
-String& String::operator=(const String& copy) {
-    clear();
-    if (copy._count > 0) {
-        prepareEnoughCapacity(copy._count);
+String& String::operator=(const String& other) {
+    if (this != &other) {
+        clear();
+        if (other._count > 0) {
+            prepareEnoughCapacity(other._count);
+        }
+        append(other);
     }
-    append(copy);
 
     return *this;
 }

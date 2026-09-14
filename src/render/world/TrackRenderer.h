@@ -9,6 +9,7 @@
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/RenderModel3dLoader.h>
 #include <render/lib/VAORenderer.h>
+#include <render/shaderprograms/MeshShaderProgram.h>
 
 class TrackRenderer : public Object {
 

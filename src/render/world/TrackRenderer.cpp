@@ -15,6 +15,7 @@ TrackRenderer::TrackRenderer(
 }
 
 void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments) {
+    // для всех обьектов WorldSegment создаем RenderModel3d для последующего рендера
     for (int i = 0; i < _segmentRenderModels.getCount(); i++) {
         _segmentRenderModels[i].release();
     }
@@ -23,12 +24,13 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments) {
     for (int i = 0; i < allWorldSegments.getCount(); i++) {
         _segmentRenderModels.addNew();
     }
-    Model3d worldSegmentModel3d;
+    Model3d model3d;
     for (int i = 0; i < allWorldSegments.getCount(); i++) {
         WorldSegment& worldSegment = *allWorldSegments[i];
-        _model3dConverter.makeFromWorldSegment(worldSegment, output worldSegmentModel3d);
-        _renderModel3dLoader.load(worldSegmentModel3d, output _segmentRenderModels[worldSegment.getId()]);
-        worldSegmentModel3d.clear();
+        _model3dConverter.fromWorldSegment(worldSegment, output model3d);
+        RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
+        _renderModel3dLoader.load(model3d, output renderModel);
+        model3d.clear();
     }
 }
 
@@ -40,15 +42,17 @@ void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& c
     _shader.setProjectionMatrix(camera.getProjectionMatrix());
     _shader.setColorFactor(1.0f);
     _shader.setAlphaFactor(1.0f);
-    _shader.useTexture(false);
+    _shader.useTexture(true);
 
     for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& worldSegment = *visibleSegments[segmentIndex];
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);
+            mesh.texture->bind(GL_TEXTURE0);
             //_mainSceneShader.setMaterial(mesh.material);
             _vaoRenderer.render(mesh.vao);
+            mesh.texture->unbind();
         }
     }
 

@@ -22,12 +22,12 @@ public:
     String();
     String(const wchar_t* str);
     String(const char* str, Encoding encoding = Encoding::utf8);
-    String(const String& copy);
+    String(const String& other);
     ~String() override;
 
     bool equals(Object& x) override;
     int getHashCode() override;
-    String& operator=(const String& copy);
+    String& operator=(const String& other);
     int getLength() const;
     wchar_t& operator[](int index);
     String& append(const wchar_t* appended);

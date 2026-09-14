@@ -7,7 +7,7 @@
 #include <lib/collections/Array.h>
 #include <lib/collections/Collection.h>
 #include <lib/collections/Dictionary.h>
-#include <lib/collections/IComparator.h>
+#include <lib/collections/comparators.h>
 #include <lib/collections/List.h>
 #include <lib/collections/Set.h>
 #include <lib/exceptions.h>

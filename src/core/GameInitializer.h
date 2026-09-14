@@ -7,6 +7,7 @@
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
+#include <render/common/TextureCollection.h>
 #include <render/vehicle/VehicleRenderer.h>
 #include <render/world/TrackRenderer.h>
 #include <ui/RaceScreen.h>
@@ -15,6 +16,7 @@ class GameInitializer : public Object {
 
     GameWorldInitializer& _gameWorldInitializer;
     RaceScreen& _debugScreen;
+    TextureCollection& _textureCollection;
     ShaderCollection& _shaderCollection;
     ShaderProgramCollection& _shaderProgramCollection;
     RenderModel3dCollection& _renderModel3dCollection;
@@ -26,6 +28,7 @@ public:
         return new GameInitializer(
             resolver.resolve<GameWorldInitializer>(),
             resolver.resolve<RaceScreen>(),
+            resolver.resolve<TextureCollection>(),
             resolver.resolve<ShaderCollection>(),
             resolver.resolve<ShaderProgramCollection>(),
             resolver.resolve<RenderModel3dCollection>(),
@@ -36,6 +39,7 @@ public:
     GameInitializer(
         GameWorldInitializer& gameWorldInitializer,
         RaceScreen& debugScreen,
+        TextureCollection& textureCollection,
         ShaderCollection& shaderCollection,
         ShaderProgramCollection& shaderProgramCollection,
         RenderModel3dCollection& renderModel3dCollection,

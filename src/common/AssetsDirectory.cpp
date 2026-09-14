@@ -8,8 +8,14 @@ AssetsDirectory::AssetsDirectory(
     _fileSystem(fileSystem) {
     _assets = environment.getCurrentDirectory();
     findAssetsDirectory();
+    _textures = _assets;
+    _textures.append(L"\\textures\\");
     _models3d = _assets;
     _models3d.append(L"\\models3d\\");
+}
+
+String& AssetsDirectory::getTextures() {
+    return _textures;
 }
 
 String& AssetsDirectory::getModels3d() {
