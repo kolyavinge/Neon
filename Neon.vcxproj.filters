@@ -306,6 +306,9 @@
     <ClCompile Include="src\render\common\TextureCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\lib\input\Joystick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -675,6 +678,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\TextureCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\input\Joystick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

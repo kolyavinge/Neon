@@ -14,17 +14,20 @@ void PlayerInputManager::update(Vehicle& vehicle) {
     DrivingInputData& inputData = vehicle.getDrivingInputData();
 
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::a) ||
-        _inputManager.keyboard.isKeyPressedOrHeld(Keys::left)) {
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::left) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::left)) {
         inputData.setSteeringRatio(-1.0f);
     } else if (
         _inputManager.keyboard.isKeyPressedOrHeld(Keys::d) ||
-        _inputManager.keyboard.isKeyPressedOrHeld(Keys::right)) {
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::right) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::right)) {
         inputData.setSteeringRatio(1.0f);
     } else {
         inputData.setSteeringRatio(0.0f);
     }
 
-    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::w)) {
+    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::w) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::button3)) {
         float throttleRatio = getOptimalThrottleRatio(vehicle);
         inputData.setThrottleRatio(throttleRatio);
     } else if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::r)) {
@@ -41,7 +44,8 @@ void PlayerInputManager::update(Vehicle& vehicle) {
     }
     // debug only
 
-    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::s)) {
+    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::s) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::button4)) {
         float brakeRatio = getOptimalBrakeRatio(vehicle);
         inputData.setBrakeRatio(brakeRatio);
     } else {

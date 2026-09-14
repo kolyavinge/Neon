@@ -33,6 +33,7 @@
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp" />
+    <ClCompile Include="src\lib\input\Joystick.cpp" />
     <ClCompile Include="src\model\world\GameWorld.cpp" />
     <ClCompile Include="src\engine\world\GameWorldUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\EngineLogic.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h" />
     <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h" />
+    <ClInclude Include="src\lib\input\Joystick.h" />
     <ClInclude Include="src\model\tracks\MoonlightRide.h" />
     <ClInclude Include="src\engine\world\TrackCollection.h" />
     <ClInclude Include="src\model\world\GroundBuilder.h" />
@@ -350,7 +352,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;$(ProjectDir)\external\assimp\assimp-vc143-mt.lib;$(ProjectDir)\external\soil\SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;windowsapp.lib;$(ProjectDir)\external\glew\glew32.lib;$(ProjectDir)\external\glfw\glfw3dll.lib;$(ProjectDir)\external\assimp\assimp-vc143-mt.lib;$(ProjectDir)\external\soil\SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
