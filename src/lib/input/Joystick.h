@@ -5,8 +5,6 @@
 
 class Joystick : public InputDevice {
 
-public:
-
 protected:
     void updatePressedKeys();
 };

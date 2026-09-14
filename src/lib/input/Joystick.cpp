@@ -12,21 +12,20 @@
 #include <lib/input/Joystick.h>
 
 void Joystick::updatePressedKeys() {
-    using namespace winrt;
-    using namespace Windows::Gaming::Input;
+    using namespace winrt::Windows::Gaming::Input;
 
-    auto gamepads = RawGameController::RawGameControllers();
-    if (gamepads.Size() == 0) return;
+    auto joyList = RawGameController::RawGameControllers();
+    if (joyList.Size() == 0) return;
 
-    RawGameController joy = gamepads.GetAt(0);
+    RawGameController joy = joyList.GetAt(0);
 
     int buttonCount = joy.ButtonCount();
     int switchCount = joy.SwitchCount();
     int axisCount = joy.AxisCount();
 
-    std::unique_ptr<bool[]> buttonStates = std::make_unique<bool[]>((size_t)buttonCount);
-    std::vector<GameControllerSwitchPosition> switchStates((size_t)switchCount);
-    std::vector<double> axisStates((size_t)axisCount);
+    static std::unique_ptr<bool[]> buttonStates = std::make_unique<bool[]>((size_t)buttonCount);
+    static std::vector<GameControllerSwitchPosition> switchStates((size_t)switchCount);
+    static std::vector<double> axisStates((size_t)axisCount);
 
     winrt::array_view<bool> buttonsView(buttonStates.get(), buttonStates.get() + buttonCount);
     winrt::array_view<GameControllerSwitchPosition> switchesView(switchStates.data(), switchStates.data() + switchCount);
@@ -38,7 +37,6 @@ void Joystick::updatePressedKeys() {
     _pressedKeys[(int)Keys::right] = axisStates[3] == 1.0;
     _pressedKeys[(int)Keys::up] = axisStates[4] == 0.0;
     _pressedKeys[(int)Keys::down] = axisStates[4] == 1.0;
-
     _pressedKeys[(int)Keys::button1] = buttonStates[0];
     _pressedKeys[(int)Keys::button2] = buttonStates[1];
     _pressedKeys[(int)Keys::button3] = buttonStates[2];
