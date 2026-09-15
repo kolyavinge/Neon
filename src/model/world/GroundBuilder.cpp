@@ -1,5 +1,13 @@
+#include <lib/calc/Math.h>
 #include <lib/calc/Vector2.h>
 #include <model/world/GroundBuilder.h>
+
+GetZFuncData::GetZFuncData() {
+    row = 0;
+    col = 0;
+    segmentsCountDownToUp = 0;
+    segmentsCountLeftToRight = 0;
+}
 
 GroundBuilder::GroundBuilder() {
     _kind = (WorldPrimitiveKind)-1;
@@ -8,6 +16,8 @@ GroundBuilder::GroundBuilder() {
 }
 
 void GroundBuilder::init() {
+    _rightDirection.setZero();
+    _frontDirection.setZero();
     _segmentsCountLeftToRight = 1;
     _segmentsCountDownToUp = 1;
     _getZFunc = nullptr;
@@ -24,10 +34,32 @@ GroundBuilder& GroundBuilder::setKind(WorldPrimitiveKind kind) {
 }
 
 GroundBuilder& GroundBuilder::setBasePlane(Vector3 downLeft, Vector3 downRight, Vector3 upLeft) {
-    init();
     _basePlaneDownLeft = downLeft;
     _basePlaneDownRight = downRight;
     _basePlaneUpLeft = upLeft;
+
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setBasePlaneDownLeft(Vector3 downLeft) {
+    _basePlaneDownLeft = downLeft;
+
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setDirections(Vector3 right, Vector3 front) {
+    _rightDirection = right;
+    _frontDirection = front;
+
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setSize(float width, float height) {
+    _basePlaneDownRight = _basePlaneDownLeft;
+    _basePlaneDownRight.addMultiplied(_rightDirection, width);
+
+    _basePlaneUpLeft = _basePlaneDownLeft;
+    _basePlaneUpLeft.addMultiplied(_frontDirection, height);
 
     return *this;
 }
@@ -53,6 +85,21 @@ GroundBuilder& GroundBuilder::setZFunc(GetZFunc getZ) {
     return *this;
 }
 
+GroundBuilder& GroundBuilder::setSmoothAscendDownToUp(float ascend) {
+    _basePlaneUpLeft.z += ascend;
+
+    // плавное изменение z с помощью синуса
+    // синус нормализован [0;1] и умножен на величину подьема
+    _getZFunc = [](GetZFuncData& data) {
+        float ascend = data.basePlaneDownLeft.getDirectionTo(data.basePlaneUpLeft).z;
+        float x = ((float)data.row / (float)data.segmentsCountDownToUp) * Math::pi - Math::piHalf; // [-pi/2; +pi/2]
+        float sinNorm = (Math::sin(x) + 1.0f) / 2.0f;
+        return data.basePlaneDownLeft.z + ascend * sinNorm;
+    };
+
+    return *this;
+}
+
 GroundBuilder& GroundBuilder::build() {
     Vector3 right = _basePlaneDownLeft.getDirectionTo(_basePlaneDownRight);
     Vector3 up = _basePlaneDownLeft.getDirectionTo(_basePlaneUpLeft);
@@ -66,22 +113,33 @@ GroundBuilder& GroundBuilder::build() {
     rightStep.div((float)_segmentsCountLeftToRight);
     upStep.div((float)_segmentsCountDownToUp);
 
+    GetZFuncData data;
+    data.basePlaneDownLeft = _basePlaneDownLeft;
+    data.basePlaneDownRight = _basePlaneDownRight;
+    data.basePlaneUpLeft = _basePlaneUpLeft;
+    data.basePlaneUpRight = basePlaneUpRight;
+    data.segmentsCountDownToUp = _segmentsCountDownToUp;
+    data.segmentsCountLeftToRight = _segmentsCountLeftToRight;
+
     auto getBasePlanePoint = [&](int row, int col) {
-        Vector3 result;
-        if (row == 0 && col == 0) result = _basePlaneDownLeft;
-        else if (row == 0 && col == _segmentsCountLeftToRight) result = _basePlaneDownRight;
-        else if (row == _segmentsCountDownToUp && col == 0) result = _basePlaneUpLeft;
-        else if (row == _segmentsCountDownToUp && col == _segmentsCountLeftToRight) result = basePlaneUpRight;
+        Vector3 resultPoint;
+        if (row == 0 && col == 0) resultPoint = _basePlaneDownLeft;
+        else if (row == 0 && col == _segmentsCountLeftToRight) resultPoint = _basePlaneDownRight;
+        else if (row == _segmentsCountDownToUp && col == 0) resultPoint = _basePlaneUpLeft;
+        else if (row == _segmentsCountDownToUp && col == _segmentsCountLeftToRight) resultPoint = basePlaneUpRight;
         else {
-            result = _basePlaneDownLeft;
-            result.addMultiplied(rightStep, (float)col);
-            result.addMultiplied(upStep, (float)row);
+            resultPoint = _basePlaneDownLeft;
+            resultPoint.addMultiplied(rightStep, (float)col);
+            resultPoint.addMultiplied(upStep, (float)row);
         }
         if (_getZFunc != nullptr) {
-            result.z = _getZFunc(result, row, col, _segmentsCountDownToUp, _segmentsCountLeftToRight);
+            data.point = resultPoint;
+            data.row = row;
+            data.col = col;
+            resultPoint.z = _getZFunc(data);
         }
 
-        return result;
+        return resultPoint;
     };
 
     auto getTexCoord = [&](int row, int col) {
@@ -109,5 +167,11 @@ GroundBuilder& GroundBuilder::build() {
         }
     }
 
+    init();
+
     return *this;
+}
+
+Vector3 GroundBuilder::getBasePlaneUpLeft() {
+    return _basePlaneUpLeft;
 }

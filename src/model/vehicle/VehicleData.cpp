@@ -83,7 +83,7 @@ VehicleData::VehicleData() {
     optimalSlipRatioTo = 0.25f;
 
     /* wheel longitudinal force */
-    float D = 1.0f;
+    float D = 2.0f;
     _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, D, 0.8f);
     _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, D, 0.8f);

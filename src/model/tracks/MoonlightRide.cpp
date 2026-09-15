@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <model/tracks/MoonlightRide.h>
 #include <model/world/GroundBuilder.h>
@@ -14,29 +15,30 @@ void MoonlightRide::buildInternal() {
 }
 
 void MoonlightRide::makeGround() {
-    GetZFunc getZFunc = [](Vector3 p, int row, int col, int segmentsCountDownToUp, int segmentsCountLeftToRight) {
-        //if (row <= 3) return p.z + 0.01f;
-        //return p.z + (float)(col % 2) * 0.05f + (float)(row % 2) * 0.05f + 0.01f;
-        return p.z + 0.01f;
-    };
-
     GroundBuilder builder;
     builder.setResultList(_groundPrimitives);
 
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlane(Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 10.0f, 0.0f))
-        .splitLeftToRight(5)
-        .splitDownToUp(5)
-        .setZFunc(getZFunc)
+        .setBasePlaneDownLeft(Vector3(0.0f, 0.0f, 0.0f))
+        .setDirections(CommonConstants::rightAxis, CommonConstants::frontAxis)
+        .setSize(10.0f, 100.0f)
         .build();
 
     builder
         .setKind(WorldPrimitiveKind::asphalt2)
-        .setBasePlane(Vector3(0.0f, 10.0f, 0.0f), Vector3(10.0f, 10.0f, 0.0f), Vector3(0.0f, 20.0f, 0.0f))
-        .splitLeftToRight(5)
-        .splitDownToUp(5)
-        .setZFunc(getZFunc)
+        .setBasePlaneDownLeft(builder.getBasePlaneUpLeft())
+        .setDirections(CommonConstants::rightAxis, CommonConstants::frontAxis)
+        .setSize(10.0f, 100.0f)
+        .splitDownToUp(10)
+        .setSmoothAscendDownToUp(5.0f)
+        .build();
+
+    builder
+        .setKind(WorldPrimitiveKind::asphalt1)
+        .setBasePlaneDownLeft(builder.getBasePlaneUpLeft())
+        .setDirections(CommonConstants::rightAxis, CommonConstants::frontAxis)
+        .setSize(10.0f, 20.0f)
         .build();
 }
 

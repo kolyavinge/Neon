@@ -34,7 +34,7 @@ void Vehicle::init() {
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.1f);
-    _rigidBody.setCenter(Vector3(2.0f, 2.0f, 0.6f));
+    _rigidBody.setCenter(Vector3(5.0f, 2.0f, 0.6f));
     //_rigidBody.applyForceAtPoint(Vector3(0, 0, -20000), Vector3(0, 2, 0));
 }
 
