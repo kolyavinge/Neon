@@ -6,6 +6,10 @@ Vector2::Vector2() {
 }
 
 Vector2::Vector2(float valueX, float valueY) {
+    set(valueX, valueY);
+}
+
+void Vector2::set(float valueX, float valueY) {
     x = valueX;
     y = valueY;
 }

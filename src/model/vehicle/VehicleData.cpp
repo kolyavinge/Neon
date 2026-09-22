@@ -79,23 +79,27 @@ VehicleData::VehicleData() {
     rearSpringMaxLength = 0.3f;
     rearAntiRollStiffness = 3500.0f;
 
-    optimalSlipRatioFrom = 0.15f;
-    optimalSlipRatioTo = 0.25f;
-
     /* wheel longitudinal force */
     float D = 2.0f;
-    _longitudinalForceCurve[(int)WheelPosition::frontLeft].set(10.0f, 1.8f, D, 0.8f);
-    _longitudinalForceCurve[(int)WheelPosition::frontRight].set(10.0f, 1.8f, D, 0.8f);
-    _longitudinalForceCurve[(int)WheelPosition::rearLeft].set(10.0f, 1.8f, D, 0.8f);
-    _longitudinalForceCurve[(int)WheelPosition::rearRight].set(10.0f, 1.8f, D, 0.8f);
+    PacejkaFormula longitudinalForceCurve(10.0f, 1.8f, D, 0.8f);
+    _longitudinalForceCurve[(int)WheelPosition::frontLeft] = longitudinalForceCurve;
+    _longitudinalForceCurve[(int)WheelPosition::frontRight] = longitudinalForceCurve;
+    _longitudinalForceCurve[(int)WheelPosition::rearLeft] = longitudinalForceCurve;
+    _longitudinalForceCurve[(int)WheelPosition::rearRight] = longitudinalForceCurve;
 
     /* wheel lateral force */
-    float Dfront = 0.3f;
-    float Drear = 0.25f;
-    _lateralForceCurve[(int)WheelPosition::frontLeft].set(0.714f, 1.4f, Dfront, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::frontRight].set(0.714f, 1.4f, Dfront, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::rearLeft].set(0.714f, 1.4f, Drear, -0.2f);
-    _lateralForceCurve[(int)WheelPosition::rearRight].set(0.714f, 1.4f, Drear, -0.2f);
+    float Dfront = 0.5f;
+    float Drear = 0.4f;
+    PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
+    PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
+    _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;
+    _lateralForceCurve[(int)WheelPosition::frontRight] = lateralForceCurveFront;
+    _lateralForceCurve[(int)WheelPosition::rearLeft] = lateralForceCurveRear;
+    _lateralForceCurve[(int)WheelPosition::rearRight] = lateralForceCurveRear;
+
+    optimalSlipRatio = Math::getArgumentForMaxValue(longitudinalForceCurve, 0.0f, 1.0f);
+    optimalSlipRatioFrom = optimalSlipRatio - 0.05f;
+    optimalSlipRatioTo = optimalSlipRatio + 0.05f;
 }
 
 //float VehicleData::getRollingResistanceCoeff(float linearVelocityNormalizedProjection) { TODO удалить

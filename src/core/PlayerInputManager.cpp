@@ -77,9 +77,9 @@ float PlayerInputManager::getOptimalThrottleRatio(Vehicle& vehicle) {
     } else if (slipRatio < data.optimalSlipRatioFrom) {
         throttleRatio += 0.05f;
     } else if (slipRatio > data.optimalSlipRatioTo) {
-        throttleRatio -= 0.05f;
+        throttleRatio -= 0.005f;
     }
-    throttleRatio = Numeric::clamp(throttleRatio, 0.0f, 1.0f);
+    throttleRatio = Numeric::clamp(throttleRatio, 0.2f, 1.0f);
 
     return throttleRatio;
 }
@@ -93,7 +93,7 @@ float PlayerInputManager::getOptimalBrakeRatio(Vehicle& vehicle) {
     } else if (slipRatio > data.optimalSlipRatioTo) {
         brakeRatio -= 0.05f;
     }
-    brakeRatio = Numeric::clamp(brakeRatio, 0.0f, 1.0f);
+    brakeRatio = Numeric::clamp(brakeRatio, 0.2f, 1.0f);
 
     return brakeRatio;
 }

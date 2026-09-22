@@ -24,9 +24,9 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
         //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
     }
-    renderGrid();
-    //renderGlobalAxis();
-    Vehicle& vehicle = gameWorld.getPlayerVehicle();
+    //renderGrid();
+    renderGlobalAxis();
+    //Vehicle& vehicle = gameWorld.getPlayerVehicle();
     //renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
     //renderVehicleChassis(vehicle);
@@ -290,7 +290,7 @@ void DebugRenderer::renderGrid() {
 }
 
 void DebugRenderer::renderGlobalAxis() {
-    float axisLength = 10.0f;
+    float axisLength = 10000.0f;
     float color = 0.8f;
 
     glBegin(GL_LINES);

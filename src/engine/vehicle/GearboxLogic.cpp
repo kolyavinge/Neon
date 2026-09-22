@@ -14,9 +14,10 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
+    float averageSlipRatio = (vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value) / 2.0f;
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     bool isAccelerating = throttleRatio > 0.0f;
-    if (isAccelerating && engine.getRpm() > data.autoShiftRpm) {
+    if (isAccelerating && engine.getRpm() > data.autoShiftRpm && averageSlipRatio < data.optimalSlipRatio) {
         return gearbox.shiftUp();
     } else if (isAccelerating && engine.getRpm() == data.engineMinRpm) {
         if (gearbox.getCurrentGear() == Gear::neutral) {

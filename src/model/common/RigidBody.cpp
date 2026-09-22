@@ -53,6 +53,10 @@ void RigidBody::setCenter(Vector3 center) {
     updateModelMatrix();
 }
 
+void RigidBody::setRotation(float angle, Vector3 axis) {
+    _rotation.setAngleAndAxis(angle, axis);
+}
+
 float RigidBody::getRotateAngle() {
     return _rotateAngle;
 }

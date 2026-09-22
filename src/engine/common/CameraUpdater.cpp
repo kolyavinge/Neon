@@ -13,6 +13,7 @@ void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
     //setTopView(camera, playerVehicle);
     //setWheelCenterView(camera, playerVehicle);
     //setRightSideStaticView(camera, playerVehicle);
+    //setAirView(camera, playerVehicle);
 
     camera.calculateViewMatrix();
     camera.calculateProjectionMatrix();
@@ -94,5 +95,16 @@ void CameraUpdater::setRightSideStaticView(Camera& camera, Vehicle& playerVehicl
     camera.setPosition(position);
     Vector3 lookDirection = CommonConstants::rightAxis;
     lookDirection.mul(-1.0f);
+    camera.setLookDirection(lookDirection);
+}
+
+void CameraUpdater::setAirView(Camera& camera, Vehicle& playerVehicle) {
+    Vector3 position = playerVehicle.getCenter();
+    position.addMultiplied(playerVehicle.getChassisFrontNormal(), 20.0f);
+    position.addMultiplied(CommonConstants::upAxis, 200.0f);
+    camera.setPosition(position);
+    Vector3 lookDirection = CommonConstants::upAxis;
+    lookDirection.mul(-1.0f);
+    lookDirection.y += 0.001f;
     camera.setLookDirection(lookDirection);
 }

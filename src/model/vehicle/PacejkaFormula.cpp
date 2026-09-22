@@ -5,6 +5,10 @@ PacejkaFormula::PacejkaFormula() {
     b = c = d = e = 0.0f;
 }
 
+PacejkaFormula::PacejkaFormula(float valueB, float valueC, float valueD, float valueE) {
+    set(valueB, valueC, valueD, valueE);
+}
+
 void PacejkaFormula::set(float valueB, float valueC, float valueD, float valueE) {
     b = valueB;
     c = valueC;

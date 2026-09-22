@@ -17,4 +17,5 @@ private:
     void setTopView(Camera& camera, Vehicle& playerVehicle);
     void setWheelCenterView(Camera& camera, Vehicle& playerVehicle);
     void setRightSideStaticView(Camera& camera, Vehicle& playerVehicle);
+    void setAirView(Camera& camera, Vehicle& playerVehicle);
 };

@@ -2,7 +2,14 @@
 
 #include <lib/calc/Vector3.h>
 
-class Math {
+class IUnaryFunction {
+
+public:
+    virtual ~IUnaryFunction() = default;
+    virtual float getValue(float x) = 0;
+};
+
+class Math : public Object {
 
 public:
     inline static const float pi = 3.14159265359f;
@@ -16,8 +23,10 @@ public:
     static float max(float a, float b);
     static int abs(int x);
     static float abs(float x);
+    static float mod(float a, float b);
     static float sqrt(float x);
     static float sin(float angle);
+    static float sinNormalized(float angle); // нормализованное значение [0;1]
     static float cos(float angle);
     static float tan(float angle);
     static float arcsin(float x);
@@ -30,4 +39,5 @@ public:
     static float normalizeRadians(float radians);
     static float lerp(float start, float end, float t);
     static Vector3 rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3 pivotPoint);
+    static float getArgumentForMaxValue(IUnaryFunction& function, float left, float right, float eps = 1e-7);
 };

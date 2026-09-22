@@ -18,12 +18,20 @@ float Math::abs(float x) {
     return x > 0.0f ? x : -x;
 }
 
+float Math::mod(float a, float b) {
+    return fmodf(a, b);
+}
+
 float Math::sqrt(float x) {
     return sqrtf(x);
 }
 
 float Math::sin(float angle) {
     return sinf(angle);
+}
+
+float Math::sinNormalized(float angle) {
+    return (Math::sin(angle) + 1.0f) / 2.0f;
 }
 
 float Math::cos(float angle) {
@@ -104,4 +112,21 @@ Vector3 Math::rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3
     a.add(pivotPoint);
 
     return a;
+}
+
+// ищит аргумент, при котором ф-я достигает максимума на отрезке [left; right]
+// чтобы поиск работал корректно, у ф-ции должен быть только один максимум на отрезке
+float Math::getArgumentForMaxValue(IUnaryFunction& function, float left, float right, float eps) {
+    // тернарный поиск
+    while ((right - left) > eps) {
+        float m1 = left + (right - left) / 3.0f;
+        float m2 = right - (right - left) / 3.0f;
+        if (function.getValue(m1) < function.getValue(m2)) {
+            left = m1;
+        } else {
+            right = m2;
+        }
+    }
+
+    return (right + left) / 2.0f;
 }

@@ -47,6 +47,7 @@ public:
     float getMass();
     Vector3 getCenter();
     void setCenter(Vector3 center);
+    void setRotation(float angle, Vector3 axis);
     float getRotateAngle();
     Vector3 getRotateAxis();
     CoordinateAxes& getCoordinateAxes();

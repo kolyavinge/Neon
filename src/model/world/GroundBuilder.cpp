@@ -16,8 +16,6 @@ GroundBuilder::GroundBuilder() {
 }
 
 void GroundBuilder::init() {
-    _rightDirection.setZero();
-    _frontDirection.setZero();
     _segmentsCountLeftToRight = 1;
     _segmentsCountDownToUp = 1;
     _getZFunc = nullptr;
@@ -25,6 +23,12 @@ void GroundBuilder::init() {
 
 GroundBuilder& GroundBuilder::setResultList(List<WorldPrimitive>& resultPrimitives) {
     _resultPrimitives = &resultPrimitives;
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setTextureScale(float textureScale) {
+    if (Numeric::floatEquals(textureScale, 0.0f)) throw ArgumentException();
+    _textureScale = textureScale;
     return *this;
 }
 
@@ -93,23 +97,48 @@ GroundBuilder& GroundBuilder::setSmoothAscendDownToUp(float ascend) {
     _getZFunc = [](GetZFuncData& data) {
         float ascend = data.basePlaneDownLeft.getDirectionTo(data.basePlaneUpLeft).z;
         float x = ((float)data.row / (float)data.segmentsCountDownToUp) * Math::pi - Math::piHalf; // [-pi/2; +pi/2]
-        float sinNorm = (Math::sin(x) + 1.0f) / 2.0f;
-        return data.basePlaneDownLeft.z + ascend * sinNorm;
+        return data.basePlaneDownLeft.z + ascend * Math::sinNormalized(x);
     };
 
     return *this;
 }
 
-GroundBuilder& GroundBuilder::build() {
+GroundBuilder& GroundBuilder::setSmoothAscendLeftToRight(float ascend) {
+    _basePlaneDownRight.z += ascend;
+
+    _getZFunc = [](GetZFuncData& data) {
+        float ascend = data.basePlaneDownLeft.getDirectionTo(data.basePlaneDownRight).z;
+        float x = ((float)data.col / (float)data.segmentsCountLeftToRight) * Math::pi - Math::piHalf;
+        return data.basePlaneDownLeft.z + ascend * Math::sinNormalized(x);
+    };
+
+    return *this;
+}
+
+GroundBuilder& GroundBuilder::setSmoothDescendDownToUp(float descend) {
+    return setSmoothAscendDownToUp(-descend);
+}
+
+GroundBuilder& GroundBuilder::setSmoothDescendLeftToRight(float descend) {
+    return setSmoothAscendLeftToRight(-descend);
+}
+
+void GroundBuilder::build() {
     Vector3 right = _basePlaneDownLeft.getDirectionTo(_basePlaneDownRight);
     Vector3 up = _basePlaneDownLeft.getDirectionTo(_basePlaneUpLeft);
     Vector3 basePlaneFrontNormal = right;
     basePlaneFrontNormal.crossProduct(up);
     basePlaneFrontNormal.normalize();
-    Vector3 basePlaneUpRight = _basePlaneUpLeft;
-    basePlaneUpRight.add(right);
+    _basePlaneUpRight = _basePlaneUpLeft;
+    _basePlaneUpRight.add(right);
     Vector3 rightStep = right;
     Vector3 upStep = up;
+
+    if (_textureScale > 0.0f) {
+        if (_segmentsCountLeftToRight == 1) _segmentsCountLeftToRight = (int)(right.getLength() / _textureScale);
+        if (_segmentsCountDownToUp == 1) _segmentsCountDownToUp = (int)(up.getLength() / _textureScale);
+    }
+
     rightStep.div((float)_segmentsCountLeftToRight);
     upStep.div((float)_segmentsCountDownToUp);
 
@@ -117,7 +146,7 @@ GroundBuilder& GroundBuilder::build() {
     data.basePlaneDownLeft = _basePlaneDownLeft;
     data.basePlaneDownRight = _basePlaneDownRight;
     data.basePlaneUpLeft = _basePlaneUpLeft;
-    data.basePlaneUpRight = basePlaneUpRight;
+    data.basePlaneUpRight = _basePlaneUpRight;
     data.segmentsCountDownToUp = _segmentsCountDownToUp;
     data.segmentsCountLeftToRight = _segmentsCountLeftToRight;
 
@@ -126,7 +155,7 @@ GroundBuilder& GroundBuilder::build() {
         if (row == 0 && col == 0) resultPoint = _basePlaneDownLeft;
         else if (row == 0 && col == _segmentsCountLeftToRight) resultPoint = _basePlaneDownRight;
         else if (row == _segmentsCountDownToUp && col == 0) resultPoint = _basePlaneUpLeft;
-        else if (row == _segmentsCountDownToUp && col == _segmentsCountLeftToRight) resultPoint = basePlaneUpRight;
+        else if (row == _segmentsCountDownToUp && col == _segmentsCountLeftToRight) resultPoint = _basePlaneUpRight;
         else {
             resultPoint = _basePlaneDownLeft;
             resultPoint.addMultiplied(rightStep, (float)col);
@@ -142,14 +171,16 @@ GroundBuilder& GroundBuilder::build() {
         return resultPoint;
     };
 
-    auto getTexCoord = [&](int row, int col) {
-        Vector2 result;
-        if (col == _segmentsCountLeftToRight) result.x = 1.0f;
-        else result.x = (float)col / (float)_segmentsCountLeftToRight;
-        if (row == _segmentsCountDownToUp) result.y = 1.0f;
-        else result.y = (float)row / (float)_segmentsCountDownToUp;
-
-        return result;
+    auto getTexCoord = [&](Vector3 p1, Vector3 p2, Vector3 p4, output Vector2& tc1, output Vector2& tc2, output Vector2& tc3, output Vector2& tc4) {
+        float stepX = p1.getLengthTo(p2) / _textureScale;
+        float stepY = p1.getLengthTo(p4) / _textureScale;
+        Vector3 d = _basePlaneDownLeft.getDirectionTo(p1);
+        float x = Math::mod(d.x, _textureScale) / _textureScale;
+        float y = Math::mod(d.y, _textureScale) / _textureScale;
+        tc1.set(x, y);
+        tc2.set(x + stepX, y);
+        tc3.set(x + stepX, y + stepY);
+        tc4.set(x, y + stepY);
     };
 
     _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _segmentsCountDownToUp * _segmentsCountLeftToRight);
@@ -159,19 +190,27 @@ GroundBuilder& GroundBuilder::build() {
             Vector3 p2 = getBasePlanePoint(row, col + 1);
             Vector3 p3 = getBasePlanePoint(row + 1, col + 1);
             Vector3 p4 = getBasePlanePoint(row + 1, col);
-            Vector2 tc1 = getTexCoord(row, col);
-            Vector2 tc2 = getTexCoord(row, col + 1);
-            Vector2 tc3 = getTexCoord(row + 1, col + 1);
-            Vector2 tc4 = getTexCoord(row + 1, col);
+            Vector2 tc1, tc2, tc3, tc4;
+            getTexCoord(p1, p2, p4, output tc1, output tc2, output tc3, output tc4);
             _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4, tc1, tc2, tc3, tc4));
         }
     }
 
     init();
+}
 
-    return *this;
+Vector3 GroundBuilder::getBasePlaneDownLeft() {
+    return _basePlaneDownLeft;
+}
+
+Vector3 GroundBuilder::getBasePlaneDownRight() {
+    return _basePlaneDownRight;
 }
 
 Vector3 GroundBuilder::getBasePlaneUpLeft() {
     return _basePlaneUpLeft;
+}
+
+Vector3 GroundBuilder::getBasePlaneUpRight() {
+    return _basePlaneUpRight;
 }

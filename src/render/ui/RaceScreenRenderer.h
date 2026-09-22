@@ -29,6 +29,4 @@ public:
 
     void setScreen(RaceScreen& screen);
     void render();
-
-private:
 };

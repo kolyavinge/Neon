@@ -24,9 +24,13 @@ typedef float (*GetZFunc)(GetZFuncData& data);
 class GroundBuilder : public Object {
 
     WorldPrimitiveKind _kind;
+    // задает размер участка земли, который будет покрыт текстурой один раз
+    // например при значении 10, участок размером 40х40 будет покрыт четрые раза одной текстурой
+    float _textureScale;
     Vector3 _basePlaneDownLeft;
     Vector3 _basePlaneDownRight;
     Vector3 _basePlaneUpLeft;
+    Vector3 _basePlaneUpRight;
     Vector3 _rightDirection;
     Vector3 _frontDirection;
     int _segmentsCountLeftToRight;
@@ -37,6 +41,7 @@ class GroundBuilder : public Object {
 public:
     GroundBuilder();
     GroundBuilder& setResultList(List<WorldPrimitive>& resultPrimitives);
+    GroundBuilder& setTextureScale(float textureScale);
     GroundBuilder& setKind(WorldPrimitiveKind kind);
     GroundBuilder& setBasePlane(Vector3 downLeft, Vector3 downRight, Vector3 upLeft);
     GroundBuilder& setBasePlaneDownLeft(Vector3 downLeft);
@@ -46,8 +51,14 @@ public:
     GroundBuilder& splitDownToUp(int segmentsCount);
     GroundBuilder& setZFunc(GetZFunc getZ);
     GroundBuilder& setSmoothAscendDownToUp(float ascend);
-    GroundBuilder& build();
+    GroundBuilder& setSmoothAscendLeftToRight(float ascend);
+    GroundBuilder& setSmoothDescendDownToUp(float descend);
+    GroundBuilder& setSmoothDescendLeftToRight(float descend);
+    void build();
+    Vector3 getBasePlaneDownLeft();
+    Vector3 getBasePlaneDownRight();
     Vector3 getBasePlaneUpLeft();
+    Vector3 getBasePlaneUpRight();
 
 private:
     void init();

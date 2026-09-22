@@ -8,6 +8,7 @@
 enum class WorldPrimitiveKind {
     asphalt1,
     asphalt2,
+    asphalt3,
     metalBarrier1,
     _count
 };

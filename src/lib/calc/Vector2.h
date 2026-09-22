@@ -9,4 +9,5 @@ public:
 
     Vector2();
     Vector2(float valueX, float valueY);
+    void set(float valueX, float valueY);
 };
