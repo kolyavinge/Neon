@@ -36,6 +36,8 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments) {
 
 void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     _shader.use();
     _shader.setModelMatrix(TransformMatrix4::identity);
     _shader.setViewMatrix(camera.getViewMatrix());
@@ -57,5 +59,6 @@ void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& c
     }
 
     _shader.unuse();
+    glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 }

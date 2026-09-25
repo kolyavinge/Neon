@@ -55,10 +55,12 @@ public:
     float rearBrakeBias;
     float maxSteeringAngle;
     float minRollingResistanceCoeff;
+    float antiSpinCoeff;
     float wheelInertia;
     float tireStiffness;
     float tireDamping;
-    float lowVelocityLimit;
+    float longitudinalForceLowVelocityLimit;
+    float lateralForceLowVelocityLimit;
 
     /* spring */
     float frontSpringStiffness;

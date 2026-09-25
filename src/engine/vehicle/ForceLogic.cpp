@@ -32,6 +32,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getLateralForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getRollingResistanceForce(), applyPoint);
+        vehicle.applyTorque(wheel.getAntiSpinTorque());
     }
     // spring forces
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
@@ -98,16 +99,17 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
         Spring& spring = vehicle.getSpring(wheelIndex);
         float springForce = spring.getSpringForce();
         SlipRatio slipRatio = _wheelLogic.calculateSlipRatio(wheel, vehicleLinearVelocity, chassisFrontNormal);
-        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity, chassisFrontNormal);
+        float slipAngle = _wheelLogic.calculateSlipAngle(wheel, vehicleLinearVelocity);
         wheel.setSlipRatio(slipRatio);
         wheel.setSlipAngle(slipAngle);
         Vector3 longitudinalForce = _wheelLogic.calculateLongitudinalForce(wheel, vehicleLinearVelocity, chassisFrontNormal, springForce, dt);
-        Vector3 lateralForce = _wheelLogic.calculateLateralForce(wheel, springForce);
+        Vector3 lateralForce = _wheelLogic.calculateLateralForce(wheel, vehicleLinearVelocity, springForce);
         Vector3 rollingResistanceForce = _wheelLogic.calculateRollingResistanceForce(wheel, vehicleFrontLinearVelocity);
+        Vector3 antiSpinTorque = _wheelLogic.calculateAntiSpinTorque(vehicle.getAngularVelocity());
         float longitudinalForceBeforeNormalize = longitudinalForce.getLength();
         float lateralForceBeforeNormalize = lateralForce.getLength();
         _wheelLogic.normalizeLongitudinalAndLateralForces(longitudinalForce, lateralForce, springForce, wheel.getPosition());
-        wheel.setForces(longitudinalForce, lateralForce, rollingResistanceForce, longitudinalForceBeforeNormalize, lateralForceBeforeNormalize);
+        wheel.setForces(longitudinalForce, lateralForce, rollingResistanceForce, antiSpinTorque, longitudinalForceBeforeNormalize, lateralForceBeforeNormalize);
     }
 }
 

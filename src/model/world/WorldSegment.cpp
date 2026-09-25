@@ -47,34 +47,11 @@ void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
 
 void WorldSegment::calculateBoundaryBox() {
     if (_groundPrimitives.getCount() == 0) return;
-
-    Vector3 min = _groundPrimitives[0]->getPoints()[0];
-    Vector3 max = _groundPrimitives[0]->getPoints()[0];
-
-    for (int primitiveIndex = 0; primitiveIndex < _groundPrimitives.getCount(); primitiveIndex++) {
-        Collection<Vector3>& points = _groundPrimitives[primitiveIndex]->getPoints();
-        for (int pointIndex = 0; pointIndex < points.getCount(); pointIndex++) {
-            if (points[pointIndex].x < min.x) min.x = points[pointIndex].x;
-            if (points[pointIndex].y < min.y) min.y = points[pointIndex].y;
-            if (points[pointIndex].z < min.z) min.z = points[pointIndex].z;
-            if (points[pointIndex].x > max.x) max.x = points[pointIndex].x;
-            if (points[pointIndex].y > max.y) max.y = points[pointIndex].y;
-            if (points[pointIndex].z > max.z) max.z = points[pointIndex].z;
-        }
-    }
-
-    for (int primitiveIndex = 0; primitiveIndex < _barrierPrimitives.getCount(); primitiveIndex++) {
-        Collection<Vector3>& points = _barrierPrimitives[primitiveIndex]->getPoints();
-        for (int pointIndex = 0; pointIndex < points.getCount(); pointIndex++) {
-            if (points[pointIndex].x < min.x) min.x = points[pointIndex].x;
-            if (points[pointIndex].y < min.y) min.y = points[pointIndex].y;
-            if (points[pointIndex].z < min.z) min.z = points[pointIndex].z;
-            if (points[pointIndex].x > max.x) max.x = points[pointIndex].x;
-            if (points[pointIndex].y > max.y) max.y = points[pointIndex].y;
-            if (points[pointIndex].z > max.z) max.z = points[pointIndex].z;
-        }
-    }
-
+    WorldPrimitiveMinMaxPointFinder finder;
+    finder.findMinMaxPointFor(_groundPrimitives);
+    finder.findMinMaxPointFor(_barrierPrimitives);
+    Vector3 min = finder.getMinPoint();
+    Vector3 max = finder.getMaxPoint();
     _boundaryBox.downLeft.set(min.x, min.y, min.z);
     _boundaryBox.downRight.set(max.x, min.y, min.z);
     _boundaryBox.upLeft.set(min.x, max.y, min.z);

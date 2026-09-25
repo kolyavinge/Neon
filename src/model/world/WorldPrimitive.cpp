@@ -60,3 +60,56 @@ Vector3 WorldPrimitive::getProjectedVector(Vector3 v) {
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
     return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint);
 }
+
+WorldPrimitiveMinMaxPointFinder::WorldPrimitiveMinMaxPointFinder() {
+    _firstCall = true;
+}
+
+void WorldPrimitiveMinMaxPointFinder::findMinMaxPointFor(Collection<WorldPrimitive>& primitives) {
+    if (primitives.getCount() == 0) throw ArgumentException(L"primitives cannot be empty.");
+
+    if (_firstCall) {
+        _minPoint = primitives[0].getPoints()[0];
+        _maxPoint = primitives[0].getPoints()[0];
+        _firstCall = false;
+    }
+
+    for (int primitiveIndex = 0; primitiveIndex < primitives.getCount(); primitiveIndex++) {
+        Collection<Vector3>& points = primitives[primitiveIndex].getPoints();
+        findMinMaxPoint(points);
+    }
+}
+
+void WorldPrimitiveMinMaxPointFinder::findMinMaxPointFor(Collection<WorldPrimitive*>& primitives) {
+    if (primitives.getCount() == 0) throw ArgumentException(L"primitives cannot be empty.");
+
+    if (_firstCall) {
+        _minPoint = primitives[0]->getPoints()[0];
+        _maxPoint = primitives[0]->getPoints()[0];
+        _firstCall = false;
+    }
+
+    for (int primitiveIndex = 0; primitiveIndex < primitives.getCount(); primitiveIndex++) {
+        Collection<Vector3>& points = primitives[primitiveIndex]->getPoints();
+        findMinMaxPoint(points);
+    }
+}
+
+void WorldPrimitiveMinMaxPointFinder::findMinMaxPoint(Collection<Vector3>& primitivePoints) {
+    for (int pointIndex = 0; pointIndex < primitivePoints.getCount(); pointIndex++) {
+        if (primitivePoints[pointIndex].x < _minPoint.x) _minPoint.x = primitivePoints[pointIndex].x;
+        if (primitivePoints[pointIndex].y < _minPoint.y) _minPoint.y = primitivePoints[pointIndex].y;
+        if (primitivePoints[pointIndex].z < _minPoint.z) _minPoint.z = primitivePoints[pointIndex].z;
+        if (primitivePoints[pointIndex].x > _maxPoint.x) _maxPoint.x = primitivePoints[pointIndex].x;
+        if (primitivePoints[pointIndex].y > _maxPoint.y) _maxPoint.y = primitivePoints[pointIndex].y;
+        if (primitivePoints[pointIndex].z > _maxPoint.z) _maxPoint.z = primitivePoints[pointIndex].z;
+    }
+}
+
+Vector3 WorldPrimitiveMinMaxPointFinder::getMinPoint() {
+    return _minPoint;
+}
+
+Vector3 WorldPrimitiveMinMaxPointFinder::getMaxPoint() {
+    return _maxPoint;
+}

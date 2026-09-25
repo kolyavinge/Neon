@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <engine/vehicle/GearboxLogic.h>
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
@@ -14,7 +15,8 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
-    float averageSlipRatio = (vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value) / 2.0f;
+    float averageSlipRatio =
+        (vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value) / (float)VehicleConstants::oneAxleWheelsCount;
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     bool isAccelerating = throttleRatio > 0.0f;
     if (isAccelerating && engine.getRpm() > data.autoShiftRpm && averageSlipRatio < data.optimalSlipRatio) {

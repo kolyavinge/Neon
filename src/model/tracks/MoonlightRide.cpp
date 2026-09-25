@@ -174,7 +174,21 @@ void MoonlightRide::makeRoadBarriers() {
 }
 
 void MoonlightRide::makeSplitPlanes() {
-    _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f)));
-    _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 20.0f, 0.0f)));
-    _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f)));
+    WorldPrimitiveMinMaxPointFinder finder;
+    finder.findMinMaxPointFor(getGroundPrimitives());
+    Vector3 min = finder.getMinPoint();
+    Vector3 max = finder.getMaxPoint();
+
+    _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3((min.x + max.x) / 2.0f, 0.0f, 0.0f)));
+
+    auto splitRec = [&](float minY, float maxY, auto&& self) {
+        if (maxY - minY <= 10.0f) return;
+        float middle = (minY + maxY) / 2.0f;
+        _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(min.x, middle, 0.0f)));
+        _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(max.x, middle, 0.0f)));
+        self(minY, middle, self);
+        self(middle, maxY, self);
+    };
+
+    splitRec(min.y, max.y, splitRec);
 }

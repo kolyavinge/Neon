@@ -40,6 +40,7 @@ class Wheel : public Object {
     Vector3 _longitudinalForce;
     Vector3 _lateralForce;
     Vector3 _rollingResistanceForce;
+    Vector3 _antiSpinTorque;
     float _longitudinalForceBeforeNormalize;
     float _lateralForceBeforeNormalize;
     float _accumulatedDeflection;
@@ -82,9 +83,11 @@ public:
     Vector3 getLongitudinalForce();
     Vector3 getLateralForce();
     Vector3 getRollingResistanceForce();
+    Vector3 getAntiSpinTorque();
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
-    void setForces(Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize);
+    void setForces(
+        Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, Vector3 antiSpinTorque, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize);
     void mulLongitudinalForceBy(float coeff);
     void clearAllForces();
     void calculateAngularVelocityByLinear(float vehicleFrontLinearVelocity, float brakeRatio);

@@ -58,21 +58,23 @@ VehicleData::VehicleData() {
     rearBrakeBias = 1.0f - frontBrakeBias;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
     minRollingResistanceCoeff = 0.02f;
+    antiSpinCoeff = 2000.0f;
     wheelInertia = 1.2f;
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
-    lowVelocityLimit = 1.5f;
+    longitudinalForceLowVelocityLimit = 1.5f;
+    lateralForceLowVelocityLimit = 3.0f;
 
     /* spring */
     const float stiffnessMul = 1000.0f;
-    frontSpringStiffness = 35.0f * stiffnessMul;
+    frontSpringStiffness = 50.0f * stiffnessMul;
     frontSpringDamperCompression = 2.5f * stiffnessMul;
     frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
     frontSpringMaxLength = 0.3f;
     frontAntiRollStiffness = 5000.0f;
 
-    rearSpringStiffness = 35.0f * stiffnessMul;
+    rearSpringStiffness = 50.0f * stiffnessMul;
     rearSpringDamperCompression = 2.5f * stiffnessMul;
     rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
@@ -88,8 +90,8 @@ VehicleData::VehicleData() {
     _longitudinalForceCurve[(int)WheelPosition::rearRight] = longitudinalForceCurve;
 
     /* wheel lateral force */
-    float Dfront = 0.5f;
-    float Drear = 0.4f;
+    float Dfront = 1.5f;
+    float Drear = 1.5f;
     PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
     PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;

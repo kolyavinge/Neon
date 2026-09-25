@@ -183,6 +183,10 @@ Vector3 Wheel::getRollingResistanceForce() {
     return _rollingResistanceForce;
 }
 
+Vector3 Wheel::getAntiSpinTorque() {
+    return _antiSpinTorque;
+}
+
 float Wheel::getLongitudinalForceBeforeNormalize() {
     return _longitudinalForceBeforeNormalize;
 }
@@ -192,10 +196,11 @@ float Wheel::getLateralForceBeforeNormalize() {
 }
 
 void Wheel::setForces(
-    Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize) {
+    Vector3 longitudinalForce, Vector3 lateralForce, Vector3 rollingResistanceForce, Vector3 antiSpinTorque, float longitudinalForceBeforeNormalize, float lateralForceBeforeNormalize) {
     _longitudinalForce = longitudinalForce;
     _lateralForce = lateralForce;
     _rollingResistanceForce = rollingResistanceForce;
+    _antiSpinTorque = antiSpinTorque;
     _longitudinalForceBeforeNormalize = longitudinalForceBeforeNormalize;
     _lateralForceBeforeNormalize = lateralForceBeforeNormalize;
 }
@@ -208,6 +213,7 @@ void Wheel::clearAllForces() {
     _longitudinalForce.setZero();
     _lateralForce.setZero();
     _rollingResistanceForce.setZero();
+    _antiSpinTorque.setZero();
     _longitudinalForceBeforeNormalize = 0.0f;
     _lateralForceBeforeNormalize = 0.0f;
 }

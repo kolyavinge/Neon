@@ -1,12 +1,14 @@
 #pragma once
 
 #include <lib/calc/Vector3.h>
+#include <lib/system.h>
 
 class IUnaryFunction {
 
 public:
     virtual ~IUnaryFunction() = default;
     virtual float getValue(float x) = 0;
+    IUnaryFunction& operator=(const IUnaryFunction&) { return *this; }
 };
 
 class Math : public Object {

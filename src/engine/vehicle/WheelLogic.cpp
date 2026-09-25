@@ -91,9 +91,8 @@ SlipRatio WheelLogic::calculateSlipRatio(Wheel& wheel, Vector3 vehicleLinearVelo
     return SlipRatio(drivenVelocity, linearVelocity, slipRatio);
 }
 
-float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal) {
+float WheelLogic::calculateSlipAngle(Wheel& wheel, Vector3 vehicleLinearVelocity) {
     // slip angle (угол увода) - угол между направлением, в которое повернуто колесо, и направлением его движения
-    if (Numeric::floatEquals(vehicleLinearVelocity.dotProduct(chassisFrontNormal), 0.0f, 0.5f)) return 0.0f;
     // знак lateralVelocity разный для левого и правого колеса
     // longitudinalVelocity всегда положительный, для slip angle не важно едет колесо вперед или назад
     float lateralVelocity = wheel.getOutsideNormal().dotProduct(vehicleLinearVelocity);
@@ -133,7 +132,7 @@ Vector3 WheelLogic::calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLine
     // сила по Пасейке (для высоких скоростей)
     float fastVelocityForce = springForce * _data.getLongitudinalForceCoeff((int)wheel.getPosition(), wheel.getSlipRatio().value);
 
-    float blendFactor = Numeric::clamp(Math::abs(linearVelocity) / _data.lowVelocityLimit, 0.0f, 1.0f);
+    float blendFactor = Numeric::clamp(Math::abs(linearVelocity) / _data.longitudinalForceLowVelocityLimit, 0.0f, 1.0f);
     float resultForce = Math::lerp(slowVelocityForce, fastVelocityForce, blendFactor);
     if (blendFactor > 0.9f && maxForce > 0) {
         accumulatedDeflection = fastVelocityForce / _data.tireStiffness;
@@ -149,7 +148,7 @@ Vector3 WheelLogic::calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLine
     return longitudinalForce;
 }
 
-Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, float springForce) {
+Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, Vector3 vehicleLinearVelocity, float springForce) {
     Vector3 lateralForce;
     if (!wheel.isSpinning()) {
         // если колесо заблокировано, то оно не может генерировать продольную силу
@@ -159,8 +158,19 @@ Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, float springForce) {
     lateralForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getOutsideNormal());
     if (lateralForce.isZero()) return lateralForce;
     lateralForce.normalize();
-    float force = springForce * _data.getLateralForceCoeff((int)wheel.getPosition(), wheel.getSlipAngle());
-    lateralForce.mul(force);
+
+    float lateralForceCoeff = _data.getLateralForceCoeff((int)wheel.getPosition(), wheel.getSlipAngle());
+
+    // сила по модели линейного демпфирования (для низких скоростей)
+    float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleLinearVelocity));
+    float slowVelocityForce = Numeric::getSign(lateralForceCoeff) * longitudinalVelocity * springForce;
+
+    // сила по Пасейке (для высоких скоростей)
+    float fastVelocityForce = springForce * lateralForceCoeff;
+
+    float blendFactor = Numeric::clamp(longitudinalVelocity / _data.lateralForceLowVelocityLimit, 0.0f, 1.0f);
+    float resultForce = Math::lerp(slowVelocityForce, fastVelocityForce, blendFactor);
+    lateralForce.mul(resultForce);
 
     return lateralForce;
 }
@@ -175,6 +185,13 @@ Vector3 WheelLogic::calculateRollingResistanceForce(Wheel& wheel, float vehicleF
     rollingResistanceForce.mul(force);
 
     return rollingResistanceForce;
+}
+
+Vector3 WheelLogic::calculateAntiSpinTorque(Vector3 vehicleAngularVelocity) {
+    Vector3 force = vehicleAngularVelocity;
+    force.mul(-_data.antiSpinCoeff);
+
+    return force;
 }
 
 void WheelLogic::normalizeLongitudinalAndLateralForces(

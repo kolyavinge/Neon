@@ -21,15 +21,14 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     for (int segmentIndex = 0; segmentIndex < gameWorld.getVisibleWorldSegments().getCount(); segmentIndex++) {
         WorldSegment& visibleSegment = *gameWorld.getVisibleWorldSegments()[segmentIndex];
-        //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
     }
     //renderGrid();
-    renderGlobalAxis();
-    //Vehicle& vehicle = gameWorld.getPlayerVehicle();
-    //renderVehicleWheels(vehicle);
+    //renderGlobalAxis();
+    Vehicle& vehicle = gameWorld.getPlayerVehicle();
+    renderVehicleWheels(vehicle);
     //renderVehicleBody(vehicle);
-    //renderVehicleChassis(vehicle);
+    renderVehicleChassis(vehicle);
     //renderVehicleAxis(vehicle);
 }
 
