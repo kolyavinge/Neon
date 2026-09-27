@@ -2,14 +2,19 @@
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;
-    _lastSegmentId = 0;
 }
 
 void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segmentTree) {
-    _lastSegmentId = 0;
     _track = &track;
     Collection<Plane>& splitPlanes = track.getSplitPlanes();
     segmentTree.build(*this, splitPlanes);
+    removeEmptySegments(segmentTree);
+    // set id for all segments
+    List<WorldSegment*> allSegments;
+    segmentTree.getDataForAllNodes(output allSegments);
+    for (int i = 0; i < allSegments.getCount(); i++) {
+        allSegments[i]->setId(i);
+    }
 }
 
 void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
@@ -19,8 +24,6 @@ void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
 }
 
 void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment) {
-    parentSegment.setId(_lastSegmentId++);
-
     // ground primitives
     Collection<WorldPrimitive*>& groundPrimitives = parentSegment.getGroundPrimitives();
     for (int i = 0; i < groundPrimitives.getCount(); i++) {
@@ -68,4 +71,20 @@ WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPo
     } else {
         return SplittedPosition::frontAndBack;
     }
+}
+
+void WorldSegmentTreeBuilder::removeEmptySegments(BSPTree<WorldSegment>& segmentTree) {
+    auto searchRec = [&](BSPTreeNode<WorldSegment>& node, auto&& self) -> void {
+        if (node.isLeaf) return;
+        else if (node.frontNode->data.getGroundPrimitives().getCount() == 0 ||
+            node.backNode->data.getGroundPrimitives().getCount() == 0) {
+            segmentTree.deleteChildrenFor(node);
+        } else {
+            if (!node.isLeaf) {
+                self(*node.frontNode, self);
+                self(*node.backNode, self);
+            }
+        }
+    };
+    searchRec(segmentTree.getRoot(), searchRec);
 }

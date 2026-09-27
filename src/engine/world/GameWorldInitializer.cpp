@@ -15,5 +15,6 @@ void GameWorldInitializer::init(GameWorld& gameWorld) {
     Track& track = _trackCollection.get(Tracks::moonlightRide);
     gameWorld.setTrack(track);
     _worldSegmentTreeBuilder.build(track, gameWorld.getSegmentTree());
+    gameWorld.getVisibleWorldSegmentsData().init(gameWorld.getSegmentTree());
     _segmentDataFinder.init(gameWorld.getSegmentTree());
 }

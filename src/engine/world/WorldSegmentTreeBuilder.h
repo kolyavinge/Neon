@@ -10,7 +10,6 @@
 class WorldSegmentTreeBuilder : public Object, private IBSPTreeBuilder<WorldSegment> {
 
     Track* _track;
-    int _lastSegmentId;
 
 public:
 
@@ -27,4 +26,5 @@ private:
     void initRoot(WorldSegment& rootSegment);
     void initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment);
     SplittedPosition getSplittedPosition(Plane& splitPlane, WorldPrimitive& primitive);
+    void removeEmptySegments(BSPTree<WorldSegment>& segmentTree);
 };

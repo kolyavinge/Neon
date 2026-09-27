@@ -16,15 +16,17 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
     calculateAntiRollForces(vehicle);
     calculateWheelForces(vehicle);
     adjustLongitudinalForces(vehicle);
-    calculateAirDragForce(vehicle);
+    calculateAirDragForces(vehicle);
+    calculateRearWingForces(vehicle);
     applyForces(vehicle);
 }
 
 void ForceLogic::applyForces(Vehicle& vehicle) {
+    // применяем силы которые действуют на машинку при движении
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
-    // wheel forces
+    // силы от колес
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
@@ -34,7 +36,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         vehicle.applyForceAtPoint(wheel.getRollingResistanceForce(), applyPoint);
         vehicle.applyTorque(wheel.getAntiSpinTorque());
     }
-    // spring forces
+    // силы от подвески
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
@@ -46,6 +48,10 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
     }
     vehicle.applyForceAtCenter(body.getAirDragForce());
     vehicle.applyTorque(body.getAirDragTorque());
+    if (vehicle.getDriveWheel(0).hasGroundContact() && vehicle.getDriveWheel(1).hasGroundContact()) {
+        vehicle.applyForceAtPoint(body.getRearWingDownForce(), body.getRearWingPosition());
+    }
+    vehicle.applyForceAtCenter(body.getRearWingDragForce());
     vehicle.applyGravity();
     vehicle.updatePosition(dt);
 }
@@ -138,7 +144,7 @@ void ForceLogic::adjustLongitudinalForces(Vehicle& vehicle) {
     }
 }
 
-void ForceLogic::calculateAirDragForce(Vehicle& vehicle) {
+void ForceLogic::calculateAirDragForces(Vehicle& vehicle) {
     Body& body = vehicle.getBody();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 vehicleAngularVelocity = vehicle.getAngularVelocity();
@@ -146,4 +152,12 @@ void ForceLogic::calculateAirDragForce(Vehicle& vehicle) {
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     body.calculateAirDragForce(vehicleLinearVelocity);
     body.calculateAirDragTorque(vehicleLinearVelocity, vehicleAngularVelocity, chassisFrontNormal, chassisUpNormal);
+}
+
+void ForceLogic::calculateRearWingForces(Vehicle& vehicle) {
+    Body& body = vehicle.getBody();
+    Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
+    Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
+    body.calculateRearWingDownForce(vehicleLinearVelocity, chassisFrontNormal);
+    body.calculateRearWingDragForce(vehicleLinearVelocity, chassisFrontNormal);
 }

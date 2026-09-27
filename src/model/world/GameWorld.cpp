@@ -1,5 +1,10 @@
 #include <model/world/GameWorld.h>
 
+void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
+    // макс кол-во видимых сегментов не может быть больше половины всех сегментов
+    visibleSegments.prepareEnoughCapacity(segmentTree.getCountOfAllNodes() / 2);
+}
+
 GameWorld::GameWorld() {
     _track = nullptr;
     init();

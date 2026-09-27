@@ -6,6 +6,18 @@
 VehicleData::VehicleData() {
     vehicleMass = 1200.0f;
 
+    /* engine */
+    engineTorqueCurve.a = 500.0f; // max torque value
+    engineTorqueCurve.b = 50.0f;
+    engineTorqueCurve.c = 1.0f;
+    engineTorqueCurve.d = 6000.0f;
+    engineTorqueCurve.f = 3000.0f;
+    engineMinRpm = 800.0f;
+    engineMaxRpm = 8000.0f;
+    engineMaxReverseRpm = 2500.0f;
+    engineBrakingTorque = 20.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
+    engineBrakingCoeff = 0.05f;
+
     /* gearbox */
     gearboxEfficiency = 0.9f;
     finalGearRatio = 3.5f;
@@ -17,7 +29,7 @@ VehicleData::VehicleData() {
     gearRatios[5] = finalGearRatio * 1.8f;
     gearRatios[6] = finalGearRatio * 1.2f;
     gearRatios[7] = finalGearRatio * 0.8f;
-    autoShiftRpm = 7800.0f;
+    autoShiftRpm = engineMaxRpm - 200.0f;
 
     /* body */
     bodyMeasures.xLength = 1.6f;
@@ -30,6 +42,14 @@ VehicleData::VehicleData() {
     airDragCoeff = 0.2f;
     bodyBaseYawDamping = 500.0f; // сопротивление вращению на месте/низкой скорости
     bodyAirYawDamping = 10.0f;   // насколько сильнее воздух держит машину на скорости
+    airDensity = 1.225f;
+    rearWingLiftCoeff = 4.0f;
+    rearWingDragCoeff = 1.0f;
+    rearWingWidth = bodyMeasures.xLength;
+    rearWingLength = 0.3f;
+    rearWingArea = rearWingWidth * rearWingLength;
+    rearWingDownForceCoeff = 0.5f * airDensity * rearWingArea * rearWingLiftCoeff;
+    rearWingDragForceCoeff = 0.5f * airDensity * rearWingArea * rearWingDragCoeff;
 
     /* chassis */
     wheelbaseLength = 2.0f;
@@ -37,18 +57,6 @@ VehicleData::VehicleData() {
     frontWheelLengthToMassCenter = wheelbaseLength - rearWheelLengthToMassCenter;
     frontTrackWidth = bodyMeasures.xLength - 0.3f;
     rearTrackWidth = bodyMeasures.xLength - 0.25f;
-
-    /* engine */
-    engineTorqueCurve.a = 500.0f; // max torque value
-    engineTorqueCurve.b = 50.0f;
-    engineTorqueCurve.c = 1.0f;
-    engineTorqueCurve.d = 6000.0f;
-    engineTorqueCurve.f = 3000.0f;
-    engineMinRpm = 800.0f;
-    engineMaxRpm = 8000.0f;
-    engineMaxReverseRpm = 2500.0f;
-    engineBrakingTorque = 20.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
-    engineBrakingCoeff = 0.05f;
 
     /* wheel */
     frontWheelRadius = 0.22f;
@@ -90,8 +98,8 @@ VehicleData::VehicleData() {
     _longitudinalForceCurve[(int)WheelPosition::rearRight] = longitudinalForceCurve;
 
     /* wheel lateral force */
-    float Dfront = 1.5f;
-    float Drear = 1.5f;
+    float Dfront = 2.0f;
+    float Drear = 1.0f;
     PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
     PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;

@@ -26,9 +26,9 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     //renderGrid();
     //renderGlobalAxis();
     Vehicle& vehicle = gameWorld.getPlayerVehicle();
-    renderVehicleWheels(vehicle);
-    //renderVehicleBody(vehicle);
-    renderVehicleChassis(vehicle);
+    //renderVehicleWheels(vehicle);
+    renderVehicleBody(vehicle);
+    //renderVehicleChassis(vehicle);
     //renderVehicleAxis(vehicle);
 }
 
@@ -158,6 +158,7 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     glVertex3f(body.getBox().getBottomRect().upRight);
     glVertex3f(body.getBox().getTopRect().upRight);
     glEnd();
+
     // air drag force
     glColor3f(1.0f, 0.0f, 0.0f);
     glPushMatrix();
@@ -168,6 +169,30 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     Vector3 airDragForce = body.getAirDragForce();
     airDragForce.div(_forceDivider);
     glVertex3f(airDragForce);
+    glEnd();
+    glPopMatrix();
+
+    // rear wing down force
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(body.getRearWingPosition());
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    Vector3 rearWingDownForce = body.getRearWingDownForce();
+    rearWingDownForce.div(_forceDivider);
+    glVertex3f(rearWingDownForce);
+    glEnd();
+    glPopMatrix();
+
+    // rear wing drag force
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(body.getRearWingPosition());
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    Vector3 rearWingDragForce = body.getRearWingDragForce();
+    rearWingDragForce.div(_forceDivider);
+    glVertex3f(rearWingDragForce);
     glEnd();
     glPopMatrix();
 }

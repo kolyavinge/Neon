@@ -10,6 +10,8 @@ class Body : public Object {
     VehicleData _data;
     Vector3 _airDragForce;
     Vector3 _airDragTorque;
+    Vector3 _rearWingDownForce;
+    Vector3 _rearWingDragForce;
     Box3d _box;
 
 public:
@@ -18,7 +20,12 @@ public:
     Box3d& getBox();
     Vector3 getAirDragForce();
     Vector3 getAirDragTorque();
+    Vector3 getRearWingDownForce();
+    Vector3 getRearWingDragForce();
+    Vector3 getRearWingPosition();
     void calculateAirDragForce(Vector3 vehicleLinearVelocity);
     void calculateAirDragTorque(Vector3 vehicleLinearVelocity, Vector3 vehicleAngularVelocity, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
+    void calculateRearWingDownForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
+    void calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
 };

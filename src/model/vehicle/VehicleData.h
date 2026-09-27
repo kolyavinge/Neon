@@ -16,6 +16,14 @@ class VehicleData : public Object {
 public:
     float vehicleMass;
 
+    /* engine */
+    EngineTorqueCurve engineTorqueCurve;
+    float engineMinRpm;
+    float engineMaxRpm;
+    float engineMaxReverseRpm;
+    float engineBrakingTorque;
+    float engineBrakingCoeff;
+
     /* gearbox */
     float gearboxEfficiency;
     float finalGearRatio;
@@ -31,6 +39,14 @@ public:
     float airDragCoeff;
     float bodyBaseYawDamping;
     float bodyAirYawDamping;
+    float airDensity;
+    float rearWingLiftCoeff;
+    float rearWingDragCoeff;
+    float rearWingWidth;
+    float rearWingLength;
+    float rearWingArea;
+    float rearWingDownForceCoeff;
+    float rearWingDragForceCoeff;
 
     /* chassis */
     float frontWheelLengthToMassCenter;
@@ -38,14 +54,6 @@ public:
     float wheelbaseLength;
     float frontTrackWidth;
     float rearTrackWidth;
-
-    /* engine */
-    EngineTorqueCurve engineTorqueCurve;
-    float engineMinRpm;
-    float engineMaxRpm;
-    float engineMaxReverseRpm;
-    float engineBrakingTorque;
-    float engineBrakingCoeff;
 
     /* wheel */
     float frontWheelRadius;

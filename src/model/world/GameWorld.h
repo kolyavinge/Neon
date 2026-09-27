@@ -14,6 +14,7 @@ class VisibleWorldSegmentsData : public Object {
 public:
     List<WorldSegment*> visibleSegments;
     Vector3 cameraLookDirection;
+    void init(BSPTree<WorldSegment>& segmentTree);
 };
 
 class GameWorld : public Object {

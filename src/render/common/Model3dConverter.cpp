@@ -29,4 +29,7 @@ void Model3dConverter::fromWorldSegment(WorldSegment& worldSegment, output Model
         }
         mesh.texture = &_textureCollection.getByWorldPrimitiveKind(group.getKey());
     }
+
+    // проверим что worldSegment не был пустым и мы сгенерили хот€бы один меш дл€ модели
+    Assert::isTrue(model3d.getMeshesCount() > 0);
 }

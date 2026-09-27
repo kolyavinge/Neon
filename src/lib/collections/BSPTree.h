@@ -52,6 +52,20 @@ public:
         return _root;
     }
 
+    int getCountOfAllNodes() {
+        int result = 0;
+        auto findRec = [&](BSPTreeNode<TNodeData>& node, auto&& self) -> void {
+            result++;
+            if (!node.isLeaf) {
+                self(*node.frontNode, self);
+                self(*node.backNode, self);
+            }
+        };
+        findRec(_root, findRec);
+
+        return result;
+    }
+
     void build(IBSPTreeBuilder<TNodeData>& builder, Collection<Plane>& splitPlanes) {
         if (splitPlanes.getCount() == 0) throw ArgumentException(L"splitPlanes cannot be empty.");
         releaseAllNodes();
@@ -65,6 +79,14 @@ public:
 
     void getDataForAllNodes(output List<TNodeData*>& result) {
         getDataForAllNodesRec(_root, output result);
+    }
+
+    void deleteChildrenFor(BSPTreeNode<TNodeData>& node) {
+        node.isLeaf = true;
+        releaseNode(node.frontNode);
+        releaseNode(node.backNode);
+        node.frontNode = nullptr;
+        node.backNode = nullptr;
     }
 
 private:
@@ -121,13 +143,11 @@ private:
     }
 
     void releaseNode(BSPTreeNode<TNodeData>* node) {
-        if (node == nullptr) {
-            return;
-        } else if (node->isLeaf) {
-            delete node;
-        } else {
+        if (node == nullptr) return;
+        if (!node->isLeaf) {
             releaseNode(node->frontNode);
             releaseNode(node->backNode);
         }
+        delete node;
     }
 };
