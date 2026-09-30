@@ -12,6 +12,8 @@ void MoonlightRide::buildInternal() {
     makeGround();
     //makeRoadBarriers();
     makeSplitPlanes();
+    _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
+    _globalLight.setColor(Vector3(1.0f, 1.0f, 1.0f));
 }
 
 void MoonlightRide::makeGround() {
@@ -31,6 +33,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(builder.getBasePlaneUpLeft())
         .setSize(20.0f, 100.0f)
+        .splitDownToUp(20)
         .setSmoothAscendDownToUp(5.0f)
         .build();
 
@@ -56,7 +59,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(builder.getBasePlaneUpLeft().x - 20.0f, builder.getBasePlaneUpLeft().y - 20.0f, builder.getBasePlaneUpLeft().z - 2.0f))
         .setSize(20.0f, 20.0f)
-        .splitLeftToRight(10)
+        .splitLeftToRight(40)
         .setSmoothAscendLeftToRight(2.0f)
         .build();
 
@@ -83,7 +86,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(builder.getBasePlaneUpRight().x, builder.getBasePlaneUpRight().y - 60.0f, builder.getBasePlaneUpRight().z))
         .setSize(100.0f, 60.0f)
-        .splitLeftToRight(10)
+        .splitLeftToRight(20)
         .setSmoothDescendLeftToRight(3.0f)
         .build();
 
@@ -97,7 +100,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 20.0f, builder.getBasePlaneDownRight().y - 20.0f, builder.getBasePlaneDownRight().z + 3.0f))
         .setSize(20.0f, 20.0f)
-        .splitDownToUp(10)
+        .splitDownToUp(40)
         .setSmoothDescendDownToUp(3.0f)
         .build();
 
@@ -111,7 +114,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 20.0f, builder.getBasePlaneDownRight().y - 40.0f, builder.getBasePlaneDownRight().z - 10.0f))
         .setSize(20.0f, 40.0f)
-        .splitDownToUp(10)
+        .splitDownToUp(100)
         .setSmoothAscendDownToUp(10.0f)
         .build();
 
@@ -125,7 +128,7 @@ void MoonlightRide::makeGround() {
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 20.0f, builder.getBasePlaneDownRight().y - 50.0f, builder.getBasePlaneDownRight().z - 12.0f))
         .setSize(20.0f, 50.0f)
-        .splitDownToUp(10)
+        .splitDownToUp(40)
         .setSmoothAscendDownToUp(12.0f)
         .build();
 

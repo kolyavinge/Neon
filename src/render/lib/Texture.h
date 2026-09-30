@@ -19,5 +19,5 @@ public:
     GLint getWidth();
     GLint getHeight();
     void bind(GLenum textureIndex);
-    void unbind();
+    static void unbind();
 };

@@ -5,6 +5,7 @@
 #include <render/lib/Material.h>
 #include <render/lib/ShaderProgram.h>
 
+// TODO наверное не нужен
 class MainSceneShaderProgram : public ShaderProgram {
 
 public:

@@ -65,7 +65,7 @@ void ShaderProgram::setVector2(const char* name, GLfloat x, GLfloat y) {
     glUniform2f(glGetUniformLocation(_id, name), x, y);
 }
 
-void ShaderProgram::setVector3(const char* name, Vector3& v) {
+void ShaderProgram::setVector3(const char* name, Vector3 v) {
     glUniform3f(glGetUniformLocation(_id, name), v.x, v.y, v.z);
 }
 

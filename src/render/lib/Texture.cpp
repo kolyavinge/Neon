@@ -12,6 +12,10 @@ Texture::~Texture() {
 }
 
 void Texture::init(GLuint id, GLint width, GLint height) {
+    if (id > 0 && (!Numeric::isPowerOf2(width) || !Numeric::isPowerOf2(height))) {
+        throw ArgumentException(L"Texture size must be power of two.");
+    }
+
     _id = id;
     _width = width;
     _height = height;

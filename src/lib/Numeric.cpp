@@ -44,6 +44,15 @@ void Numeric::setNegativeSign(float& value) {
     if (value > 0.0f) value = -value;
 }
 
+bool Numeric::isPowerOf2(int x) {
+    while (true) {
+        if (x == 1) return true;
+        if (x <= 0) return false;
+        if ((x % 2) == 0) x /= 2;
+        else return false;
+    }
+}
+
 void Numeric::intToStringRec(const int remainAbs, bool isNegative, String& result) {
     if (remainAbs > 9) {
         int lastDigit = remainAbs % 10;

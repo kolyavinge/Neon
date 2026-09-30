@@ -15,6 +15,7 @@ public:
     static float getSign(float value);
     static void setPositiveSign(float& value);
     static void setNegativeSign(float& value);
+    static bool isPowerOf2(int x);
 
 private:
     static void intToStringRec(const int remainAbs, bool isNegative, String& result);

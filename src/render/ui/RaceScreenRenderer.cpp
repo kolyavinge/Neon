@@ -19,6 +19,6 @@ void RaceScreenRenderer::render() {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     GameWorld& gameWorld = _screen->getGameWorld();
     _trackRenderer.render(gameWorld.getVisibleWorldSegments(), gameWorld.getCamera());
-    _vehicleRenderer.render(gameWorld.getPlayerVehicle(), gameWorld.getCamera());
+    _vehicleRenderer.render(gameWorld.getPlayerVehicle(), gameWorld.getCamera(), gameWorld.getTrack().getGlobalLight());
     //_debugRenderer.renderDebugInfo(gameWorld);
 }

@@ -2,6 +2,7 @@
 
 #include <lib/calc/Plane.h>
 #include <lib/system.h>
+#include <model/common/light.h>
 #include <model/world/WorldPrimitive.h>
 
 class Track : public Object {
@@ -17,8 +18,10 @@ public:
     Collection<WorldPrimitive>& getGroundPrimitives();
     Collection<WorldPrimitive>& getBarrierPrimitives();
     Collection<Plane>& getSplitPlanes();
+    Light& getGlobalLight();
     void build();
 
 protected:
     virtual void buildInternal() = 0;
+    Light _globalLight;
 };

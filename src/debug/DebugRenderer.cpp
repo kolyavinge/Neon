@@ -25,9 +25,9 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     }
     //renderGrid();
     //renderGlobalAxis();
-    Vehicle& vehicle = gameWorld.getPlayerVehicle();
+    //Vehicle& vehicle = gameWorld.getPlayerVehicle();
     //renderVehicleWheels(vehicle);
-    renderVehicleBody(vehicle);
+    //renderVehicleBody(vehicle);
     //renderVehicleChassis(vehicle);
     //renderVehicleAxis(vehicle);
 }

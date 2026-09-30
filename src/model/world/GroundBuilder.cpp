@@ -181,6 +181,14 @@ void GroundBuilder::build() {
         tc2.set(x + stepX, y);
         tc3.set(x + stepX, y + stepY);
         tc4.set(x, y + stepY);
+        Assert::isTrue(Numeric::between(tc1.x, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc1.y, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc2.x, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc2.y, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc3.x, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc3.y, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc4.x, 0.0f, 1.05f));
+        Assert::isTrue(Numeric::between(tc4.y, 0.0f, 1.05f));
     };
 
     _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _segmentsCountDownToUp * _segmentsCountLeftToRight);

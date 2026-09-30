@@ -19,10 +19,10 @@ void Model3dConverter::fromWorldSegment(WorldSegment& worldSegment, output Model
         mesh.prepareEnoughCapacity(group.getItemsCount(), WorldPrimitive::pointsCount);
         for (int primitiveIndex = 0; primitiveIndex < group.getItemsCount(); primitiveIndex++) {
             WorldPrimitive& primitive = **group[primitiveIndex];
-            for (int pointIndex = 0; pointIndex < WorldPrimitive::pointsCount; pointIndex++) {
+            for (int pointIndex = 0; pointIndex < primitive.getPoints().getCount(); pointIndex++) {
                 mesh.addVertex(primitive.getPoints()[pointIndex]);
                 mesh.addNormal(primitive.getFrontNormal());
-                mesh.addColor(0.1f, 0.4f, 0.1f, 1.0f);
+                mesh.addColor(0.1f, 0.4f, 0.1f, 1.0f); // для отладки, если рендерим без текстуры
                 mesh.addTexCoord(primitive.getTexCoords()[pointIndex]);
             }
             mesh.addFacesForElement(primitiveIndex, WorldPrimitive::pointsCount);

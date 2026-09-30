@@ -23,3 +23,15 @@ void MeshShaderProgram::setAlphaFactor(float alphaFactor) {
 void MeshShaderProgram::useTexture(bool useTexture) {
     setBoolean("useTexture", useTexture);
 }
+
+void MeshShaderProgram::setMaterial(Material& material) {
+    setFloat32("material.ambient", material.getAmbient());
+    setFloat32("material.diffuse", material.getDiffuse());
+    setFloat32("material.specular", material.getSpecular());
+    setFloat32("material.shininess", material.getShininess());
+}
+
+void MeshShaderProgram::setGlobalLight(Light& globalLight) {
+    setVector3("globalLight.position", globalLight.getPosition());
+    setVector3("globalLight.color", globalLight.getColor());
+}

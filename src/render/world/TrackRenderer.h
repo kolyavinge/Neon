@@ -3,6 +3,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/Camera.h>
+#include <model/common/light.h>
 #include <model/world/WorldSegment.h>
 #include <render/common/Model3dConverter.h>
 #include <render/common/ShaderProgramCollection.h>
@@ -18,6 +19,7 @@ class TrackRenderer : public Object {
     MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
     List<RenderModel3d> _segmentRenderModels;
+    Light* _globalLight;
 
 public:
     static TrackRenderer* resolve(Resolver& resolver) {
@@ -34,6 +36,6 @@ public:
         ShaderProgramCollection& shaderProgramCollection,
         VAORenderer& vaoRenderer);
 
-    void init(Collection<WorldSegment*>& allWorldSegments);
+    void init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight);
     void render(Collection<WorldSegment*>& visibleSegments, Camera& camera);
 };

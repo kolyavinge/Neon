@@ -13,5 +13,8 @@ void MainSceneShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMat
 }
 
 void MainSceneShaderProgram::setMaterial(Material& material) {
-    throw NotImplementedException();
+    setFloat32("material.ambient", material.getAmbient());
+    setFloat32("material.diffuse", material.getDiffuse());
+    setFloat32("material.specular", material.getSpecular());
+    setFloat32("material.shininess", material.getShininess());
 }

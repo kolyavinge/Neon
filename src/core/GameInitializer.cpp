@@ -33,5 +33,5 @@ void GameInitializer::initGameWorld(GameWorld& gameWorld) {
     _debugScreen.setGameWorld(gameWorld);
     List<WorldSegment*> allWorldSegments;
     gameWorld.getSegmentTree().getDataForAllNodes(output allWorldSegments);
-    _trackRenderer.init(allWorldSegments);
+    _trackRenderer.init(allWorldSegments, gameWorld.getTrack().getGlobalLight());
 }

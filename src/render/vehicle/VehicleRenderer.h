@@ -5,6 +5,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/Camera.h>
+#include <model/common/light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <render/common/RenderModel3dCollection.h>
@@ -33,7 +34,7 @@ public:
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void render(Vehicle& vehicle, Camera& camera);
+    void render(Vehicle& vehicle, Camera& camera, Light& globalLight);
 
 private:
     void renderBody(TransformMatrix4& vehicleModelMatrix);

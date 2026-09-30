@@ -17,6 +17,10 @@ Collection<Plane>& Track::getSplitPlanes() {
     return _splitPlanes;
 }
 
+Light& Track::getGlobalLight() {
+    return _globalLight;
+}
+
 void Track::build() {
     buildInternal();
 

@@ -25,7 +25,7 @@ protected:
     void setFloat32(const char* name, GLfloat value);
     void setBoolean(const char* name, bool value);
     void setVector2(const char* name, GLfloat x, GLfloat y);
-    void setVector3(const char* name, Vector3& v);
+    void setVector3(const char* name, Vector3 v);
     void setMatrix3(const char* name, GLfloat* m);
     void setTransformMatrix4(const char* name, TransformMatrix4& m);
     void setOutputNamesForTransformFeedback(GLint count, const char** outputNames);
