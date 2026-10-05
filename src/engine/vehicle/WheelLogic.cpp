@@ -63,14 +63,17 @@ void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
 void WheelLogic::calculateWheelAngularVelocityByLinear(Vehicle& vehicle) {
     const float dt = CommonConstants::deltaTimeSec;
     Gearbox& gearbox = vehicle.getGearbox();
-    bool isEngineAndWheelsConnected = gearbox.isEngineAndWheelsConnected();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
         Wheel& wheel = vehicle.getWheel(i);
-        if (!wheel.isDrive() || wheel.isDrive() && isEngineAndWheelsConnected) {
+        if (wheel.isDrive()) {
+            if (!gearbox.isEngineAndWheelsConnected() || wheel.gotGroundContactThisFrame()) {
+                wheel.calculateAngularVelocityByLinear(vehicleFrontLinearVelocity, brakeRatio);
+            }
+        } else {
             wheel.calculateAngularVelocityByLinear(vehicleFrontLinearVelocity, brakeRatio);
         }
         wheel.updateRotateAngle(dt);
@@ -158,19 +161,11 @@ Vector3 WheelLogic::calculateLateralForce(Wheel& wheel, Vector3 vehicleLinearVel
     lateralForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getOutsideNormal());
     if (lateralForce.isZero()) return lateralForce;
     lateralForce.normalize();
-
-    float lateralForceCoeff = _data.getLateralForceCoeff((int)wheel.getPosition(), wheel.getSlipAngle());
-
-    // сила по модели линейного демпфирования (для низких скоростей)
     float longitudinalVelocity = Math::abs(wheel.getFrontNormal().dotProduct(vehicleLinearVelocity));
-    float slowVelocityForce = Numeric::getSign(lateralForceCoeff) * longitudinalVelocity * springForce;
-
-    // сила по Пасейке (для высоких скоростей)
-    float fastVelocityForce = springForce * lateralForceCoeff;
-
-    float blendFactor = Numeric::clamp(longitudinalVelocity / _data.lateralForceLowVelocityLimit, 0.0f, 1.0f);
-    float resultForce = Math::lerp(slowVelocityForce, fastVelocityForce, blendFactor);
-    lateralForce.mul(resultForce);
+    float velocityCoeff = Numeric::clamp(longitudinalVelocity / _data.lateralForceLowVelocityLimit, 0.0f, 1.0f);
+    float lateralForceCoeff = _data.getLateralForceCoeff((int)wheel.getPosition(), wheel.getSlipAngle());
+    float force = velocityCoeff * lateralForceCoeff * springForce;
+    lateralForce.mul(force);
 
     return lateralForce;
 }
@@ -180,8 +175,8 @@ Vector3 WheelLogic::calculateRollingResistanceForce(Wheel& wheel, float vehicleF
     if (Numeric::floatEquals(vehicleFrontLinearVelocity, 0.0f, VehicleConstants::linearVelocityEps)) return rollingResistanceForce;
     rollingResistanceForce = wheel.getGroundPrimitive()->getProjectedVector(wheel.getCenterVelocity());
     if (rollingResistanceForce.isZero()) return rollingResistanceForce;
-    float force = -1.0f * _data.minRollingResistanceCoeff * _data.vehicleMass * PhysixConstants::g;
     rollingResistanceForce.normalize();
+    float force = -1.0f * _data.minRollingResistanceCoeff * _data.vehicleMass * PhysixConstants::g;
     rollingResistanceForce.mul(force);
 
     return rollingResistanceForce;

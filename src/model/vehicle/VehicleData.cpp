@@ -29,7 +29,8 @@ VehicleData::VehicleData() {
     gearRatios[5] = finalGearRatio * 1.8f;
     gearRatios[6] = finalGearRatio * 1.2f;
     gearRatios[7] = finalGearRatio * 0.8f;
-    autoShiftRpm = engineMaxRpm - 200.0f;
+    autoUpShiftRpm = engineMaxRpm - 200.0f;
+    autoDownShiftRpm = autoUpShiftRpm - 1000.0f;
 
     /* body */
     bodyMeasures.xLength = 1.6f;
@@ -65,7 +66,7 @@ VehicleData::VehicleData() {
     frontBrakeBias = 0.6f;
     rearBrakeBias = 1.0f - frontBrakeBias;
     maxSteeringAngle = UnitConverter::degreesToRadians(30.0f);
-    minRollingResistanceCoeff = 0.02f;
+    minRollingResistanceCoeff = 0.025f;
     antiSpinCoeff = 2000.0f;
     wheelInertia = 1.2f;
     tireStiffness = 50000.0f;
@@ -99,7 +100,7 @@ VehicleData::VehicleData() {
 
     /* wheel lateral force */
     float Dfront = 2.0f;
-    float Drear = 1.0f;
+    float Drear = 0.9f;
     PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
     PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;

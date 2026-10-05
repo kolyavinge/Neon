@@ -13,6 +13,7 @@ PlayerInputManager::PlayerInputManager(
 void PlayerInputManager::update(Vehicle& vehicle) {
     DrivingInputData& inputData = vehicle.getDrivingInputData();
 
+    // steering
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::a) ||
         _inputManager.keyboard.isKeyPressedOrHeld(Keys::left) ||
         _inputManager.joystick.isKeyPressedOrHeld(Keys::left)) {
@@ -26,14 +27,42 @@ void PlayerInputManager::update(Vehicle& vehicle) {
         inputData.setSteeringRatio(0.0f);
     }
 
+    // throttle
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::w) ||
         _inputManager.joystick.isKeyPressedOrHeld(Keys::button3)) {
         float throttleRatio = getOptimalThrottleRatio(vehicle);
         inputData.setThrottleRatio(throttleRatio);
-    } else if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::r)) {
+    } else if (
+        _inputManager.keyboard.isKeyPressedOrHeld(Keys::r) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::button2)) {
         inputData.setThrottleRatio(1.0f);
     } else if (_inputManager.keyboard.isKeyUnpressed(Keys::w) && _inputManager.keyboard.isKeyUnpressed(Keys::r)) {
         inputData.setThrottleRatio(0.0f);
+    }
+
+    // braking
+    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::s) ||
+        _inputManager.joystick.isKeyPressedOrHeld(Keys::button4)) {
+        float brakeRatio = getOptimalBrakeRatio(vehicle);
+        inputData.setBrakeRatio(brakeRatio);
+    } else {
+        inputData.setBrakeRatio(0.0f);
+    }
+
+    // gear shifting
+    inputData.resetShifting();
+    if (_inputManager.keyboard.isKeyPressed(Keys::up) ||
+        _inputManager.joystick.isKeyPressed(Keys::button6)) {
+        inputData.shiftUp();
+    } else if (
+        _inputManager.keyboard.isKeyPressed(Keys::down) ||
+        _inputManager.joystick.isKeyPressed(Keys::button5)) {
+        inputData.shiftDown();
+    }
+
+    if (_inputManager.keyboard.isKeyPressed(Keys::z)) {
+        Gearbox& gearbox = vehicle.getGearbox();
+        gearbox.setKind(gearbox.getKind() == GearboxKind::manual ? GearboxKind::automatic : GearboxKind::manual);
     }
 
     // debug only
@@ -43,26 +72,6 @@ void PlayerInputManager::update(Vehicle& vehicle) {
         inputData.addThrottleRatio(-0.1f);
     }
     // debug only
-
-    if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::s) ||
-        _inputManager.joystick.isKeyPressedOrHeld(Keys::button4)) {
-        float brakeRatio = getOptimalBrakeRatio(vehicle);
-        inputData.setBrakeRatio(brakeRatio);
-    } else {
-        inputData.setBrakeRatio(0.0f);
-    }
-
-    inputData.resetShifting();
-    if (_inputManager.keyboard.isKeyPressed(Keys::up)) {
-        inputData.shiftUp();
-    } else if (_inputManager.keyboard.isKeyPressed(Keys::down)) {
-        inputData.shiftDown();
-    }
-
-    if (_inputManager.keyboard.isKeyPressed(Keys::z)) {
-        Gearbox& gearbox = vehicle.getGearbox();
-        gearbox.setKind(gearbox.getKind() == GearboxKind::manual ? GearboxKind::automatic : GearboxKind::manual);
-    }
 
     const float dt = CommonConstants::deltaTimeSec;
     inputData.update(dt);

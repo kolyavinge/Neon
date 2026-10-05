@@ -15,11 +15,12 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
-    float averageSlipRatio =
-        (vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value) / (float)VehicleConstants::oneAxleWheelsCount;
+    float sumSlipRatio = vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value;
+    float averageSlipRatio = sumSlipRatio / (float)VehicleConstants::oneAxleWheelsCount;
+    bool bothDriveWheelsHaveGroundContact = vehicle.getDriveWheel(0).hasGroundContact() && vehicle.getDriveWheel(1).hasGroundContact();
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     bool isAccelerating = throttleRatio > 0.0f;
-    if (isAccelerating && engine.getRpm() > data.autoShiftRpm && averageSlipRatio < data.optimalSlipRatio) {
+    if (isAccelerating && bothDriveWheelsHaveGroundContact && engine.getRpm() > data.autoUpShiftRpm && averageSlipRatio < data.optimalSlipRatio) {
         return gearbox.shiftUp();
     } else if (isAccelerating && engine.getRpm() == data.engineMinRpm) {
         if (gearbox.getCurrentGear() == Gear::neutral) {
@@ -29,7 +30,7 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
         if (gearbox.getCurrentGear() >= Gear::first) {
             return gearbox.shiftDown();
         }
-    } else if (!isAccelerating && getRpmOnLowerGear(engine, gearbox) < data.autoShiftRpm) {
+    } else if (getRpmOnLowerGear(engine, gearbox) < data.autoDownShiftRpm) {
         if (gearbox.getCurrentGear() > Gear::first) {
             return gearbox.shiftDown();
         }
@@ -39,6 +40,7 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
 }
 
 float GearboxLogic::getRpmOnLowerGear(Engine& engine, Gearbox& gearbox) {
+    // какие были бы обороты двигателя если бы мы переключились на передачу ниже
     return engine.getRpm() * gearbox.getLowerGearRatio() / gearbox.getCurrentGearRatio();
 }
 

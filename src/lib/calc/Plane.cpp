@@ -54,7 +54,6 @@ bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output
     Vector3 frontNormal = _frontNormal;
     // для правильной работы алгоритма startPoint должна находится перед лицевой стороной плоскости (dotProduct > 0)
     if (startPointDotProduct < 0.0f) {
-        // такая ситуация возможна, если мы находим пересечение с обьектом, представленным в виде пересекающихся плоскостей
         // поворачивам плоскость на 180 градусов
         // (лучше повернуть плоскость, а не менять местами startPoint и endPoint)
         frontNormal.mul(-1.0f);

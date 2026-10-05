@@ -28,7 +28,8 @@ public:
     float gearboxEfficiency;
     float finalGearRatio;
     Array<float, (int)Gear::_count> gearRatios;
-    float autoShiftRpm;
+    float autoUpShiftRpm;
+    float autoDownShiftRpm;
 
     /* body */
     Measures bodyMeasures;

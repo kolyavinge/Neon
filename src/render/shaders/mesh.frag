@@ -51,8 +51,5 @@ void main() {
         FragColor = Color;
     }
     FragColor *= vec4(diffuse + specular + ambient, 1.0);
-    FragColor.x *= colorFactor;
-    FragColor.y *= colorFactor;
-    FragColor.z *= colorFactor;
-    FragColor.w *= alphaFactor;
+    FragColor *= vec4(vec3(colorFactor), alphaFactor);
 }

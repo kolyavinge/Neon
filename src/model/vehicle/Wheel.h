@@ -47,6 +47,7 @@ class Wheel : public Object {
     SlipRatio _slipRatio;
     float _slipAngle;
     bool _hasGroundContact;
+    bool _gotGroundContactThisFrame;
     Vector3 _groundContactPoint;
     WorldPrimitive* _groundPrimitive;
     TransformMatrix4 _modelMatrix;
@@ -93,6 +94,7 @@ public:
     void calculateAngularVelocityByLinear(float vehicleFrontLinearVelocity, float brakeRatio);
     bool hasGroundContact();
     void setGroundContact(bool value);
+    bool gotGroundContactThisFrame();
     Vector3 getGroundContactPoint();
     WorldPrimitive* getGroundPrimitive();
     void setGroundContactPoint(Vector3 groundPoint, WorldPrimitive* groundPrimitive);

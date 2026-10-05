@@ -27,6 +27,7 @@ Wheel::Wheel() {
     _accumulatedDeflection = 0.0f;
     _slipAngle = 0.0f;
     _hasGroundContact = false;
+    _gotGroundContactThisFrame = false;
     _groundPrimitive = nullptr;
 }
 
@@ -48,6 +49,7 @@ void Wheel::init(WheelPosition position) {
     _accumulatedDeflection = 0.0f;
     _slipAngle = 0.0f;
     _hasGroundContact = false;
+    _gotGroundContactThisFrame = false;
     _groundContactPoint.setZero();
     _groundPrimitive = nullptr;
     _frontNormal = CommonConstants::frontAxis;
@@ -231,7 +233,12 @@ bool Wheel::hasGroundContact() {
 }
 
 void Wheel::setGroundContact(bool value) {
+    _gotGroundContactThisFrame = !_hasGroundContact && value;
     _hasGroundContact = value;
+}
+
+bool Wheel::gotGroundContactThisFrame() {
+    return _gotGroundContactThisFrame;
 }
 
 Vector3 Wheel::getGroundContactPoint() {
