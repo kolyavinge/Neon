@@ -1,5 +1,4 @@
 #include <lib/calc/TransformMatrix4.h>
-#include <render/lib/Model3d.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
 #include <render/world/TrackRenderer.h>
@@ -28,13 +27,27 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& glo
         _segmentRenderModels.addNew();
     }
     Model3d model3d;
-    for (int i = 0; i < allWorldSegments.getCount(); i++) {
-        WorldSegment& worldSegment = *allWorldSegments[i];
-        _model3dConverter.fromWorldSegment(worldSegment, output model3d);
+    for (int worldSegmentIndex = 0; worldSegmentIndex < allWorldSegments.getCount(); worldSegmentIndex++) {
+        WorldSegment& worldSegment = *allWorldSegments[worldSegmentIndex];
+        initWorldSegment(worldSegment, output model3d);
+        Assert::isTrue(model3d.getMeshesCount() > 0); // worldSegment не был пустым и мы сгенерили хотябы один меш для модели
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         _renderModel3dLoader.load(model3d, output renderModel);
         model3d.clear();
     }
+}
+
+void TrackRenderer::initWorldSegment(WorldSegment& worldSegment, output Model3d& model3d) {
+    _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output model3d);
+    _model3dConverter.fromWorldPrimitives(worldSegment.getBarrierPrimitives(), output model3d);
+
+    // TODO разбиение примитивов на дочерние элементы. подумать: нужно или нет.
+    //List<WorldPrimitive> barrierPrimitives;
+    //for (int barrierIndex = 0; barrierIndex < worldSegment.getBarrierPrimitives().getCount(); barrierIndex++) {
+    //    WorldPrimitive& barrier = *worldSegment.getBarrierPrimitives()[barrierIndex];
+    //    barrier.getChildren(output barrierPrimitives);
+    //}
+    //_model3dConverter.fromWorldPrimitives(barrierPrimitives, output model3d);
 }
 
 void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {

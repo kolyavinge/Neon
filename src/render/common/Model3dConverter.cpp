@@ -6,12 +6,10 @@ Model3dConverter::Model3dConverter(
     _textureCollection(textureCollection) {
 }
 
-void Model3dConverter::fromWorldSegment(WorldSegment& worldSegment, output Model3d& model3d) {
-    Collection<WorldPrimitive*>& groundPrimitives = worldSegment.getGroundPrimitives();
-
+void Model3dConverter::fromWorldPrimitives(Collection<WorldPrimitive*>& primitives, output Model3d& model3d) {
     List<Group<WorldPrimitiveKind, WorldPrimitive**>> grouped;
-    WorldPrimitiveKind(*getGroupKey)(WorldPrimitive *&pr) = [](WorldPrimitive*& pr) { return pr->getKind(); };
-    groundPrimitives.groupBy(getGroupKey, output grouped);
+    WorldPrimitiveKind(*getGroupKey)(WorldPrimitive * &pr) = [](WorldPrimitive*& pr) { return pr->getKind(); };
+    primitives.groupBy(getGroupKey, output grouped);
 
     for (int i = 0; i < grouped.getCount(); i++) {
         Group<WorldPrimitiveKind, WorldPrimitive**>& group = grouped[i];
@@ -29,7 +27,4 @@ void Model3dConverter::fromWorldSegment(WorldSegment& worldSegment, output Model
         }
         mesh.texture = &_textureCollection.getByWorldPrimitiveKind(group.getKey());
     }
-
-    // проверим что worldSegment не был пустым и мы сгенерили хот€бы один меш дл€ модели
-    Assert::isTrue(model3d.getMeshesCount() > 0);
 }

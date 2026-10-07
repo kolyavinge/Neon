@@ -2,7 +2,7 @@
 
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/world/WorldSegment.h>
+#include <model/world/WorldPrimitive.h>
 #include <render/common/TextureCollection.h>
 #include <render/lib/Model3d.h>
 
@@ -19,5 +19,5 @@ public:
     Model3dConverter(
         TextureCollection& textureCollection);
 
-    void fromWorldSegment(WorldSegment& worldSegment, output Model3d& model3d);
+    void fromWorldPrimitives(Collection<WorldPrimitive*>& primitives, output Model3d& model3d);
 };

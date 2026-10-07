@@ -168,6 +168,22 @@ void Model3d::clear() {
     _textures.clear();
 }
 
+void Model3d::applyTransformMatrix4(TransformMatrix4& m) {
+    for (int meshIndex = 0; meshIndex < _meshes.getCount(); meshIndex++) {
+        Mesh& mesh = _meshes[meshIndex];
+        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
+            Vector3 v = m.mulPoint(Vector3(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]));
+            Vector3 n = m.mulVector(Vector3(mesh.normals[i], mesh.normals[i + 1], mesh.normals[i + 2]));
+            mesh.vertices[i] = v.x;
+            mesh.vertices[i + 1] = v.y;
+            mesh.vertices[i + 2] = v.z;
+            mesh.normals[i] = n.x;
+            mesh.normals[i + 1] = n.y;
+            mesh.normals[i + 2] = n.z;
+        }
+    }
+}
+
 Vector3 Model3d::getMinVertex() {
     float minX = _meshes[0].vertices[0];
     float minY = _meshes[0].vertices[1];

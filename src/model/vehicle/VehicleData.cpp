@@ -71,7 +71,7 @@ VehicleData::VehicleData() {
     wheelInertia = 1.2f;
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
-    longitudinalForceLowVelocityLimit = 1.5f;
+    longitudinalForceLowVelocityLimit = 2.0f;
     lateralForceLowVelocityLimit = 3.0f;
 
     /* spring */

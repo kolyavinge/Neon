@@ -7,6 +7,7 @@
 #include <model/world/WorldSegment.h>
 #include <render/common/Model3dConverter.h>
 #include <render/common/ShaderProgramCollection.h>
+#include <render/lib/Model3d.h>
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/RenderModel3dLoader.h>
 #include <render/lib/VAORenderer.h>
@@ -38,4 +39,7 @@ public:
 
     void init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight);
     void render(Collection<WorldSegment*>& visibleSegments, Camera& camera);
+
+private:
+    void initWorldSegment(WorldSegment& worldSegment, output Model3d& model3d);
 };

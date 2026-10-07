@@ -1,3 +1,4 @@
+#include <lib/Numeric.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/Spring.h>
 
@@ -55,6 +56,10 @@ Vector3 Spring::getPosition() {
 
 float Spring::getLength() {
     return _currentLength;
+}
+
+bool Spring::isFrozen() {
+    return Numeric::floatEquals(_prevLength - _currentLength, 0.0f, 1e-3f);
 }
 
 float Spring::getSpringForce() {

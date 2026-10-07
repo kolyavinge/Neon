@@ -32,9 +32,6 @@ RoadBarrierBuilder& RoadBarrierBuilder::setCount(int count) {
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::build() {
-    const float barrierLength = 1.0f;
-    const float barrierHeight = 1.0f;
-
     Vector3 frontNormal = _direction;
     frontNormal.crossProduct(_upNormal);
     if (_orientation == BarrierOrientation::rightBarrier) {
@@ -45,11 +42,11 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
     Vector3 p1 = _position;
     for (int i = 0; i < _count; i++) {
         Vector3 p2 = p1;
-        p2.addMultiplied(_direction, barrierLength);
+        p2.addMultiplied(_direction, WorldPrimitive::barrierLength);
         Vector3 p3 = p2;
-        p3.addMultiplied(_upNormal, barrierHeight);
+        p3.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
         Vector3 p4 = p1;
-        p4.addMultiplied(_upNormal, barrierHeight);
+        p4.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
         Vector2 tc1(0.0f, 0.0f);
         Vector2 tc2(1.0f, 0.0f);
         Vector2 tc3(1.0f, 1.0f);

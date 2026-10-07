@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector2.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
@@ -55,6 +56,7 @@ public:
     void scale(float scale);
     void invertAxis(int axis);
     void clear();
+    void applyTransformMatrix4(TransformMatrix4& m);
 
 private:
     Vector3 getMinVertex();

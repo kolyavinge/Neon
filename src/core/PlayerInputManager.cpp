@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <core/PlayerInputManager.h>
+#include <lib/Numeric.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/VehicleData.h>
@@ -81,9 +82,7 @@ float PlayerInputManager::getOptimalThrottleRatio(Vehicle& vehicle) {
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     VehicleData& data = vehicle.getData();
     float slipRatio = vehicle.getDriveWheel(0).getSlipRatio().value;
-    if (slipRatio < 0.0f) {
-        throttleRatio += 0.05f;
-    } else if (slipRatio < data.optimalSlipRatioFrom) {
+    if (slipRatio < data.optimalSlipRatioFrom) {
         throttleRatio += 0.05f;
     } else if (slipRatio > data.optimalSlipRatioTo) {
         throttleRatio -= 0.005f;

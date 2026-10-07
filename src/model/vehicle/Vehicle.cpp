@@ -35,9 +35,6 @@ void Vehicle::init() {
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.1f);
     _rigidBody.setCenter(Vector3(10.0f, 5.0f, 0.6f));
-    //_rigidBody.setCenter(Vector3(10.0f, 150.0f, 0.6f));
-    //_rigidBody.setCenter(Vector3(550.0f, 50.0f, 0.0f));
-    //_rigidBody.setRotation(-Math::piHalf, CommonConstants::upAxis);
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {
@@ -222,7 +219,11 @@ bool Vehicle::isFrozen() {
         _wheels[(int)WheelPosition::frontLeft].isFrozen() &&
         _wheels[(int)WheelPosition::frontRight].isFrozen() &&
         _wheels[(int)WheelPosition::rearLeft].isFrozen() &&
-        _wheels[(int)WheelPosition::rearRight].isFrozen();
+        _wheels[(int)WheelPosition::rearRight].isFrozen() &&
+        _springs[(int)WheelPosition::frontLeft].isFrozen() &&
+        _springs[(int)WheelPosition::frontRight].isFrozen() &&
+        _springs[(int)WheelPosition::rearLeft].isFrozen() &&
+        _springs[(int)WheelPosition::rearRight].isFrozen();
 }
 
 void Vehicle::clearAllVelocitiesAndForces() {

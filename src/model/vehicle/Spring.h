@@ -28,6 +28,7 @@ public:
     float getMaxLength();
     Vector3 getPosition();
     float getLength();
+    bool isFrozen();
     float getSpringForce();
     void setAntiRollForce(float force);
     void calculateLength(Vector3 wheelCenter);
