@@ -1,4 +1,5 @@
 #include <lib/calc/TransformMatrix4.h>
+#include <model/world/WorldPrimitive.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
 #include <render/world/TrackRenderer.h>
@@ -26,28 +27,33 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& glo
     for (int i = 0; i < allWorldSegments.getCount(); i++) {
         _segmentRenderModels.addNew();
     }
-    Model3d model3d;
+    List<Model3d> worldSegmentModel3dCollection;
     for (int worldSegmentIndex = 0; worldSegmentIndex < allWorldSegments.getCount(); worldSegmentIndex++) {
         WorldSegment& worldSegment = *allWorldSegments[worldSegmentIndex];
-        initWorldSegment(worldSegment, output model3d);
-        Assert::isTrue(model3d.getMeshesCount() > 0); // worldSegment не был пустым и мы сгенерили хотябы один меш для модели
+        buildModels3dForWorldSegment(worldSegment, output worldSegmentModel3dCollection);
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
-        _renderModel3dLoader.load(model3d, output renderModel);
-        model3d.clear();
+        _renderModel3dLoader.load(worldSegmentModel3dCollection, output renderModel);
+        for (int i = 0; i < worldSegmentModel3dCollection.getCount(); i++) worldSegmentModel3dCollection[i].clear();
+        worldSegmentModel3dCollection.clear();
     }
 }
 
-void TrackRenderer::initWorldSegment(WorldSegment& worldSegment, output Model3d& model3d) {
-    _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output model3d);
-    _model3dConverter.fromWorldPrimitives(worldSegment.getBarrierPrimitives(), output model3d);
+void TrackRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModel3dCollection) {
+    Model3d& groundModel3d = worldSegmentModel3dCollection.addNew();
+    _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output groundModel3d);
+    Assert::isTrue(groundModel3d.getMeshesCount() > 0);
 
-    // TODO разбиение примитивов на дочерние элементы. подумать: нужно или нет.
-    //List<WorldPrimitive> barrierPrimitives;
+    //Model3d& totalBarrierModel3d = worldSegmentModel3dCollection.addNew();
+    //_model3dCollection.loadBarrierModels();
     //for (int barrierIndex = 0; barrierIndex < worldSegment.getBarrierPrimitives().getCount(); barrierIndex++) {
     //    WorldPrimitive& barrier = *worldSegment.getBarrierPrimitives()[barrierIndex];
-    //    barrier.getChildren(output barrierPrimitives);
+    //    TransformMatrix4 transformMatrix = barrier.getTransformMatrix4();
+    //    Model3d barrierModel3d = _model3dCollection.getModelFor(barrier.getKind());
+    //    barrierModel3d.applyTransformMatrix4(transformMatrix);
+    //    totalBarrierModel3d.merge(barrierModel3d);
     //}
-    //_model3dConverter.fromWorldPrimitives(barrierPrimitives, output model3d);
+    //Assert::isTrue(totalBarrierModel3d.getMeshesCount() > 0);
+    //_model3dCollection.unloadBarrierModels();
 }
 
 void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {

@@ -56,12 +56,38 @@ void Mesh::clear() {
     texture = &Texture::empty;
 }
 
-Model3d::Model3d() {
-    _meshesCount = 0;
+void Mesh::applyTransformMatrix4(TransformMatrix4& m) {
+    for (int i = 0; i < vertices.getCount(); i += 3) {
+        Vector3 v = m.mulPoint(Vector3(vertices[i], vertices[i + 1], vertices[i + 2]));
+        Vector3 n = m.mulVector(Vector3(normals[i], normals[i + 1], normals[i + 2]));
+        vertices[i] = v.x;
+        vertices[i + 1] = v.y;
+        vertices[i + 2] = v.z;
+        normals[i] = n.x;
+        normals[i + 1] = n.y;
+        normals[i + 2] = n.z;
+    }
+}
+
+void Mesh::merge(Mesh& mesh) {
+    if (!name.equals(mesh.name)) {
+        throw ArgumentException(L"Meshes must have the same names.");
+    }
+    if (texture->getId() != mesh.texture->getId()) {
+        throw ArgumentException(L"Textures must be the same in both meshes.");
+    }
+    int currentVerticesCount = vertices.getCount();
+    vertices.addRange(mesh.vertices);
+    normals.addRange(mesh.normals);
+    colors.addRange(mesh.colors);
+    texCoords.addRange(mesh.texCoords);
+    for (int i = 0; i < mesh.faces.getCount(); i++) {
+        faces.add(currentVerticesCount + mesh.faces[i]);
+    }
 }
 
 Mesh& Model3d::createNewMesh() {
-    return _meshes[_meshesCount++];
+    return _meshes.addNew();
 }
 
 Mesh& Model3d::getMesh(int index) {
@@ -69,7 +95,7 @@ Mesh& Model3d::getMesh(int index) {
 }
 
 int Model3d::getMeshesCount() {
-    return _meshesCount;
+    return _meshes.getCount();
 }
 
 Texture& Model3d::createNewTexture() {
@@ -164,23 +190,23 @@ void Model3d::clear() {
     for (int i = 0; i < _meshes.getCount(); i++) {
         _meshes[i].clear();
     }
-    _meshesCount = 0;
+    _meshes.clear();
     _textures.clear();
 }
 
 void Model3d::applyTransformMatrix4(TransformMatrix4& m) {
-    for (int meshIndex = 0; meshIndex < _meshes.getCount(); meshIndex++) {
-        Mesh& mesh = _meshes[meshIndex];
-        for (int i = 0; i < mesh.vertices.getCount(); i += 3) {
-            Vector3 v = m.mulPoint(Vector3(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]));
-            Vector3 n = m.mulVector(Vector3(mesh.normals[i], mesh.normals[i + 1], mesh.normals[i + 2]));
-            mesh.vertices[i] = v.x;
-            mesh.vertices[i + 1] = v.y;
-            mesh.vertices[i + 2] = v.z;
-            mesh.normals[i] = n.x;
-            mesh.normals[i + 1] = n.y;
-            mesh.normals[i + 2] = n.z;
-        }
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        _meshes[i].applyTransformMatrix4(m);
+    }
+}
+
+void Model3d::merge(Model3d& model3d) {
+    if (_meshes.getCount() != model3d._meshes.getCount()) {
+        throw ArgumentException(L"Meshes count must be the same in both models.");
+    }
+
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        _meshes[i].merge(model3d._meshes[i]);
     }
 }
 

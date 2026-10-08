@@ -42,8 +42,13 @@ RenderMesh& RenderModel3d::getMeshByName(String meshName) {
     throw ArgumentException(L"Mesh was not found.");
 }
 
-void RenderModel3d::setTextures(Collection<Texture*>& textures) {
-    _textures.addRange(textures);
+void RenderModel3d::addUniqueTextures(Collection<Texture*>& textures) {
+    for (int i = 0; i < textures.getCount(); i++) {
+        Texture* newTexture = textures[i];
+        if (!_textures.any([&](Texture* t) { return t->getId() == newTexture->getId(); })) {
+            _textures.add(newTexture);
+        }
+    }
 }
 
 void RenderModel3d::release() {

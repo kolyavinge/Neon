@@ -1,6 +1,7 @@
 #include <common/constants.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Plane.h>
+#include <lib/calc/Quaternion.h>
 #include <model/world/WorldPrimitive.h>
 
 WorldPrimitive::WorldPrimitive() :
@@ -8,10 +9,7 @@ WorldPrimitive::WorldPrimitive() :
     _kind = (WorldPrimitiveKind)-1;
 }
 
-WorldPrimitive::WorldPrimitive(
-    WorldPrimitiveKind kind,
-    Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,
-    Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4) {
+WorldPrimitive::WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     _kind = kind;
     _points[0] = p1;
     _points[1] = p2;
@@ -31,10 +29,6 @@ WorldPrimitive::WorldPrimitive(
     _plane.addCuttingPlane(Plane(upCuttingPlaneFrontNormal, p3));
     _plane.addCuttingPlane(Plane(leftCuttingPlaneFrontNormal, p1));
     _plane.addCuttingPlane(Plane(rightCuttingPlaneFrontNormal, p2));
-    _texCoords[0] = texCoord1;
-    _texCoords[1] = texCoord2;
-    _texCoords[2] = texCoord3;
-    _texCoords[3] = texCoord4;
 }
 
 WorldPrimitiveKind WorldPrimitive::getKind() {
@@ -57,8 +51,46 @@ Vector3 WorldPrimitive::getProjectedVector(Vector3 v) {
     return _plane.getProjectedVector(v);
 }
 
+Vector3 WorldPrimitive::getCenter() {
+    // такой способ нахождения центра работает только для 4ех угольника
+    // (проверка на будущее, если кол-во точек примитива изменится)
+    Assert::isTrue(WorldPrimitive::pointsCount == 4);
+
+    return _points[0].getMiddleTo(_points[2]);
+}
+
+void WorldPrimitive::setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4) {
+    _texCoords[0] = texCoord1;
+    _texCoords[1] = texCoord2;
+    _texCoords[2] = texCoord3;
+    _texCoords[3] = texCoord4;
+}
+
+void WorldPrimitive::setLocalAxes(Vector3 localRightAxis, Vector3 localFrontAxis) {
+    _localRightAxis = localRightAxis;
+    _localFrontAxis = localFrontAxis;
+}
+
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
     return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint);
+}
+
+TransformMatrix4 WorldPrimitive::getTransformMatrix4() {
+    TransformMatrix4 result;
+
+    Vector3 basePoint = getCenter();
+    TransformMatrix4 translate;
+    translate.translate(basePoint);
+
+    Quaternion q = Quaternion::rotateCoordinateSystem(
+        CommonConstants::rightAxis, _localRightAxis,
+        CommonConstants::frontAxis, _localFrontAxis);
+    TransformMatrix4 rotate = q.getTransformMatrix4();
+
+    result.mul(translate);
+    result.mul(rotate);
+
+    return result;
 }
 
 WorldPrimitiveMinMaxPointFinder::WorldPrimitiveMinMaxPointFinder() {

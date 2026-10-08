@@ -47,11 +47,13 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         p3.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
         Vector3 p4 = p1;
         p4.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
-        Vector2 tc1(0.0f, 0.0f);
-        Vector2 tc2(1.0f, 0.0f);
-        Vector2 tc3(1.0f, 1.0f);
-        Vector2 tc4(0.0f, 1.0f);
-        _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4, tc1, tc2, tc3, tc4));
+        Vector3 localRightAxis = _direction;
+        localRightAxis.crossProduct(_upNormal);
+        localRightAxis.normalize();
+        Vector3 localFrontAxis = _direction;
+        WorldPrimitive barrierPrimitive(_kind, p1, p2, p3, p4);
+        barrierPrimitive.setLocalAxes(localRightAxis, localFrontAxis);
+        _resultPrimitives->addByValue(barrierPrimitive);
         p1 = p2;
     }
 

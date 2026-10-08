@@ -200,7 +200,9 @@ void GroundBuilder::build() {
             Vector3 p4 = getBasePlanePoint(row + 1, col);
             Vector2 tc1, tc2, tc3, tc4;
             getTexCoord(p1, p2, p4, output tc1, output tc2, output tc3, output tc4);
-            _resultPrimitives->addByValue(WorldPrimitive(_kind, p1, p2, p3, p4, tc1, tc2, tc3, tc4));
+            WorldPrimitive groundPrimitive(_kind, p1, p2, p3, p4);
+            groundPrimitive.setTextureCoords(tc1, tc2, tc3, tc4);
+            _resultPrimitives->addByValue(groundPrimitive);
         }
     }
 

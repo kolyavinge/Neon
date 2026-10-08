@@ -28,6 +28,6 @@ public:
     RenderMesh& getMesh(int index);
     int getMeshesCount();
     RenderMesh& getMeshByName(String meshName);
-    void setTextures(Collection<Texture*>& textures);
+    void addUniqueTextures(Collection<Texture*>& textures);
     void release();
 };

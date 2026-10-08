@@ -9,7 +9,7 @@
 class Mesh : public Object {
 
 public:
-    String name;
+    String name; // TODO неверное не нужно
     List<float> vertices;
     List<float> normals;
     List<float> colors;
@@ -17,7 +17,6 @@ public:
     List<unsigned int> faces;
     Texture* texture;
 
-    DENY_COPYING(Mesh); // потому что большой тяжелый класс
     Mesh();
     void prepareEnoughCapacity(int elementsCount, int pointsByElement);
     void addVertex(Vector3 v);
@@ -26,14 +25,15 @@ public:
     void addTexCoord(Vector2 t);
     void addFacesForElement(int elementIndex, int pointsByElement);
     void clear();
+    void applyTransformMatrix4(TransformMatrix4& m);
+    void merge(Mesh& mesh);
 };
 
 class Model3d : public Object {
 
-    Array<Mesh, 20> _meshes;
-    int _meshesCount;
+    List<Mesh> _meshes;
     // текстуры хранятся как указатели, чтобы их проще было передать в RenderModel3d
-    // и не вызывать деструктор в этом классе
+    // и не вызывать их деструкторы в этом классе
     List<Texture*> _textures;
 
 public:
@@ -43,7 +43,6 @@ public:
         z = 4
     };
 
-    Model3d();
     Mesh& createNewMesh();
     Mesh& getMesh(int index);
     int getMeshesCount();
@@ -57,6 +56,7 @@ public:
     void invertAxis(int axis);
     void clear();
     void applyTransformMatrix4(TransformMatrix4& m);
+    void merge(Model3d& model3d);
 
 private:
     Vector3 getMinVertex();

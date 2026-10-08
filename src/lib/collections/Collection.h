@@ -86,6 +86,15 @@ public:
         }
     }
 
+    bool any(auto&& predicate) {
+        for (int i = 0; i < getCount(); i++) {
+            T& item = (*this)[i];
+            if (predicate(item)) return true;
+        }
+
+        return false;
+    }
+
     template<class TGroupKey>
     void groupBy(TGroupKey(*getGroupKey)(T& item), List<Group<TGroupKey, T*>>& grouped) {
         int count = getCount();

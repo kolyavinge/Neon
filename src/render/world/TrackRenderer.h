@@ -41,5 +41,5 @@ public:
     void render(Collection<WorldSegment*>& visibleSegments, Camera& camera);
 
 private:
-    void initWorldSegment(WorldSegment& worldSegment, output Model3d& model3d);
+    void buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModel3dCollection);
 };

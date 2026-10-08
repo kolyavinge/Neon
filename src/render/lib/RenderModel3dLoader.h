@@ -20,4 +20,5 @@ public:
         Model3dVAOBuilder& model3dVAOBuilder);
 
     void load(Model3d& model3d, output RenderModel3d& renderModel3d);
+    void load(Collection<Model3d>& model3dCollection, output RenderModel3d& renderModel3d);
 };

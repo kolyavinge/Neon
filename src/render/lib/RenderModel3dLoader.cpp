@@ -14,5 +14,11 @@ void RenderModel3dLoader::load(Model3d& model3d, output RenderModel3d& renderMod
         renderMesh.texture = mesh.texture;
     }
 
-    renderModel3d.setTextures(model3d.getTextures());
+    renderModel3d.addUniqueTextures(model3d.getTextures());
+}
+
+void RenderModel3dLoader::load(Collection<Model3d>& model3dCollection, output RenderModel3d& renderModel3d) {
+    for (int i = 0; i < model3dCollection.getCount(); i++) {
+        load(model3dCollection[i], output renderModel3d);
+    }
 }
