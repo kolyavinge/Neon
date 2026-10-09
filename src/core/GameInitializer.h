@@ -4,6 +4,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/world/GameWorld.h>
+#include <render/common/Model3dCollection.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
@@ -19,6 +20,7 @@ class GameInitializer : public Object {
     TextureCollection& _textureCollection;
     ShaderCollection& _shaderCollection;
     ShaderProgramCollection& _shaderProgramCollection;
+    Model3dCollection& _model3dCollection;
     RenderModel3dCollection& _renderModel3dCollection;
     VehicleRenderer& _vehicleRenderer;
     TrackRenderer& _trackRenderer;
@@ -31,6 +33,7 @@ public:
             resolver.resolve<TextureCollection>(),
             resolver.resolve<ShaderCollection>(),
             resolver.resolve<ShaderProgramCollection>(),
+            resolver.resolve<Model3dCollection>(),
             resolver.resolve<RenderModel3dCollection>(),
             resolver.resolve<VehicleRenderer>(),
             resolver.resolve<TrackRenderer>());
@@ -42,6 +45,7 @@ public:
         TextureCollection& textureCollection,
         ShaderCollection& shaderCollection,
         ShaderProgramCollection& shaderProgramCollection,
+        Model3dCollection& model3dCollection,
         RenderModel3dCollection& renderModel3dCollection,
         VehicleRenderer& vehicleRenderer,
         TrackRenderer& trackRenderer);

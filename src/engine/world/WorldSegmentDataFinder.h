@@ -15,5 +15,5 @@ public:
     WorldSegmentDataFinder();
     void init(BSPTree<WorldSegment>& segmentTree);
     Collection<WorldPrimitive*>& getGroundPrimitivesForWheel(Wheel& wheel);
-    Collection<WorldPrimitive*>& getBarrierPrimitivesForPoint(Vector3 point);
+    Collection<WorldPrimitive*>& getGroundAndBarrierPrimitivesForPoint(Vector3 point);
 };

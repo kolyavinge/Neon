@@ -9,6 +9,7 @@ class WorldSegment : Object {
     int _id;
     List<WorldPrimitive*> _groundPrimitives;
     List<WorldPrimitive*> _barrierPrimitives;
+    List<WorldPrimitive*> _groundAndBarrierPrimitives;
     Rect2d _boundaryBox;
 
 public:
@@ -17,6 +18,7 @@ public:
     void setId(int id);
     Collection<WorldPrimitive*>& getGroundPrimitives();
     Collection<WorldPrimitive*>& getBarrierPrimitives();
+    Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();
     Rect2d& getBoundaryBox();
     void setGroundPrimitives(Collection<WorldPrimitive>& primitives);
     void setBarrierPrimitives(Collection<WorldPrimitive>& primitives);

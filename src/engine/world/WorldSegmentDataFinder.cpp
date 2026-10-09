@@ -14,6 +14,6 @@ Collection<WorldPrimitive*>& WorldSegmentDataFinder::getGroundPrimitivesForWheel
     return _segmentTree->findNodeDataByPoint(wheel.getCenter()).getGroundPrimitives();
 }
 
-Collection<WorldPrimitive*>& WorldSegmentDataFinder::getBarrierPrimitivesForPoint(Vector3 point) {
-    return _segmentTree->findNodeDataByPoint(point).getBarrierPrimitives();
+Collection<WorldPrimitive*>& WorldSegmentDataFinder::getGroundAndBarrierPrimitivesForPoint(Vector3 point) {
+    return _segmentTree->findNodeDataByPoint(point).getGroundAndBarrierPrimitives();
 }

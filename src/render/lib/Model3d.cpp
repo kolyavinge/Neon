@@ -71,16 +71,17 @@ void Mesh::applyTransformMatrix4(TransformMatrix4& m) {
 
 void Mesh::merge(Mesh& mesh) {
     if (!name.equals(mesh.name)) {
-        throw ArgumentException(L"Meshes must have the same names.");
+        throw ArgumentException(L"Meshes must have the same name.");
     }
     if (texture->getId() != mesh.texture->getId()) {
         throw ArgumentException(L"Textures must be the same in both meshes.");
     }
-    int currentVerticesCount = vertices.getCount();
+    int currentVerticesCount = vertices.getCount() / Mesh::verticesDimension;
     vertices.addRange(mesh.vertices);
     normals.addRange(mesh.normals);
     colors.addRange(mesh.colors);
     texCoords.addRange(mesh.texCoords);
+    faces.prepareEnoughCapacity(faces.getCount() + mesh.faces.getCount());
     for (int i = 0; i < mesh.faces.getCount(); i++) {
         faces.add(currentVerticesCount + mesh.faces[i]);
     }
@@ -201,6 +202,13 @@ void Model3d::applyTransformMatrix4(TransformMatrix4& m) {
 }
 
 void Model3d::merge(Model3d& model3d) {
+    if (_meshes.getCount() == 0) {
+        for (int i = 0; i < model3d._meshes.getCount(); i++) {
+            Mesh& mesh = createNewMesh();
+            mesh.name = model3d._meshes[i].name;
+        }
+    }
+
     if (_meshes.getCount() != model3d._meshes.getCount()) {
         throw ArgumentException(L"Meshes count must be the same in both models.");
     }

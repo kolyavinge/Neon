@@ -101,7 +101,7 @@ void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle) {
 
     Box3d& bodyBox = vehicle.getBody().getBox();
     Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count> barrierPrimitivesForPoint;
-    getBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
+    getGroundAndBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
 
     // проверяем на соударение 8 точек кузова в 4 сегментах
     // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
@@ -126,13 +126,13 @@ void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle) {
     }
 }
 
-void VehicleCollisionLogic::getBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
+void VehicleCollisionLogic::getGroundAndBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
     Rect2d& bottomRect = bodyBox.getBottomRect();
     // находим сегменты для 4 нижних точек кузова
-    result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.downLeft);
-    result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.downRight);
-    result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.upLeft);
-    result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getBarrierPrimitivesForPoint(bottomRect.upRight);
+    result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downLeft);
+    result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downRight);
+    result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upLeft);
+    result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upRight);
     // считаем что верхние точки находятся в тех же сегментах что и нижние
     result[(int)Box3dPoint::topDownLeft] = result[(int)Box3dPoint::bottomDownLeft];
     result[(int)Box3dPoint::topDownRight] = result[(int)Box3dPoint::bottomDownRight];

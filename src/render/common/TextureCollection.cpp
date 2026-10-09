@@ -19,7 +19,7 @@ void TextureCollection::loadAllTextures() {
     loadWorldPrimitiveTextures(L"asphalt1.png", WorldPrimitiveKind::asphalt1);
     loadWorldPrimitiveTextures(L"asphalt2.png", WorldPrimitiveKind::asphalt2);
     loadWorldPrimitiveTextures(L"asphalt3.png", WorldPrimitiveKind::asphalt3);
-    loadWorldPrimitiveTextures(L"metalBarrier1.png", WorldPrimitiveKind::metalBarrier1);
+    loadWorldPrimitiveTextures(L"metalBarrier1.png", WorldPrimitiveKind::metalBarrier1); // TODO если уже грузится 3d модель, то текстура не нужна
 }
 
 Texture& TextureCollection::getByWorldPrimitiveKind(WorldPrimitiveKind kind) {

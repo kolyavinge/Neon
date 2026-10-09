@@ -312,6 +312,9 @@
     <ClCompile Include="src\model\common\light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\common\Model3dCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -687,6 +690,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\common\light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\common\Model3dCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

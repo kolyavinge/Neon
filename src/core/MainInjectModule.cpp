@@ -24,6 +24,7 @@
 #include <lib/Environment.h>
 #include <lib/FileSystem.h>
 #include <lib/ResourceManager.h>
+#include <render/common/Model3dCollection.h>
 #include <render/common/Model3dConverter.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderCollection.h>
@@ -66,6 +67,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();
     binder.bindSingleton<ResourceManager>();
+    binder.bindSingleton<Model3dCollection>(Model3dCollection::resolve);
     binder.bindSingleton<Model3dConverter>(Model3dConverter::resolve);
     binder.bindSingleton<RenderModel3dCollection>(RenderModel3dCollection::resolve);
     binder.bindSingleton<ShaderCollection>(ShaderCollection::resolve);

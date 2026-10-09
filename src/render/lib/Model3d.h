@@ -9,6 +9,8 @@
 class Mesh : public Object {
 
 public:
+    inline static const int verticesDimension = 3;
+
     String name; // TODO неверное не нужно
     List<float> vertices;
     List<float> normals;

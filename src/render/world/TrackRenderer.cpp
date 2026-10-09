@@ -5,10 +5,12 @@
 #include <render/world/TrackRenderer.h>
 
 TrackRenderer::TrackRenderer(
+    Model3dCollection& model3dCollection,
     Model3dConverter& model3dConverter,
     RenderModel3dLoader& renderModel3dLoader,
     ShaderProgramCollection& shaderProgramCollection,
     VAORenderer& vaoRenderer) :
+    _model3dCollection(model3dCollection),
     _model3dConverter(model3dConverter),
     _renderModel3dLoader(renderModel3dLoader),
     _shader(shaderProgramCollection.mesh),
@@ -27,33 +29,35 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& glo
     for (int i = 0; i < allWorldSegments.getCount(); i++) {
         _segmentRenderModels.addNew();
     }
-    List<Model3d> worldSegmentModel3dCollection;
+    List<Model3d> worldSegmentModels3d;
     for (int worldSegmentIndex = 0; worldSegmentIndex < allWorldSegments.getCount(); worldSegmentIndex++) {
         WorldSegment& worldSegment = *allWorldSegments[worldSegmentIndex];
-        buildModels3dForWorldSegment(worldSegment, output worldSegmentModel3dCollection);
+        buildModels3dForWorldSegment(worldSegment, output worldSegmentModels3d);
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
-        _renderModel3dLoader.load(worldSegmentModel3dCollection, output renderModel);
-        for (int i = 0; i < worldSegmentModel3dCollection.getCount(); i++) worldSegmentModel3dCollection[i].clear();
-        worldSegmentModel3dCollection.clear();
+        _renderModel3dLoader.load(worldSegmentModels3d, output renderModel);
+        for (int i = 0; i < worldSegmentModels3d.getCount(); i++) worldSegmentModels3d[i].clear();
+        worldSegmentModels3d.clear();
     }
 }
 
-void TrackRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModel3dCollection) {
-    Model3d& groundModel3d = worldSegmentModel3dCollection.addNew();
-    _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output groundModel3d);
-    Assert::isTrue(groundModel3d.getMeshesCount() > 0);
+void TrackRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d) {
+    if (worldSegment.getGroundPrimitives().getCount() > 0) {
+        Model3d& groundModel3d = worldSegmentModels3d.addNew();
+        _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output groundModel3d);
+        Assert::isTrue(groundModel3d.getMeshesCount() > 0);
+    }
 
-    //Model3d& totalBarrierModel3d = worldSegmentModel3dCollection.addNew();
-    //_model3dCollection.loadBarrierModels();
-    //for (int barrierIndex = 0; barrierIndex < worldSegment.getBarrierPrimitives().getCount(); barrierIndex++) {
-    //    WorldPrimitive& barrier = *worldSegment.getBarrierPrimitives()[barrierIndex];
-    //    TransformMatrix4 transformMatrix = barrier.getTransformMatrix4();
-    //    Model3d barrierModel3d = _model3dCollection.getModelFor(barrier.getKind());
-    //    barrierModel3d.applyTransformMatrix4(transformMatrix);
-    //    totalBarrierModel3d.merge(barrierModel3d);
-    //}
-    //Assert::isTrue(totalBarrierModel3d.getMeshesCount() > 0);
-    //_model3dCollection.unloadBarrierModels();
+    if (worldSegment.getBarrierPrimitives().getCount() > 0) {
+        Model3d& totalBarrierModel3d = worldSegmentModels3d.addNew();
+        for (int barrierIndex = 0; barrierIndex < worldSegment.getBarrierPrimitives().getCount(); barrierIndex++) {
+            WorldPrimitive& barrier = *worldSegment.getBarrierPrimitives()[barrierIndex];
+            TransformMatrix4 transformMatrix = barrier.getTransformMatrix4();
+            Model3d barrierModel3d = _model3dCollection.getModelFor(barrier.getKind());
+            barrierModel3d.applyTransformMatrix4(transformMatrix);
+            totalBarrierModel3d.merge(barrierModel3d);
+        }
+        Assert::isTrue(totalBarrierModel3d.getMeshesCount() > 0);
+    }
 }
 
 void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {

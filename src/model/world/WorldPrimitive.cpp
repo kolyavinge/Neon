@@ -98,8 +98,6 @@ WorldPrimitiveMinMaxPointFinder::WorldPrimitiveMinMaxPointFinder() {
 }
 
 void WorldPrimitiveMinMaxPointFinder::findMinMaxPointFor(Collection<WorldPrimitive>& primitives) {
-    if (primitives.getCount() == 0) throw ArgumentException(L"primitives cannot be empty.");
-
     if (_firstCall) {
         _minPoint = primitives[0].getPoints()[0];
         _maxPoint = primitives[0].getPoints()[0];
@@ -113,8 +111,6 @@ void WorldPrimitiveMinMaxPointFinder::findMinMaxPointFor(Collection<WorldPrimiti
 }
 
 void WorldPrimitiveMinMaxPointFinder::findMinMaxPointFor(Collection<WorldPrimitive*>& primitives) {
-    if (primitives.getCount() == 0) throw ArgumentException(L"primitives cannot be empty.");
-
     if (_firstCall) {
         _minPoint = primitives[0]->getPoints()[0];
         _maxPoint = primitives[0]->getPoints()[0];
