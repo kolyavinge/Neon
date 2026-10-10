@@ -1,9 +1,13 @@
 #include <model/common/common.h>
 
-Measures::Measures() {
-    xLength = 0.0f;
-    yLength = 0.0f;
-    zLength = 0.0f;
+Measures::Measures() :
+    Measures(0.0f, 0.0f, 0.0f) {
+}
+
+Measures::Measures(float x, float y, float z) {
+    xLength = x;
+    yLength = y;
+    zLength = z;
 }
 
 void Rect2d::addMultiplied(Vector3& v, float multipliedBy) {

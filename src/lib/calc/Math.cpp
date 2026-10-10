@@ -2,22 +2,6 @@
 #include <lib/calc/Math.h>
 #include <lib/exceptions.h>
 
-float Math::min(float a, float b) {
-    return a < b ? a : b;
-}
-
-float Math::max(float a, float b) {
-    return a > b ? a : b;
-}
-
-int Math::abs(int x) {
-    return x > 0 ? x : -x;
-}
-
-float Math::abs(float x) {
-    return x > 0.0f ? x : -x;
-}
-
 float Math::mod(float a, float b) {
     return fmodf(a, b);
 }

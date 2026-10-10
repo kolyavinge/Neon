@@ -21,7 +21,7 @@ class WorldPrimitive : public Object {
 public:
     inline static const int pointsCount = 4;
     inline static const float barrierLength = 2.0f;
-    inline static const float barrierHeight = 1.2f;
+    inline static const float barrierHeight = 1.0f;
 
 private:
     WorldPrimitiveKind _kind;

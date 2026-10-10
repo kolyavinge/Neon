@@ -70,8 +70,8 @@ void TransformMatrix4::mul(TransformMatrix4& m) {
 }
 
 Vector4 TransformMatrix4::mul(Vector4 v) {
-    float x = _items[0] * v.x + _items[4] * v.y + _items[8] * v.z + _items[12] * v.w;
-    float y = _items[1] * v.x + _items[5] * v.y + _items[9] * v.z + _items[13] * v.w;
+    float x = _items[0] * v.x + _items[4] * v.y + _items[8]  * v.z + _items[12] * v.w;
+    float y = _items[1] * v.x + _items[5] * v.y + _items[9]  * v.z + _items[13] * v.w;
     float z = _items[2] * v.x + _items[6] * v.y + _items[10] * v.z + _items[14] * v.w;
     float w = _items[3] * v.x + _items[7] * v.y + _items[11] * v.z + _items[15] * v.w;
 
@@ -79,19 +79,37 @@ Vector4 TransformMatrix4::mul(Vector4 v) {
 }
 
 Vector3 TransformMatrix4::mulVector(Vector3 v) {
-    float x = _items[0] * v.x + _items[4] * v.y + _items[8] * v.z;
-    float y = _items[1] * v.x + _items[5] * v.y + _items[9] * v.z;
+    float x = _items[0] * v.x + _items[4] * v.y + _items[8]  * v.z;
+    float y = _items[1] * v.x + _items[5] * v.y + _items[9]  * v.z;
     float z = _items[2] * v.x + _items[6] * v.y + _items[10] * v.z;
 
     return Vector3(x, y, z);
 }
 
+void TransformMatrix4::mulVector(output float* x) {
+    float vx = *x;
+    float vy = *(x + 1);
+    float vz = *(x + 2);
+    *x       = _items[0] * vx + _items[4] * vy + _items[8]  * vz;
+    *(x + 1) = _items[1] * vx + _items[5] * vy + _items[9]  * vz;
+    *(x + 2) = _items[2] * vx + _items[6] * vy + _items[10] * vz;
+}
+
 Vector3 TransformMatrix4::mulPoint(Vector3 p) {
-    float x = _items[0] * p.x + _items[4] * p.y + _items[8] * p.z + _items[12];
-    float y = _items[1] * p.x + _items[5] * p.y + _items[9] * p.z + _items[13];
+    float x = _items[0] * p.x + _items[4] * p.y + _items[8]  * p.z + _items[12];
+    float y = _items[1] * p.x + _items[5] * p.y + _items[9]  * p.z + _items[13];
     float z = _items[2] * p.x + _items[6] * p.y + _items[10] * p.z + _items[14];
 
     return Vector3(x, y, z);
+}
+
+void TransformMatrix4::mulPoint(output float* x) {
+    float vx = *x;
+    float vy = *(x + 1);
+    float vz = *(x + 2);
+    *x       = _items[0] * vx + _items[4] * vy + _items[8]  * vz + _items[12];
+    *(x + 1) = _items[1] * vx + _items[5] * vy + _items[9]  * vz + _items[13];
+    *(x + 2) = _items[2] * vx + _items[6] * vy + _items[10] * vz + _items[14];
 }
 
 void TransformMatrix4::transpose() {

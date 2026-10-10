@@ -4,6 +4,7 @@
 #include <lib/calc/Vector2.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/common/common.h>
 #include <render/lib/Texture.h>
 
 class Mesh : public Object {
@@ -52,9 +53,11 @@ public:
     Texture& getTexture(int index);
     Collection<Texture*>& getTextures();
     int getTexturesCount();
+    Measures getMeasures();
     void moveToOrigin(int axis = 0);
     void moveToCenter(int axis = 0);
-    void scale(float scale);
+    void scale(Vector3 value);
+    void scale(float value);
     void invertAxis(int axis);
     void clear();
     void applyTransformMatrix4(TransformMatrix4& m);

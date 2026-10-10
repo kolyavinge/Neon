@@ -79,7 +79,13 @@ public:
         return _items[_count - 1];
     }
 
-    void addRange(List<T>& range) {
+    void addRange(List<T>& range) requires std::is_scalar_v<T> {
+        resizeIfNeeded(range.getCount());
+        Memory::copy(range.getItemsPointer(), &_items[_count], range.getCount());
+        _count += range.getCount();
+    }
+
+    void addRange(List<T>& range) requires !std::is_scalar_v<T> {
         resizeIfNeeded(range.getCount());
         for (int i = 0; i < range.getCount(); i++) {
             _items[_count + i] = range[i];
@@ -112,6 +118,14 @@ public:
         }
         _items[index] = value;
         _count++;
+    }
+
+    void forRange(int indexFrom, int indexTo, auto&& action) {
+        checkBounds(indexFrom, _count);
+        checkBounds(indexTo - 1, _count); // не включительно indexTo
+        while (indexFrom < indexTo) {
+            action(_items[indexFrom++]);
+        }
     }
 
     void removeAt(int index) {

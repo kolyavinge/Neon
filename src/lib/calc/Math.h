@@ -21,10 +21,21 @@ public:
     inline static const float piDouble = 2.0f * pi;
     inline static const float e = 2.82818284504f;
 
-    static float min(float a, float b);
-    static float max(float a, float b);
-    static int abs(int x);
-    static float abs(float x);
+    template<class T>
+    static T min(T a, T b) {
+        return a < b ? a : b;
+    }
+
+    template<class T>
+    static T max(T a, T b) {
+        return a > b ? a : b;
+    }
+
+    template<class T>
+    static T abs(T x) {
+        return x > 0 ? x : -x;
+    }
+
     static float mod(float a, float b);
     static float sqrt(float x);
     static float sin(float angle);

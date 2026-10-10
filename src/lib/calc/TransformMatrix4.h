@@ -20,7 +20,9 @@ public:
     void mul(TransformMatrix4& m);
     Vector4 mul(Vector4 v);
     Vector3 mulVector(Vector3 v);
+    void mulVector(output float* x);
     Vector3 mulPoint(Vector3 p);
+    void mulPoint(output float* x);
     void transpose();
     void translate(float x, float y, float z);
     void translate(Vector3& v);

@@ -11,6 +11,7 @@ public:
     float zLength;
 
     Measures();
+    Measures(float x, float y, float z);
 };
 
 class Rect2d : public Object {

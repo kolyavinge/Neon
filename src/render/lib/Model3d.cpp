@@ -58,14 +58,8 @@ void Mesh::clear() {
 
 void Mesh::applyTransformMatrix4(TransformMatrix4& m) {
     for (int i = 0; i < vertices.getCount(); i += 3) {
-        Vector3 v = m.mulPoint(Vector3(vertices[i], vertices[i + 1], vertices[i + 2]));
-        Vector3 n = m.mulVector(Vector3(normals[i], normals[i + 1], normals[i + 2]));
-        vertices[i] = v.x;
-        vertices[i + 1] = v.y;
-        vertices[i + 2] = v.z;
-        normals[i] = n.x;
-        normals[i + 1] = n.y;
-        normals[i + 2] = n.z;
+        m.mulPoint(output &vertices[i]);
+        m.mulVector(output &normals[i]);
     }
 }
 
@@ -73,18 +67,22 @@ void Mesh::merge(Mesh& mesh) {
     if (!name.equals(mesh.name)) {
         throw ArgumentException(L"Meshes must have the same name.");
     }
-    if (texture->getId() != mesh.texture->getId()) {
-        throw ArgumentException(L"Textures must be the same in both meshes.");
+    if (*texture == Texture::empty && *mesh.texture != Texture::empty) {
+        texture = mesh.texture;
+    } else {
+        if (texture->getId() != mesh.texture->getId()) {
+            throw ArgumentException(L"Textures must be the same in both meshes.");
+        }
     }
     int currentVerticesCount = vertices.getCount() / Mesh::verticesDimension;
     vertices.addRange(mesh.vertices);
     normals.addRange(mesh.normals);
     colors.addRange(mesh.colors);
     texCoords.addRange(mesh.texCoords);
-    faces.prepareEnoughCapacity(faces.getCount() + mesh.faces.getCount());
-    for (int i = 0; i < mesh.faces.getCount(); i++) {
-        faces.add(currentVerticesCount + mesh.faces[i]);
-    }
+    int facesIndexFrom = faces.getCount();
+    faces.addRange(mesh.faces);
+    int facesIndexTo = faces.getCount();
+    faces.forRange(facesIndexFrom, facesIndexTo, [&](unsigned int& x) -> void { x += currentVerticesCount; });
 }
 
 Mesh& Model3d::createNewMesh() {
@@ -118,6 +116,17 @@ int Model3d::getTexturesCount() {
     return _textures.getCount();
 }
 
+Measures Model3d::getMeasures() {
+    Vector3 min = getMinVertex();
+    Vector3 max = getMaxVertex();
+    Measures result;
+    result.xLength = max.x - min.x;
+    result.yLength = max.y - min.y;
+    result.zLength = max.z - min.z;
+
+    return result;
+}
+
 void Model3d::moveToOrigin(int axis) {
     Vector3 min = getMinVertex();
     if (axis != 0) {
@@ -128,7 +137,7 @@ void Model3d::moveToOrigin(int axis) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j + 0] -= min.x;
+            mesh.vertices[j]     -= min.x;
             mesh.vertices[j + 1] -= min.y;
             mesh.vertices[j + 2] -= min.z;
         }
@@ -151,22 +160,26 @@ void Model3d::moveToCenter(int axis) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j + 0] -= delta.x;
+            mesh.vertices[j]     -= delta.x;
             mesh.vertices[j + 1] -= delta.y;
             mesh.vertices[j + 2] -= delta.z;
         }
     }
 }
 
-void Model3d::scale(float scale) {
+void Model3d::scale(Vector3 value) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j] *= scale;
-            mesh.vertices[j + 1] *= scale;
-            mesh.vertices[j + 2] *= scale;
+            mesh.vertices[j]     *= value.x;
+            mesh.vertices[j + 1] *= value.y;
+            mesh.vertices[j + 2] *= value.z;
         }
     }
+}
+
+void Model3d::scale(float value) {
+    scale(Vector3(value, value, value));
 }
 
 void Model3d::invertAxis(int axis) {
@@ -177,12 +190,12 @@ void Model3d::invertAxis(int axis) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j] *= invert.x;
+            mesh.vertices[j]     *= invert.x;
             mesh.vertices[j + 1] *= invert.y;
             mesh.vertices[j + 2] *= invert.z;
-            mesh.normals[j] *= invert.x;
-            mesh.normals[j + 1] *= invert.y;
-            mesh.normals[j + 2] *= invert.z;
+            mesh.normals[j]      *= invert.x;
+            mesh.normals[j + 1]  *= invert.y;
+            mesh.normals[j + 2]  *= invert.z;
         }
     }
 }
@@ -216,6 +229,8 @@ void Model3d::merge(Model3d& model3d) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         _meshes[i].merge(model3d._meshes[i]);
     }
+
+    _textures.addRange(model3d._textures);
 }
 
 Vector3 Model3d::getMinVertex() {
@@ -225,7 +240,7 @@ Vector3 Model3d::getMinVertex() {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            if (mesh.vertices[j + 0] < minX) minX = mesh.vertices[j + 0];
+            if (mesh.vertices[j]     < minX) minX = mesh.vertices[j];
             if (mesh.vertices[j + 1] < minY) minY = mesh.vertices[j + 1];
             if (mesh.vertices[j + 2] < minZ) minZ = mesh.vertices[j + 2];
         }
@@ -241,7 +256,7 @@ Vector3 Model3d::getMaxVertex() {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
         for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            if (mesh.vertices[j + 0] > maxX) maxX = mesh.vertices[j + 0];
+            if (mesh.vertices[j]     > maxX) maxX = mesh.vertices[j];
             if (mesh.vertices[j + 1] > maxY) maxY = mesh.vertices[j + 1];
             if (mesh.vertices[j + 2] > maxZ) maxZ = mesh.vertices[j + 2];
         }

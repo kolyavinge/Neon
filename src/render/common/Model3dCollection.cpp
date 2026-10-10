@@ -1,3 +1,4 @@
+#include <model/common/common.h>
 #include <render/common/Model3dCollection.h>
 
 Model3dCollection::Model3dCollection(
@@ -21,6 +22,10 @@ Model3d& Model3dCollection::getModelFor(WorldPrimitiveKind kind) {
         modelDirectory.append(modelName);
         Model3d* model = new Model3d();
         _model3dLoader.load(modelDirectory, output *model);
+        // пока обрабатываются только барьеры
+        model->moveToCenter();
+        Measures measures = model->getMeasures();
+        model->scale(Vector3(1.0f, WorldPrimitive::barrierLength / measures.yLength, WorldPrimitive::barrierHeight / measures.zLength));
         _worldPrimitives[(int)kind] = model;
     }
 
@@ -29,7 +34,7 @@ Model3d& Model3dCollection::getModelFor(WorldPrimitiveKind kind) {
 
 String Model3dCollection::getModelNameFrom(WorldPrimitiveKind kind) {
     switch (kind) {
-        case WorldPrimitiveKind::metalBarrier1: return String("vehicle_front_right_wheel.glb");
+        case WorldPrimitiveKind::metalBarrier1: return String("metal_barrier_1.obj");
         case WorldPrimitiveKind::asphalt1:
         case WorldPrimitiveKind::asphalt2:
         case WorldPrimitiveKind::asphalt3:

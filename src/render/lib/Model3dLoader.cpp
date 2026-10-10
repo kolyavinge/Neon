@@ -5,6 +5,7 @@
 #include <assimp/scene.h>
 #pragma warning(pop)
 
+#include <lib/Path.h>
 #include <render/lib/Texture.h>
 #include <render/lib/Model3dLoader.h>
 
@@ -66,11 +67,16 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
 }
 
 void Model3dLoader::loadTextures(String& modelFilePath, output Model3d& model3d) {
-    String filter(L".jpg");
-    List<String> files;
-    _fileSystem.getFilesInDirectoryByFilter(modelFilePath, filter, output files);
-    for (int i = 0; i < files.getCount(); i++) {
+    String modelDirectoryPath = Path::getDirectoryPath(modelFilePath);
+    String filter = Path::getFileNameWithoutExtension(modelFilePath);
+    filter.append(L"*.jpg");
+    List<String> textureFiles;
+    _fileSystem.getFilesInDirectoryByFilter(modelDirectoryPath, filter, output textureFiles);
+    for (int i = 0; i < textureFiles.getCount(); i++) {
+        String fullTextureFileName = modelDirectoryPath;
+        fullTextureFileName.append(L"\\");
+        fullTextureFileName.append(textureFiles[i]);
         Texture& texture = model3d.createNewTexture();
-        _textureLoader.loadTexture(files[i], output texture);
+        _textureLoader.loadTexture(fullTextureFileName, output texture);
     }
 }
