@@ -5,6 +5,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/common.h>
+#include <model/vehicle/Body.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
@@ -33,6 +34,6 @@ private:
     bool wheelHasSameGroundContact(bool vehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint);
     void setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitives, Vector3 chassisUpNormal);
     void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
-    void findAllCollisionPoints(Vehicle& vehicle);
+    void findAllCollisionPoints(Body& body);
     void getGroundAndBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result);
 };

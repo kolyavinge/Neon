@@ -59,6 +59,14 @@ Vector3 WorldPrimitive::getCenter() {
     return _points[0].getMiddleTo(_points[2]);
 }
 
+bool WorldPrimitive::isPointInFront(Vector3& point) {
+    return _plane.isPointInFront(point);
+}
+
+bool WorldPrimitive::pointsOnBothSides(Vector3& pointA, Vector3& pointB) {
+    return _plane.pointsOnBothSides(pointA, pointB);
+}
+
 void WorldPrimitive::setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4) {
     _texCoords[0] = texCoord1;
     _texCoords[1] = texCoord2;
@@ -69,6 +77,11 @@ void WorldPrimitive::setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vect
 void WorldPrimitive::setLocalAxes(Vector3 localRightAxis, Vector3 localFrontAxis) {
     _localRightAxis = localRightAxis;
     _localFrontAxis = localFrontAxis;
+}
+
+bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps) {
+    Vector3 ignore;
+    return hasCollision(startPoint, endPoint, eps, output ignore);
 }
 
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {

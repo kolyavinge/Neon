@@ -2,6 +2,7 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/common/RigidBody.h>
 #include <model/common/common.h>
 #include <model/vehicle/VehicleData.h>
 
@@ -13,9 +14,10 @@ class Body : public Object {
     Vector3 _rearWingDownForce;
     Vector3 _rearWingDragForce;
     Box3d _box;
+    RigidBody& _rigidBody;
 
 public:
-    Body();
+    Body(RigidBody& rigidBody);
     void init();
     Box3d& getBox();
     Vector3 getAirDragForce();
@@ -23,6 +25,7 @@ public:
     Vector3 getRearWingDownForce();
     Vector3 getRearWingDragForce();
     Vector3 getRearWingPosition();
+    Vector3 getVelocityAtPoint(Vector3 bodyPoint);
     void calculateAirDragForce(Vector3 vehicleLinearVelocity);
     void calculateAirDragTorque(Vector3 vehicleLinearVelocity, Vector3 vehicleAngularVelocity, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
     void calculateRearWingDownForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);

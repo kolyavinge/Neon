@@ -18,6 +18,7 @@ public:
     Vector3 getFrontNormal();
     Vector3 getBasePoint();
     bool isPointInFront(Vector3& point);
+    bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     Vector3 getProjectedVector(Vector3 v);
     virtual bool contains(Vector3& point, float eps);
     virtual bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);

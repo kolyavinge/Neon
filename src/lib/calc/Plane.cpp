@@ -23,6 +23,13 @@ bool Plane::isPointInFront(Vector3& point) {
     return _basePoint.getDirectionTo(point).dotProduct(_frontNormal) >= 0.0f;
 }
 
+bool Plane::pointsOnBothSides(Vector3& pointA, Vector3& pointB) {
+    float dotProductA = _basePoint.getDirectionTo(pointA).dotProduct(_frontNormal);
+    float dotProductB = _basePoint.getDirectionTo(pointB).dotProduct(_frontNormal);
+
+    return dotProductA * dotProductB < 0.0f;
+}
+
 Vector3 Plane::getProjectedVector(Vector3 v) {
     float d = v.dotProduct(_frontNormal);
     v.subMultiplied(_frontNormal, d);

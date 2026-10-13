@@ -32,12 +32,6 @@ RoadBarrierBuilder& RoadBarrierBuilder::setCount(int count) {
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::build() {
-    Vector3 frontNormal = _direction;
-    frontNormal.crossProduct(_upNormal);
-    if (_orientation == BarrierOrientation::rightBarrier) {
-        frontNormal.mul(-1.0f);
-    }
-
     _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _count);
     Vector3 p1 = _position;
     for (int i = 0; i < _count; i++) {
@@ -51,7 +45,9 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         localRightAxis.crossProduct(_upNormal);
         localRightAxis.normalize();
         Vector3 localFrontAxis = _direction;
-        WorldPrimitive barrierPrimitive(_kind, p1, p2, p3, p4);
+        WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
+            ? WorldPrimitive(_kind, p1, p2, p3, p4)
+            : WorldPrimitive(_kind, p4, p3, p2, p1);
         barrierPrimitive.setLocalAxes(localRightAxis, localFrontAxis);
         _resultPrimitives->addByValue(barrierPrimitive);
         p1 = p2;

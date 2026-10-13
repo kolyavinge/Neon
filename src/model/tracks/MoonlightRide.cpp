@@ -166,7 +166,19 @@ void MoonlightRide::makeRoadBarriers() {
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
         .setPosition(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
-        .setCount(200)
+        .setCount(20)
+        .build();
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(Vector3(20.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::rightBarrier)
+        .setCount(20)
+        .build();
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(Vector3(22.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
+        .setCount(20)
         .build();
 }
 

@@ -68,7 +68,7 @@ void VehicleCollisionLogic::resetGroundContact(Wheel& wheel, Spring& spring, Vec
 }
 
 bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
-    findAllCollisionPoints(vehicle);
+    findAllCollisionPoints(vehicle.getBody());
     if (_collisionPoints.getCount() == 0) return false;
 
     // устраняем коллизии
@@ -94,31 +94,49 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     return true;
 }
 
-void VehicleCollisionLogic::findAllCollisionPoints(Vehicle& vehicle) {
+void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
     _collisionPoints.clear();
     _collisionDepths.clear();
     _collisionNormalsToBody.clear();
 
-    Box3d& bodyBox = vehicle.getBody().getBox();
+    Box3d& bodyBox = body.getBox();
     Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count> barrierPrimitivesForPoint;
     getGroundAndBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
 
     // проверяем на соударение 8 точек кузова в 4 сегментах
-    // луч rayFromPosition-rayToPosition рассчитывается от конечной точки кузова до точки выхода из препядствия
-    // точка пересечения - это точка на которую должна переместиться точка кузова
-    float vehicleVelocity = vehicle.getLinearVelocity().getLength();
+    // алгоритм рассчитан на поиск соударений только с лицевой гранью препядствия
     Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
-        Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
         Collection<WorldPrimitive*>& barrierPrimitives = *barrierPrimitivesForPoint[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
+            Vector3 bodyPrevPoint = *bodyPoints[bodyPointIndex];
+            // для рассчета позиции точки кузова на прошлом шаге используем ее скорость
+            // по хорошему нужно брать пройденный путь, а не скорость, но нам важно направление, а не величина
+            Vector3 pointVelocity = body.getVelocityAtPoint(bodyPrevPoint);
+            float pointVelocityLength = pointVelocity.getLength();
+            if (Numeric::floatEquals(pointVelocityLength, 0.0f)) continue;
+            const float minPointVelocity = 0.01f;
+            if (pointVelocityLength < minPointVelocity) {
+                pointVelocity.setLength(minPointVelocity);
+                pointVelocityLength = minPointVelocity;
+            }
+            bodyPrevPoint.sub(pointVelocity);
+            // примерно определяем есть ли пересечение по тому пути, который прошла точка кузова (высокая точность не нужна)
+            // (если это не проверять, код ниже будет работать неправильно)
+            if (!barrierPrimitive.hasCollision(bodyPrevPoint, *bodyPoints[bodyPointIndex], 0.1f)) {
+                continue;
+            }
+            // ищим точку пересечения - точка на которую должна переместиться текущая точка кузова
+            // луч rayFromPosition-rayToPosition рассчитывается от текущей точки кузова до точки выхода из препядствия
+            Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
             Vector3 rayToPosition = rayFromPosition;
-            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), vehicleVelocity);
+            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), pointVelocityLength);
             Vector3 collisionPoint;
             bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
             if (!hasCollision) continue;
-            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint); // из препядствия наружу
+            // выталкиваем точку кузова из препядствия наружу
+            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
             _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());

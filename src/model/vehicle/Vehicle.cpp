@@ -5,7 +5,8 @@
 #include <lib/calc/UnitConverter.h>
 #include <model/vehicle/Vehicle.h>
 
-Vehicle::Vehicle() {
+Vehicle::Vehicle() :
+    _body(_rigidBody) {
     init();
 }
 

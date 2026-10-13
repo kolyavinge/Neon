@@ -2,7 +2,8 @@
 #include <lib/calc/Math.h>
 #include <model/vehicle/Body.h>
 
-Body::Body() {
+Body::Body(RigidBody& rigidBody) :
+    _rigidBody(rigidBody) {
     _box.setMeasures(_data.bodyMeasures);
 }
 
@@ -36,6 +37,10 @@ Vector3 Body::getRearWingDragForce() {
 Vector3 Body::getRearWingPosition() {
     Rect2d& top = _box.getTopRect();
     return top.downLeft.getMiddleTo(top.downRight);
+}
+
+Vector3 Body::getVelocityAtPoint(Vector3 bodyPoint) {
+    return _rigidBody.getVelocityAtPoint(bodyPoint);
 }
 
 void Body::calculateAirDragForce(Vector3 vehicleLinearVelocity) {

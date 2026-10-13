@@ -48,6 +48,9 @@ class Box3d : public Object {
 
 public:
     Box3d();
+    // запрещаем копировать, потому что есть массив _points с указател€ми
+    // который нужно инитить по новой в новом экземпл€ре
+    DENY_COPYING(Box3d);
     Rect2d& getBottomRect();
     Rect2d& getTopRect();
     void setMeasures(Measures& measures);
