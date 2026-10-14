@@ -3,16 +3,6 @@
 #include <lib/calc/Quaternion.h>
 #include <lib/calc/Vector3.h>
 
-Quaternion Quaternion::rotateCoordinateSystem(Vector3& axis1From, Vector3& axis1To, Vector3& axis2From, Vector3& axis2To) {
-    Quaternion q1(axis1From, axis1To);
-    Vector3 axis2FromRotated(axis2From);
-    q1.rotatePoint(axis2FromRotated);
-    Quaternion q2(axis2FromRotated, axis2To);
-    q2.mul(q1);
-
-    return q2;
-}
-
 Quaternion::Quaternion() {
     setIdentity();
 }

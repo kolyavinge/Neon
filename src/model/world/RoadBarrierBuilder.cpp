@@ -41,14 +41,10 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         p3.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
         Vector3 p4 = p1;
         p4.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
-        Vector3 localRightAxis = _direction;
-        localRightAxis.crossProduct(_upNormal);
-        localRightAxis.normalize();
-        Vector3 localFrontAxis = _direction;
         WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
             ? WorldPrimitive(_kind, p1, p2, p3, p4)
             : WorldPrimitive(_kind, p4, p3, p2, p1);
-        barrierPrimitive.setLocalAxes(localRightAxis, localFrontAxis);
+        barrierPrimitive.setUpNormal(_upNormal);
         _resultPrimitives->addByValue(barrierPrimitive);
         p1 = p2;
     }

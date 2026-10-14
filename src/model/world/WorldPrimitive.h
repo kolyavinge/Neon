@@ -28,8 +28,7 @@ private:
     Array<Vector3, pointsCount> _points;
     TruncatedPlane _plane;
     Array<Vector2, pointsCount> _texCoords;
-    Vector3 _localRightAxis;
-    Vector3 _localFrontAxis;
+    Vector3 _upNormal;
 
 public:
     WorldPrimitive();
@@ -44,7 +43,7 @@ public:
     bool isPointInFront(Vector3& point);
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     void setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4);
-    void setLocalAxes(Vector3 localRightAxis, Vector3 localFrontAxis);
+    void setUpNormal(Vector3 upNormal);
     bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps);
     bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
     TransformMatrix4 getTransformMatrix4();

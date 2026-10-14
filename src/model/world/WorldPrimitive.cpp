@@ -74,9 +74,8 @@ void WorldPrimitive::setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vect
     _texCoords[3] = texCoord4;
 }
 
-void WorldPrimitive::setLocalAxes(Vector3 localRightAxis, Vector3 localFrontAxis) {
-    _localRightAxis = localRightAxis;
-    _localFrontAxis = localFrontAxis;
+void WorldPrimitive::setUpNormal(Vector3 upNormal) {
+    _upNormal = upNormal;
 }
 
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps) {
@@ -89,16 +88,18 @@ bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float ep
 }
 
 TransformMatrix4 WorldPrimitive::getTransformMatrix4() {
+    if (_upNormal.isZero()) throw ArgumentException(L"UpNormal has not been set.");
+
     TransformMatrix4 result;
 
     Vector3 basePoint = getCenter();
     TransformMatrix4 translate;
     translate.translate(basePoint);
 
-    Quaternion q = Quaternion::rotateCoordinateSystem(
-        CommonConstants::rightAxis, _localRightAxis,
-        CommonConstants::frontAxis, _localFrontAxis);
-    TransformMatrix4 rotate = q.getTransformMatrix4();
+    Vector3 y = _upNormal;
+    y.crossProduct(_plane.getFrontNormal());
+    TransformMatrix4 rotate;
+    rotate.setCoordinateSystem(_plane.getFrontNormal(), y, _upNormal);
 
     result.mul(translate);
     result.mul(rotate);

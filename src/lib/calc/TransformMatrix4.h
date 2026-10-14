@@ -12,11 +12,20 @@ class TransformMatrix4 : public Object {
 public:
     static TransformMatrix4 identity;
 
+    static TransformMatrix4 rotateCoordinateSystem(
+        Vector3 axis1From,
+        Vector3 axis2From,
+        Vector3 axis3From,
+        Vector3 axis1To,
+        Vector3 axis2To,
+        Vector3 axis3To);
+
     TransformMatrix4();
     TransformMatrix4(float items[16]);
     float* getItems();
     void setIdentity();
     void setZero();
+    void setCoordinateSystem(Vector3 axis1, Vector3 axis2, Vector3 axis3);
     void mul(TransformMatrix4& m);
     Vector4 mul(Vector4 v);
     Vector3 mulVector(Vector3 v);
