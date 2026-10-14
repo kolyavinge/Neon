@@ -92,8 +92,8 @@ GroundBuilder& GroundBuilder::setZFunc(GetZFunc getZ) {
 GroundBuilder& GroundBuilder::setSmoothAscendDownToUp(float ascend) {
     _basePlaneUpLeft.z += ascend;
 
-    // плавное изменение z с помощью синуса
-    // синус нормализован [0;1] и умножен на величину подьема
+    // РїР»Р°РІРЅРѕРµ РёР·РјРµРЅРµРЅРёРµ z СЃ РїРѕРјРѕС‰СЊСЋ СЃРёРЅСѓСЃР°
+    // СЃРёРЅСѓСЃ РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅ [0;1] Рё СѓРјРЅРѕР¶РµРЅ РЅР° РІРµР»РёС‡РёРЅСѓ РїРѕРґСЊРµРјР°
     _getZFunc = [](GetZFuncData& data) {
         float ascend = data.basePlaneDownLeft.getDirectionTo(data.basePlaneUpLeft).z;
         float x = ((float)data.row / (float)data.segmentsCountDownToUp) * Math::pi - Math::piHalf; // [-pi/2; +pi/2]

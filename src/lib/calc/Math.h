@@ -39,7 +39,7 @@ public:
     static float mod(float a, float b);
     static float sqrt(float x);
     static float sin(float angle);
-    static float sinNormalized(float angle); // нормализованное значение [0;1]
+    static float sinNormalized(float angle); // РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ [0;1]
     static float cos(float angle);
     static float tan(float angle);
     static float arcsin(float x);

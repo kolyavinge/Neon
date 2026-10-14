@@ -20,7 +20,7 @@ TrackRenderer::TrackRenderer(
 
 void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight) {
     _globalLight = &globalLight;
-    // для всех обьектов WorldSegment создаем RenderModel3d для последующего рендера
+    // РґР»СЏ РІСЃРµС… РѕР±СЊРµРєС‚РѕРІ WorldSegment СЃРѕР·РґР°РµРј RenderModel3d РґР»СЏ РїРѕСЃР»РµРґСѓСЋС‰РµРіРѕ СЂРµРЅРґРµСЂР°
     for (int i = 0; i < _segmentRenderModels.getCount(); i++) {
         _segmentRenderModels[i].release();
     }

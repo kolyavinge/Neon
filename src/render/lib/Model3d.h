@@ -12,7 +12,7 @@ class Mesh : public Object {
 public:
     inline static const int verticesDimension = 3;
 
-    String name; // TODO неверное не нужно
+    String name; // TODO РЅРµРІРµСЂРЅРѕРµ РЅРµ РЅСѓР¶РЅРѕ
     List<float> vertices;
     List<float> normals;
     List<float> colors;
@@ -35,8 +35,8 @@ public:
 class Model3d : public Object {
 
     List<Mesh> _meshes;
-    // текстуры хранятся как указатели, чтобы их проще было передать в RenderModel3d
-    // и не вызывать их деструкторы в этом классе
+    // С‚РµРєСЃС‚СѓСЂС‹ С…СЂР°РЅСЏС‚СЃСЏ РєР°Рє СѓРєР°Р·Р°С‚РµР»Рё, С‡С‚РѕР±С‹ РёС… РїСЂРѕС‰Рµ Р±С‹Р»Рѕ РїРµСЂРµРґР°С‚СЊ РІ RenderModel3d
+    // Рё РЅРµ РІС‹Р·С‹РІР°С‚СЊ РёС… РґРµСЃС‚СЂСѓРєС‚РѕСЂС‹ РІ СЌС‚РѕРј РєР»Р°СЃСЃРµ
     List<Texture*> _textures;
 
 public:

@@ -21,7 +21,7 @@ class VAO : public Object {
     GLsizei _elementsCount;
 
 public:
-    DENY_COPYING(VAO); // классы использующие ресурсы opengl запрещены к копированию
+    DENY_COPYING(VAO); // РєР»Р°СЃСЃС‹ РёСЃРїРѕР»СЊР·СѓСЋС‰РёРµ СЂРµСЃСѓСЂСЃС‹ opengl Р·Р°РїСЂРµС‰РµРЅС‹ Рє РєРѕРїРёСЂРѕРІР°РЅРёСЋ
     VAO();
     ~VAO();
     void init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount);

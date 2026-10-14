@@ -30,11 +30,11 @@ void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegm
     int rightPoints = getPointsFromFrustumPlane(FrustumPlanePosition::right, segmentBox);
     if (rightPoints == 0) return;
 
-    // сегмент полностью виден вместе с дочерними (видно по 4 точки для каждой плоскости камеры)
+    // СЃРµРіРјРµРЅС‚ РїРѕР»РЅРѕСЃС‚СЊСЋ РІРёРґРµРЅ РІРјРµСЃС‚Рµ СЃ РґРѕС‡РµСЂРЅРёРјРё (РІРёРґРЅРѕ РїРѕ 4 С‚РѕС‡РєРё РґР»СЏ РєР°Р¶РґРѕР№ РїР»РѕСЃРєРѕСЃС‚Рё РєР°РјРµСЂС‹)
     if (frontPoints + leftPoints + rightPoints == 3 * Rect2d::pointsCount) {
         _visibleSegments->add(&node.data);
     } else {
-        // виден частично
+        // РІРёРґРµРЅ С‡Р°СЃС‚РёС‡РЅРѕ
         if (!node.isLeaf) {
             findVisibleSegmentsFor(*node.frontNode);
             findVisibleSegmentsFor(*node.backNode);

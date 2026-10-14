@@ -16,7 +16,7 @@ void RaceScreenRenderer::setScreen(RaceScreen& screen) {
 }
 
 void RaceScreenRenderer::render() {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // TODO äëÿ îòëàäêè
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // TODO Ð´Ð»Ñ Ð¾Ñ‚Ð»Ð°Ð´ÐºÐ¸
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     GameWorld& gameWorld = _screen->getGameWorld();
     _trackRenderer.render(gameWorld.getVisibleWorldSegments(), gameWorld.getCamera());

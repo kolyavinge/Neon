@@ -78,7 +78,7 @@ void App::run() {
 
 int main(int, char**) {
     unsigned int state;
-    _controlfp_s(&state, 0, _EM_ZERODIVIDE | _EM_INVALID); // аппаратные исключения
+    _controlfp_s(&state, 0, _EM_ZERODIVIDE | _EM_INVALID); // Р°РїРїР°СЂР°С‚РЅС‹Рµ РёСЃРєР»СЋС‡РµРЅРёСЏ
 
     App::run();
 

@@ -71,20 +71,20 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     findAllCollisionPoints(vehicle.getBody());
     if (_collisionPoints.getCount() == 0) return false;
 
-    // устраняем коллизии
+    // СѓСЃС‚СЂР°РЅСЏРµРј РєРѕР»Р»РёР·РёРё
 
-    // расчитываем новые скорости в точках соударения
+    // СЂР°СЃС‡РёС‚С‹РІР°РµРј РЅРѕРІС‹Рµ СЃРєРѕСЂРѕСЃС‚Рё РІ С‚РѕС‡РєР°С… СЃРѕСѓРґР°СЂРµРЅРёСЏ
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
         vehicle.calculateVelocitiesAfterCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
     }
 
-    // вытаскиваем точки из препядствий
+    // РІС‹С‚Р°СЃРєРёРІР°РµРј С‚РѕС‡РєРё РёР· РїСЂРµРїСЏРґСЃС‚РІРёР№
     Vector3 totalCollisionDepth;
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
     for (int i = 0; i < _collisionDepths.getCount(); i++) {
         Vector3 collisionDepth = _collisionDepths[i];
         totalCollisionDepth.add(collisionDepth);
-        // корректируем точки кузова
+        // РєРѕСЂСЂРµРєС‚РёСЂСѓРµРј С‚РѕС‡РєРё РєСѓР·РѕРІР°
         for (int j = 0; j < bodyPoints.getCount(); j++) bodyPoints[j]->add(collisionDepth);
     }
     Vector3 newCenter = vehicle.getCenter();
@@ -103,16 +103,16 @@ void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
     Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count> barrierPrimitivesForPoint;
     getGroundAndBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
 
-    // проверяем на соударение 8 точек кузова в 4 сегментах
-    // алгоритм рассчитан на поиск соударений только с лицевой гранью препядствия
+    // РїСЂРѕРІРµСЂСЏРµРј РЅР° СЃРѕСѓРґР°СЂРµРЅРёРµ 8 С‚РѕС‡РµРє РєСѓР·РѕРІР° РІ 4 СЃРµРіРјРµРЅС‚Р°С…
+    // Р°Р»РіРѕСЂРёС‚Рј СЂР°СЃСЃС‡РёС‚Р°РЅ РЅР° РїРѕРёСЃРє СЃРѕСѓРґР°СЂРµРЅРёР№ С‚РѕР»СЊРєРѕ СЃ Р»РёС†РµРІРѕР№ РіСЂР°РЅСЊСЋ РїСЂРµРїСЏРґСЃС‚РІРёСЏ
     Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Collection<WorldPrimitive*>& barrierPrimitives = *barrierPrimitivesForPoint[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
             Vector3 bodyPrevPoint = *bodyPoints[bodyPointIndex];
-            // для рассчета позиции точки кузова на прошлом шаге используем ее скорость
-            // по хорошему нужно брать пройденный путь, а не скорость, но нам важно направление, а не величина
+            // РґР»СЏ СЂР°СЃСЃС‡РµС‚Р° РїРѕР·РёС†РёРё С‚РѕС‡РєРё РєСѓР·РѕРІР° РЅР° РїСЂРѕС€Р»РѕРј С€Р°РіРµ РёСЃРїРѕР»СЊР·СѓРµРј РµРµ СЃРєРѕСЂРѕСЃС‚СЊ
+            // РїРѕ С…РѕСЂРѕС€РµРјСѓ РЅСѓР¶РЅРѕ Р±СЂР°С‚СЊ РїСЂРѕР№РґРµРЅРЅС‹Р№ РїСѓС‚СЊ, Р° РЅРµ СЃРєРѕСЂРѕСЃС‚СЊ, РЅРѕ РЅР°Рј РІР°Р¶РЅРѕ РЅР°РїСЂР°РІР»РµРЅРёРµ, Р° РЅРµ РІРµР»РёС‡РёРЅР°
             Vector3 pointVelocity = body.getVelocityAtPoint(bodyPrevPoint);
             float pointVelocityLength = pointVelocity.getLength();
             if (Numeric::floatEquals(pointVelocityLength, 0.0f)) continue;
@@ -122,20 +122,20 @@ void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
                 pointVelocityLength = minPointVelocity;
             }
             bodyPrevPoint.sub(pointVelocity);
-            // примерно определяем есть ли пересечение по тому пути, который прошла точка кузова (высокая точность не нужна)
-            // (если это не проверять, код ниже будет работать неправильно)
+            // РїСЂРёРјРµСЂРЅРѕ РѕРїСЂРµРґРµР»СЏРµРј РµСЃС‚СЊ Р»Рё РїРµСЂРµСЃРµС‡РµРЅРёРµ РїРѕ С‚РѕРјСѓ РїСѓС‚Рё, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕС€Р»Р° С‚РѕС‡РєР° РєСѓР·РѕРІР° (РІС‹СЃРѕРєР°СЏ С‚РѕС‡РЅРѕСЃС‚СЊ РЅРµ РЅСѓР¶РЅР°)
+            // (РµСЃР»Рё СЌС‚Рѕ РЅРµ РїСЂРѕРІРµСЂСЏС‚СЊ, РєРѕРґ РЅРёР¶Рµ Р±СѓРґРµС‚ СЂР°Р±РѕС‚Р°С‚СЊ РЅРµРїСЂР°РІРёР»СЊРЅРѕ)
             if (!barrierPrimitive.hasCollision(bodyPrevPoint, *bodyPoints[bodyPointIndex], 0.1f)) {
                 continue;
             }
-            // ищим точку пересечения - точка на которую должна переместиться текущая точка кузова
-            // луч rayFromPosition-rayToPosition рассчитывается от текущей точки кузова до точки выхода из препядствия
+            // РёС‰РёРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ - С‚РѕС‡РєР° РЅР° РєРѕС‚РѕСЂСѓСЋ РґРѕР»Р¶РЅР° РїРµСЂРµРјРµСЃС‚РёС‚СЊСЃСЏ С‚РµРєСѓС‰Р°СЏ С‚РѕС‡РєР° РєСѓР·РѕРІР°
+            // Р»СѓС‡ rayFromPosition-rayToPosition СЂР°СЃСЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РѕС‚ С‚РµРєСѓС‰РµР№ С‚РѕС‡РєРё РєСѓР·РѕРІР° РґРѕ С‚РѕС‡РєРё РІС‹С…РѕРґР° РёР· РїСЂРµРїСЏРґСЃС‚РІРёСЏ
             Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
             Vector3 rayToPosition = rayFromPosition;
             rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), pointVelocityLength);
             Vector3 collisionPoint;
             bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
             if (!hasCollision) continue;
-            // выталкиваем точку кузова из препядствия наружу
+            // РІС‹С‚Р°Р»РєРёРІР°РµРј С‚РѕС‡РєСѓ РєСѓР·РѕРІР° РёР· РїСЂРµРїСЏРґСЃС‚РІРёСЏ РЅР°СЂСѓР¶Сѓ
             Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
@@ -146,12 +146,12 @@ void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
 
 void VehicleCollisionLogic::getGroundAndBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
     Rect2d& bottomRect = bodyBox.getBottomRect();
-    // находим сегменты для 4 нижних точек кузова
+    // РЅР°С…РѕРґРёРј СЃРµРіРјРµРЅС‚С‹ РґР»СЏ 4 РЅРёР¶РЅРёС… С‚РѕС‡РµРє РєСѓР·РѕРІР°
     result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downLeft);
     result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downRight);
     result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upLeft);
     result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upRight);
-    // считаем что верхние точки находятся в тех же сегментах что и нижние
+    // СЃС‡РёС‚Р°РµРј С‡С‚Рѕ РІРµСЂС…РЅРёРµ С‚РѕС‡РєРё РЅР°С…РѕРґСЏС‚СЃСЏ РІ С‚РµС… Р¶Рµ СЃРµРіРјРµРЅС‚Р°С… С‡С‚Рѕ Рё РЅРёР¶РЅРёРµ
     result[(int)Box3dPoint::topDownLeft] = result[(int)Box3dPoint::bottomDownLeft];
     result[(int)Box3dPoint::topDownRight] = result[(int)Box3dPoint::bottomDownRight];
     result[(int)Box3dPoint::topUpLeft] = result[(int)Box3dPoint::bottomUpLeft];

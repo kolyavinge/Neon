@@ -29,13 +29,13 @@ void GameInitializer::initGame() {
     _vehicleRenderer.init(_renderModel3dCollection);
 }
 
-// TODO вызывать после выбора трассы
+// TODO РІС‹Р·С‹РІР°С‚СЊ РїРѕСЃР»Рµ РІС‹Р±РѕСЂР° С‚СЂР°СЃСЃС‹
 void GameInitializer::initGameWorld(GameWorld& gameWorld) {
     _gameWorldInitializer.init(gameWorld);
     _debugScreen.setGameWorld(gameWorld);
     List<WorldSegment*> allWorldSegments;
     gameWorld.getSegmentTree().getDataForAllNodes(output allWorldSegments);
     _trackRenderer.init(allWorldSegments, gameWorld.getTrack().getGlobalLight());
-    // во время инициализации рендера создаются 3d модели, выгружаем их в конце
+    // РІРѕ РІСЂРµРјСЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЂРµРЅРґРµСЂР° СЃРѕР·РґР°СЋС‚СЃСЏ 3d РјРѕРґРµР»Рё, РІС‹РіСЂСѓР¶Р°РµРј РёС… РІ РєРѕРЅС†Рµ
     _model3dCollection.unload();
 }

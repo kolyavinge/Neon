@@ -22,7 +22,7 @@ Model3d& Model3dCollection::getModelFor(WorldPrimitiveKind kind) {
         modelDirectory.append(modelName);
         Model3d* model = new Model3d();
         _model3dLoader.load(modelDirectory, output *model);
-        // ïîêà îáðàáàòûâàþòñÿ òîëüêî áàðüåðû
+        // Ð¿Ð¾ÐºÐ° Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÑŽÑ‚ÑÑ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð±Ð°Ñ€ÑŒÐµÑ€Ñ‹
         model->moveToCenter();
         Measures measures = model->getMeasures();
         model->scale(Vector3(1.0f, WorldPrimitive::barrierLength / measures.yLength, WorldPrimitive::barrierHeight / measures.zLength));

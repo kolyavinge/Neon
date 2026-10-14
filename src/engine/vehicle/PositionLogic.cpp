@@ -10,7 +10,7 @@ PositionLogic::PositionLogic(
 void PositionLogic::updatePosition(Vehicle& vehicle) {
     vehicle.calculateBodyPosition();
     _vehicleCollisionLogic.resolveBarrierCollisions(vehicle);
-    // после поиска соударений габаритные точки кузова будут скорректированы
+    // РїРѕСЃР»Рµ РїРѕРёСЃРєР° СЃРѕСѓРґР°СЂРµРЅРёР№ РіР°Р±Р°СЂРёС‚РЅС‹Рµ С‚РѕС‡РєРё РєСѓР·РѕРІР° Р±СѓРґСѓС‚ СЃРєРѕСЂСЂРµРєС‚РёСЂРѕРІР°РЅС‹
     vehicle.calculatePositionForAllSprings();
     bool allWheelsHaveSameGroundContact = false;
     _vehicleCollisionLogic.resolveWheelGroundContacts(vehicle, output allWheelsHaveSameGroundContact);
@@ -18,7 +18,7 @@ void PositionLogic::updatePosition(Vehicle& vehicle) {
         vehicle.resetToPrevPosition();
         vehicle.calculatePositionForAllSprings();
         vehicle.clearAllVelocitiesAndForces();
-        // обновим матрицы для колес, на случай если игрок крутит руль стоя на месте
+        // РѕР±РЅРѕРІРёРј РјР°С‚СЂРёС†С‹ РґР»СЏ РєРѕР»РµСЃ, РЅР° СЃР»СѓС‡Р°Р№ РµСЃР»Рё РёРіСЂРѕРє РєСЂСѓС‚РёС‚ СЂСѓР»СЊ СЃС‚РѕСЏ РЅР° РјРµСЃС‚Рµ
         vehicle.calculateModelMatrixForAllWheels();
         return;
     }

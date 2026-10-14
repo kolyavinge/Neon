@@ -14,8 +14,8 @@ enum class WorldPrimitiveKind {
     _count
 };
 
-// базовый строительный элемент игрового мира
-// в основе лежит усеченная плоскость
+// Р±Р°Р·РѕРІС‹Р№ СЃС‚СЂРѕРёС‚РµР»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚ РёРіСЂРѕРІРѕРіРѕ РјРёСЂР°
+// РІ РѕСЃРЅРѕРІРµ Р»РµР¶РёС‚ СѓСЃРµС‡РµРЅРЅР°СЏ РїР»РѕСЃРєРѕСЃС‚СЊ
 class WorldPrimitive : public Object {
 
 public:
@@ -32,7 +32,7 @@ private:
 
 public:
     WorldPrimitive();
-    // обход точек против часовой стрелки, чтобы они хорошо соединялись в полигоны
+    // РѕР±С…РѕРґ С‚РѕС‡РµРє РїСЂРѕС‚РёРІ С‡Р°СЃРѕРІРѕР№ СЃС‚СЂРµР»РєРё, С‡С‚РѕР±С‹ РѕРЅРё С…РѕСЂРѕС€Рѕ СЃРѕРµРґРёРЅСЏР»РёСЃСЊ РІ РїРѕР»РёРіРѕРЅС‹
     WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4);
     WorldPrimitiveKind getKind();
     Collection<Vector3>& getPoints();

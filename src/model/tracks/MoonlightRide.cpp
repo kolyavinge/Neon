@@ -69,7 +69,7 @@ void MoonlightRide::makeGround() {
         .setSize(20.0f, 20.0f)
         .build();
 
-    // длинная прямая
+    // РґР»РёРЅРЅР°СЏ РїСЂСЏРјР°СЏ
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(builder.getBasePlaneUpLeft())
@@ -165,21 +165,21 @@ void MoonlightRide::makeRoadBarriers() {
 
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
+        .setPosition(Vector3(5.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
         .setCount(20)
         .build();
 
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(20.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::rightBarrier)
+        .setPosition(Vector3(15.0f, 15.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::rightBarrier)
         .setCount(20)
         .build();
 
-    builder
+    /*builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
         .setPosition(Vector3(22.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
         .setCount(20)
-        .build();
+        .build();*/
 }
 
 void MoonlightRide::makeSplitPlanes() {

@@ -84,7 +84,7 @@ public:
     Vector3 getLongitudinalForce();
     Vector3 getLateralForce();
     Vector3 getRollingResistanceForce();
-    Vector3 getAntiSpinTorque(); // TODO попробовать сделать через линейную силу, а не через крутящий момент
+    Vector3 getAntiSpinTorque(); // TODO РїРѕРїСЂРѕР±РѕРІР°С‚СЊ СЃРґРµР»Р°С‚СЊ С‡РµСЂРµР· Р»РёРЅРµР№РЅСѓСЋ СЃРёР»Сѓ, Р° РЅРµ С‡РµСЂРµР· РєСЂСѓС‚СЏС‰РёР№ РјРѕРјРµРЅС‚
     float getLongitudinalForceBeforeNormalize();
     float getLateralForceBeforeNormalize();
     void setForces(

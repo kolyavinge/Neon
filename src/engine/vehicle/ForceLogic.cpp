@@ -22,11 +22,11 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::applyForces(Vehicle& vehicle) {
-    // применяем силы которые действуют на машинку при движении
+    // РїСЂРёРјРµРЅСЏРµРј СЃРёР»С‹ РєРѕС‚РѕСЂС‹Рµ РґРµР№СЃС‚РІСѓСЋС‚ РЅР° РјР°С€РёРЅРєСѓ РїСЂРё РґРІРёР¶РµРЅРёРё
     const float dt = CommonConstants::deltaTimeSec;
     Body& body = vehicle.getBody();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
-    // силы от колес
+    // СЃРёР»С‹ РѕС‚ РєРѕР»РµСЃ
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
@@ -36,7 +36,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         vehicle.applyForceAtPoint(wheel.getRollingResistanceForce(), applyPoint);
         vehicle.applyTorque(wheel.getAntiSpinTorque());
     }
-    // силы от подвески
+    // СЃРёР»С‹ РѕС‚ РїРѕРґРІРµСЃРєРё
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
@@ -120,8 +120,8 @@ void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::adjustLongitudinalForces(Vehicle& vehicle) {
-    // при торможении суммарная продольная сила может превысеть линейную скорость и развернуть ее в обратном направлении
-    // чтобы этого избежать, пропорционально уменьшаем продольную силу каждого колеса
+    // РїСЂРё С‚РѕСЂРјРѕР¶РµРЅРёРё СЃСѓРјРјР°СЂРЅР°СЏ РїСЂРѕРґРѕР»СЊРЅР°СЏ СЃРёР»Р° РјРѕР¶РµС‚ РїСЂРµРІС‹СЃРµС‚СЊ Р»РёРЅРµР№РЅСѓСЋ СЃРєРѕСЂРѕСЃС‚СЊ Рё СЂР°Р·РІРµСЂРЅСѓС‚СЊ РµРµ РІ РѕР±СЂР°С‚РЅРѕРј РЅР°РїСЂР°РІР»РµРЅРёРё
+    // С‡С‚РѕР±С‹ СЌС‚РѕРіРѕ РёР·Р±РµР¶Р°С‚СЊ, РїСЂРѕРїРѕСЂС†РёРѕРЅР°Р»СЊРЅРѕ СѓРјРµРЅСЊС€Р°РµРј РїСЂРѕРґРѕР»СЊРЅСѓСЋ СЃРёР»Сѓ РєР°Р¶РґРѕРіРѕ РєРѕР»РµСЃР°
     if (!vehicle.isBrakingByWheelsOrEngine()) return;
     const float dt = CommonConstants::deltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();

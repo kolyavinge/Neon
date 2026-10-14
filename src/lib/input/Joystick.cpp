@@ -1,4 +1,4 @@
-// сначала нужно подключать эти файлы
+// СЃРЅР°С‡Р°Р»Р° РЅСѓР¶РЅРѕ РїРѕРґРєР»СЋС‡Р°С‚СЊ СЌС‚Рё С„Р°Р№Р»С‹
 #include <lib/windows.h>
 #include <memory>
 #include <vector>
@@ -7,7 +7,7 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Gaming.Input.h>
 #pragma warning(pop)
-// сначала нужно подключать эти файлы
+// СЃРЅР°С‡Р°Р»Р° РЅСѓР¶РЅРѕ РїРѕРґРєР»СЋС‡Р°С‚СЊ СЌС‚Рё С„Р°Р№Р»С‹
 
 #include <lib/input/Joystick.h>
 
