@@ -1,3 +1,4 @@
+#include <lib/Numeric.h>
 #include <lib/calc/Plane.h>
 
 Plane::Plane() {}

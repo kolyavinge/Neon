@@ -13,7 +13,8 @@ void MoonlightRide::buildInternal() {
     makeRoadBarriers();
     makeSplitPlanes();
     _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
-    _globalLight.setColor(Vector3(1.0f, 1.0f, 1.0f));
+    float lightValue = 1.5f;
+    _globalLight.setColor(Vector3(lightValue, lightValue, lightValue));
 }
 
 void MoonlightRide::makeGround() {
@@ -162,24 +163,93 @@ void MoonlightRide::makeGround() {
 void MoonlightRide::makeRoadBarriers() {
     RoadBarrierBuilder builder;
     builder.setResultList(_barrierPrimitives);
+    builder.setGroundPrimitives(_groundPrimitives);
 
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(5.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
-        .setCount(20)
+        .setPosition(Vector3(2.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setCount(50)
         .build();
 
     builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(15.0f, 15.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::rightBarrier)
+        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .calculateZ()
+        .setCount(59)
+        .build();
+
+    Vector3 lastLeftBarrierPosition = builder.getLastPosition();
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(Vector3(18.0f, 15.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setCount(40)
+        .build();
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .calculateZ()
+        .setCount(53)
+        .build();
+
+    Vector3 lastRightBarrierPosition = builder.getLastPosition();
+
+    // первый поворот
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(lastLeftBarrierPosition, Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
         .setCount(20)
         .build();
 
-    /*builder
+    lastLeftBarrierPosition = builder.getLastPosition();
+
+    builder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(22.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), BarrierOrientation::leftBarrier)
+        .setPosition(lastRightBarrierPosition, Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::rightBarrier)
         .setCount(20)
-        .build();*/
+        .build();
+
+    lastRightBarrierPosition = builder.getLastPosition();
+
+    // второй поворот
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(lastLeftBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setCount(22)
+        .build()
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(builder.getLastPosition(), Vector3(-1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .calculateZ()
+        .setCount(20)
+        .build();
+
+    lastLeftBarrierPosition = builder.getLastPosition();
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(lastRightBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setCount(38)
+        .build()
+        .setPosition(builder.getLastPosition(), Vector3(-1.0f, 0.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .calculateZ()
+        .setCount(19)
+        .build()
+        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setCount(2)
+        .build();
+
+    lastRightBarrierPosition = builder.getLastPosition();
+
+    // длинная прямая
+
+    builder
+        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setPosition(lastLeftBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setCount(608)
+        .build();
 }
 
 void MoonlightRide::makeSplitPlanes() {

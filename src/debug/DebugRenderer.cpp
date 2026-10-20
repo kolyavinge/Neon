@@ -280,20 +280,14 @@ void DebugRenderer::renderBarriers(Collection<WorldPrimitive*>& barriers) {
         glVertex3f(pr.getPoints()[2]);
         glVertex3f(pr.getPoints()[3]);
         glEnd();
-        //glBegin(GL_LINES);
-        //glVertex3f(pr.getPoints()[0]);
-        //glVertex3f(pr.getPoints()[2]);
-        //glVertex3f(pr.getPoints()[1]);
-        //glVertex3f(pr.getPoints()[3]);
-        //glEnd();
         // front normal
-        //glPushMatrix();
-        //glTranslatef(pr.getPoints()[3]);
-        //glBegin(GL_LINES);
-        //glVertex3f(Vector3());
-        //glVertex3f(pr.getFrontNormal());
-        //glEnd();
-        //glPopMatrix();
+        glPushMatrix();
+        glTranslatef(pr.getCenter());
+        glBegin(GL_LINES);
+        glVertex3f(Vector3());
+        glVertex3f(pr.getFrontNormal());
+        glEnd();
+        glPopMatrix();
     }
     glDisable(GL_DEPTH_TEST);
 }

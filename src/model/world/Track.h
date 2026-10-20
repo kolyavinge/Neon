@@ -11,6 +11,7 @@ protected:
     List<WorldPrimitive> _groundPrimitives;
     List<WorldPrimitive> _barrierPrimitives;
     List<Plane> _splitPlanes;
+    Light _globalLight;
 
 public:
     Track();
@@ -23,5 +24,4 @@ public:
 
 protected:
     virtual void buildInternal() = 0;
-    Light _globalLight;
 };

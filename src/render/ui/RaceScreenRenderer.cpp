@@ -21,5 +21,5 @@ void RaceScreenRenderer::render() {
     GameWorld& gameWorld = _screen->getGameWorld();
     _trackRenderer.render(gameWorld.getVisibleWorldSegments(), gameWorld.getCamera());
     _vehicleRenderer.render(gameWorld.getPlayerVehicle(), gameWorld.getCamera(), gameWorld.getTrack().getGlobalLight());
-    //_debugRenderer.renderDebugInfo(gameWorld);
+    _debugRenderer.renderDebugInfo(gameWorld);
 }

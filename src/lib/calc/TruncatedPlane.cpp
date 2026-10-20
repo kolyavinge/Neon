@@ -17,6 +17,7 @@ bool TruncatedPlane::contains(Vector3& point, float eps) {
 }
 
 bool TruncatedPlane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
+    // сначала ищим точку пересечения, потом проверяем попадает ли она внутрь усеченной плоскости (именно в этом порядке)
     return Plane::hasCollision(startPoint, endPoint, eps, output collisionPoint) && withinCuttingPlanes(collisionPoint);
 }
 

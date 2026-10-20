@@ -98,6 +98,7 @@ TransformMatrix4 WorldPrimitive::getTransformMatrix4() {
 
     Vector3 y = _upNormal;
     y.crossProduct(_plane.getFrontNormal());
+    y.normalize();
     TransformMatrix4 rotate;
     rotate.setCoordinateSystem(_plane.getFrontNormal(), y, _upNormal);
 
