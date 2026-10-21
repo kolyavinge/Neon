@@ -35,5 +35,5 @@ private:
     void setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitives, Vector3 chassisUpNormal);
     void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
     void findAllCollisionPoints(Body& body);
-    void getGroundAndBarrierPrimitivesForBodyPoints(Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result);
+    void getGroundAndBarrierPrimitivesForBodyPoints(Collection<Vector3*>& bodyPoints, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result);
 };

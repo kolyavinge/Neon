@@ -10,8 +10,8 @@ void WorldSegmentDataFinder::init(BSPTree<WorldSegment>& segmentTree) {
     _segmentTree = &segmentTree;
 }
 
-Collection<WorldPrimitive*>& WorldSegmentDataFinder::getGroundPrimitivesForWheel(Wheel& wheel) {
-    return _segmentTree->findNodeDataByPoint(wheel.getCenter()).getGroundPrimitives();
+Collection<WorldPrimitive*>& WorldSegmentDataFinder::getGroundPrimitivesForSpring(Spring& spring) {
+    return _segmentTree->findNodeDataByPoint(spring.getPosition()).getGroundPrimitives();
 }
 
 Collection<WorldPrimitive*>& WorldSegmentDataFinder::getGroundAndBarrierPrimitivesForPoint(Vector3 point) {

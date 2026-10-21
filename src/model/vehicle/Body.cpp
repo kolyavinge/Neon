@@ -39,8 +39,9 @@ Vector3 Body::getRearWingDragForce() {
 }
 
 Vector3 Body::getRearWingPosition() {
-    Rect2d& top = _box.getTopRect();
-    return top.downLeft.getMiddleTo(top.downRight);
+    Vector3* left = _box.getPoints()[(int)Box3dPoint::topDownLeft];
+    Vector3* right = _box.getPoints()[(int)Box3dPoint::topDownRight];
+    return left->getMiddleTo(*right);
 }
 
 Vector3 Body::getVelocityAtPoint(Vector3 bodyPoint) {

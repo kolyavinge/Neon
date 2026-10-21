@@ -2,6 +2,7 @@
 #include <debug/DebugRenderer.h>
 #include <lib/calc/UnitConverter.h>
 #include <lib/calc/Vector3.h>
+#include <model/common/common.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
@@ -135,28 +136,29 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
 void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     // body box
     Body& body = vehicle.getBody();
+    Collection<Vector3*>& bodyPoints = body.getBox().getPoints();
     glColor3f(0.6f, 0.6f, 0.6f);
     glBegin(GL_LINE_LOOP);
-    glVertex3f(body.getBox().getBottomRect().downLeft);
-    glVertex3f(body.getBox().getBottomRect().downRight);
-    glVertex3f(body.getBox().getBottomRect().upRight);
-    glVertex3f(body.getBox().getBottomRect().upLeft);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomDownLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomDownRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomUpRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomUpLeft]);
     glEnd();
     glBegin(GL_LINE_LOOP);
-    glVertex3f(body.getBox().getTopRect().downLeft);
-    glVertex3f(body.getBox().getTopRect().downRight);
-    glVertex3f(body.getBox().getTopRect().upRight);
-    glVertex3f(body.getBox().getTopRect().upLeft);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topDownLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topDownRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topUpRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topUpLeft]);
     glEnd();
     glBegin(GL_LINES);
-    glVertex3f(body.getBox().getBottomRect().downLeft);
-    glVertex3f(body.getBox().getTopRect().downLeft);
-    glVertex3f(body.getBox().getBottomRect().downRight);
-    glVertex3f(body.getBox().getTopRect().downRight);
-    glVertex3f(body.getBox().getBottomRect().upLeft);
-    glVertex3f(body.getBox().getTopRect().upLeft);
-    glVertex3f(body.getBox().getBottomRect().upRight);
-    glVertex3f(body.getBox().getTopRect().upRight);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomDownLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topDownLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomDownRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topDownRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomUpLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topUpLeft]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::bottomUpRight]);
+    glVertex3f(*bodyPoints[(int)Box3dPoint::topUpRight]);
     glEnd();
 
     // air drag force

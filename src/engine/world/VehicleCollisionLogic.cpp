@@ -19,7 +19,9 @@ void VehicleCollisionLogic::resolveWheelGroundContacts(Vehicle& vehicle, output 
         Vector3 rayToPosition = rayFromPosition;
         rayToPosition.subMultiplied(chassisUpNormal, spring.getMaxLength());
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
-        Collection<WorldPrimitive*>& groundPrimitives = _segmentDataFinder.getGroundPrimitivesForWheel(wheel);
+        // берем примитивы из сегмента в котором находится пружинка, а не колесо
+        // ибо к этому моменту у нас пружинки находятся на своих новых позициях, а колеса нет
+        Collection<WorldPrimitive*>& groundPrimitives = _segmentDataFinder.getGroundPrimitivesForSpring(spring);
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = false;
         for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {
@@ -79,16 +81,13 @@ bool VehicleCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     }
 
     // вытаскиваем точки из препядствий
-    Vector3 totalCollisionDepth;
+    // такие то точки могут остаться внутри препядствий - они будут обработаны в след кадре
+    Vector3 longestCollisionDepth = Vector3::getLongest(_collisionDepths);
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
-    for (int i = 0; i < _collisionDepths.getCount(); i++) {
-        Vector3 collisionDepth = _collisionDepths[i];
-        totalCollisionDepth.add(collisionDepth);
-        // корректируем точки кузова
-        for (int j = 0; j < bodyPoints.getCount(); j++) bodyPoints[j]->add(collisionDepth);
-    }
+    // корректируем точки кузова
+    for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(longestCollisionDepth);
     Vector3 newCenter = vehicle.getCenter();
-    newCenter.add(totalCollisionDepth);
+    newCenter.add(longestCollisionDepth);
     vehicle.setCenter(newCenter);
 
     return true;
@@ -100,18 +99,19 @@ void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
     _collisionNormalsToBody.clear();
 
     Box3d& bodyBox = body.getBox();
+    Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
     Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count> barrierPrimitivesForPoint;
-    getGroundAndBarrierPrimitivesForBodyPoints(bodyBox, output barrierPrimitivesForPoint);
+    getGroundAndBarrierPrimitivesForBodyPoints(bodyPoints, output barrierPrimitivesForPoint);
 
     // проверяем на соударение 8 точек кузова в 4 сегментах
     // алгоритм рассчитан на поиск соударений только с лицевой гранью препядствия
-    Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 oppositeBodyPoint = *bodyBox.getOppositeDiagonalPointFor(bodyPointIndex);
         Collection<WorldPrimitive*>& barrierPrimitives = *barrierPrimitivesForPoint[bodyPointIndex];
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
             // определяем есть ли пересечение между текущей точкой кузова и противоположной ей по-диагонали
+            // такой диагональный отрезок покрывает все три оси перемещения
             // (высокая точность не нужна, но если это не проверить, код ниже будет работать неправильно)
             if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.1f)) {
                 continue;
@@ -134,13 +134,12 @@ void VehicleCollisionLogic::findAllCollisionPoints(Body& body) {
 }
 
 void VehicleCollisionLogic::getGroundAndBarrierPrimitivesForBodyPoints(
-    Box3d& bodyBox, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
-    Rect2d& bottomRect = bodyBox.getBottomRect();
+    Collection<Vector3*>& bodyPoints, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result) {
     // находим сегменты для 4 нижних точек кузова
-    result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downLeft);
-    result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.downRight);
-    result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upLeft);
-    result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(bottomRect.upRight);
+    result[(int)Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(*bodyPoints[(int)Box3dPoint::bottomDownLeft]);
+    result[(int)Box3dPoint::bottomDownRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(*bodyPoints[(int)Box3dPoint::bottomDownRight]);
+    result[(int)Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(*bodyPoints[(int)Box3dPoint::bottomUpLeft]);
+    result[(int)Box3dPoint::bottomUpRight] = &_segmentDataFinder.getGroundAndBarrierPrimitivesForPoint(*bodyPoints[(int)Box3dPoint::bottomUpRight]);
     // считаем что верхние точки находятся в тех же сегментах что и нижние
     result[(int)Box3dPoint::topDownLeft] = result[(int)Box3dPoint::bottomDownLeft];
     result[(int)Box3dPoint::topDownRight] = result[(int)Box3dPoint::bottomDownRight];
