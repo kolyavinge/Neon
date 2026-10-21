@@ -19,6 +19,7 @@ class Body : public Object {
 public:
     Body(RigidBody& rigidBody);
     void init();
+    VehicleData& getData();
     Box3d& getBox();
     Vector3 getAirDragForce();
     Vector3 getAirDragTorque();

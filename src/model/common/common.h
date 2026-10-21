@@ -48,12 +48,16 @@ class Box3d : public Object {
 
 public:
     Box3d();
-    // запрещаем копировать, потому что есть массив _points с указател¤ми
-    // который нужно инитить по новой в новом экземпл¤ре
+    // запрещаем копировать, потому что есть массив _points с указателями
+    // который нужно инитить по новой в новом экземпляре
     DENY_COPYING(Box3d);
     Rect2d& getBottomRect();
     Rect2d& getTopRect();
     void setMeasures(Measures& measures);
     void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal);
     Collection<Vector3*>& getPoints();
+    Vector3* getOppositeDiagonalPointFor(int pointIndex);
+
+private:
+    Box3dPoint getBox3dPointOppositeDiagonalPointFor(int pointIndex);
 };

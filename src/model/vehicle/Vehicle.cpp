@@ -36,6 +36,7 @@ void Vehicle::init() {
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.1f);
     _rigidBody.setCenter(Vector3(10.0f, 1450.0f, 4.0f));
+    _rigidBody.setCenter(Vector3(15.0f, 265.0f, 4.0f));
     //_rigidBody.setRotation(-Math::piHalf, CommonConstants::upAxis);
 }
 

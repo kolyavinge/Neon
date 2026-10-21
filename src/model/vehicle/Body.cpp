@@ -14,6 +14,10 @@ void Body::init() {
     _rearWingDragForce.setZero();
 }
 
+VehicleData& Body::getData() {
+    return _data;
+}
+
 Box3d& Body::getBox() {
     return _box;
 }
