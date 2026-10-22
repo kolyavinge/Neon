@@ -13,6 +13,10 @@ Collection<WorldPrimitive>& Track::getBarrierPrimitives() {
     return _barrierPrimitives;
 }
 
+Collection<Line>& Track::getOuterCorners() {
+    return _outerCorners;
+}
+
 Collection<Plane>& Track::getSplitPlanes() {
     return _splitPlanes;
 }

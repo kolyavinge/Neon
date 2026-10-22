@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <lib/calc/Math.h>
+#include <lib/calc/Plane.h>
 #include <model/vehicle/Body.h>
 
 Body::Body(RigidBody& rigidBody) :
@@ -80,4 +81,26 @@ void Body::calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 cha
 
 void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {
     _box.calculatePoints(vehicleCenter, chassisRightNormal, chassisFrontNormal, chassisUpNormal);
+}
+
+TruncatedPlane& Body::calculateBottomTruncatedPlane() {
+    Collection<Vector3*>& points = _box.getPoints();
+    Vector3 downLeft = *points[(int)Box3dPoint::bottomDownLeft];
+    Vector3 downRight = *points[(int)Box3dPoint::bottomDownRight];
+    Vector3 upLeft = *points[(int)Box3dPoint::bottomUpLeft];
+    Vector3 upRight = *points[(int)Box3dPoint::bottomUpRight];
+    Vector3 topDownLeft = *points[(int)Box3dPoint::topDownLeft];
+    Vector3 frontNormal = downLeft.getDirectionTo(topDownLeft).getNormalized();
+    _bottomTruncatedPlane.set(frontNormal, downLeft);
+    _bottomTruncatedPlane.clearCuttingPlanes();
+    Plane p1(downLeft.getDirectionTo(upLeft).getNormalized(), downLeft);
+    Plane p2(downLeft.getDirectionTo(downRight).getNormalized(), downLeft);
+    Plane p3(upRight.getDirectionTo(upLeft).getNormalized(), upRight);
+    Plane p4(upRight.getDirectionTo(downRight).getNormalized(), upRight);
+    _bottomTruncatedPlane.addCuttingPlane(p1);
+    _bottomTruncatedPlane.addCuttingPlane(p2);
+    _bottomTruncatedPlane.addCuttingPlane(p3);
+    _bottomTruncatedPlane.addCuttingPlane(p4);
+
+    return _bottomTruncatedPlane;
 }

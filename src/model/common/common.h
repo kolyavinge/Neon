@@ -3,6 +3,16 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
+class Line : public Object {
+
+public:
+    Vector3 startPoint;
+    Vector3 endPoint;
+
+    Line();
+    Line(Vector3 start, Vector3 end);
+};
+
 class Measures : public Object {
 
 public:
@@ -36,8 +46,9 @@ enum class Box3dPoint {
     topDownRight = 5,
     topUpLeft = 6,
     topUpRight = 7,
-    _count
+    _count,
 };
+static_assert((int)Box3dPoint::_count == 8);
 
 class Box3d : public Object {
 

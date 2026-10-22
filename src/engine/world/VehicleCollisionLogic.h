@@ -10,6 +10,7 @@
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <model/world/WorldPrimitive.h>
+#include <model/world/WorldSegment.h>
 
 class VehicleCollisionLogic : public Object {
 
@@ -31,9 +32,10 @@ public:
     bool resolveBarrierCollisions(Vehicle& vehicle);
 
 private:
-    bool wheelHasSameGroundContact(bool vehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint);
+    bool wheelHasSameGroundContact(bool isVehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint);
     void setGroundContact(Wheel& wheel, Vector3 newGroundContactPoint, WorldPrimitive& groundPrimitives, Vector3 chassisUpNormal);
     void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
-    void findAllCollisionPoints(Body& body);
-    void getGroundAndBarrierPrimitivesForBodyPoints(Collection<Vector3*>& bodyPoints, output Array<Collection<WorldPrimitive*>*, (int)Box3dPoint::_count>& result);
+    void findPointSegments(Collection<Vector3*>& bodyPoints, output Array<WorldSegment*, (int)Box3dPoint::_count>& result);
+    void findBarrierCollisions(Body& body, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments);
+    void findOuterCornerCollisions(Body& body, Vector3 chassisFrontNormal, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments);
 };

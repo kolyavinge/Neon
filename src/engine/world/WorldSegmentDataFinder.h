@@ -14,6 +14,7 @@ class WorldSegmentDataFinder : public Object {
 public:
     WorldSegmentDataFinder();
     void init(BSPTree<WorldSegment>& segmentTree);
+    WorldSegment& getWorldSegmentForPoint(Vector3 point);
     Collection<WorldPrimitive*>& getGroundPrimitivesForSpring(Spring& spring);
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitivesForPoint(Vector3 point);
 };

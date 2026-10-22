@@ -14,9 +14,12 @@ class TruncatedPlane : public Plane {
 public:
     TruncatedPlane(int initCuttingPlanesCount = 1);
     TruncatedPlane(Vector3 frontNormal, Vector3 basePoint);
+    Collection<Plane>& getCuttingPlanes();
     void addCuttingPlane(Plane cuttingPlane);
+    void clearCuttingPlanes();
     virtual bool contains(Vector3& point, float eps) override;
-    virtual bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) override;
+    virtual bool hasCollision(
+        Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint, CollisionPointPosition cpp = CollisionPointPosition::front) override;
 
 private:
     bool withinCuttingPlanes(Vector3& point);

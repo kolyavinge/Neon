@@ -2,6 +2,11 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 
+enum class CollisionPointPosition {
+    front,
+    back
+};
+
 // математическая плоскость
 class Plane : public Object {
 
@@ -21,5 +26,6 @@ public:
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     Vector3 getProjectedVector(Vector3 v);
     virtual bool contains(Vector3& point, float eps);
-    virtual bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
+    virtual bool hasCollision(
+        Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint, CollisionPointPosition cpp = CollisionPointPosition::front);
 };

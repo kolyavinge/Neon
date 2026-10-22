@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lib/calc/Plane.h>
+#include <lib/calc/Vector3.h>
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
 #include <model/world/Track.h>
@@ -26,5 +27,6 @@ private:
     void initRoot(WorldSegment& rootSegment);
     void initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment);
     SplittedPosition getSplittedPosition(Plane& splitPlane, WorldPrimitive& primitive);
+    SplittedPosition getSplittedPosition(Plane& splitPlane, Vector3& point);
     void removeEmptySegments(BSPTree<WorldSegment>& segmentTree);
 };

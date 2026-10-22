@@ -50,7 +50,7 @@ bool Plane::contains(Vector3& point, float eps) {
     return result;
 }
 
-bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
+bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint, CollisionPointPosition cpp) {
     float startPointDotProduct = _basePoint.getDirectionTo(startPoint).dotProduct(_frontNormal);
     float endPointDotProduct = _basePoint.getDirectionTo(endPoint).dotProduct(_frontNormal);
 
@@ -82,9 +82,10 @@ bool Plane::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output
         middlePoint = startPoint.getMiddleTo(endPoint);
     }
 
-    // в качестве окончательной точки пересечения берем startPoint
+    // по умолчанию в качестве окончательной точки пересечения берем startPoint
     // удобно, когда результирующая точка лежит перед лицевой стороной плоскости
-    collisionPoint = startPoint;
+    // но если очень нужно, то можно и endPoint
+    collisionPoint = cpp == CollisionPointPosition::front ? startPoint : endPoint;
 
     return true;
 }

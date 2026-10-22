@@ -1,5 +1,12 @@
 #include <model/common/common.h>
 
+Line::Line() {}
+
+Line::Line(Vector3 start, Vector3 end) {
+    startPoint = start;
+    endPoint = end;
+}
+
 Measures::Measures() :
     Measures(0.0f, 0.0f, 0.0f) {
 }

@@ -25,6 +25,10 @@ Collection<WorldPrimitive*>& WorldSegment::getGroundAndBarrierPrimitives() {
     return _groundAndBarrierPrimitives;
 }
 
+Collection<Line*>& WorldSegment::getOuterCorners() {
+    return _outerCorners;
+}
+
 Rect2d& WorldSegment::getBoundaryBox() {
     return _boundaryBox;
 }
@@ -43,6 +47,12 @@ void WorldSegment::setBarrierPrimitives(Collection<WorldPrimitive>& primitives) 
     }
 }
 
+void WorldSegment::setOuterCorners(Collection<Line>& outerCorners) {
+    for (int i = 0; i < outerCorners.getCount(); i++) {
+        _outerCorners.add(&outerCorners[i]);
+    }
+}
+
 void WorldSegment::addGroundPrimitive(WorldPrimitive& primitive) {
     _groundPrimitives.add(&primitive);
     _groundAndBarrierPrimitives.add(&primitive);
@@ -51,6 +61,10 @@ void WorldSegment::addGroundPrimitive(WorldPrimitive& primitive) {
 void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
     _barrierPrimitives.add(&primitive);
     _groundAndBarrierPrimitives.add(&primitive);
+}
+
+void WorldSegment::addOuterCorner(Line& outerCorner) {
+    _outerCorners.add(&outerCorner);
 }
 
 void WorldSegment::calculateBoundaryBox() {

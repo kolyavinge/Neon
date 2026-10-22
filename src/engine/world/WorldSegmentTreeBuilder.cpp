@@ -1,4 +1,5 @@
 #include <engine/world/WorldSegmentTreeBuilder.h>
+#include <model/common/common.h>
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;
@@ -20,6 +21,7 @@ void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segment
 void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
     rootSegment.setGroundPrimitives(_track->getGroundPrimitives());
     rootSegment.setBarrierPrimitives(_track->getBarrierPrimitives());
+    rootSegment.setOuterCorners(_track->getOuterCorners());
     rootSegment.calculateBoundaryBox();
 }
 
@@ -54,6 +56,18 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
         }
     }
 
+    // outer corners
+    Collection<Line*>& outerCorners = parentSegment.getOuterCorners();
+    for (int i = 0; i < outerCorners.getCount(); i++) {
+        Line& outerCorner = *outerCorners[i];
+        SplittedPosition position = getSplittedPosition(splitPlane, outerCorner.startPoint);
+        if (position == SplittedPosition::front) {
+            frontChildSegment.addOuterCorner(outerCorner);
+        } else {
+            backChildSegment.addOuterCorner(outerCorner);
+        }
+    }
+
     frontChildSegment.calculateBoundaryBox();
     backChildSegment.calculateBoundaryBox();
 }
@@ -71,6 +85,10 @@ WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPo
     } else {
         return SplittedPosition::frontAndBack;
     }
+}
+
+WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPosition(Plane& splitPlane, Vector3& point) {
+    return splitPlane.isPointInFront(point) ? SplittedPosition::front : SplittedPosition::back;
 }
 
 void WorldSegmentTreeBuilder::removeEmptySegments(BSPTree<WorldSegment>& segmentTree) {

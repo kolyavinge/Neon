@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lib/calc/Vector3.h>
+#include <lib/calc/TruncatedPlane.h>
 #include <lib/system.h>
 #include <model/common/RigidBody.h>
 #include <model/common/common.h>
@@ -14,6 +15,7 @@ class Body : public Object {
     Vector3 _rearWingDownForce;
     Vector3 _rearWingDragForce;
     Box3d _box;
+    TruncatedPlane _bottomTruncatedPlane;
     RigidBody& _rigidBody;
 
 public:
@@ -32,4 +34,5 @@ public:
     void calculateRearWingDownForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
+    TruncatedPlane& calculateBottomTruncatedPlane();
 };

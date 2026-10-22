@@ -15,6 +15,8 @@ void MoonlightRide::buildInternal() {
     _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
     float lightValue = 1.5f;
     _globalLight.setColor(Vector3(lightValue, lightValue, lightValue));
+    Line corner(Vector3(20.1267262f, 276.837036f, 3.06223822f), Vector3(20.1267262f, 276.837036f, 5.06223822f));
+    _outerCorners.add(corner);
 }
 
 void MoonlightRide::makeGround() {
@@ -249,6 +251,9 @@ void MoonlightRide::makeRoadBarriers() {
         .setKind(WorldPrimitiveKind::metalBarrier1)
         .setPosition(lastLeftBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
         .setCount(608)
+        .build()
+        .setPosition(builder.getLastPosition(), Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setCount(10)
         .build();
 }
 
