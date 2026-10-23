@@ -12,11 +12,11 @@ enum class BarrierOrientation {
 class RoadBarrierBuilder : public Object {
 
     WorldPrimitiveKind _kind;
+    BarrierOrientation _orientation;
     Vector3 _lastPosition;
     Vector3 _direction;
     Vector3 _upNormal;
     bool _calculateZ;
-    BarrierOrientation _orientation;
     int _count;
     List<WorldPrimitive>* _groundPrimitives;
     List<WorldPrimitive>* _resultPrimitives;
@@ -25,8 +25,10 @@ public:
     RoadBarrierBuilder();
     RoadBarrierBuilder& setResultList(List<WorldPrimitive>& resultPrimitives);
     RoadBarrierBuilder& setGroundPrimitives(List<WorldPrimitive>& groundPrimitives);
+    RoadBarrierBuilder& setBarrierOrientation(BarrierOrientation orientation);
     RoadBarrierBuilder& setKind(WorldPrimitiveKind kind);
-    RoadBarrierBuilder& setPosition(Vector3 position, Vector3 direction, BarrierOrientation orientation);
+    RoadBarrierBuilder& setPosition(Vector3 position);
+    RoadBarrierBuilder& setDirection(Vector3 direction);
     RoadBarrierBuilder& calculateZ();
     RoadBarrierBuilder& setCount(int count);
     RoadBarrierBuilder& build();

@@ -4,8 +4,8 @@
 
 RoadBarrierBuilder::RoadBarrierBuilder() {
     _kind = (WorldPrimitiveKind)-1;
-    _calculateZ = false;
     _orientation = (BarrierOrientation)-1;
+    _calculateZ = false;
     _count = 0;
     _groundPrimitives = nullptr;
     _resultPrimitives = nullptr;
@@ -21,16 +21,23 @@ RoadBarrierBuilder& RoadBarrierBuilder::setGroundPrimitives(List<WorldPrimitive>
     return *this;
 }
 
+RoadBarrierBuilder& RoadBarrierBuilder::setBarrierOrientation(BarrierOrientation orientation) {
+    _orientation = orientation;
+    return *this;
+}
+
 RoadBarrierBuilder& RoadBarrierBuilder::setKind(WorldPrimitiveKind kind) {
     _kind = kind;
     return *this;
 }
 
-RoadBarrierBuilder& RoadBarrierBuilder::setPosition(Vector3 position, Vector3 direction, BarrierOrientation orientation) {
+RoadBarrierBuilder& RoadBarrierBuilder::setPosition(Vector3 position) {
     _lastPosition = position;
-    _direction = direction;
-    _orientation = orientation;
+    return *this;
+}
 
+RoadBarrierBuilder& RoadBarrierBuilder::setDirection(Vector3 direction) {
+    _direction = direction;
     return *this;
 }
 

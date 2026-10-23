@@ -15,8 +15,6 @@ void MoonlightRide::buildInternal() {
     _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
     float lightValue = 1.5f;
     _globalLight.setColor(Vector3(lightValue, lightValue, lightValue));
-    Line corner(Vector3(20.1267262f, 276.837036f, 3.06223822f), Vector3(20.1267262f, 276.837036f, 5.06223822f));
-    _outerCorners.add(corner);
 }
 
 void MoonlightRide::makeGround() {
@@ -163,96 +161,82 @@ void MoonlightRide::makeGround() {
 }
 
 void MoonlightRide::makeRoadBarriers() {
-    RoadBarrierBuilder builder;
-    builder.setResultList(_barrierPrimitives);
-    builder.setGroundPrimitives(_groundPrimitives);
+    RoadBarrierBuilder leftBarrierBuilder;
+    leftBarrierBuilder
+        .setResultList(_barrierPrimitives)
+        .setGroundPrimitives(_groundPrimitives)
+        .setOuterCorners(_outerCorners)
+        .setBarrierOrientation(BarrierOrientation::leftBarrier);
 
-    builder
+    RoadBarrierBuilder rightBarrierBuilder;
+    rightBarrierBuilder
+        .setResultList(_barrierPrimitives)
+        .setGroundPrimitives(_groundPrimitives)
+        .setOuterCorners(_outerCorners)
+        .setBarrierOrientation(BarrierOrientation::rightBarrier);
+
+    leftBarrierBuilder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(2.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setPosition(Vector3(2.0f, 0.0f, 0.0f))
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(50)
-        .build();
-
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .build()
         .calculateZ()
         .setCount(59)
         .build();
 
-    Vector3 lastLeftBarrierPosition = builder.getLastPosition();
-
-    builder
+    rightBarrierBuilder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(18.0f, 15.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setPosition(Vector3(18.0f, 15.0f, 0.0f))
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(40)
-        .build();
-
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .build()
         .calculateZ()
         .setCount(53)
         .build();
 
-    Vector3 lastRightBarrierPosition = builder.getLastPosition();
-
     // первый поворот
 
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(lastLeftBarrierPosition, Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
+    leftBarrierBuilder
+        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(20)
         .build();
 
-    lastLeftBarrierPosition = builder.getLastPosition();
-
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(lastRightBarrierPosition, Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::rightBarrier)
+    rightBarrierBuilder
+        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(20)
         .build();
-
-    lastRightBarrierPosition = builder.getLastPosition();
 
     // второй поворот
 
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(lastLeftBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+    leftBarrierBuilder
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(22)
         .build()
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(builder.getLastPosition(), Vector3(-1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setDirection(Vector3(-1.0f, 0.0f, 0.0f))
         .calculateZ()
         .setCount(20)
         .build();
 
-    lastLeftBarrierPosition = builder.getLastPosition();
-
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(lastRightBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+    rightBarrierBuilder
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(38)
         .build()
-        .setPosition(builder.getLastPosition(), Vector3(-1.0f, 0.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setDirection(Vector3(-1.0f, 0.0f, 0.0f))
         .calculateZ()
         .setCount(19)
         .build()
-        .setPosition(builder.getLastPosition(), Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::rightBarrier)
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(2)
         .build();
 
-    lastRightBarrierPosition = builder.getLastPosition();
-
     // длинная прямая
 
-    builder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(lastLeftBarrierPosition, Vector3(0.0f, 1.0f, 0.0f), BarrierOrientation::leftBarrier)
+    leftBarrierBuilder
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(608)
         .build()
-        .setPosition(builder.getLastPosition(), Vector3(1.0f, 0.0f, 0.0f), BarrierOrientation::leftBarrier)
+        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(10)
         .build();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <lib/system.h>
-#include <model/world/GameWorld.h>
 #include <model/vehicle/Vehicle.h>
+#include <model/world/GameWorld.h>
 #include <model/world/WorldPrimitive.h>
 
 class DebugRenderer : public Object {
@@ -18,6 +18,7 @@ public:
     void renderVehicleAxis(Vehicle& vehicle);
     void renderGround(Collection<WorldPrimitive*>& ground);
     void renderBarriers(Collection<WorldPrimitive*>& barriers);
+    void renderOuterCorners(Collection<Line*>& outerCorders);
     void renderGrid();
     void renderGlobalAxis();
 };

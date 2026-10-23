@@ -2,10 +2,12 @@
 #include <debug/DebugRenderer.h>
 #include <lib/calc/UnitConverter.h>
 #include <lib/calc/Vector3.h>
+#include <model/common/Camera.h>
 #include <model/common/common.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Wheel.h>
+#include <model/world/WorldSegment.h>
 #include <render/lib/opengl.h>
 
 void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
@@ -23,6 +25,7 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     for (int segmentIndex = 0; segmentIndex < gameWorld.getVisibleWorldSegments().getCount(); segmentIndex++) {
         WorldSegment& visibleSegment = *gameWorld.getVisibleWorldSegments()[segmentIndex];
         renderBarriers(visibleSegment.getBarrierPrimitives());
+        renderOuterCorners(visibleSegment.getOuterCorners());
     }
     //renderGrid();
     //renderGlobalAxis();
@@ -292,6 +295,17 @@ void DebugRenderer::renderBarriers(Collection<WorldPrimitive*>& barriers) {
         glPopMatrix();
     }
     glDisable(GL_DEPTH_TEST);
+}
+
+void DebugRenderer::renderOuterCorners(Collection<Line*>& outerCorders) {
+    glColor3f(0.4f, 0.0f, 0.0f);
+    for (int i = 0; i < outerCorders.getCount(); i++) {
+        Line& corner = *outerCorders[i];
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(corner.startPoint);
+        glVertex3f(corner.endPoint);
+        glEnd();
+    }
 }
 
 void DebugRenderer::renderGrid() {
