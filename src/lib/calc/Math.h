@@ -53,4 +53,6 @@ public:
     static float lerp(float start, float end, float t);
     static Vector3 rotatePoint(Vector3 point, float angle, Vector3 pivotAxis, Vector3 pivotPoint);
     static float getArgumentForMaxValue(IUnaryFunction& function, float left, float right, float eps = 1e-7);
+    // образуют ли внешний угол два вектора
+    static bool formOuterCorner(Vector3 a, Vector3 b, Vector3 n);
 };

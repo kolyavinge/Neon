@@ -239,6 +239,9 @@ void MoonlightRide::makeRoadBarriers() {
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(10)
         .build();
+
+    // последний правый барьер образует внешний угол с самым первым правым барьером
+    rightBarrierBuilder.addOuterCornerAtLastBarrierPosition();
 }
 
 void MoonlightRide::makeSplitPlanes() {

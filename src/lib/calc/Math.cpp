@@ -114,3 +114,16 @@ float Math::getArgumentForMaxValue(IUnaryFunction& function, float left, float r
 
     return (right + left) / 2.0f;
 }
+
+bool Math::formOuterCorner(Vector3 a, Vector3 b, Vector3 n) {
+    // подробности тут 'docs\outer corner.png'
+    Vector3 ab = a;
+    ab.crossProduct(b);
+    if (ab.isZero()) return false;
+    Vector3 m = a;
+    m.crossProduct(n);
+
+    // векторные произведения [a,b] и [a,n] разнонаправлены => внешний угол
+
+    return !ab.isCollinear(m, 0.1f);
+}

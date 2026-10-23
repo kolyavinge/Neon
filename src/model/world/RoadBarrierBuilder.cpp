@@ -9,6 +9,8 @@ RoadBarrierBuilder::RoadBarrierBuilder() {
     _count = 0;
     _groundPrimitives = nullptr;
     _resultPrimitives = nullptr;
+    _outerCorners = nullptr;
+    _lastBuiltPrimitive = nullptr;
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::setResultList(List<WorldPrimitive>& resultPrimitives) {
@@ -18,6 +20,11 @@ RoadBarrierBuilder& RoadBarrierBuilder::setResultList(List<WorldPrimitive>& resu
 
 RoadBarrierBuilder& RoadBarrierBuilder::setGroundPrimitives(List<WorldPrimitive>& groundPrimitives) {
     _groundPrimitives = &groundPrimitives;
+    return *this;
+}
+
+RoadBarrierBuilder& RoadBarrierBuilder::setOuterCorners(List<Line>& outerCorners) {
+    _outerCorners = &outerCorners;
     return *this;
 }
 
@@ -37,7 +44,9 @@ RoadBarrierBuilder& RoadBarrierBuilder::setPosition(Vector3 position) {
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::setDirection(Vector3 direction) {
+    _prevDirection = _direction;
     _direction = direction;
+
     return *this;
 }
 
@@ -52,6 +61,7 @@ RoadBarrierBuilder& RoadBarrierBuilder::setCount(int count) {
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::build() {
+    makeOuterCornerIfNeed();
     _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _count);
     Vector3 p1 = _lastPosition;
     recalculateUpNormalIfNeed(p1);
@@ -70,14 +80,23 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         _resultPrimitives->addByValue(barrierPrimitive);
         p1 = p2;
     }
+    _lastBuiltPrimitive = &_resultPrimitives->last();
     _lastPosition = p1;
     _calculateZ = false;
 
     return *this;
 }
 
-Vector3 RoadBarrierBuilder::getLastPosition() {
+Vector3 RoadBarrierBuilder::getLastBarrierPosition() {
     return _lastPosition;
+}
+
+void RoadBarrierBuilder::addOuterCornerAtLastBarrierPosition() {
+    Vector3 start = _lastPosition;
+    Vector3 end = _lastPosition;
+    end.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
+    Line corner(start, end);
+    _outerCorners->add(corner);
 }
 
 void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
@@ -113,5 +132,16 @@ void RoadBarrierBuilder::recalculateDirectionAndUpNormalIfNeed(Vector3 startPoin
             _upNormal = pr.getFrontNormal();
             return;
         }
+    }
+}
+
+void RoadBarrierBuilder::makeOuterCornerIfNeed() {
+    if (_lastBuiltPrimitive == nullptr) return;
+    if (Math::formOuterCorner(_prevDirection, _direction, _lastBuiltPrimitive->getFrontNormal())) {
+        Vector3 start = _lastPosition;
+        Vector3 end = _lastPosition;
+        end.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
+        Line corner(start, end);
+        _outerCorners->add(corner);
     }
 }
