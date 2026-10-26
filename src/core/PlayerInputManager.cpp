@@ -31,7 +31,8 @@ void PlayerInputManager::update(Vehicle& vehicle) {
     // throttle
     if (_inputManager.keyboard.isKeyPressedOrHeld(Keys::w) ||
         _inputManager.joystick.isKeyPressedOrHeld(Keys::button3)) {
-        float throttleRatio = getOptimalThrottleRatio(vehicle);
+        //float throttleRatio = getOptimalThrottleRatio(vehicle); // TODO пока алгоритм нормально не работает
+        float throttleRatio = 1.0f;
         inputData.setThrottleRatio(throttleRatio);
     } else if (
         _inputManager.keyboard.isKeyPressedOrHeld(Keys::r) ||

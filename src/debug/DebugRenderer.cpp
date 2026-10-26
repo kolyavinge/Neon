@@ -24,6 +24,7 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
     for (int segmentIndex = 0; segmentIndex < gameWorld.getVisibleWorldSegments().getCount(); segmentIndex++) {
         WorldSegment& visibleSegment = *gameWorld.getVisibleWorldSegments()[segmentIndex];
+        //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
         renderOuterCorners(visibleSegment.getOuterCorners());
     }
@@ -253,8 +254,8 @@ void DebugRenderer::renderVehicleAxis(Vehicle& vehicle) {
 
 void DebugRenderer::renderGround(Collection<WorldPrimitive*>& ground) {
     glEnable(GL_DEPTH_TEST);
-    glColor3f(0.1f, 0.1f, 0.4f);
     for (int i = 0; i < ground.getCount(); i++) {
+        glColor3f(0.1f, 0.1f, 0.4f);
         WorldPrimitive& pr = *ground[i];
         glBegin(GL_LINE_LOOP);
         glVertex3f(pr.getPoints()[0]);
@@ -298,6 +299,7 @@ void DebugRenderer::renderBarriers(Collection<WorldPrimitive*>& barriers) {
 }
 
 void DebugRenderer::renderOuterCorners(Collection<Line*>& outerCorders) {
+    glEnable(GL_DEPTH_TEST);
     glColor3f(0.4f, 0.0f, 0.0f);
     for (int i = 0; i < outerCorders.getCount(); i++) {
         Line& corner = *outerCorders[i];
@@ -306,6 +308,7 @@ void DebugRenderer::renderOuterCorners(Collection<Line*>& outerCorders) {
         glVertex3f(corner.endPoint);
         glEnd();
     }
+    glDisable(GL_DEPTH_TEST);
 }
 
 void DebugRenderer::renderGrid() {

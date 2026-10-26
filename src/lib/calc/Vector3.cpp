@@ -200,9 +200,12 @@ void Vector3::round(float precision) {
 
 Vector3& Vector3::getLongest(Collection<Vector3>& vectors) {
     Vector3* longest = &vectors[0];
+    float longestLengthSquared = longest->getLengthSquared();
     for (int i = 1; i < vectors.getCount(); i++) {
-        if (vectors[i].getLengthSquared() > longest->getLengthSquared()) {
+        float lengthSquared = vectors[i].getLengthSquared();
+        if (lengthSquared > longestLengthSquared) {
             longest = &vectors[i];
+            longestLengthSquared = lengthSquared;
         }
     }
 

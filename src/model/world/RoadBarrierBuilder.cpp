@@ -139,7 +139,9 @@ void RoadBarrierBuilder::makeOuterCornerIfNeed() {
     if (_lastBuiltPrimitive == nullptr) return;
     if (Math::formOuterCorner(_prevDirection, _direction, _lastBuiltPrimitive->getFrontNormal())) {
         Vector3 start = _lastPosition;
-        Vector3 end = _lastPosition;
+        start.subMultiplied(_prevDirection, 0.1f);
+        start.subMultiplied(_lastBuiltPrimitive->getFrontNormal(), 0.1f);
+        Vector3 end = start;
         end.addMultiplied(_upNormal, WorldPrimitive::barrierHeight);
         Line corner(start, end);
         _outerCorners->add(corner);

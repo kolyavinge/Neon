@@ -37,5 +37,5 @@ private:
     void resetGroundContact(Wheel& wheel, Spring& spring, Vector3 chassisUpNormal);
     void findPointSegments(Collection<Vector3*>& bodyPoints, output Array<WorldSegment*, (int)Box3dPoint::_count>& result);
     void findBarrierCollisions(Body& body, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments);
-    void findOuterCornerCollisions(Body& body, Vector3 chassisFrontNormal, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments);
+    void findOuterCornerCollisions(Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments);
 };
