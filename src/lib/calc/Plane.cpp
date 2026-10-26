@@ -1,4 +1,5 @@
 #include <lib/Numeric.h>
+#include <lib/calc/Math.h>
 #include <lib/calc/Plane.h>
 
 Plane::Plane() {}
@@ -32,8 +33,22 @@ bool Plane::pointsOnBothSides(Vector3& pointA, Vector3& pointB) {
 }
 
 Vector3 Plane::getProjectedVector(Vector3 v) {
-    float d = v.dotProduct(_frontNormal);
-    v.subMultiplied(_frontNormal, d);
+    float dot = v.dotProduct(_frontNormal);
+    v.subMultiplied(_frontNormal, dot);
+
+    return v;
+}
+
+Vector3 Plane::getProjectedPoint(Vector3 v, CollisionPointPosition cpp) {
+    v.sub(_basePoint);
+    float dot = v.dotProduct(_frontNormal);
+    v.subMultiplied(_frontNormal, dot);
+    if (cpp == CollisionPointPosition::front) {
+        v.addMultiplied(_frontNormal, 1e-7f);
+    } else if (cpp == CollisionPointPosition::back) {
+        v.subMultiplied(_frontNormal, 1e-7f);
+    }
+    v.add(_basePoint);
 
     return v;
 }

@@ -39,6 +39,7 @@ public:
     Collection<Vector2>& getTexCoords();
     Vector3 getFrontNormal();
     Vector3 getProjectedVector(Vector3 v);
+    Vector3 getProjectedPoint(Vector3 v, CollisionPointPosition cpp = CollisionPointPosition::unset);
     Vector3 getCenter();
     bool isPointInFront(Vector3& point);
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);

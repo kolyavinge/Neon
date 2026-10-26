@@ -128,22 +128,19 @@ void VehicleCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
         Collection<WorldPrimitive*>& barrierPrimitives = pointSegments[bodyPointIndex]->getGroundAndBarrierPrimitives();
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
-            // определяем есть ли пересечение между текущей точкой кузова и противоположной ей по-диагонали
+            if (barrierPrimitive.isPointInFront(*bodyPoints[bodyPointIndex])) {
+                continue; // точка не зашла за препятствие
+            }
+            // определяем есть ли пересечение отрезка между текущей точкой кузова и противоположной ей по-диагонали
             // такой диагональный отрезок покрывает все три оси перемещения
-            // (высокая точность не нужна, но если это не проверить, код ниже будет работать неправильно)
-            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.1f)) {
+            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.01f)) {
                 continue;
             }
             // ищим точку пересечения - точка на которую должна переместиться текущая точка кузова
             // луч rayFromPosition-rayToPosition рассчитывается от текущей точки кузова внутри препятствия, до точки выхода из препятствия
-            Vector3 rayFromPosition = *bodyPoints[bodyPointIndex];
-            Vector3 rayToPosition = rayFromPosition;
-            rayToPosition.addMultiplied(barrierPrimitive.getFrontNormal(), body.getData().bodyMeasures.yLength);
-            Vector3 collisionPoint;
-            bool hasCollision = barrierPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.01f, output collisionPoint);
-            if (!hasCollision) continue;
+            Vector3 collisionPoint = barrierPrimitive.getProjectedPoint(*bodyPoints[bodyPointIndex], CollisionPointPosition::front);
             // выталкиваем точку кузова из препятствия наружу
-            Vector3 collisionDepth = rayFromPosition.getDirectionTo(collisionPoint);
+            Vector3 collisionDepth = bodyPoints[bodyPointIndex]->getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
             _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
@@ -153,6 +150,7 @@ void VehicleCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
 
 void VehicleCollisionLogic::findOuterCornerCollisions(Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments) {
     // если обьекты игрового мира образуют внешние углы, то обрабатываем эти углы отдельно
+    if (vehicleLinearVelocity.isZero()) return;
     bool hasOuterCorners = false;
     for (int segmentIndex = 0; segmentIndex < (int)Box3dPoint::_count / 2; segmentIndex++) {
         if (pointSegments[segmentIndex]->getOuterCorners().getCount() > 0) {
@@ -167,7 +165,7 @@ void VehicleCollisionLogic::findOuterCornerCollisions(Body& body, Vector3 vehicl
         for (int cornerIndex = 0; cornerIndex < outerCorners.getCount(); cornerIndex++) {
             Line& outerCorner = *outerCorners[cornerIndex];
             Vector3 bodyCollisionPoint;
-            if (!bottomPlane.hasCollision(outerCorner.startPoint, outerCorner.endPoint, 0.1f, bodyCollisionPoint)) {
+            if (!bottomPlane.hasCollision(outerCorner.startPoint, outerCorner.endPoint, 0.01f, bodyCollisionPoint)) {
                 continue;
             }
             // ищим одну из четырех плоскостей кузова, которая ударилась о внешний угол

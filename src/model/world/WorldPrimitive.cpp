@@ -51,6 +51,10 @@ Vector3 WorldPrimitive::getProjectedVector(Vector3 v) {
     return _plane.getProjectedVector(v);
 }
 
+Vector3 WorldPrimitive::getProjectedPoint(Vector3 v, CollisionPointPosition cpp) {
+    return _plane.getProjectedPoint(v, cpp);
+}
+
 Vector3 WorldPrimitive::getCenter() {
     // такой способ нахождения центра работает только для 4ех угольника
     // (проверка на будущее, если кол-во точек примитива изменится)

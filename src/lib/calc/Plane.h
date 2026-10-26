@@ -3,6 +3,7 @@
 #include <lib/system.h>
 
 enum class CollisionPointPosition {
+    unset,
     front,
     back
 };
@@ -25,6 +26,7 @@ public:
     bool isPointInFront(Vector3& point);
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     Vector3 getProjectedVector(Vector3 v);
+    Vector3 getProjectedPoint(Vector3 v, CollisionPointPosition cpp = CollisionPointPosition::unset);
     virtual bool contains(Vector3& point, float eps);
     virtual bool hasCollision(
         Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint, CollisionPointPosition cpp = CollisionPointPosition::front);

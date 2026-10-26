@@ -141,6 +141,7 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     // body box
     Body& body = vehicle.getBody();
     Collection<Vector3*>& bodyPoints = body.getBox().getPoints();
+    glEnable(GL_DEPTH_TEST);
     glColor3f(0.6f, 0.6f, 0.6f);
     glBegin(GL_LINE_LOOP);
     glVertex3f(*bodyPoints[(int)Box3dPoint::bottomDownLeft]);
@@ -201,6 +202,7 @@ void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     glVertex3f(rearWingDragForce);
     glEnd();
     glPopMatrix();
+    glDisable(GL_DEPTH_TEST);
 }
 
 void DebugRenderer::renderVehicleChassis(Vehicle& vehicle) {

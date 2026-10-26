@@ -36,10 +36,14 @@ void Vehicle::init() {
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.1f);
     _rigidBody.setCenter(Vector3(10.0f, 10.0f, 4.0f));
-    //_rigidBody.setCenter(Vector3(15.0f, 265.0f, 4.0f));
+    //_rigidBody.setCenter(Vector3(15.0f, 265.0f, 40.0f));
     //_rigidBody.setCenter(Vector3(10.0f, 1450.0f, 4.0f));
+
+    // на этой позиции неверно работала проверка соударений с землей
+    //_rigidBody.setCenter(Vector3(306.0f, 1085.8f, -15.0f));
+
     //_rigidBody.setRotation(Math::pi, CommonConstants::frontAxis);
-    _rigidBody.setRotation(-0.4f, CommonConstants::upAxis);
+    //_rigidBody.setRotation(-0.4f, CommonConstants::upAxis);
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {

@@ -41,7 +41,11 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
 
 float GearboxLogic::getRpmOnLowerGear(Engine& engine, Gearbox& gearbox) {
     // какие были бы обороты двигателя если бы мы переключились на передачу ниже
-    return engine.getRpm() * gearbox.getLowerGearRatio() / gearbox.getCurrentGearRatio();
+    if (gearbox.getCurrentGearRatio() != 0.0f) {
+        return engine.getRpm() * gearbox.getLowerGearRatio() / gearbox.getCurrentGearRatio();
+    } else {
+        return 0.0f;
+    }
 }
 
 bool GearboxLogic::shiftManual(Gearbox& gearbox, DrivingInputData& drivingInputData) {
