@@ -50,7 +50,7 @@ void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
     if (lockedByBrakes) return;
     float angularVelocity = wheel.getAngularVelocity();
     float sign = Numeric::getSign(angularVelocity);
-    float brakingTorque = -sign * brakeRatio * wheel.getBrakeBias() * _data.wheelTotalBrakingForce / VehicleConstants::oneAxleWheelsCount;
+    float brakingTorque = -sign * brakeRatio * wheel.getBrakeBias() * _data.wheelTotalBrakingTorqueOneAxle / VehicleConstants::oneAxleWheelsCount;
     float angularAcceleration = brakingTorque / _data.wheelInertia;
     angularVelocity += angularAcceleration * dt;
     float newSign = Numeric::getSign(angularVelocity);
@@ -128,7 +128,7 @@ Vector3 WheelLogic::calculateLongitudinalForce(Wheel& wheel, Vector3 vehicleLine
     float slowVelocityForce = (_data.tireStiffness * accumulatedDeflection) + (_data.tireDamping * deltaV);
     if (Math::abs(slowVelocityForce) > maxForce) {
         slowVelocityForce = Numeric::getSign(slowVelocityForce) * maxForce;
-        // корректируем деформацию, чтобы пружина не растягивалась бесконечность
+        // корректируем деформацию, чтобы пружина не растягивалась бесконечно
         accumulatedDeflection = (slowVelocityForce - (_data.tireDamping * deltaV)) / _data.tireStiffness;
     }
 

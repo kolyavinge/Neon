@@ -51,6 +51,7 @@ public:
     void resetToPrevPosition();
     Vector3 getCenter();
     void setCenter(Vector3 center);
+    void setRotationAngle(float angle);
     Vector3 getChassisRightNormal();
     Vector3 getChassisFrontNormal();
     Vector3 getChassisUpNormal();

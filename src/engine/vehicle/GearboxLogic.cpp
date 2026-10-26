@@ -22,10 +22,8 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     bool isAccelerating = throttleRatio > 0.0f;
     if (isAccelerating && bothDriveWheelsHaveGroundContact && engine.getRpm() > data.autoUpShiftRpm && averageSlipRatio < data.optimalSlipRatio) {
         return gearbox.shiftUp();
-    } else if (isAccelerating && engine.getRpm() == data.engineMinRpm) {
-        if (gearbox.getCurrentGear() == Gear::neutral) {
-            return gearbox.shiftUp();
-        }
+    } else if (isAccelerating && gearbox.getCurrentGear() < Gear::first) {
+        return gearbox.shiftUp();
     } else if (!isAccelerating && engine.getRpm() == data.engineMinRpm) {
         if (gearbox.getCurrentGear() >= Gear::first) {
             return gearbox.shiftDown();

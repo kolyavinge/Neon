@@ -50,6 +50,13 @@ RoadBarrierBuilder& RoadBarrierBuilder::setDirection(Vector3 direction) {
     return *this;
 }
 
+RoadBarrierBuilder& RoadBarrierBuilder::rotateDirection(float angle) {
+    _prevDirection = _direction;
+    _direction = Math::rotatePoint(_direction, angle, _upNormal, CommonConstants::axisOrigin);
+
+    return *this;
+}
+
 RoadBarrierBuilder& RoadBarrierBuilder::calculateZ() {
     _calculateZ = true;
     return *this;

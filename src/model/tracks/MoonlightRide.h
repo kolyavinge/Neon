@@ -15,4 +15,5 @@ private:
     void makeGround();
     void makeRoadBarriers();
     void makeSplitPlanes();
+    void setPlayerPosition();
 };

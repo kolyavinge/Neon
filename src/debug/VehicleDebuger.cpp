@@ -11,9 +11,9 @@ void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
 
     paintText(vehicle.getDrivingInputData());
     printGear(vehicle);
-    //printThrottle(vehicle.getDrivingInputData());
-    //printBrake(vehicle.getDrivingInputData());
-    printEngineRpm(vehicle);
+    printThrottle(vehicle.getDrivingInputData());
+    printBrake(vehicle.getDrivingInputData());
+    //printEngineRpm(vehicle);
     //printEngineTorque(vehicle);
     printWheelsAngularVelocity(vehicle);
     //printDiffBetweenRpmAndAngularVelocity(vehicle);

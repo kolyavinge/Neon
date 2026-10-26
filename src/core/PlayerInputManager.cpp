@@ -82,11 +82,12 @@ void PlayerInputManager::update(Vehicle& vehicle) {
 float PlayerInputManager::getOptimalThrottleRatio(Vehicle& vehicle) {
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     VehicleData& data = vehicle.getData();
-    float slipRatio = vehicle.getDriveWheel(0).getSlipRatio().value;
-    if (slipRatio < data.optimalSlipRatioFrom) {
-        throttleRatio += 0.05f;
-    } else if (slipRatio > data.optimalSlipRatioTo) {
-        throttleRatio -= 0.005f;
+    float averageSlipRatio =
+        (vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value) / (float)VehicleConstants::oneAxleWheelsCount;
+    if (averageSlipRatio < data.optimalSlipRatioFrom) {
+        throttleRatio += 0.1f;
+    } else if (averageSlipRatio > data.optimalSlipRatioTo) {
+        throttleRatio -= 0.01f;
     }
     throttleRatio = Numeric::clamp(throttleRatio, 0.2f, 1.0f);
 
@@ -96,13 +97,17 @@ float PlayerInputManager::getOptimalThrottleRatio(Vehicle& vehicle) {
 float PlayerInputManager::getOptimalBrakeRatio(Vehicle& vehicle) {
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     VehicleData& data = vehicle.getData();
-    float slipRatio = Math::abs(vehicle.getDriveWheel(0).getSlipRatio().value);
-    if (slipRatio < data.optimalSlipRatioFrom) {
-        brakeRatio += 0.05f;
-    } else if (slipRatio > data.optimalSlipRatioTo) {
-        brakeRatio -= 0.05f;
+    float averageSlipRatio = 0.0f;
+    for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
+        averageSlipRatio += Math::abs(vehicle.getWheel(i).getSlipRatio().value);
     }
-    brakeRatio = Numeric::clamp(brakeRatio, 0.2f, 1.0f);
+    averageSlipRatio /= (float)VehicleConstants::wheelsCount;
+    if (averageSlipRatio < data.optimalSlipRatioFrom) {
+        brakeRatio += 0.01f;
+    } else if (averageSlipRatio > data.optimalSlipRatioTo) {
+        brakeRatio -= 0.01f;
+    }
+    brakeRatio = Numeric::clamp(brakeRatio, 0.1f, 1.0f);
 
     return brakeRatio;
 }

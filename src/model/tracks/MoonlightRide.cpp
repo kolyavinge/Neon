@@ -1,4 +1,5 @@
 #include <common/constants.h>
+#include <lib/calc/Math.h>
 #include <lib/calc/Vector3.h>
 #include <model/tracks/MoonlightRide.h>
 #include <model/world/GroundBuilder.h>
@@ -15,6 +16,7 @@ void MoonlightRide::buildInternal() {
     _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
     float lightValue = 1.5f;
     _globalLight.setColor(Vector3(lightValue, lightValue, lightValue));
+    setPlayerPosition();
 }
 
 void MoonlightRide::makeGround() {
@@ -198,43 +200,73 @@ void MoonlightRide::makeRoadBarriers() {
     // первый поворот
 
     leftBarrierBuilder
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
+        .build()
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(20)
         .build();
 
     rightBarrierBuilder
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
+        .build()
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
-        .setCount(20)
+        .setCount(19)
         .build();
 
     // второй поворот
 
     leftBarrierBuilder
+        .rotateDirection(Math::piQuarter)
+        .setCount(1)
+        .build()
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(22)
+        .setCount(21)
+        .build()
+        .rotateDirection(Math::piQuarter)
+        .setCount(1)
         .build()
         .setDirection(Vector3(-1.0f, 0.0f, 0.0f))
         .calculateZ()
-        .setCount(20)
+        .setCount(21)
+        .build()
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
         .build();
 
     rightBarrierBuilder
+        .rotateDirection(Math::piQuarter)
+        .setCount(1)
+        .build()
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(38)
+        .setCount(37)
+        .build()
+        .rotateDirection(Math::piQuarter)
+        .setCount(1)
         .build()
         .setDirection(Vector3(-1.0f, 0.0f, 0.0f))
         .calculateZ()
         .setCount(19)
         .build()
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
+        .build()
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(2)
+        .build()
+        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
+        .setCount(1)
         .build();
 
     // длинная прямая
 
     leftBarrierBuilder
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(608)
+        .setCount(606)
+        .build()
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
         .build()
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(10)
@@ -262,4 +294,19 @@ void MoonlightRide::makeSplitPlanes() {
     };
 
     splitRec(min.y, max.y, splitRec);
+}
+
+void MoonlightRide::setPlayerPosition() {
+    _playerCenter.set(Vector3(10.0f, 10.0f, 1.0f));
+    //_playerCenter.set(Vector3(30.0f, 210.0f, 6.0f));
+    //_playerCenter.set(Vector3(10.0f, 270.0f, 4.0f));
+    //_playerCenter.set(Vector3(10.0f, 1450.0f, 4.0f));
+
+    // на этой позиции неверно работала проверка соударений с землей
+    //_playerCenter.set(Vector3(306.0f, 1085.8f, -15.0f));
+
+    //_playerCenter.set(Vector3(306.0f, 1085.8f, -18.0f));
+
+    //_playerRotationAngle = Math::pi;
+    _playerRotationAngle = -1.6f;
 }

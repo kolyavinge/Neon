@@ -34,6 +34,7 @@ public:
     RoadBarrierBuilder& setKind(WorldPrimitiveKind kind);
     RoadBarrierBuilder& setPosition(Vector3 position);
     RoadBarrierBuilder& setDirection(Vector3 direction);
+    RoadBarrierBuilder& rotateDirection(float angle);
     RoadBarrierBuilder& calculateZ();
     RoadBarrierBuilder& setCount(int count);
     RoadBarrierBuilder& build();

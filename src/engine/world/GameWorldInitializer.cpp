@@ -17,4 +17,11 @@ void GameWorldInitializer::init(GameWorld& gameWorld) {
     _worldSegmentTreeBuilder.build(track, gameWorld.getSegmentTree());
     gameWorld.getVisibleWorldSegmentsData().init(gameWorld.getSegmentTree());
     _segmentDataFinder.init(gameWorld.getSegmentTree());
+    // init player position for debug
+    if (!track.getPlayerCenter().isZero()) {
+        gameWorld.getPlayerVehicle().setCenter(track.getPlayerCenter());
+    }
+    if (track.getPlayerRotationAngle() != 0.0f) {
+        gameWorld.getPlayerVehicle().setRotationAngle(track.getPlayerRotationAngle());
+    }
 }

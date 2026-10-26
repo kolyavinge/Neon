@@ -3,6 +3,7 @@
 Track::Track() :
     _groundPrimitives(1000),
     _barrierPrimitives(1000) {
+    _playerRotationAngle = 0.0f;
 }
 
 Collection<WorldPrimitive>& Track::getGroundPrimitives() {
@@ -23,6 +24,14 @@ Collection<Plane>& Track::getSplitPlanes() {
 
 Light& Track::getGlobalLight() {
     return _globalLight;
+}
+
+Vector3 Track::getPlayerCenter() {
+    return _playerCenter;
+}
+
+float Track::getPlayerRotationAngle() {
+    return _playerRotationAngle;
 }
 
 void Track::build() {

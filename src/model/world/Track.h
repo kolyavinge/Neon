@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lib/calc/Plane.h>
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/common.h>
 #include <model/common/light.h>
@@ -14,6 +15,8 @@ protected:
     List<Line> _outerCorners;
     List<Plane> _splitPlanes;
     Light _globalLight;
+    Vector3 _playerCenter;
+    float _playerRotationAngle;
 
 public:
     Track();
@@ -23,6 +26,8 @@ public:
     Collection<Line>& getOuterCorners();
     Collection<Plane>& getSplitPlanes();
     Light& getGlobalLight();
+    Vector3 getPlayerCenter();
+    float getPlayerRotationAngle();
     void build();
 
 protected:
