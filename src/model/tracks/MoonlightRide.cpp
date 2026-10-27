@@ -4,6 +4,7 @@
 #include <model/tracks/MoonlightRide.h>
 #include <model/world/GroundBuilder.h>
 #include <model/world/RoadBarrierBuilder.h>
+#include <model/world/WorldPrimitive.h>
 
 String MoonlightRide::getName() {
     return String("Moonlight ride");
@@ -76,7 +77,7 @@ void MoonlightRide::makeGround() {
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(builder.getBasePlaneUpLeft())
-        .setSize(20.0f, 1200.0f)
+        .setSize(20.0f, 800.0f)
         .build();
 
     builder
@@ -137,28 +138,17 @@ void MoonlightRide::makeGround() {
 
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 60.0f, builder.getBasePlaneDownRight().y - 800.0f, builder.getBasePlaneDownRight().z + 20.0f))
-        .setSize(60.0f, 800.0f)
-        .setSmoothDescendDownToUp(20.0f)
+        .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 60.0f, builder.getBasePlaneDownRight().y - 680.0f, builder.getBasePlaneDownRight().z + 10.0f))
+        .setSize(60.0f, 680.0f)
+        .setSmoothDescendDownToUp(10.0f)
         .build();
 
-    builder
-        .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownLeft().x, builder.getBasePlaneDownLeft().y - 20.0f, builder.getBasePlaneDownLeft().z))
-        .setSize(300.0f, 20.0f)
-        .build();
-
-    builder
-        .setKind(WorldPrimitiveKind::asphalt1)
-        .setBasePlaneDownLeft(Vector3(builder.getBasePlaneDownRight().x - 60.0f, builder.getBasePlaneDownRight().y - 260.0f, builder.getBasePlaneDownRight().z))
-        .setSize(60.0f, 260.0f)
-        .build();
-
+    Vector3 basePlaneDownLeft = builder.getBasePlaneDownLeft();
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(20.0f, 0.0f, 0.0f))
-        .setSize(480.0f, 20.0f)
-        .setSmoothAscendLeftToRight(1.0f)
+        .setSize(245.0f, 20.0f)
+        .setSmoothDescendLeftToRight(Math::abs(basePlaneDownLeft.z))
         .build();
 }
 
@@ -263,7 +253,7 @@ void MoonlightRide::makeRoadBarriers() {
 
     leftBarrierBuilder
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(606)
+        .setCount(405)
         .build()
         .rotateDirection(-Math::piQuarter)
         .setCount(1)
@@ -271,6 +261,22 @@ void MoonlightRide::makeRoadBarriers() {
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(10)
         .build();
+
+    //leftBarrierBuilder
+    //    .setPosition(Vector3(315.0f, 1080.0f, -19.0f))
+    //    .setDirection(Vector3(0.0f, -1.0f, 0.0f))
+    //    .calculateZ()
+    //    .setCount(50)
+    //    .build()
+    //    .rotateDirection(-0.25f)
+    //    .calculateZ()
+    //    .setCount(50)
+    //    .build()
+    //    .rotateDirection(0.25f)
+    //    .calculateZ()
+    //    .setCount(200)
+    //    .build()
+    //    ;
 
     // последний правый барьер образует внешний угол с самым первым правым барьером
     rightBarrierBuilder.addOuterCornerAtLastBarrierPosition();
@@ -298,15 +304,9 @@ void MoonlightRide::makeSplitPlanes() {
 
 void MoonlightRide::setPlayerPosition() {
     _playerCenter.set(Vector3(10.0f, 10.0f, 1.0f));
-    //_playerCenter.set(Vector3(30.0f, 210.0f, 6.0f));
     //_playerCenter.set(Vector3(10.0f, 270.0f, 4.0f));
-    //_playerCenter.set(Vector3(10.0f, 1450.0f, 4.0f));
-
-    // на этой позиции неверно работала проверка соударений с землей
-    //_playerCenter.set(Vector3(306.0f, 1085.8f, -15.0f));
-
-    //_playerCenter.set(Vector3(306.0f, 1085.8f, -18.0f));
-
-    //_playerRotationAngle = Math::pi;
-    _playerRotationAngle = -1.6f;
+    //_playerCenter.set(Vector3(10.0f, 1000.0f, 4.0f));
+    //_playerCenter.set(Vector3(310.0f, 700.0f, 5.0f));
+    //_playerCenter.set(Vector3(300.0f, 10.0f, 5.0f));
+    //_playerRotationAngle = Math::piHalf;
 }

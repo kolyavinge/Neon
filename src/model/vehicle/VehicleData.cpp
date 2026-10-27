@@ -72,7 +72,7 @@ VehicleData::VehicleData() {
     tireStiffness = 50000.0f;
     tireDamping = 1500.0f;
     longitudinalForceLowVelocityLimit = 2.0f;
-    lateralForceLowVelocityLimit = 5.0f;
+    lateralForceLowVelocityLimit = 4.0f;
 
     /* spring */
     const float stiffnessMul = 1000.0f;
@@ -100,7 +100,7 @@ VehicleData::VehicleData() {
 
     /* wheel lateral force */
     float Dfront = 2.3f;
-    float Drear = 0.9f;
+    float Drear = 1.2f;
     PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
     PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;
