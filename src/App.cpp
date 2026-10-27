@@ -21,6 +21,7 @@ void App::setFullScreenMode(GLFWwindow* window) {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void App::setWindowedMode(GLFWwindow* window) {
@@ -29,6 +30,7 @@ void App::setWindowedMode(GLFWwindow* window) {
         (mode->width - CommonConstants::screenWidth) / 2 + 350, (mode->height - CommonConstants::screenHeight) / 2,
         CommonConstants::screenWidth, CommonConstants::screenHeight,
         GLFW_DONT_CARE);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
