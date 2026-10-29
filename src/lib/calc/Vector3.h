@@ -25,6 +25,10 @@ public:
     Vector3 getDirectionTo(Vector3 v);
     Vector3 getMiddleTo(Vector3 v);
     void setLength(float newLength);
+    // арифметические операции с векторами (сложение, вычитание, умножение ...) намеренно не сделаны в виде операторов:
+    //     1) чтобы не создавать и не копировать промежуточные обьекты при вызове каждого оператора в длинном выражении
+    //     2) не для всех операций можно подобрать понятный символ, например векторное и скалярное умножение
+    //     3) чтобы все вычисления были написаны в коде единообразно с помощью методов
     void add(Vector3 v);
     void addMultiplied(Vector3 v, float multipliedBy);
     void sub(Vector3 v);
@@ -33,11 +37,11 @@ public:
     void mul(Vector3 v);
     void div(float a);
     void div(Vector3 v);
-    bool isCollinear(Vector3 v, float eps = Numeric::epsilonFloat);
     float dotProduct(Vector3 v);
     void crossProduct(Vector3 v);
     void normalize();
     Vector3 getNormalized();
+    bool isCollinear(Vector3 v, float eps = Numeric::epsilonFloat);
     void reflectBy(Vector3 normal);
     void projectOn(Vector3 normal);
     void round(float precision);

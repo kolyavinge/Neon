@@ -32,4 +32,7 @@ public:
 
 protected:
     virtual void buildInternal() = 0;
+
+private:
+    void makeSplitPlanes();
 };

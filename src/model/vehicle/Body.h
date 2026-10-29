@@ -35,4 +35,5 @@ public:
     void calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
     TruncatedPlane& calculateBottomTruncatedPlane();
+    bool isPointInside(Vector3 point);
 };

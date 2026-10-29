@@ -142,12 +142,6 @@ void Vector3::div(Vector3 v) {
     z /= v.z;
 }
 
-bool Vector3::isCollinear(Vector3 v, float eps) {
-    float dot = dotProduct(v) / (getLength() * v.getLength());
-
-    return Numeric::floatEquals(dot, 1.0f, eps);
-}
-
 float Vector3::dotProduct(Vector3 v) {
     return x * v.x + y * v.y + z * v.z;
 }
@@ -174,6 +168,12 @@ Vector3 Vector3::getNormalized() {
     normalized.normalize();
 
     return normalized;
+}
+
+bool Vector3::isCollinear(Vector3 v, float eps) {
+    float dot = dotProduct(v) / (getLength() * v.getLength());
+
+    return Numeric::floatEquals(dot, 1.0f, eps);
 }
 
 void Vector3::reflectBy(Vector3 normal) {

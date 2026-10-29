@@ -13,7 +13,6 @@ String MoonlightRide::getName() {
 void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
-    makeSplitPlanes();
     _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
     float lightValue = 1.5f;
     _globalLight.setColor(Vector3(lightValue, lightValue, lightValue));
@@ -147,7 +146,7 @@ void MoonlightRide::makeGround() {
     builder
         .setKind(WorldPrimitiveKind::asphalt1)
         .setBasePlaneDownLeft(Vector3(20.0f, 0.0f, 0.0f))
-        .setSize(245.0f, 20.0f)
+        .setSize(245.0f, 30.0f)
         .setSmoothDescendLeftToRight(Math::abs(basePlaneDownLeft.z))
         .build();
 }
@@ -179,9 +178,9 @@ void MoonlightRide::makeRoadBarriers() {
 
     rightBarrierBuilder
         .setKind(WorldPrimitiveKind::metalBarrier1)
-        .setPosition(Vector3(18.0f, 15.0f, 0.0f))
+        .setPosition(Vector3(18.0f, 26.0f, 0.0f))
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(40)
+        .setCount(34)
         .build()
         .calculateZ()
         .setCount(53)
@@ -262,51 +261,16 @@ void MoonlightRide::makeRoadBarriers() {
         .setCount(10)
         .build();
 
-    //leftBarrierBuilder
-    //    .setPosition(Vector3(315.0f, 1080.0f, -19.0f))
-    //    .setDirection(Vector3(0.0f, -1.0f, 0.0f))
-    //    .calculateZ()
-    //    .setCount(50)
-    //    .build()
-    //    .rotateDirection(-0.25f)
-    //    .calculateZ()
-    //    .setCount(50)
-    //    .build()
-    //    .rotateDirection(0.25f)
-    //    .calculateZ()
-    //    .setCount(200)
-    //    .build()
-    //    ;
-
     // последний правый барьер образует внешний угол с самым первым правым барьером
-    rightBarrierBuilder.addOuterCornerAtLastBarrierPosition();
-}
-
-void MoonlightRide::makeSplitPlanes() {
-    WorldPrimitiveMinMaxPointFinder finder;
-    finder.findMinMaxPointFor(getGroundPrimitives());
-    Vector3 min = finder.getMinPoint();
-    Vector3 max = finder.getMaxPoint();
-
-    _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3((min.x + max.x) / 2.0f, 0.0f, 0.0f)));
-
-    auto splitRec = [&](float minY, float maxY, auto&& self) {
-        if (maxY - minY <= 10.0f) return;
-        float middle = (minY + maxY) / 2.0f;
-        _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(min.x, middle, 0.0f)));
-        _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(max.x, middle, 0.0f)));
-        self(minY, middle, self);
-        self(middle, maxY, self);
-    };
-
-    splitRec(min.y, max.y, splitRec);
+    //rightBarrierBuilder.addOuterCornerAtLastBarrierPosition();
 }
 
 void MoonlightRide::setPlayerPosition() {
     _playerCenter.set(Vector3(10.0f, 10.0f, 1.0f));
+    //_playerCenter.set(Vector3(50.0f, 260.0f, 8.0f));
     //_playerCenter.set(Vector3(10.0f, 270.0f, 4.0f));
     //_playerCenter.set(Vector3(10.0f, 1000.0f, 4.0f));
     //_playerCenter.set(Vector3(310.0f, 700.0f, 5.0f));
-    //_playerCenter.set(Vector3(300.0f, 10.0f, 5.0f));
+    //_playerCenter.set(Vector3(300.0f, 10.0f, -8.0f));
     //_playerRotationAngle = Math::piHalf;
 }

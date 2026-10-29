@@ -93,6 +93,7 @@ TruncatedPlane& Body::calculateBottomTruncatedPlane() {
     Vector3 frontNormal = downLeft.getDirectionTo(topDownLeft).getNormalized();
     _bottomTruncatedPlane.set(frontNormal, downLeft);
     _bottomTruncatedPlane.clearCuttingPlanes();
+    // нормали секущих боковых плоскостей направлены внутрь основной плоскости _bottomTruncatedPlane
     Plane p1(downLeft.getDirectionTo(upLeft).getNormalized(), downLeft);
     Plane p2(downLeft.getDirectionTo(downRight).getNormalized(), downLeft);
     Plane p3(upRight.getDirectionTo(upLeft).getNormalized(), upRight);
@@ -103,4 +104,23 @@ TruncatedPlane& Body::calculateBottomTruncatedPlane() {
     _bottomTruncatedPlane.addCuttingPlane(p4);
 
     return _bottomTruncatedPlane;
+}
+
+bool Body::isPointInside(Vector3 point) {
+    calculateBottomTruncatedPlane();
+    // проверяем что точка лежит перед лицевой гранью каждой из 6 поверхностей кузова
+    bool result = _bottomTruncatedPlane.isPointInFront(point);
+    if (!result) return false;
+
+    Collection<Plane>& sideBodyPlanes = _bottomTruncatedPlane.getCuttingPlanes();
+    for (int i = 0; result && i < sideBodyPlanes.getCount(); i++) {
+        result = sideBodyPlanes[i].isPointInFront(point);
+    }
+    if (!result) return false;
+
+    Vector3 topPlaneFrontNormal = _bottomTruncatedPlane.getFrontNormal();
+    topPlaneFrontNormal.mul(-1.0f); // внутрь основной _bottomTruncatedPlane
+    Plane topPlane(topPlaneFrontNormal, *_box.getPoints()[(int)Box3dPoint::topDownLeft]);
+
+    return topPlane.isPointInFront(point);
 }

@@ -100,7 +100,7 @@ VehicleData::VehicleData() {
 
     /* wheel lateral force */
     float Dfront = 2.3f;
-    float Drear = 1.2f;
+    float Drear = 1.3f;
     PacejkaFormula lateralForceCurveFront(0.714f, 1.4f, Dfront, -0.2f);
     PacejkaFormula lateralForceCurveRear(0.714f, 1.4f, Drear, -0.2f);
     _lateralForceCurve[(int)WheelPosition::frontLeft] = lateralForceCurveFront;
