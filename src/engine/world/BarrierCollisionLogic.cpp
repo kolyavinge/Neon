@@ -67,19 +67,28 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
         Collection<WorldPrimitive*>& barrierPrimitives = pointSegments[bodyPointIndex]->getGroundAndBarrierPrimitives();
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
-            if (barrierPrimitive.isPointInFront(*bodyPoints[bodyPointIndex])) {
-                continue; // точка не зашла за препятствие
-            }
             // определяем есть ли пересечение отрезка между текущей точкой кузова и противоположной ей по-диагонали
             // такой диагональный отрезок покрывает все три оси перемещения
             if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.01f)) {
                 continue;
             }
+            // какая из двух точек отрезка зашла за препятствие
+            // проверка нужна на случай если точка зашла за препятствие и попала в другой сегмент
+            Vector3 collidedPoint;
+            if (!barrierPrimitive.isPointInFront(*bodyPoints[bodyPointIndex])) {
+                collidedPoint = *bodyPoints[bodyPointIndex];
+            } else if (!barrierPrimitive.isPointInFront(oppositeBodyPoint)) {
+                collidedPoint = oppositeBodyPoint;
+            } else {
+                // такое может быть если collidedPoint лежит на препятствии (скалярное произведение в isPointInFront() равно нулю)
+                // в итоге считаем что пересечения нет
+                continue;
+            }
             // ищим точку пересечения - точка на которую должна переместиться текущая точка кузова
-            // луч rayFromPosition-rayToPosition рассчитывается от текущей точки кузова внутри препятствия, до точки выхода из препятствия
-            Vector3 collisionPoint = barrierPrimitive.getProjectedPoint(*bodyPoints[bodyPointIndex], CollisionPointPosition::front);
+            // проекция текущей точки внутри препятствия на его плоскость
+            Vector3 collisionPoint = barrierPrimitive.getProjectedPoint(collidedPoint);
             // выталкиваем точку кузова из препятствия наружу
-            Vector3 collisionDepth = bodyPoints[bodyPointIndex]->getDirectionTo(collisionPoint);
+            Vector3 collisionDepth = collidedPoint.getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
             _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());

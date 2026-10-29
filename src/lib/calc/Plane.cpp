@@ -45,7 +45,7 @@ Vector3 Plane::getProjectedPoint(Vector3 v, CollisionPointPosition cpp) {
     v.subMultiplied(_frontNormal, dot);
     if (cpp == CollisionPointPosition::front) {
         v.addMultiplied(_frontNormal, 1e-7f);
-    } else if (cpp == CollisionPointPosition::back) {
+    } else { // back
         v.subMultiplied(_frontNormal, 1e-7f);
     }
     v.add(_basePoint);
