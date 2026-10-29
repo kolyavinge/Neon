@@ -1,7 +1,8 @@
 #pragma once
 
 #include <engine/vehicle/WheelLogic.h>
-#include <engine/world/VehicleCollisionLogic.h>
+#include <engine/world/BarrierCollisionLogic.h>
+#include <engine/world/WheelGroundContactLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
@@ -9,18 +10,21 @@
 class PositionLogic : public Object {
 
     WheelLogic& _wheelLogic;
-    VehicleCollisionLogic& _vehicleCollisionLogic;
+    WheelGroundContactLogic& _wheelGroundContactLogic;
+    BarrierCollisionLogic& _barrierCollisionLogic;
 
 public:
     static PositionLogic* resolve(Resolver& resolver) {
         return new PositionLogic(
             resolver.resolve<WheelLogic>(),
-            resolver.resolve<VehicleCollisionLogic>());
+            resolver.resolve<WheelGroundContactLogic>(),
+            resolver.resolve<BarrierCollisionLogic>());
     }
 
     PositionLogic(
         WheelLogic& wheelLogic,
-        VehicleCollisionLogic& vehicleCollisionLogic);
+        WheelGroundContactLogic& wheelGroundContactLogic,
+        BarrierCollisionLogic& barrierCollisionLogic);
 
     void updatePosition(Vehicle& vehicle);
 };

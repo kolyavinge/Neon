@@ -261,9 +261,6 @@
     <ClCompile Include="src\lib\calc\Angles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\world\VehicleCollisionLogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\world\WorldPrimitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -313,6 +310,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\Model3dCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\world\WheelGroundContactLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\world\BarrierCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -641,9 +644,6 @@
     <ClInclude Include="src\lib\calc\Angles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\world\VehicleCollisionLogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\model\world\WorldSegment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -693,6 +693,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\Model3dCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\world\WheelGroundContactLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\world\BarrierCollisionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
