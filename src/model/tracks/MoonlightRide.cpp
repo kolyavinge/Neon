@@ -266,8 +266,8 @@ void MoonlightRide::makeRoadBarriers() {
 }
 
 void MoonlightRide::setPlayerPosition() {
-    _playerCenter.set(Vector3(10.0f, 10.0f, 1.0f));
-    //_playerCenter.set(Vector3(50.0f, 260.0f, 8.0f));
+    //_playerCenter.set(Vector3(10.0f, 10.0f, 1.0f));
+    _playerCenter.set(Vector3(10.0f, 200.0f, 5.0f));
     //_playerCenter.set(Vector3(10.0f, 270.0f, 4.0f));
     //_playerCenter.set(Vector3(10.0f, 1000.0f, 4.0f));
     //_playerCenter.set(Vector3(310.0f, 700.0f, 5.0f));

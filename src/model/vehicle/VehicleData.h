@@ -35,6 +35,7 @@ public:
     Measures bodyMeasures;
     Vector3 massCenter;
     float massCenterHeight;
+    float maxVehicleCollisionLengthSquared;
     float bodyMaxPitch;
     float bodyMaxRoll;
     float airDragCoeff;

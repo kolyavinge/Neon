@@ -318,6 +318,9 @@
     <ClCompile Include="src\engine\world\BarrierCollisionLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\world\VehiclesCollisionLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -699,6 +702,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\world\BarrierCollisionLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\world\VehiclesCollisionLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

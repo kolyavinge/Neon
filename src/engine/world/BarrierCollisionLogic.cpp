@@ -85,7 +85,7 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
                 continue;
             }
             // ищим точку пересечения - точка на которую должна переместиться текущая точка кузова
-            // проекция текущей точки внутри препятствия на его плоскость
+            // проекция точки внутри препятствия на его плоскость
             Vector3 collisionPoint = barrierPrimitive.getProjectedPoint(collidedPoint);
             // выталкиваем точку кузова из препятствия наружу
             Vector3 collisionDepth = collidedPoint.getDirectionTo(collisionPoint);
@@ -96,7 +96,8 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
     }
 }
 
-void BarrierCollisionLogic::findOuterCornerCollisions(Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments) {
+void BarrierCollisionLogic::findOuterCornerCollisions(
+    Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments) {
     // если обьекты игрового мира образуют внешние углы, то обрабатываем эти углы отдельно
     if (vehicleLinearVelocity.isZero()) return;
     bool hasOuterCorners = false;
@@ -113,7 +114,7 @@ void BarrierCollisionLogic::findOuterCornerCollisions(Body& body, Vector3 vehicl
         for (int cornerIndex = 0; cornerIndex < outerCorners.getCount(); cornerIndex++) {
             Line& outerCorner = *outerCorners[cornerIndex];
             Vector3 bodyCollisionPoint;
-            if (!bottomPlane.hasCollision(outerCorner.startPoint, outerCorner.endPoint, 0.01f, bodyCollisionPoint)) {
+            if (!bottomPlane.hasCollision(outerCorner.startPoint, outerCorner.endPoint, 0.01f, output bodyCollisionPoint)) {
                 continue;
             }
             // ищим одну из четырех плоскостей кузова, которая ударилась о внешний угол
@@ -123,7 +124,8 @@ void BarrierCollisionLogic::findOuterCornerCollisions(Body& body, Vector3 vehicl
             Vector3 cuttingPlaneCollisionPoint;
             for (int cuttingPlaneIndex = 0; cuttingPlaneIndex < bottomPlane.getCuttingPlanes().getCount(); cuttingPlaneIndex++) {
                 Plane& cuttingPlane = bottomPlane.getCuttingPlanes()[cuttingPlaneIndex];
-                if (cuttingPlane.hasCollision(outerCornerFromPoint, outerCornerToPoint, 0.01f, cuttingPlaneCollisionPoint, CollisionPointPosition::back)) {
+                if (cuttingPlane.hasCollision(
+                    outerCornerFromPoint, outerCornerToPoint, 0.01f, output cuttingPlaneCollisionPoint, CollisionPointPosition::back)) {
                     // нормаль плоскости cuttingPlane направлена вовнутрь кузова машинки
                     // поэтому берем точку пересечения ту, которая лежит сзади этой плоскости (CollisionPointPosition::back), т.е. лежащую за пределами кузова
                     // иначе мы не сможем вытолкать кузов полностью из препятствия

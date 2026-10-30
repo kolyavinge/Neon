@@ -31,6 +31,7 @@
     <ClCompile Include="src\engine\common\CameraUpdater.cpp" />
     <ClCompile Include="src\engine\world\BarrierCollisionLogic.cpp" />
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp" />
+    <ClCompile Include="src\engine\world\VehiclesCollisionLogic.cpp" />
     <ClCompile Include="src\engine\world\WheelGroundContactLogic.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="src\engine\common\CameraUpdater.h" />
     <ClInclude Include="src\engine\world\BarrierCollisionLogic.h" />
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />
+    <ClInclude Include="src\engine\world\VehiclesCollisionLogic.h" />
     <ClInclude Include="src\engine\world\WheelGroundContactLogic.h" />
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h" />
     <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h" />

@@ -1,5 +1,6 @@
 #include <lib/calc/Math.h>
 #include <lib/calc/UnitConverter.h>
+#include <lib/calc/Vector3.h>
 #include <model/vehicle/VehicleData.h>
 #include <model/vehicle/Wheel.h>
 
@@ -38,6 +39,7 @@ VehicleData::VehicleData() {
     bodyMeasures.zLength = 0.7f;
     massCenter.set(0.0f, bodyMeasures.yLength / 2.0f, bodyMeasures.zLength / 2.0f);
     massCenterHeight = bodyMeasures.zLength / 2.0f;
+    maxVehicleCollisionLengthSquared = Vector3(bodyMeasures.xLength, bodyMeasures.yLength, 0.0f).getLengthSquared();
     bodyMaxPitch = UnitConverter::degreesToRadians(10.0f);
     bodyMaxRoll = UnitConverter::degreesToRadians(15.0f);
     airDragCoeff = 0.2f;
