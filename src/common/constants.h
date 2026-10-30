@@ -33,7 +33,7 @@ public:
 class GameConstants {
 
 public:
-    inline static const int maxVehiclesCount = 1;
+    inline static const int maxVehiclesCount = 2;
 };
 
 class VehicleConstants {

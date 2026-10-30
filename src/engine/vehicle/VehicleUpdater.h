@@ -6,6 +6,9 @@
 #include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
 #include <engine/vehicle/WheelLogic.h>
+#include <engine/world/BarrierCollisionLogic.h>
+#include <engine/world/VehiclesCollisionLogic.h>
+#include <engine/world/WheelGroundContactLogic.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
@@ -18,6 +21,9 @@ class VehicleUpdater : public Object {
     GearboxLogic& _gearboxLogic;
     PositionLogic& _positionLogic;
     SteeringLogic& _steeringLogic;
+    WheelGroundContactLogic& _wheelGroundContactLogic;
+    BarrierCollisionLogic& _barrierCollisionLogic;
+    VehiclesCollisionLogic& _vehiclesCollisionLogic;
 
 public:
     static VehicleUpdater* resolve(Resolver& resolver) {
@@ -27,7 +33,10 @@ public:
             resolver.resolve<ForceLogic>(),
             resolver.resolve<GearboxLogic>(),
             resolver.resolve<PositionLogic>(),
-            resolver.resolve<SteeringLogic>());
+            resolver.resolve<SteeringLogic>(),
+            resolver.resolve<WheelGroundContactLogic>(),
+            resolver.resolve<BarrierCollisionLogic>(),
+            resolver.resolve<VehiclesCollisionLogic>());
     }
 
     VehicleUpdater(
@@ -36,10 +45,10 @@ public:
         ForceLogic& forceLogic,
         GearboxLogic& gearboxLogic,
         PositionLogic& positionLogic,
-        SteeringLogic& steeringLogic);
+        SteeringLogic& steeringLogic,
+        WheelGroundContactLogic& wheelGroundContactLogic,
+        BarrierCollisionLogic& barrierCollisionLogic,
+        VehiclesCollisionLogic& vehiclesCollisionLogic);
 
     void updateVehicles(Collection<Vehicle>& vehicles);
-
-private:
-    void updateVehicle(Vehicle& vehicle);
 };

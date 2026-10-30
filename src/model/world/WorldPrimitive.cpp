@@ -1,4 +1,3 @@
-#include <common/constants.h>
 #include <lib/calc/Math.h>
 #include <lib/calc/Plane.h>
 #include <lib/calc/Quaternion.h>
@@ -15,20 +14,7 @@ WorldPrimitive::WorldPrimitive(WorldPrimitiveKind kind, Vector3 p1, Vector3 p2, 
     _points[1] = p2;
     _points[2] = p3;
     _points[3] = p4;
-    Vector3 right = p1.getDirectionTo(p2);
-    Vector3 up = p1.getDirectionTo(p4);
-    Vector3 frontNormal = right;
-    frontNormal.crossProduct(up);
-    frontNormal.normalize();
-    _plane.set(frontNormal, p1);
-    Vector3 downCuttingPlaneFrontNormal = Math::rotatePoint(p1.getDirectionTo(p2), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
-    Vector3 upCuttingPlaneFrontNormal = Math::rotatePoint(p3.getDirectionTo(p4), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
-    Vector3 leftCuttingPlaneFrontNormal = Math::rotatePoint(p1.getDirectionTo(p4), -Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
-    Vector3 rightCuttingPlaneFrontNormal = Math::rotatePoint(p2.getDirectionTo(p3), Math::piHalf, frontNormal, CommonConstants::axisOrigin).getNormalized();
-    _plane.addCuttingPlane(Plane(downCuttingPlaneFrontNormal, p1));
-    _plane.addCuttingPlane(Plane(upCuttingPlaneFrontNormal, p3));
-    _plane.addCuttingPlane(Plane(leftCuttingPlaneFrontNormal, p1));
-    _plane.addCuttingPlane(Plane(rightCuttingPlaneFrontNormal, p2));
+    _plane.initByPoints(p1, p2, p4);
 }
 
 WorldPrimitiveKind WorldPrimitive::getKind() {
@@ -82,13 +68,8 @@ void WorldPrimitive::setUpNormal(Vector3 upNormal) {
     _upNormal = upNormal;
 }
 
-bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps) {
-    Vector3 ignore;
-    return hasCollision(startPoint, endPoint, eps, output ignore);
-}
-
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
-    return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint);
+    return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint, CollisionPointPosition::front);
 }
 
 TransformMatrix4 WorldPrimitive::getTransformMatrix4() {

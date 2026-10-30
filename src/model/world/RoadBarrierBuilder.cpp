@@ -116,7 +116,8 @@ void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
     rayTo.subMultiplied(CommonConstants::upAxis, WorldPrimitive::barrierLength);
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
-        if (pr.hasCollision(rayFrom, rayTo, 0.01f)) {
+        Vector3 _;
+        if (pr.hasCollision(rayFrom, rayTo, 0.01f, output _)) {
             _upNormal = pr.getFrontNormal();
             return;
         }
@@ -134,7 +135,7 @@ void RoadBarrierBuilder::recalculateDirectionAndUpNormalIfNeed(Vector3 startPoin
     Vector3 collisionPoint;
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
-        if (pr.hasCollision(rayFrom, rayTo, 0.01f, collisionPoint)) {
+        if (pr.hasCollision(rayFrom, rayTo, 0.01f, output collisionPoint)) {
             _direction = startPoint.getDirectionTo(collisionPoint).getNormalized();
             _upNormal = pr.getFrontNormal();
             return;

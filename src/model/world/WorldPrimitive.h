@@ -45,7 +45,6 @@ public:
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     void setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4);
     void setUpNormal(Vector3 upNormal);
-    bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps);
     bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
     TransformMatrix4 getTransformMatrix4();
 };

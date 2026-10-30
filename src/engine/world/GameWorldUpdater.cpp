@@ -1,3 +1,4 @@
+#include <debug/VehicleDebuger.h>
 #include <engine/world/GameWorldUpdater.h>
 
 GameWorldUpdater::GameWorldUpdater(
@@ -16,4 +17,6 @@ void GameWorldUpdater::update(GameWorld& gameWorld) {
     _vehicleUpdater.updateVehicles(gameWorld.getVehicles());
     _cameraUpdater.update(gameWorld.getCamera(), gameWorld.getPlayerVehicle());
     _worldSegmentVisibilityUpdater.update(gameWorld.getSegmentTree().getRoot(), gameWorld.getCamera(), gameWorld.getVisibleWorldSegmentsData());
+
+    VehicleDebuger::printDebugInfo(gameWorld.getPlayerVehicle());
 }

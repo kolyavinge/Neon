@@ -1,7 +1,7 @@
 #pragma once
 
-#include <lib/calc/Vector3.h>
 #include <lib/calc/TruncatedPlane.h>
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/RigidBody.h>
 #include <model/common/common.h>
@@ -16,6 +16,7 @@ class Body : public Object {
     Vector3 _rearWingDragForce;
     Box3d _box;
     TruncatedPlane _bottomTruncatedPlane;
+    Array<TruncatedPlane, 4> _sideTruncatedPlanes;
     RigidBody& _rigidBody;
 
 public:
@@ -29,11 +30,14 @@ public:
     Vector3 getRearWingDragForce();
     Vector3 getRearWingPosition();
     Vector3 getVelocityAtPoint(Vector3 bodyPoint);
+    TruncatedPlane& getBottomTruncatedPlane();
+    Collection<TruncatedPlane>& getSideTruncatedPlanes();
     void calculateAirDragForce(Vector3 vehicleLinearVelocity);
     void calculateAirDragTorque(Vector3 vehicleLinearVelocity, Vector3 vehicleAngularVelocity, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
     void calculateRearWingDownForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
-    TruncatedPlane& calculateBottomTruncatedPlane();
+    void calculateBottomTruncatedPlane();
+    void calculateSideTruncatedPlanes();
     bool isPointInside(Vector3 point);
 };

@@ -69,6 +69,7 @@ public:
     bool isFrozen();
     void clearAllVelocitiesAndForces();
     void calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    void moveByVector(Vector3 v);
 
 private:
     void initWheelAndSpring(WheelPosition position);

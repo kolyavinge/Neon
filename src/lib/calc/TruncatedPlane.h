@@ -14,6 +14,7 @@ class TruncatedPlane : public Plane {
 public:
     TruncatedPlane(int initCuttingPlanesCount = 1);
     TruncatedPlane(Vector3 frontNormal, Vector3 basePoint);
+    void initByPoints(Vector3 downLeft, Vector3 downRight, Vector3 upLeft);
     Collection<Plane>& getCuttingPlanes();
     void addCuttingPlane(Plane cuttingPlane);
     void clearCuttingPlanes();

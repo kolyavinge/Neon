@@ -1,21 +1,32 @@
 #pragma once
 
+#include <common/constants.h>
+#include <lib/calc/Plane.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/vehicle/Body.h>
 #include <model/vehicle/Vehicle.h>
 
 class VehiclesCollisionLogic : public Object {
 
-    List<Vector3> _collisionPoints;
-    List<Vector3> _collisionDepths;
-    List<Vector3> _collisionNormalsToBody;
+    class VehicleCollisionInfo : public Object {
+
+    public:
+        List<Vector3> collisionPoints;
+        List<Vector3> collisionDepths;
+        List<Vector3> collisionNormalsToBody;
+    };
+
+    Array<VehicleCollisionInfo, GameConstants::maxVehiclesCount> _collisionInfo;
+    bool _anyCollisionsFound;
 
 public:
-    bool resolveVehiclesCollision(Collection<Vehicle*>& vehicles);
+    VehiclesCollisionLogic();
+    bool resolveVehiclesCollision(Collection<Vehicle>& vehicles);
 
 private:
-    void findVehiclesCollision(Collection<Vehicle*>& vehicles);
-    void findCollisionDepth(Vehicle& vehicleA, Vehicle& vehicleB);
-    bool findCollisionDepthForBodySide(Plane bodySide, Vector3 rayFrom, Vector3 rayTo);
-    bool hasCollision(Vehicle& vehicleA, Vehicle& vehicleB, output Vector3& vehicleACollisionPoint);
+    void findVehiclesCollision(Collection<Vehicle>& vehicles);
+    bool findCollisionDepth(Vehicle& vehicleA, Vehicle& vehicleB);
+    bool hasCollision(Body& vehicleBodyA, Body& vehicleBodyB, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex);
+    bool findCollisionDepthForBodySide(int vehicleAId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo);
 };

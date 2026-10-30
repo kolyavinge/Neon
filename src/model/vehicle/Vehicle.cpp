@@ -35,6 +35,7 @@ void Vehicle::init() {
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.1f);
+    _rigidBody.setCenter(Vector3(10.0f, 15.0f, 1.0f));
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {
@@ -241,4 +242,12 @@ void Vehicle::clearAllVelocitiesAndForces() {
 
 void Vehicle::calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
     _rigidBody.calculateVelocitiesAfterCollisionWithUnmovableBody(collisionPoint, collisionNormalToBody);
+}
+
+void Vehicle::moveByVector(Vector3 v) {
+    Collection<Vector3*>& bodyPoints = _body.getBox().getPoints();
+    for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(v);
+    Vector3 newCenter = getCenter();
+    newCenter.add(v);
+    setCenter(newCenter);
 }

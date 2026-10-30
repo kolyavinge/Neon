@@ -49,6 +49,14 @@ Vector3 Body::getVelocityAtPoint(Vector3 bodyPoint) {
     return _rigidBody.getVelocityAtPoint(bodyPoint);
 }
 
+TruncatedPlane& Body::getBottomTruncatedPlane() {
+    return _bottomTruncatedPlane;
+}
+
+Collection<TruncatedPlane>& Body::getSideTruncatedPlanes() {
+    return _sideTruncatedPlanes;
+}
+
 void Body::calculateAirDragForce(Vector3 vehicleLinearVelocity) {
     _airDragForce = vehicleLinearVelocity;
     _airDragForce.mul(vehicleLinearVelocity.getLength());
@@ -83,31 +91,38 @@ void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vecto
     _box.calculatePoints(vehicleCenter, chassisRightNormal, chassisFrontNormal, chassisUpNormal);
 }
 
-TruncatedPlane& Body::calculateBottomTruncatedPlane() {
+void Body::calculateBottomTruncatedPlane() {
     Collection<Vector3*>& points = _box.getPoints();
-    Vector3 downLeft = *points[(int)Box3dPoint::bottomDownLeft];
-    Vector3 downRight = *points[(int)Box3dPoint::bottomDownRight];
-    Vector3 upLeft = *points[(int)Box3dPoint::bottomUpLeft];
-    Vector3 upRight = *points[(int)Box3dPoint::bottomUpRight];
-    Vector3 topDownLeft = *points[(int)Box3dPoint::topDownLeft];
-    Vector3 frontNormal = downLeft.getDirectionTo(topDownLeft).getNormalized();
-    _bottomTruncatedPlane.set(frontNormal, downLeft);
-    _bottomTruncatedPlane.clearCuttingPlanes();
-    // нормали секущих боковых плоскостей направлены внутрь основной плоскости _bottomTruncatedPlane
-    Plane p1(downLeft.getDirectionTo(upLeft).getNormalized(), downLeft);
-    Plane p2(downLeft.getDirectionTo(downRight).getNormalized(), downLeft);
-    Plane p3(upRight.getDirectionTo(upLeft).getNormalized(), upRight);
-    Plane p4(upRight.getDirectionTo(downRight).getNormalized(), upRight);
-    _bottomTruncatedPlane.addCuttingPlane(p1);
-    _bottomTruncatedPlane.addCuttingPlane(p2);
-    _bottomTruncatedPlane.addCuttingPlane(p3);
-    _bottomTruncatedPlane.addCuttingPlane(p4);
+    _bottomTruncatedPlane.initByPoints(
+        *points[(int)Box3dPoint::bottomDownLeft],
+        *points[(int)Box3dPoint::bottomDownRight],
+        *points[(int)Box3dPoint::bottomUpLeft]
+    );
+}
 
-    return _bottomTruncatedPlane;
+void Body::calculateSideTruncatedPlanes() {
+    Collection<Vector3*>& points = _box.getPoints();
+
+    // строим плоскости так, что их нормали смотрели наружу
+
+    // left side
+    _sideTruncatedPlanes[0].initByPoints(
+        *points[(int)Box3dPoint::bottomUpLeft], *points[(int)Box3dPoint::bottomDownLeft], *points[(int)Box3dPoint::topUpLeft]);
+
+    // front side
+    _sideTruncatedPlanes[1].initByPoints(
+        *points[(int)Box3dPoint::bottomUpRight], *points[(int)Box3dPoint::bottomUpLeft], *points[(int)Box3dPoint::topUpRight]);
+
+    // right side
+    _sideTruncatedPlanes[2].initByPoints(
+        *points[(int)Box3dPoint::bottomDownRight], *points[(int)Box3dPoint::bottomUpRight], *points[(int)Box3dPoint::topDownRight]);
+
+    // back side
+    _sideTruncatedPlanes[3].initByPoints(
+        *points[(int)Box3dPoint::bottomDownLeft], *points[(int)Box3dPoint::bottomDownRight], *points[(int)Box3dPoint::topDownLeft]);
 }
 
 bool Body::isPointInside(Vector3 point) {
-    calculateBottomTruncatedPlane();
     // проверяем что точка лежит перед лицевой гранью каждой из 6 поверхностей кузова
     bool result = _bottomTruncatedPlane.isPointInFront(point);
     if (!result) return false;

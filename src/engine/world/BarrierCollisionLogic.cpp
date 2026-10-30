@@ -35,11 +35,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     // вытаскиваем точки из препятствий
     // какие-то точки могут остаться внутри препятствий - они будут обработаны в след кадре
     Vector3 longestCollisionDepth = Vector3::getLongest(_collisionDepths);
-    // корректируем точки кузова и центра
-    for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(longestCollisionDepth);
-    Vector3 newCenter = vehicle.getCenter();
-    newCenter.add(longestCollisionDepth);
-    vehicle.setCenter(newCenter);
+    vehicle.moveByVector(longestCollisionDepth); // корректируем точки кузова и центра
 
     return true;
 }
@@ -69,7 +65,8 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];
             // определяем есть ли пересечение отрезка между текущей точкой кузова и противоположной ей по-диагонали
             // такой диагональный отрезок покрывает все три оси перемещения
-            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.01f)) {
+            Vector3 _;
+            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.01f, output _)) {
                 continue;
             }
             // какая из двух точек отрезка зашла за препятствие
@@ -108,7 +105,8 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
         }
     }
     if (!hasOuterCorners) return;
-    TruncatedPlane& bottomPlane = body.calculateBottomTruncatedPlane();
+    body.calculateBottomTruncatedPlane();
+    TruncatedPlane& bottomPlane = body.getBottomTruncatedPlane();
     for (int segmentIndex = 0; hasOuterCorners && segmentIndex < (int)Box3dPoint::_count / 2; segmentIndex++) {
         Collection<Line*>& outerCorners = pointSegments[segmentIndex]->getOuterCorners();
         for (int cornerIndex = 0; cornerIndex < outerCorners.getCount(); cornerIndex++) {
@@ -118,18 +116,18 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
                 continue;
             }
             // ищим одну из четырех плоскостей кузова, которая ударилась о внешний угол
+            Vector3 outerCornerUpDirection = outerCorner.startPoint.getDirectionTo(outerCorner.endPoint).getNormalized();
             Vector3 outerCornerFromPoint = outerCorner.startPoint;
-            Vector3 outerCornerToPoint = outerCorner.startPoint;
+            outerCornerFromPoint.addMultiplied(outerCornerUpDirection, body.getData().bodyMeasures.zLength / 2.0f);
+            Vector3 outerCornerToPoint = outerCornerFromPoint;
             outerCornerToPoint.addMultiplied(vehicleLinearVelocity.getNormalized(), body.getData().bodyMeasures.yLength);
-            Vector3 cuttingPlaneCollisionPoint;
-            for (int cuttingPlaneIndex = 0; cuttingPlaneIndex < bottomPlane.getCuttingPlanes().getCount(); cuttingPlaneIndex++) {
-                Plane& cuttingPlane = bottomPlane.getCuttingPlanes()[cuttingPlaneIndex];
-                if (cuttingPlane.hasCollision(
-                    outerCornerFromPoint, outerCornerToPoint, 0.01f, output cuttingPlaneCollisionPoint, CollisionPointPosition::back)) {
-                    // нормаль плоскости cuttingPlane направлена вовнутрь кузова машинки
-                    // поэтому берем точку пересечения ту, которая лежит сзади этой плоскости (CollisionPointPosition::back), т.е. лежащую за пределами кузова
-                    // иначе мы не сможем вытолкать кузов полностью из препятствия
-                    Vector3 collisionDepth = cuttingPlaneCollisionPoint.getDirectionTo(bodyCollisionPoint);
+            body.calculateSideTruncatedPlanes();
+            Collection<TruncatedPlane>& sidePlanes = body.getSideTruncatedPlanes();
+            Vector3 sidePlaneCollisionPoint;
+            for (int sidePlaneIndex = 0; sidePlaneIndex < sidePlanes.getCount(); sidePlaneIndex++) {
+                TruncatedPlane& sidePlane = sidePlanes[sidePlaneIndex];
+                if (sidePlane.hasCollision(outerCornerFromPoint, outerCornerToPoint, 0.01f, output sidePlaneCollisionPoint)) {
+                    Vector3 collisionDepth = sidePlaneCollisionPoint.getDirectionTo(bodyCollisionPoint);
                     collisionDepth = bottomPlane.getProjectedVector(collisionDepth);
                     _collisionPoints.addByValue(bodyCollisionPoint);
                     _collisionDepths.addByValue(collisionDepth);
