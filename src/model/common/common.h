@@ -37,26 +37,28 @@ public:
     void subMultiplied(Vector3& v, float multipliedBy);
 };
 
-enum class Box3dPoint {
-    bottomDownLeft = 0,
-    bottomDownRight = 1,
-    bottomUpLeft = 2,
-    bottomUpRight = 3,
-    topDownLeft = 4,
-    topDownRight = 5,
-    topUpLeft = 6,
-    topUpRight = 7,
-    _count,
-    _bottomPointsCount = 4
+class Box3dPoint : public Object {
+
+public:
+    inline static const int bottomDownLeft = 0;
+    inline static const int bottomDownRight = 1;
+    inline static const int bottomUpLeft = 2;
+    inline static const int bottomUpRight = 3;
+    inline static const int topDownLeft = 4;
+    inline static const int topDownRight = 5;
+    inline static const int topUpLeft = 6;
+    inline static const int topUpRight = 7;
+    inline static const int count = 8;
+    inline static const int bottomPointsCount = 4;
 };
-static_assert((int)Box3dPoint::_count == 8);
+static_assert(Box3dPoint::count == 8);
 
 class Box3d : public Object {
 
     Measures _measures;
     Rect2d _bottomRect;
     Rect2d _topRect;
-    Array<Vector3*, (int)Box3dPoint::_count> _points;
+    Array<Vector3*, Box3dPoint::count> _points;
 
 public:
     Box3d();
@@ -69,5 +71,5 @@ public:
     Vector3 getOppositeDiagonalPointFor(int pointIndex);
 
 private:
-    Box3dPoint getBox3dPointOppositeDiagonalPointFor(int pointIndex);
+    int getBox3dPointOppositeDiagonalPointFor(int pointIndex);
 };

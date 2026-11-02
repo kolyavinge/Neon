@@ -70,17 +70,17 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
     calculateBodyPlanesIfNeedFor(vehicleA);
     calculateBodyPlanesIfNeedFor(vehicleB);
 
-    if (findCollisionDepthForBodySide(
-        vehicleA.getId(), vehicleB.getId(), vehicleBBody.getTopTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
-        return true;
-    }
-
     Collection<TruncatedPlane>& vehicleBSidePlanes = vehicleBBody.getSideTruncatedPlanes();
     for (int i = 0; i < vehicleBSidePlanes.getCount(); i++) {
         if (findCollisionDepthForBodySide(
             vehicleA.getId(), vehicleB.getId(), vehicleBSidePlanes[i], vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
             return true;
         }
+    }
+
+    if (findCollisionDepthForBodySide(
+        vehicleA.getId(), vehicleB.getId(), vehicleBBody.getTopTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
+        return true;
     }
 
     if (!vehicleB.allWheelsHaveGroundContact() &&

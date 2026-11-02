@@ -32,14 +32,14 @@ void Rect2d::subMultiplied(Vector3& v, float multipliedBy) {
 }
 
 Box3d::Box3d() {
-    _points[(int)Box3dPoint::bottomDownLeft] = &_bottomRect.downLeft;
-    _points[(int)Box3dPoint::bottomDownRight] = &_bottomRect.downRight;
-    _points[(int)Box3dPoint::bottomUpLeft] = &_bottomRect.upLeft;
-    _points[(int)Box3dPoint::bottomUpRight] = &_bottomRect.upRight;
-    _points[(int)Box3dPoint::topDownLeft] = &_topRect.downLeft;
-    _points[(int)Box3dPoint::topDownRight] = &_topRect.downRight;
-    _points[(int)Box3dPoint::topUpLeft] = &_topRect.upLeft;
-    _points[(int)Box3dPoint::topUpRight] = &_topRect.upRight;
+    _points[Box3dPoint::bottomDownLeft] = &_bottomRect.downLeft;
+    _points[Box3dPoint::bottomDownRight] = &_bottomRect.downRight;
+    _points[Box3dPoint::bottomUpLeft] = &_bottomRect.upLeft;
+    _points[Box3dPoint::bottomUpRight] = &_bottomRect.upRight;
+    _points[Box3dPoint::topDownLeft] = &_topRect.downLeft;
+    _points[Box3dPoint::topDownRight] = &_topRect.downRight;
+    _points[Box3dPoint::topUpLeft] = &_topRect.upLeft;
+    _points[Box3dPoint::topUpRight] = &_topRect.upRight;
 }
 
 void Box3d::setMeasures(Measures& measures) {
@@ -71,12 +71,12 @@ Collection<Vector3*>& Box3d::getPoints() {
 }
 
 Vector3 Box3d::getOppositeDiagonalPointFor(int pointIndex) {
-    Box3dPoint oppositeDiagonalPoint = getBox3dPointOppositeDiagonalPointFor(pointIndex);
-    return *_points[(int)oppositeDiagonalPoint];
+    int oppositeDiagonalPoint = getBox3dPointOppositeDiagonalPointFor(pointIndex);
+    return *_points[oppositeDiagonalPoint];
 }
 
-Box3dPoint Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {
-    switch ((Box3dPoint)pointIndex) {
+int Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {
+    switch (pointIndex) {
         case Box3dPoint::bottomDownLeft: return Box3dPoint::topUpRight;
         case Box3dPoint::bottomDownRight: return Box3dPoint::topUpLeft;
         case Box3dPoint::bottomUpLeft: return Box3dPoint::topDownRight;
@@ -85,7 +85,7 @@ Box3dPoint Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {
         case Box3dPoint::topDownRight: return Box3dPoint::bottomUpLeft;
         case Box3dPoint::topUpLeft: return Box3dPoint::bottomDownRight;
         case Box3dPoint::topUpRight: return Box3dPoint::bottomDownLeft;
-        case Box3dPoint::_count:
+        case Box3dPoint::count:
         default: throw Exception(L"Wrong pointIndex.");
     }
 }
