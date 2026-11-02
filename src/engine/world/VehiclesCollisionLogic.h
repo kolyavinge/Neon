@@ -14,7 +14,8 @@ class VehiclesCollisionLogic : public Object {
     public:
         List<Vector3> collisionPoints;
         List<Vector3> collisionDepths;
-        List<Vector3> collisionNormalsToBody;
+        List<Vector3> collisionNormalsToVehicle;
+        List<int> anotherVehicleId;
     };
 
     Array<VehicleCollisionInfo, GameConstants::maxVehiclesCount> _collisionInfo;
@@ -27,6 +28,6 @@ public:
 private:
     void findVehiclesCollision(Collection<Vehicle>& vehicles);
     bool findCollisionDepth(Vehicle& vehicleA, Vehicle& vehicleB);
-    bool hasCollision(Body& vehicleBodyA, Body& vehicleBodyB, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex);
-    bool findCollisionDepthForBodySide(int vehicleAId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo);
+    bool hasCollision(Body& vehicleABody, Body& vehicleBBody, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex);
+    bool findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo);
 };

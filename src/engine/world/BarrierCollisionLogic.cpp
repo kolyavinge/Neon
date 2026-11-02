@@ -15,7 +15,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     _collisionPoints.clear();
     _collisionDepths.clear();
-    _collisionNormalsToBody.clear();
+    _collisionNormalsToVehicle.clear();
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
     Array<WorldSegment*, (int)Box3dPoint::_count> pointSegments;
     findPointSegments(bodyPoints, output pointSegments);
@@ -29,7 +29,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     // расчитываем новые скорости в точках соударения
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
-        vehicle.calculateVelocitiesAfterCollisionWithUnmovableBody(_collisionPoints[i], _collisionNormalsToBody[i]);
+        vehicle.calculateVelocitiesAfterCollisionToBarrier(_collisionPoints[i], _collisionNormalsToVehicle[i]);
     }
 
     // вытаскиваем точки из препятствий
@@ -88,7 +88,7 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
             Vector3 collisionDepth = collidedPoint.getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
-            _collisionNormalsToBody.addByValue(barrierPrimitive.getFrontNormal());
+            _collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
         }
     }
 }
@@ -131,7 +131,7 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
                     collisionDepth = bottomPlane.getProjectedVector(collisionDepth);
                     _collisionPoints.addByValue(bodyCollisionPoint);
                     _collisionDepths.addByValue(collisionDepth);
-                    _collisionNormalsToBody.addByValue(collisionDepth.getNormalized());
+                    _collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
                     // нашли соударение с одним внешним углом - остальные не проверяем
                     // ибо практически нереально удариться более чем в один внешний угол одновременно
                     return;

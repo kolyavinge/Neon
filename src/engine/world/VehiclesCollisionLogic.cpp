@@ -12,7 +12,8 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
     for (int i = 0; i < _collisionInfo.getCount(); i++) {
         _collisionInfo[i].collisionPoints.clear();
         _collisionInfo[i].collisionDepths.clear();
-        _collisionInfo[i].collisionNormalsToBody.clear();
+        _collisionInfo[i].collisionNormalsToVehicle.clear();
+        _collisionInfo[i].anotherVehicleId.clear();
     }
     _anyCollisionsFound = false;
 
@@ -22,8 +23,18 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
     // устраняем коллизии
 
     // расчитываем новые скорости в точках соударения
+    for (int i = 0; i < _collisionInfo.getCount(); i++) {
+        Vehicle& vehicle = vehicles[i];
+        VehicleCollisionInfo& collisionInfo = _collisionInfo[vehicle.getId()];
+        if (collisionInfo.collisionPoints.getCount() == 0) continue;
+        for (int j = 0; j < collisionInfo.collisionPoints.getCount(); j++) {
+            Vehicle& anotherVehicle = vehicles[collisionInfo.anotherVehicleId[j]];
+            vehicle.calculateVelocitiesAfterCollisionToAnotherVehicle(
+                collisionInfo.collisionPoints[j], collisionInfo.collisionNormalsToVehicle[j], anotherVehicle);
+        }
+    }
 
-    // вытаскиваем точки из препятствий
+    // вытаскиваем точки кузова из другой машины
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         VehicleCollisionInfo& collisionInfo = _collisionInfo[vehicle.getId()];
@@ -55,13 +66,18 @@ void VehiclesCollisionLogic::findVehiclesCollision(Collection<Vehicle>& vehicles
 }
 
 bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehicleB) {
+    // vehicleA - машинка которая ударилась в vehicleB
+    // vehicleB - машинка в которую ударилась vehicleA
+    Body& vehicleABody = vehicleA.getBody();
+    Body& vehicleBBody = vehicleB.getBody();
     Vector3 vehicleACollisionPointTo;
     int vehicleACollisionPointIndex;
-    if (!hasCollision(vehicleA.getBody(), vehicleB.getBody(), output vehicleACollisionPointTo, output vehicleACollisionPointIndex)) return false;
-    Vector3 vehicleACollisionPointFrom = *vehicleA.getBody().getBox().getOppositeDiagonalPointFor(vehicleACollisionPointIndex);
-    Collection<TruncatedPlane>& vehicleBSidePlanes = vehicleB.getBody().getSideTruncatedPlanes();
+    if (!hasCollision(vehicleABody, vehicleBBody, output vehicleACollisionPointTo, output vehicleACollisionPointIndex)) return false;
+    Vector3 vehicleACollisionPointFrom = *vehicleABody.getBox().getOppositeDiagonalPointFor(vehicleACollisionPointIndex);
+    Collection<TruncatedPlane>& vehicleBSidePlanes = vehicleBBody.getSideTruncatedPlanes();
     for (int i = 0; i < vehicleBSidePlanes.getCount(); i++) {
-        if (findCollisionDepthForBodySide(vehicleA.getId(), vehicleBSidePlanes[i], vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
+        if (findCollisionDepthForBodySide(
+            vehicleA.getId(), vehicleB.getId(), vehicleBSidePlanes[i], vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
             return true;
         }
     }
@@ -69,12 +85,12 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
 }
 
 bool VehiclesCollisionLogic::hasCollision(
-    Body& vehicleBodyA, Body& vehicleBodyB, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex) {
-    Collection<Vector3*>& vehicleABodyPoints = vehicleBodyA.getBox().getPoints();
-    for (int i = 0; i < vehicleABodyPoints.getCount(); i++) {
-        if (vehicleBodyB.isPointInside(*vehicleABodyPoints[i])) {
-            vehicleACollisionPoint = *vehicleABodyPoints[i];
-            vehicleACollisionPointIndex = i;
+    Body& vehicleABody, Body& vehicleBBody, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex) {
+    Collection<Vector3*>& vehicleABodyPoints = vehicleABody.getBox().getPoints();
+    for (int pointIndex = 0; pointIndex < vehicleABodyPoints.getCount(); pointIndex++) {
+        if (vehicleBBody.isPointInside(*vehicleABodyPoints[pointIndex])) {
+            vehicleACollisionPoint = *vehicleABodyPoints[pointIndex];
+            vehicleACollisionPointIndex = pointIndex;
             return true;
         }
     }
@@ -82,7 +98,7 @@ bool VehiclesCollisionLogic::hasCollision(
     return false;
 }
 
-bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo) {
+bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo) {
     Vector3 _;
     if (!vehicleBSidePlane.hasCollision(rayFrom, rayTo, 0.01f, output _)) return false;
     Vector3 collisionPoint = vehicleBSidePlane.getProjectedPoint(rayTo);
@@ -90,7 +106,8 @@ bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, Plane
     VehicleCollisionInfo& collisionInfo = _collisionInfo[vehicleAId];
     collisionInfo.collisionPoints.add(collisionPoint);
     collisionInfo.collisionDepths.add(collisionDepth);
-    collisionInfo.collisionNormalsToBody.addByValue(vehicleBSidePlane.getFrontNormal());
+    collisionInfo.collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
+    collisionInfo.anotherVehicleId.add(vehicleBId);
 
     return true;
 }

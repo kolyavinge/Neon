@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <engine/world/WheelGroundContactLogic.h>
+#include <lib/Numeric.h>
 
 WheelGroundContactLogic::WheelGroundContactLogic(
     WorldSegmentDataFinder& segmentDataFinder) :

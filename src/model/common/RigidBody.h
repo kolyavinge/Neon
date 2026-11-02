@@ -61,11 +61,15 @@ public:
     void applyTorque(Vector3 torque);
     void updatePosition(float dt);
     void resetToPrevPosition();
-    void calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    void calculateVelocitiesAfterCollisionToUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
+    void calculateVelocitiesAfterCollisionToBody(Vector3 collisionPoint, Vector3 collisionNormalToBody, RigidBody& anotherBody);
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
     void saveState();
     void updateModelMatrix();
-    void applyImpulse(float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
+    // след три метода сделаны статическими для надежности, потому что по своей логике они не должны работать с экземплярами, а должны получать все данные снаружи
+    static Vector3 getCollisionVelocity(Vector3 collisionPointDirection, Vector3 linearVelocity, Vector3 angularVelocity);
+    static float getResistance(Vector3 collisionPointDirection, Vector3 collisionNormalToBody, TransformMatrix4& worldInertiaInverse, float mass);
+    static void applyImpulse(RigidBody& body, float impulse, Vector3 collisionPointDirection, Vector3 collisionNormal);
 };

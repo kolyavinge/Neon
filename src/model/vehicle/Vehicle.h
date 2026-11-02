@@ -68,8 +68,9 @@ public:
     float getAverageDriveWheelsRpm();
     bool isFrozen();
     void clearAllVelocitiesAndForces();
-    void calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
     void moveByVector(Vector3 v);
+    void calculateVelocitiesAfterCollisionToBarrier(Vector3 collisionPoint, Vector3 collisionNormalToVehicle);
+    void calculateVelocitiesAfterCollisionToAnotherVehicle(Vector3 collisionPoint, Vector3 collisionNormalToVehicle, Vehicle& anotherVehicle);
 
 private:
     void initWheelAndSpring(WheelPosition position);

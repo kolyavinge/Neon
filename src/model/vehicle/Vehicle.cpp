@@ -240,14 +240,18 @@ void Vehicle::clearAllVelocitiesAndForces() {
     }
 }
 
-void Vehicle::calculateVelocitiesAfterCollisionWithUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
-    _rigidBody.calculateVelocitiesAfterCollisionWithUnmovableBody(collisionPoint, collisionNormalToBody);
-}
-
 void Vehicle::moveByVector(Vector3 v) {
     Collection<Vector3*>& bodyPoints = _body.getBox().getPoints();
     for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(v);
     Vector3 newCenter = getCenter();
     newCenter.add(v);
     setCenter(newCenter);
+}
+
+void Vehicle::calculateVelocitiesAfterCollisionToBarrier(Vector3 collisionPoint, Vector3 collisionNormalToVehicle) {
+    _rigidBody.calculateVelocitiesAfterCollisionToUnmovableBody(collisionPoint, collisionNormalToVehicle);
+}
+
+void Vehicle::calculateVelocitiesAfterCollisionToAnotherVehicle(Vector3 collisionPoint, Vector3 collisionNormalToVehicle, Vehicle& anotherVehicle) {
+    _rigidBody.calculateVelocitiesAfterCollisionToBody(collisionPoint, collisionNormalToVehicle, anotherVehicle._rigidBody);
 }
