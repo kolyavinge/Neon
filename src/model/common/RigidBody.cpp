@@ -161,43 +161,44 @@ void RigidBody::resetToPrevPosition() {
 }
 
 void RigidBody::calculateVelocitiesAfterCollisionToUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody) {
-    Vector3 collisionPointDirection = _center.getDirectionTo(collisionPoint);
-    Vector3 collisionVelocity = getCollisionVelocity(collisionPointDirection, _linearVelocity, _angularVelocity);
+    Vector3 collisionDirection = _center.getDirectionTo(collisionPoint);
+    Vector3 collisionVelocity = getCollisionVelocity(collisionDirection, _linearVelocity, _angularVelocity);
     Vector3 relativeVelocity = collisionVelocity;
     float velocityNormal = relativeVelocity.dotProduct(collisionNormalToBody);
-    float resistance = getResistance(collisionPointDirection, collisionNormalToBody, _worldInertiaInverse, _mass);
+    float resistance = getResistance(collisionDirection, collisionNormalToBody, _worldInertiaInverse, _mass);
     float impulse = -(1.0f + _elastic) * velocityNormal / resistance;
-    applyImpulse(*this, impulse, collisionPointDirection, collisionNormalToBody);
+    applyImpulse(*this, impulse, collisionDirection, collisionNormalToBody);
 }
 
-void RigidBody::calculateVelocitiesAfterCollisionToBody(Vector3 collisionPoint, Vector3 collisionNormalToBody, RigidBody& anotherBody) {
-    Vector3 collisionPointDirectionA = _center.getDirectionTo(collisionPoint);
-    Vector3 collisionPointDirectionB = anotherBody._center.getDirectionTo(collisionPoint);
-    Vector3 collisionVelocityA = getCollisionVelocity(collisionPointDirectionA, _linearVelocity, _angularVelocity);
-    Vector3 collisionVelocityB = getCollisionVelocity(collisionPointDirectionB, anotherBody._linearVelocity, anotherBody._angularVelocity);
+void RigidBody::calculateVelocitiesAfterCollisionToAnotherBody(Vector3 collisionPoint, Vector3 collisionNormalToBody, RigidBody& anotherBody) {
+    Vector3 collisionDirectionA = _center.getDirectionTo(collisionPoint);
+    Vector3 collisionDirectionB = anotherBody._center.getDirectionTo(collisionPoint);
+    Vector3 collisionVelocityA = getCollisionVelocity(collisionDirectionA, _linearVelocity, _angularVelocity);
+    Vector3 collisionVelocityB = getCollisionVelocity(collisionDirectionB, anotherBody._linearVelocity, anotherBody._angularVelocity);
     Vector3 relativeVelocity = collisionVelocityA;
     relativeVelocity.sub(collisionVelocityB);
     float velocityNormal = relativeVelocity.dotProduct(collisionNormalToBody);
-    float resistanceA = getResistance(collisionPointDirectionA, collisionNormalToBody, _worldInertiaInverse, _mass);
-    float resistanceB = getResistance(collisionPointDirectionB, collisionNormalToBody, anotherBody._worldInertiaInverse, anotherBody._mass);
-    float impulse = -(1.0f + _elastic) * velocityNormal / (resistanceA + resistanceB);
-    applyImpulse(*this, impulse, collisionPointDirectionA, collisionNormalToBody);
-    applyImpulse(anotherBody, -impulse, collisionPointDirectionB, collisionNormalToBody);
+    float resistanceA = getResistance(collisionDirectionA, collisionNormalToBody, _worldInertiaInverse, _mass);
+    float resistanceB = getResistance(collisionDirectionB, collisionNormalToBody, anotherBody._worldInertiaInverse, anotherBody._mass);
+    float elastic = (_elastic + anotherBody._elastic) / 2.0f;
+    float impulse = -(1.0f + elastic) * velocityNormal / (resistanceA + resistanceB);
+    applyImpulse(*this, impulse, collisionDirectionA, collisionNormalToBody);
+    applyImpulse(anotherBody, -impulse, collisionDirectionB, collisionNormalToBody);
 }
 
-Vector3 RigidBody::getCollisionVelocity(Vector3 collisionPointDirection, Vector3 linearVelocity, Vector3 angularVelocity) {
+Vector3 RigidBody::getCollisionVelocity(Vector3 collisionDirection, Vector3 linearVelocity, Vector3 angularVelocity) {
     Vector3 collisionVelocity = angularVelocity;
-    collisionVelocity.crossProduct(collisionPointDirection);
+    collisionVelocity.crossProduct(collisionDirection);
     collisionVelocity.add(linearVelocity);
 
     return collisionVelocity;
 }
 
-float RigidBody::getResistance(Vector3 collisionPointDirection, Vector3 collisionNormalToBody, TransformMatrix4& worldInertiaInverse, float mass) {
-    Vector3 angularResistance = collisionPointDirection;
+float RigidBody::getResistance(Vector3 collisionDirection, Vector3 collisionNormalToBody, TransformMatrix4& worldInertiaInverse, float mass) {
+    Vector3 angularResistance = collisionDirection;
     angularResistance.crossProduct(collisionNormalToBody);
     angularResistance = worldInertiaInverse.mulVector(angularResistance);
-    angularResistance.crossProduct(collisionPointDirection);
+    angularResistance.crossProduct(collisionDirection);
     // linear + angular resistance
     float resistance = (1.0f / mass) + angularResistance.dotProduct(collisionNormalToBody);
 

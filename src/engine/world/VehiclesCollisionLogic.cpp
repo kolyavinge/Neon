@@ -12,7 +12,6 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
     for (int i = 0; i < _collisionInfo.getCount(); i++) {
         _collisionInfo[i].collisionPoints.clear();
         _collisionInfo[i].collisionDepths.clear();
-        _collisionInfo[i].collisionNormalsToVehicle.clear();
         _collisionInfo[i].anotherVehicleId.clear();
     }
     _anyCollisionsFound = false;
@@ -30,7 +29,7 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
         for (int j = 0; j < collisionInfo.collisionPoints.getCount(); j++) {
             Vehicle& anotherVehicle = vehicles[collisionInfo.anotherVehicleId[j]];
             vehicle.calculateVelocitiesAfterCollisionToAnotherVehicle(
-                collisionInfo.collisionPoints[j], collisionInfo.collisionNormalsToVehicle[j], anotherVehicle);
+                collisionInfo.collisionPoints[j], collisionInfo.collisionDepths[j].getNormalized(), anotherVehicle);
         }
     }
 
@@ -81,7 +80,10 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
             return true;
         }
     }
-    throw AssertException();
+
+    // если точка пересечения точно лежит на стороне кузова, в findCollisionDepthForBodySide collisionDepth равен нулевому вектору
+    // то в итоге считаем что пересечения нет, хотя hasCollision выше показал что оно есть
+    return false;
 }
 
 bool VehiclesCollisionLogic::hasCollision(
@@ -103,10 +105,10 @@ bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, int v
     if (!vehicleBSidePlane.hasCollision(rayFrom, rayTo, 0.01f, output _)) return false;
     Vector3 collisionPoint = vehicleBSidePlane.getProjectedPoint(rayTo);
     Vector3 collisionDepth = rayTo.getDirectionTo(collisionPoint);
+    if (collisionDepth.isZero()) return false;
     VehicleCollisionInfo& collisionInfo = _collisionInfo[vehicleAId];
     collisionInfo.collisionPoints.add(collisionPoint);
     collisionInfo.collisionDepths.add(collisionDepth);
-    collisionInfo.collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
     collisionInfo.anotherVehicleId.add(vehicleBId);
 
     return true;

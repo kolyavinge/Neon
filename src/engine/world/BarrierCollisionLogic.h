@@ -14,7 +14,6 @@ class BarrierCollisionLogic : public Object {
     WorldSegmentDataFinder& _segmentDataFinder;
     List<Vector3> _collisionPoints;
     List<Vector3> _collisionDepths;
-    List<Vector3> _collisionNormalsToVehicle;
 
 public:
     static BarrierCollisionLogic* resolve(Resolver& resolver) {

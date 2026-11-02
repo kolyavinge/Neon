@@ -47,6 +47,7 @@ enum class Box3dPoint {
     topUpLeft = 6,
     topUpRight = 7,
     _count,
+    _bottomPointsCount = 4
 };
 static_assert((int)Box3dPoint::_count == 8);
 

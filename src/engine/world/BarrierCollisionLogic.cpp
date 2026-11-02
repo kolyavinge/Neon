@@ -15,7 +15,6 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     _collisionPoints.clear();
     _collisionDepths.clear();
-    _collisionNormalsToVehicle.clear();
     Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
     Array<WorldSegment*, (int)Box3dPoint::_count> pointSegments;
     findPointSegments(bodyPoints, output pointSegments);
@@ -29,7 +28,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     // расчитываем новые скорости в точках соударения
     for (int i = 0; i < _collisionPoints.getCount(); i++) {
-        vehicle.calculateVelocitiesAfterCollisionToBarrier(_collisionPoints[i], _collisionNormalsToVehicle[i]);
+        vehicle.calculateVelocitiesAfterCollisionToBarrier(_collisionPoints[i], _collisionDepths[i].getNormalized());
     }
 
     // вытаскиваем точки из препятствий
@@ -88,7 +87,6 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
             Vector3 collisionDepth = collidedPoint.getDirectionTo(collisionPoint);
             _collisionPoints.addByValue(collisionPoint);
             _collisionDepths.addByValue(collisionDepth);
-            _collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
         }
     }
 }
@@ -98,7 +96,7 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
     // если обьекты игрового мира образуют внешние углы, то обрабатываем эти углы отдельно
     if (vehicleLinearVelocity.isZero()) return;
     bool hasOuterCorners = false;
-    for (int segmentIndex = 0; segmentIndex < (int)Box3dPoint::_count / 2; segmentIndex++) {
+    for (int segmentIndex = 0; segmentIndex < (int)Box3dPoint::_bottomPointsCount; segmentIndex++) {
         if (pointSegments[segmentIndex]->getOuterCorners().getCount() > 0) {
             hasOuterCorners = true;
             break;
@@ -129,9 +127,9 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
                 if (sidePlane.hasCollision(outerCornerFromPoint, outerCornerToPoint, 0.01f, output sidePlaneCollisionPoint)) {
                     Vector3 collisionDepth = sidePlaneCollisionPoint.getDirectionTo(bodyCollisionPoint);
                     collisionDepth = bottomPlane.getProjectedVector(collisionDepth);
+                    if (collisionDepth.isZero()) return;
                     _collisionPoints.addByValue(bodyCollisionPoint);
                     _collisionDepths.addByValue(collisionDepth);
-                    _collisionNormalsToVehicle.addByValue(collisionDepth.getNormalized());
                     // нашли соударение с одним внешним углом - остальные не проверяем
                     // ибо практически нереально удариться более чем в один внешний угол одновременно
                     return;

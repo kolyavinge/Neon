@@ -14,7 +14,6 @@ class VehiclesCollisionLogic : public Object {
     public:
         List<Vector3> collisionPoints;
         List<Vector3> collisionDepths;
-        List<Vector3> collisionNormalsToVehicle;
         List<int> anotherVehicleId;
     };
 

@@ -34,7 +34,7 @@ void Vehicle::init() {
         _data.bodyMeasures,
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
-    _rigidBody.setElastic(0.1f);
+    _rigidBody.setElastic(0.05f);
     _rigidBody.setCenter(Vector3(10.0f, 15.0f, 1.0f));
 }
 
@@ -253,5 +253,5 @@ void Vehicle::calculateVelocitiesAfterCollisionToBarrier(Vector3 collisionPoint,
 }
 
 void Vehicle::calculateVelocitiesAfterCollisionToAnotherVehicle(Vector3 collisionPoint, Vector3 collisionNormalToVehicle, Vehicle& anotherVehicle) {
-    _rigidBody.calculateVelocitiesAfterCollisionToBody(collisionPoint, collisionNormalToVehicle, anotherVehicle._rigidBody);
+    _rigidBody.calculateVelocitiesAfterCollisionToAnotherBody(collisionPoint, collisionNormalToVehicle, anotherVehicle._rigidBody);
 }

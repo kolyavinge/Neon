@@ -62,7 +62,7 @@ public:
     void updatePosition(float dt);
     void resetToPrevPosition();
     void calculateVelocitiesAfterCollisionToUnmovableBody(Vector3 collisionPoint, Vector3 collisionNormalToBody);
-    void calculateVelocitiesAfterCollisionToBody(Vector3 collisionPoint, Vector3 collisionNormalToBody, RigidBody& anotherBody);
+    void calculateVelocitiesAfterCollisionToAnotherBody(Vector3 collisionPoint, Vector3 collisionNormalToBody, RigidBody& anotherBody);
     Vector3 getVelocityAtPoint(Vector3 worldPoint);
 
 private:
