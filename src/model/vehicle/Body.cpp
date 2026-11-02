@@ -141,18 +141,14 @@ void Body::calculateSideTruncatedPlanes() {
 
 bool Body::isPointInside(Vector3 point) {
     // проверяем что точка лежит перед лицевой гранью каждой из 6 поверхностей кузова
-    bool result = _bottomTruncatedPlane.isPointInFront(point);
-    if (!result) return false;
-
-    Collection<Plane>& sideBodyPlanes = _bottomTruncatedPlane.getCuttingPlanes();
-    for (int i = 0; result && i < sideBodyPlanes.getCount(); i++) {
-        result = sideBodyPlanes[i].isPointInFront(point);
-    }
-    if (!result) return false;
-
-    Vector3 topPlaneFrontNormal = _bottomTruncatedPlane.getFrontNormal();
-    topPlaneFrontNormal.mul(-1.0f); // внутрь _bottomTruncatedPlane
-    Plane topPlane(topPlaneFrontNormal, *_box.getPoints()[(int)Box3dPoint::topDownLeft]);
-
-    return topPlane.isPointInFront(point);
+    Collection<Vector3*>& bp = _box.getPoints();
+    // не используем _topTruncatedPlane, _bottomTruncatedPlane и _sideTruncatedPlanes, чтобы не зависеть от вызова методов которые их рассчитывают
+    // для isPointInFront в качестве нормали можно взять нужное направление, но не обязательно его нормализовывать (для экономии времени)
+    return
+        Plane::isPointInFront(bp[(int)Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[(int)Box3dPoint::bottomDownRight]), *bp[(int)Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[(int)Box3dPoint::bottomDownRight]->getDirectionTo(*bp[(int)Box3dPoint::bottomDownLeft]), *bp[(int)Box3dPoint::bottomDownRight], point) &&
+        Plane::isPointInFront(bp[(int)Box3dPoint::bottomUpLeft]->getDirectionTo(*bp[(int)Box3dPoint::bottomDownLeft]), *bp[(int)Box3dPoint::bottomUpLeft], point) &&
+        Plane::isPointInFront(bp[(int)Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[(int)Box3dPoint::bottomUpLeft]), *bp[(int)Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[(int)Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[(int)Box3dPoint::topDownLeft]), *bp[(int)Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[(int)Box3dPoint::topDownLeft]->getDirectionTo(*bp[(int)Box3dPoint::bottomDownLeft]), *bp[(int)Box3dPoint::topDownLeft], point);
 }

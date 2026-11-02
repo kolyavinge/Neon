@@ -12,7 +12,7 @@ void CameraUpdater::update(Camera& camera, Vehicle& playerVehicle) {
     //setSideBackView(camera, playerVehicle);
     //setTopView(camera, playerVehicle);
     //setWheelCenterView(camera, playerVehicle);
-    //setRightSideStaticView(camera, playerVehicle);
+    setRightSideStaticView(camera, playerVehicle);
     //setAirView(camera, playerVehicle);
 
     camera.calculateViewMatrix();

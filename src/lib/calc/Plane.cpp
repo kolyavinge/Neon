@@ -25,6 +25,10 @@ bool Plane::isPointInFront(Vector3& point) {
     return _basePoint.getDirectionTo(point).dotProduct(_frontNormal) >= 0.0f;
 }
 
+bool Plane::isPointInFront(Vector3 frontNormal, Vector3 basePoint, Vector3& point) {
+    return basePoint.getDirectionTo(point).dotProduct(frontNormal) >= 0.0f;
+}
+
 bool Plane::pointsOnBothSides(Vector3& pointA, Vector3& pointB) {
     float dotProductA = _basePoint.getDirectionTo(pointA).dotProduct(_frontNormal);
     float dotProductB = _basePoint.getDirectionTo(pointB).dotProduct(_frontNormal);

@@ -53,19 +53,8 @@ void VehiclesCollisionLogic::findVehiclesCollision(Collection<Vehicle>& vehicles
             Vehicle& vehicleB = vehicles[j];
             float lengthSquaredBetweenVehicles = vehicleA.getCenter().getLengthSquaredTo(vehicleB.getCenter());
             if (lengthSquaredBetweenVehicles > maxVehicleCollisionLengthSquared) continue;
-            calculateBodyPlanesIfNeed(vehicleA);
-            calculateBodyPlanesIfNeed(vehicleB);
             _anyCollisionsFound |= findCollisionDepth(vehicleA, vehicleB) || findCollisionDepth(vehicleB, vehicleA);
         }
-    }
-}
-
-void VehiclesCollisionLogic::calculateBodyPlanesIfNeed(Vehicle& vehicle) {
-    if (!_calculatedBodyPlanesCache[vehicle.getId()]) {
-        vehicle.getBody().calculateTopTruncatedPlane();
-        vehicle.getBody().calculateBottomTruncatedPlane();
-        vehicle.getBody().calculateSideTruncatedPlanes();
-        _calculatedBodyPlanesCache[vehicle.getId()] = true;
     }
 }
 
@@ -78,6 +67,13 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
     int vehicleACollisionPointIndex;
     if (!hasCollision(vehicleABody, vehicleBBody, output vehicleACollisionPointTo, output vehicleACollisionPointIndex)) return false;
     Vector3 vehicleACollisionPointFrom = vehicleABody.getOppositeDiagonalPointFor(vehicleACollisionPointIndex);
+    calculateBodyPlanesIfNeedFor(vehicleA);
+    calculateBodyPlanesIfNeedFor(vehicleB);
+
+    if (findCollisionDepthForBodySide(
+        vehicleA.getId(), vehicleB.getId(), vehicleBBody.getTopTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
+        return true;
+    }
 
     Collection<TruncatedPlane>& vehicleBSidePlanes = vehicleBBody.getSideTruncatedPlanes();
     for (int i = 0; i < vehicleBSidePlanes.getCount(); i++) {
@@ -85,11 +81,6 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
             vehicleA.getId(), vehicleB.getId(), vehicleBSidePlanes[i], vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
             return true;
         }
-    }
-
-    if (findCollisionDepthForBodySide(
-        vehicleA.getId(), vehicleB.getId(), vehicleBBody.getTopTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
-        return true;
     }
 
     if (!vehicleB.allWheelsHaveGroundContact() &&
@@ -129,4 +120,13 @@ bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, int v
     collisionInfo.anotherVehicleId.add(vehicleBId);
 
     return true;
+}
+
+void VehiclesCollisionLogic::calculateBodyPlanesIfNeedFor(Vehicle& vehicle) {
+    if (!_calculatedBodyPlanesCache[vehicle.getId()]) {
+        vehicle.getBody().calculateTopTruncatedPlane();
+        vehicle.getBody().calculateBottomTruncatedPlane();
+        vehicle.getBody().calculateSideTruncatedPlanes();
+        _calculatedBodyPlanesCache[vehicle.getId()] = true;
+    }
 }
