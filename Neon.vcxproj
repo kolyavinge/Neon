@@ -43,7 +43,6 @@
     <ClCompile Include="src\engine\vehicle\GearboxLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\SteeringLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\ForceLogic.cpp" />
-    <ClCompile Include="src\engine\vehicle\PositionLogic.cpp" />
     <ClCompile Include="src\engine\vehicle\VehicleUpdater.cpp" />
     <ClCompile Include="src\engine\vehicle\WheelLogic.cpp" />
     <ClCompile Include="src\lib\Assert.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="src\core\MainInjectModule.h" />
     <ClInclude Include="src\common\InputManager.h" />
     <ClInclude Include="src\engine\vehicle\ForceLogic.h" />
-    <ClInclude Include="src\engine\vehicle\PositionLogic.h" />
     <ClInclude Include="src\engine\vehicle\VehicleUpdater.h" />
     <ClInclude Include="src\lib\Assert.h" />
     <ClInclude Include="src\lib\calc\TransformMatrix4.h" />

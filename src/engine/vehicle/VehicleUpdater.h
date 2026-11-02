@@ -3,7 +3,6 @@
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
-#include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
 #include <engine/vehicle/WheelLogic.h>
 #include <engine/world/BarrierCollisionLogic.h>
@@ -19,7 +18,6 @@ class VehicleUpdater : public Object {
     WheelLogic& _wheelLogic;
     ForceLogic& _forceLogic;
     GearboxLogic& _gearboxLogic;
-    PositionLogic& _positionLogic;
     SteeringLogic& _steeringLogic;
     WheelGroundContactLogic& _wheelGroundContactLogic;
     BarrierCollisionLogic& _barrierCollisionLogic;
@@ -32,7 +30,6 @@ public:
             resolver.resolve<WheelLogic>(),
             resolver.resolve<ForceLogic>(),
             resolver.resolve<GearboxLogic>(),
-            resolver.resolve<PositionLogic>(),
             resolver.resolve<SteeringLogic>(),
             resolver.resolve<WheelGroundContactLogic>(),
             resolver.resolve<BarrierCollisionLogic>(),
@@ -44,7 +41,6 @@ public:
         WheelLogic& wheelLogic,
         ForceLogic& forceLogic,
         GearboxLogic& gearboxLogic,
-        PositionLogic& positionLogic,
         SteeringLogic& steeringLogic,
         WheelGroundContactLogic& wheelGroundContactLogic,
         BarrierCollisionLogic& barrierCollisionLogic,

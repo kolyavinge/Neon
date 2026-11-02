@@ -10,7 +10,6 @@
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
-#include <engine/vehicle/PositionLogic.h>
 #include <engine/vehicle/SteeringLogic.h>
 #include <engine/vehicle/VehicleUpdater.h>
 #include <engine/vehicle/WheelLogic.h>
@@ -55,7 +54,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<EngineLogic>(EngineLogic::resolve);
     binder.bindSingleton<ForceLogic>(ForceLogic::resolve);
     binder.bindSingleton<GearboxLogic>();
-    binder.bindSingleton<PositionLogic>(PositionLogic::resolve);
     binder.bindSingleton<SteeringLogic>(SteeringLogic::resolve);
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
     binder.bindSingleton<WheelLogic>();
