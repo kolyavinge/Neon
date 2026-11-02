@@ -19,8 +19,12 @@ VehicleData& Body::getData() {
     return _data;
 }
 
-Box3d& Body::getBox() {
-    return _box;
+Collection<Vector3*>& Body::getPoints() {
+    return _box.getPoints();
+}
+
+Vector3 Body::getOppositeDiagonalPointFor(int pointIndex) {
+    return _box.getOppositeDiagonalPointFor(pointIndex);
 }
 
 Vector3 Body::getAirDragForce() {

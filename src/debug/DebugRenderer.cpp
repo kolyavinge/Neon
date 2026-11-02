@@ -140,7 +140,7 @@ void DebugRenderer::renderVehicleWheels(Vehicle& vehicle) {
 void DebugRenderer::renderVehicleBody(Vehicle& vehicle) {
     // body box
     Body& body = vehicle.getBody();
-    Collection<Vector3*>& bodyPoints = body.getBox().getPoints();
+    Collection<Vector3*>& bodyPoints = body.getPoints();
     glEnable(GL_DEPTH_TEST);
     glColor3f(0.6f, 0.6f, 0.6f);
     glBegin(GL_LINE_LOOP);

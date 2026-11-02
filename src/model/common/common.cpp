@@ -70,9 +70,9 @@ Collection<Vector3*>& Box3d::getPoints() {
     return _points;
 }
 
-Vector3* Box3d::getOppositeDiagonalPointFor(int pointIndex) {
+Vector3 Box3d::getOppositeDiagonalPointFor(int pointIndex) {
     Box3dPoint oppositeDiagonalPoint = getBox3dPointOppositeDiagonalPointFor(pointIndex);
-    return _points[(int)oppositeDiagonalPoint];
+    return *_points[(int)oppositeDiagonalPoint];
 }
 
 Box3dPoint Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {

@@ -15,7 +15,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     _collisionPoints.clear();
     _collisionDepths.clear();
-    Collection<Vector3*>& bodyPoints = vehicle.getBody().getBox().getPoints();
+    Collection<Vector3*>& bodyPoints = vehicle.getBody().getPoints();
     Array<WorldSegment*, (int)Box3dPoint::_count> pointSegments;
     findPointSegments(bodyPoints, output pointSegments);
     findBarrierCollisions(vehicle.getBody(), pointSegments);
@@ -55,10 +55,9 @@ void BarrierCollisionLogic::findPointSegments(Collection<Vector3*>& bodyPoints, 
 void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment*, (int)Box3dPoint::_count>& pointSegments) {
     // проверяем на соударение 8 точек кузова в 4 сегментах
     // алгоритм рассчитан на поиск соударений только с лицевой гранью препятствия
-    Box3d& bodyBox = body.getBox();
-    Collection<Vector3*>& bodyPoints = bodyBox.getPoints();
+    Collection<Vector3*>& bodyPoints = body.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
-        Vector3 oppositeBodyPoint = *bodyBox.getOppositeDiagonalPointFor(bodyPointIndex);
+        Vector3 oppositeBodyPoint = body.getOppositeDiagonalPointFor(bodyPointIndex);
         Collection<WorldPrimitive*>& barrierPrimitives = pointSegments[bodyPointIndex]->getGroundAndBarrierPrimitives();
         for (int barrierIndex = 0; barrierIndex < barrierPrimitives.getCount(); barrierIndex++) {
             WorldPrimitive& barrierPrimitive = *barrierPrimitives[barrierIndex];

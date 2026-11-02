@@ -66,7 +66,7 @@ public:
     void setMeasures(Measures& measures);
     void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal);
     Collection<Vector3*>& getPoints();
-    Vector3* getOppositeDiagonalPointFor(int pointIndex);
+    Vector3 getOppositeDiagonalPointFor(int pointIndex);
 
 private:
     Box3dPoint getBox3dPointOppositeDiagonalPointFor(int pointIndex);
