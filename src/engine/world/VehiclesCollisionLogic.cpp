@@ -15,8 +15,8 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
         _collisionInfo[i].anotherVehicleId.clear();
     }
     _anyCollisionsFound = false;
-
     findVehiclesCollision(vehicles);
+    _calculatedBodyPlanesCache.fillZero();
     if (!_anyCollisionsFound) return false;
 
     // устраняем коллизии
@@ -46,21 +46,26 @@ bool VehiclesCollisionLogic::resolveVehiclesCollision(Collection<Vehicle>& vehic
 }
 
 void VehiclesCollisionLogic::findVehiclesCollision(Collection<Vehicle>& vehicles) {
-    for (int i = 0; i < vehicles.getCount(); i++) {
-        // if (vehicles[i].isFrozen()) continue;
-        vehicles[i].getBody().calculateBottomTruncatedPlane();
-        vehicles[i].getBody().calculateSideTruncatedPlanes();
-    }
     float maxVehicleCollisionLengthSquared = vehicles.first().getData().maxVehicleCollisionLengthSquared;
     for (int i = 0; i < vehicles.getCount() - 1; i++) {
         Vehicle& vehicleA = vehicles[i];
-        // if (vehicle.isFrozen(vehicleA)) continue;
         for (int j = i + 1; j < vehicles.getCount(); j++) {
             Vehicle& vehicleB = vehicles[j];
             float lengthSquaredBetweenVehicles = vehicleA.getCenter().getLengthSquaredTo(vehicleB.getCenter());
             if (lengthSquaredBetweenVehicles > maxVehicleCollisionLengthSquared) continue;
+            calculateBodyPlanesIfNeed(vehicleA);
+            calculateBodyPlanesIfNeed(vehicleB);
             _anyCollisionsFound |= findCollisionDepth(vehicleA, vehicleB) || findCollisionDepth(vehicleB, vehicleA);
         }
+    }
+}
+
+void VehiclesCollisionLogic::calculateBodyPlanesIfNeed(Vehicle& vehicle) {
+    if (!_calculatedBodyPlanesCache[vehicle.getId()]) {
+        vehicle.getBody().calculateTopTruncatedPlane();
+        vehicle.getBody().calculateBottomTruncatedPlane();
+        vehicle.getBody().calculateSideTruncatedPlanes();
+        _calculatedBodyPlanesCache[vehicle.getId()] = true;
     }
 }
 
@@ -73,12 +78,24 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
     int vehicleACollisionPointIndex;
     if (!hasCollision(vehicleABody, vehicleBBody, output vehicleACollisionPointTo, output vehicleACollisionPointIndex)) return false;
     Vector3 vehicleACollisionPointFrom = *vehicleABody.getBox().getOppositeDiagonalPointFor(vehicleACollisionPointIndex);
+
     Collection<TruncatedPlane>& vehicleBSidePlanes = vehicleBBody.getSideTruncatedPlanes();
     for (int i = 0; i < vehicleBSidePlanes.getCount(); i++) {
         if (findCollisionDepthForBodySide(
             vehicleA.getId(), vehicleB.getId(), vehicleBSidePlanes[i], vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
             return true;
         }
+    }
+
+    if (findCollisionDepthForBodySide(
+        vehicleA.getId(), vehicleB.getId(), vehicleBBody.getTopTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
+        return true;
+    }
+
+    if (!vehicleB.allWheelsHaveGroundContact() &&
+        findCollisionDepthForBodySide(
+            vehicleA.getId(), vehicleB.getId(), vehicleBBody.getBottomTruncatedPlane(), vehicleACollisionPointFrom, vehicleACollisionPointTo)) {
+        return true;
     }
 
     // если точка пересечения точно лежит на стороне кузова, в findCollisionDepthForBodySide collisionDepth равен нулевому вектору
@@ -100,10 +117,10 @@ bool VehiclesCollisionLogic::hasCollision(
     return false;
 }
 
-bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo) {
+bool VehiclesCollisionLogic::findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBPlane, Vector3 rayFrom, Vector3 rayTo) {
     Vector3 _;
-    if (!vehicleBSidePlane.hasCollision(rayFrom, rayTo, 0.01f, output _)) return false;
-    Vector3 collisionPoint = vehicleBSidePlane.getProjectedPoint(rayTo);
+    if (!vehicleBPlane.hasCollision(rayFrom, rayTo, 0.01f, output _)) return false;
+    Vector3 collisionPoint = vehicleBPlane.getProjectedPoint(rayTo);
     Vector3 collisionDepth = rayTo.getDirectionTo(collisionPoint);
     if (collisionDepth.isZero()) return false;
     VehicleCollisionInfo& collisionInfo = _collisionInfo[vehicleAId];

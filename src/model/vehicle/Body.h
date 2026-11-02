@@ -15,6 +15,7 @@ class Body : public Object {
     Vector3 _rearWingDownForce;
     Vector3 _rearWingDragForce;
     Box3d _box;
+    TruncatedPlane _topTruncatedPlane;
     TruncatedPlane _bottomTruncatedPlane;
     Array<TruncatedPlane, 4> _sideTruncatedPlanes;
     RigidBody& _rigidBody;
@@ -30,6 +31,7 @@ public:
     Vector3 getRearWingDragForce();
     Vector3 getRearWingPosition();
     Vector3 getVelocityAtPoint(Vector3 bodyPoint);
+    TruncatedPlane& getTopTruncatedPlane();
     TruncatedPlane& getBottomTruncatedPlane();
     Collection<TruncatedPlane>& getSideTruncatedPlanes();
     void calculateAirDragForce(Vector3 vehicleLinearVelocity);
@@ -37,6 +39,7 @@ public:
     void calculateRearWingDownForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 chassisFrontNormal);
     void calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal);
+    void calculateTopTruncatedPlane();
     void calculateBottomTruncatedPlane();
     void calculateSideTruncatedPlanes();
     bool isPointInside(Vector3 point);

@@ -216,6 +216,15 @@ float Vehicle::getAverageDriveWheelsRpm() {
     return averageWheelsRpm;
 }
 
+bool Vehicle::allWheelsHaveGroundContact() {
+    bool result = true;
+    for (int i = 0; result && i < VehicleConstants::wheelsCount; i++) {
+        result = _wheels[i].hasGroundContact();
+    }
+
+    return result;
+}
+
 bool Vehicle::isFrozen() {
     return
         !_drivingInputData.anyInput() &&

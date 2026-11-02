@@ -49,6 +49,10 @@ Vector3 Body::getVelocityAtPoint(Vector3 bodyPoint) {
     return _rigidBody.getVelocityAtPoint(bodyPoint);
 }
 
+TruncatedPlane& Body::getTopTruncatedPlane() {
+    return _topTruncatedPlane;
+}
+
 TruncatedPlane& Body::getBottomTruncatedPlane() {
     return _bottomTruncatedPlane;
 }
@@ -89,6 +93,15 @@ void Body::calculateRearWingDragForce(Vector3 vehicleLinearVelocity, Vector3 cha
 
 void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vector3 chassisFrontNormal, Vector3 chassisUpNormal) {
     _box.calculatePoints(vehicleCenter, chassisRightNormal, chassisFrontNormal, chassisUpNormal);
+}
+
+void Body::calculateTopTruncatedPlane() {
+    Collection<Vector3*>& points = _box.getPoints();
+    _topTruncatedPlane.initByPoints(
+        *points[(int)Box3dPoint::topDownLeft],
+        *points[(int)Box3dPoint::topDownRight],
+        *points[(int)Box3dPoint::topUpLeft]
+    );
 }
 
 void Body::calculateBottomTruncatedPlane() {
@@ -134,7 +147,7 @@ bool Body::isPointInside(Vector3 point) {
     if (!result) return false;
 
     Vector3 topPlaneFrontNormal = _bottomTruncatedPlane.getFrontNormal();
-    topPlaneFrontNormal.mul(-1.0f); // внутрь основной _bottomTruncatedPlane
+    topPlaneFrontNormal.mul(-1.0f); // внутрь _bottomTruncatedPlane
     Plane topPlane(topPlaneFrontNormal, *_box.getPoints()[(int)Box3dPoint::topDownLeft]);
 
     return topPlane.isPointInFront(point);

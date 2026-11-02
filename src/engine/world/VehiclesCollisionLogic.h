@@ -18,6 +18,7 @@ class VehiclesCollisionLogic : public Object {
     };
 
     Array<VehicleCollisionInfo, GameConstants::maxVehiclesCount> _collisionInfo;
+    Array<bool, GameConstants::maxVehiclesCount> _calculatedBodyPlanesCache;
     bool _anyCollisionsFound;
 
 public:
@@ -26,7 +27,8 @@ public:
 
 private:
     void findVehiclesCollision(Collection<Vehicle>& vehicles);
+    void calculateBodyPlanesIfNeed(Vehicle& vehicle);
     bool findCollisionDepth(Vehicle& vehicleA, Vehicle& vehicleB);
     bool hasCollision(Body& vehicleABody, Body& vehicleBBody, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex);
-    bool findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBSidePlane, Vector3 rayFrom, Vector3 rayTo);
+    bool findCollisionDepthForBodySide(int vehicleAId, int vehicleBId, Plane& vehicleBPlane, Vector3 rayFrom, Vector3 rayTo);
 };

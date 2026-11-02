@@ -66,6 +66,7 @@ public:
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition();
     float getAverageDriveWheelsRpm();
+    bool allWheelsHaveGroundContact();
     bool isFrozen();
     void clearAllVelocitiesAndForces();
     void moveByVector(Vector3 v);
