@@ -27,7 +27,7 @@ public:
     bool resolveBarrierCollisions(Vehicle& vehicle);
 
 private:
-    void findPointSegments(Collection<Vector3*>& bodyPoints, output Array<WorldSegment*, Box3dPoint::count>& result);
+    void findPointSegments(Collection<Vector3>& bodyPoints, output Array<WorldSegment*, Box3dPoint::count>& result);
     void findBarrierCollisions(Body& body, Array<WorldSegment*, Box3dPoint::count>& pointSegments);
     void findOuterCornerCollisions(Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, Box3dPoint::count>& pointSegments);
 };

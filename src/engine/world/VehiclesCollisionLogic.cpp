@@ -96,10 +96,10 @@ bool VehiclesCollisionLogic::findCollisionDepth(Vehicle& vehicleA, Vehicle& vehi
 
 bool VehiclesCollisionLogic::hasCollision(
     Body& vehicleABody, Body& vehicleBBody, output Vector3& vehicleACollisionPoint, output int& vehicleACollisionPointIndex) {
-    Collection<Vector3*>& vehicleABodyPoints = vehicleABody.getPoints();
+    Collection<Vector3>& vehicleABodyPoints = vehicleABody.getPoints();
     for (int pointIndex = 0; pointIndex < vehicleABodyPoints.getCount(); pointIndex++) {
-        if (vehicleBBody.isPointInside(*vehicleABodyPoints[pointIndex])) {
-            vehicleACollisionPoint = *vehicleABodyPoints[pointIndex];
+        if (vehicleBBody.isPointInside(vehicleABodyPoints[pointIndex])) {
+            vehicleACollisionPoint = vehicleABodyPoints[pointIndex];
             vehicleACollisionPointIndex = pointIndex;
             return true;
         }

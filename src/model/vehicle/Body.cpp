@@ -20,7 +20,7 @@ VehicleData& Body::getData() {
     return _data;
 }
 
-Collection<Vector3*>& Body::getPoints() {
+Collection<Vector3>& Body::getPoints() {
     return _box.getPoints();
 }
 
@@ -45,9 +45,9 @@ Vector3 Body::getRearWingDragForce() {
 }
 
 Vector3 Body::getRearWingPosition() {
-    Vector3* left = _box.getPoints()[Box3dPoint::topDownLeft];
-    Vector3* right = _box.getPoints()[Box3dPoint::topDownRight];
-    return left->getMiddleTo(*right);
+    Vector3 left = _box.getPoints()[Box3dPoint::topDownLeft];
+    Vector3 right = _box.getPoints()[Box3dPoint::topDownRight];
+    return left.getMiddleTo(right);
 }
 
 Vector3 Body::getVelocityAtPoint(Vector3 bodyPoint) {
@@ -101,55 +101,55 @@ void Body::calculateBox(Vector3 vehicleCenter, Vector3 chassisRightNormal, Vecto
 }
 
 void Body::calculateTopTruncatedPlane() {
-    Collection<Vector3*>& points = _box.getPoints();
+    Collection<Vector3>& points = _box.getPoints();
     _topTruncatedPlane.initByPoints(
-        *points[Box3dPoint::topDownLeft],
-        *points[Box3dPoint::topDownRight],
-        *points[Box3dPoint::topUpLeft]
+        points[Box3dPoint::topDownLeft],
+        points[Box3dPoint::topDownRight],
+        points[Box3dPoint::topUpLeft]
     );
 }
 
 void Body::calculateBottomTruncatedPlane() {
-    Collection<Vector3*>& points = _box.getPoints();
+    Collection<Vector3>& points = _box.getPoints();
     _bottomTruncatedPlane.initByPoints(
-        *points[Box3dPoint::bottomDownLeft],
-        *points[Box3dPoint::bottomDownRight],
-        *points[Box3dPoint::bottomUpLeft]
+        points[Box3dPoint::bottomDownLeft],
+        points[Box3dPoint::bottomDownRight],
+        points[Box3dPoint::bottomUpLeft]
     );
 }
 
 void Body::calculateSideTruncatedPlanes() {
-    Collection<Vector3*>& points = _box.getPoints();
+    Collection<Vector3>& points = _box.getPoints();
 
     // строим плоскости так, что их нормали смотрели наружу
 
     // left side
     _sideTruncatedPlanes[0].initByPoints(
-        *points[Box3dPoint::bottomUpLeft], *points[Box3dPoint::bottomDownLeft], *points[Box3dPoint::topUpLeft]);
+        points[Box3dPoint::bottomUpLeft], points[Box3dPoint::bottomDownLeft], points[Box3dPoint::topUpLeft]);
 
     // front side
     _sideTruncatedPlanes[1].initByPoints(
-        *points[Box3dPoint::bottomUpRight], *points[Box3dPoint::bottomUpLeft], *points[Box3dPoint::topUpRight]);
+        points[Box3dPoint::bottomUpRight], points[Box3dPoint::bottomUpLeft], points[Box3dPoint::topUpRight]);
 
     // right side
     _sideTruncatedPlanes[2].initByPoints(
-        *points[Box3dPoint::bottomDownRight], *points[Box3dPoint::bottomUpRight], *points[Box3dPoint::topDownRight]);
+        points[Box3dPoint::bottomDownRight], points[Box3dPoint::bottomUpRight], points[Box3dPoint::topDownRight]);
 
     // back side
     _sideTruncatedPlanes[3].initByPoints(
-        *points[Box3dPoint::bottomDownLeft], *points[Box3dPoint::bottomDownRight], *points[Box3dPoint::topDownLeft]);
+        points[Box3dPoint::bottomDownLeft], points[Box3dPoint::bottomDownRight], points[Box3dPoint::topDownLeft]);
 }
 
 bool Body::isPointInside(Vector3 point) {
     // проверяем что точка лежит перед лицевой гранью каждой из 6 поверхностей кузова
-    Collection<Vector3*>& bp = _box.getPoints();
+    Collection<Vector3>& bp = _box.getPoints();
     // не используем _topTruncatedPlane, _bottomTruncatedPlane и _sideTruncatedPlanes, чтобы не зависеть от вызова методов которые их рассчитывают
     // для isPointInFront в качестве нормали можно взять нужное направление, но не обязательно его нормализовывать (для экономии)
     return
-        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[Box3dPoint::bottomDownRight]), *bp[Box3dPoint::bottomDownLeft], point) &&
-        Plane::isPointInFront(bp[Box3dPoint::bottomDownRight]->getDirectionTo(*bp[Box3dPoint::bottomDownLeft]), *bp[Box3dPoint::bottomDownRight], point) &&
-        Plane::isPointInFront(bp[Box3dPoint::bottomUpLeft]->getDirectionTo(*bp[Box3dPoint::bottomDownLeft]), *bp[Box3dPoint::bottomUpLeft], point) &&
-        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[Box3dPoint::bottomUpLeft]), *bp[Box3dPoint::bottomDownLeft], point) &&
-        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft]->getDirectionTo(*bp[Box3dPoint::topDownLeft]), *bp[Box3dPoint::bottomDownLeft], point) &&
-        Plane::isPointInFront(bp[Box3dPoint::topDownLeft]->getDirectionTo(*bp[Box3dPoint::bottomDownLeft]), *bp[Box3dPoint::topDownLeft], point);
+        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft].getDirectionTo(bp[Box3dPoint::bottomDownRight]), bp[Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[Box3dPoint::bottomDownRight].getDirectionTo(bp[Box3dPoint::bottomDownLeft]), bp[Box3dPoint::bottomDownRight], point) &&
+        Plane::isPointInFront(bp[Box3dPoint::bottomUpLeft].getDirectionTo(bp[Box3dPoint::bottomDownLeft]), bp[Box3dPoint::bottomUpLeft], point) &&
+        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft].getDirectionTo(bp[Box3dPoint::bottomUpLeft]), bp[Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[Box3dPoint::bottomDownLeft].getDirectionTo(bp[Box3dPoint::topDownLeft]), bp[Box3dPoint::bottomDownLeft], point) &&
+        Plane::isPointInFront(bp[Box3dPoint::topDownLeft].getDirectionTo(bp[Box3dPoint::bottomDownLeft]), bp[Box3dPoint::topDownLeft], point);
 }

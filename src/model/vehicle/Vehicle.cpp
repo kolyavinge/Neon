@@ -250,8 +250,8 @@ void Vehicle::clearAllVelocitiesAndForces() {
 }
 
 void Vehicle::moveByVector(Vector3 v) {
-    Collection<Vector3*>& bodyPoints = _body.getPoints();
-    for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i]->add(v);
+    Collection<Vector3>& bodyPoints = _body.getPoints();
+    for (int i = 0; i < bodyPoints.getCount(); i++) bodyPoints[i].add(v);
     Vector3 newCenter = getCenter();
     newCenter.add(v);
     setCenter(newCenter);

@@ -56,18 +56,12 @@ static_assert(Box3dPoint::count == 8);
 class Box3d : public Object {
 
     Measures _measures;
-    Rect2d _bottomRect;
-    Rect2d _topRect;
-    Array<Vector3*, Box3dPoint::count> _points;
+    Array<Vector3, Box3dPoint::count> _points;
 
 public:
-    Box3d();
-    // запрещаем копировать, потому что есть массив _points с указателями
-    // который нужно инитить по новой в новом экземпляре
-    DENY_COPYING(Box3d);
     void setMeasures(Measures& measures);
     void calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal);
-    Collection<Vector3*>& getPoints();
+    Collection<Vector3>& getPoints();
     Vector3 getOppositeDiagonalPointFor(int pointIndex);
 
 private:

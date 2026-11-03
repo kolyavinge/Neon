@@ -24,7 +24,7 @@ public:
     Body(RigidBody& rigidBody);
     void init();
     VehicleData& getData();
-    Collection<Vector3*>& getPoints();
+    Collection<Vector3>& getPoints();
     Vector3 getOppositeDiagonalPointFor(int pointIndex);
     Vector3 getAirDragForce();
     Vector3 getAirDragTorque();

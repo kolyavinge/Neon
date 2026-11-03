@@ -31,48 +31,45 @@ void Rect2d::subMultiplied(Vector3& v, float multipliedBy) {
     upRight.subMultiplied(v, multipliedBy);
 }
 
-Box3d::Box3d() {
-    _points[Box3dPoint::bottomDownLeft] = &_bottomRect.downLeft;
-    _points[Box3dPoint::bottomDownRight] = &_bottomRect.downRight;
-    _points[Box3dPoint::bottomUpLeft] = &_bottomRect.upLeft;
-    _points[Box3dPoint::bottomUpRight] = &_bottomRect.upRight;
-    _points[Box3dPoint::topDownLeft] = &_topRect.downLeft;
-    _points[Box3dPoint::topDownRight] = &_topRect.downRight;
-    _points[Box3dPoint::topUpLeft] = &_topRect.upLeft;
-    _points[Box3dPoint::topUpRight] = &_topRect.upRight;
-}
-
 void Box3d::setMeasures(Measures& measures) {
     _measures = measures;
 }
 
 void Box3d::calculatePoints(Vector3& center, Vector3& rightNormal, Vector3& frontNormal, Vector3& upNormal) {
     // bottom
-    _bottomRect.downLeft = center;
-    _bottomRect.downRight = center;
-    _bottomRect.upLeft = center;
-    _bottomRect.upRight = center;
-    _bottomRect.downLeft.subMultiplied(rightNormal, _measures.xLength / 2.0f);
-    _bottomRect.downLeft.subMultiplied(frontNormal, _measures.yLength / 2.0f);
-    _bottomRect.downRight.addMultiplied(rightNormal, _measures.xLength / 2.0f);
-    _bottomRect.downRight.subMultiplied(frontNormal, _measures.yLength / 2.0f);
-    _bottomRect.upLeft.subMultiplied(rightNormal, _measures.xLength / 2.0f);
-    _bottomRect.upLeft.addMultiplied(frontNormal, _measures.yLength / 2.0f);
-    _bottomRect.upRight.addMultiplied(rightNormal, _measures.xLength / 2.0f);
-    _bottomRect.upRight.addMultiplied(frontNormal, _measures.yLength / 2.0f);
-    _bottomRect.subMultiplied(upNormal, _measures.zLength / 2.0f);
+    _points[Box3dPoint::bottomDownLeft] = center;
+    _points[Box3dPoint::bottomDownLeft].subMultiplied(rightNormal, _measures.xLength / 2.0f);
+    _points[Box3dPoint::bottomDownLeft].subMultiplied(frontNormal, _measures.yLength / 2.0f);
+    _points[Box3dPoint::bottomDownLeft].subMultiplied(upNormal, _measures.zLength / 2.0f);
+
+    _points[Box3dPoint::bottomDownRight] = _points[Box3dPoint::bottomDownLeft];
+    _points[Box3dPoint::bottomDownRight].addMultiplied(rightNormal, _measures.xLength);
+
+    _points[Box3dPoint::bottomUpLeft] = _points[Box3dPoint::bottomDownLeft];
+    _points[Box3dPoint::bottomUpLeft].addMultiplied(frontNormal, _measures.yLength);
+
+    _points[Box3dPoint::bottomUpRight] = _points[Box3dPoint::bottomUpLeft];
+    _points[Box3dPoint::bottomUpRight].addMultiplied(rightNormal, _measures.xLength);
+
     // top
-    _topRect = _bottomRect;
-    _topRect.addMultiplied(upNormal, _measures.zLength);
+    _points[Box3dPoint::topDownLeft] = _points[Box3dPoint::bottomDownLeft];
+    _points[Box3dPoint::topDownRight] = _points[Box3dPoint::bottomDownRight];
+    _points[Box3dPoint::topUpLeft] = _points[Box3dPoint::bottomUpLeft];
+    _points[Box3dPoint::topUpRight] = _points[Box3dPoint::bottomUpRight];
+
+    _points[Box3dPoint::topDownLeft].addMultiplied(upNormal, _measures.zLength);
+    _points[Box3dPoint::topDownRight].addMultiplied(upNormal, _measures.zLength);
+    _points[Box3dPoint::topUpLeft].addMultiplied(upNormal, _measures.zLength);
+    _points[Box3dPoint::topUpRight].addMultiplied(upNormal, _measures.zLength);
 }
 
-Collection<Vector3*>& Box3d::getPoints() {
+Collection<Vector3>& Box3d::getPoints() {
     return _points;
 }
 
 Vector3 Box3d::getOppositeDiagonalPointFor(int pointIndex) {
     int oppositeDiagonalPoint = getBox3dPointOppositeDiagonalPointFor(pointIndex);
-    return *_points[oppositeDiagonalPoint];
+    return _points[oppositeDiagonalPoint];
 }
 
 int Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {

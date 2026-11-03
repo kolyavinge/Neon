@@ -15,7 +15,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
     _collisionPoints.clear();
     _collisionDepths.clear();
-    Collection<Vector3*>& bodyPoints = vehicle.getBody().getPoints();
+    Collection<Vector3>& bodyPoints = vehicle.getBody().getPoints();
     Array<WorldSegment*, Box3dPoint::count> pointSegments;
     findPointSegments(bodyPoints, output pointSegments);
     findBarrierCollisions(vehicle.getBody(), pointSegments);
@@ -39,12 +39,12 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     return true;
 }
 
-void BarrierCollisionLogic::findPointSegments(Collection<Vector3*>& bodyPoints, output Array<WorldSegment*, Box3dPoint::count>& result) {
+void BarrierCollisionLogic::findPointSegments(Collection<Vector3>& bodyPoints, output Array<WorldSegment*, Box3dPoint::count>& result) {
     // находим сегменты для 4 нижних точек кузова
-    result[Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getWorldSegmentForPoint(*bodyPoints[Box3dPoint::bottomDownLeft]);
-    result[Box3dPoint::bottomDownRight] = &_segmentDataFinder.getWorldSegmentForPoint(*bodyPoints[Box3dPoint::bottomDownRight]);
-    result[Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getWorldSegmentForPoint(*bodyPoints[Box3dPoint::bottomUpLeft]);
-    result[Box3dPoint::bottomUpRight] = &_segmentDataFinder.getWorldSegmentForPoint(*bodyPoints[Box3dPoint::bottomUpRight]);
+    result[Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownLeft]);
+    result[Box3dPoint::bottomDownRight] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownRight]);
+    result[Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpLeft]);
+    result[Box3dPoint::bottomUpRight] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpRight]);
     // считаем что верхние точки находятся в тех же сегментах что и нижние
     result[Box3dPoint::topDownLeft] = result[Box3dPoint::bottomDownLeft];
     result[Box3dPoint::topDownRight] = result[Box3dPoint::bottomDownRight];
@@ -55,7 +55,7 @@ void BarrierCollisionLogic::findPointSegments(Collection<Vector3*>& bodyPoints, 
 void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment*, Box3dPoint::count>& pointSegments) {
     // проверяем на соударение 8 точек кузова в 4 сегментах
     // алгоритм рассчитан на поиск соударений только с лицевой гранью препятствия
-    Collection<Vector3*>& bodyPoints = body.getPoints();
+    Collection<Vector3>& bodyPoints = body.getPoints();
     for (int bodyPointIndex = 0; bodyPointIndex < bodyPoints.getCount(); bodyPointIndex++) {
         Vector3 oppositeBodyPoint = body.getOppositeDiagonalPointFor(bodyPointIndex);
         Collection<WorldPrimitive*>& barrierPrimitives = pointSegments[bodyPointIndex]->getGroundAndBarrierPrimitives();
@@ -64,14 +64,14 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
             // определяем есть ли пересечение отрезка между текущей точкой кузова и противоположной ей по-диагонали
             // такой диагональный отрезок покрывает все три оси перемещения
             Vector3 _;
-            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, *bodyPoints[bodyPointIndex], 0.01f, output _)) {
+            if (!barrierPrimitive.hasCollision(oppositeBodyPoint, bodyPoints[bodyPointIndex], 0.01f, output _)) {
                 continue;
             }
             // какая из двух точек отрезка зашла за препятствие
             // проверка нужна на случай если точка зашла за препятствие и попала в другой сегмент
             Vector3 collidedPoint;
-            if (!barrierPrimitive.isPointInFront(*bodyPoints[bodyPointIndex])) {
-                collidedPoint = *bodyPoints[bodyPointIndex];
+            if (!barrierPrimitive.isPointInFront(bodyPoints[bodyPointIndex])) {
+                collidedPoint = bodyPoints[bodyPointIndex];
             } else if (!barrierPrimitive.isPointInFront(oppositeBodyPoint)) {
                 collidedPoint = oppositeBodyPoint;
             } else {
