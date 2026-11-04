@@ -7,7 +7,6 @@
 #include <core/ScreenManager.h>
 #include <debug/DebugRenderer.h>
 #include <debug/VehicleDebuger.h>
-#include <engine/common/CameraUpdater.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
 #include <engine/vehicle/GearboxLogic.h>
@@ -52,7 +51,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<DebugRenderer>();
     binder.bindSingleton<VehicleDebuger>();
-    binder.bindSingleton<CameraUpdater>();
     binder.bindSingleton<EngineLogic>(EngineLogic::resolve);
     binder.bindSingleton<ForceLogic>(ForceLogic::resolve);
     binder.bindSingleton<GearboxLogic>();

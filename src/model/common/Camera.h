@@ -4,6 +4,7 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/vehicle/Vehicle.h>
 
 enum class FrustumPlanePosition {
     front = 0,
@@ -25,14 +26,20 @@ class Camera : public Object {
 public:
     Camera();
     float getVerticalViewAngle();
-    void setVerticalViewAngle(float verticalViewAngle);
     Vector3& getPosition();
-    void setPosition(Vector3& position);
     Vector3& getLookDirection();
-    void setLookDirection(Vector3& lookDirection);
     TransformMatrix4& getViewMatrix();
     TransformMatrix4& getProjectionMatrix();
     Plane& getFrustumPlane(FrustumPlanePosition position);
+    void update(Vehicle& vehicle);
+
+protected:
+    void virtual innerUpdate(Vehicle& vehicle) = 0;
+    void setVerticalViewAngle(float verticalViewAngle);
+    void setPosition(Vector3& position);
+    void setLookDirection(Vector3& lookDirection);
+
+private:
     void calculateViewMatrix();
     void calculateProjectionMatrix();
     void calculateFrustumPlanes();

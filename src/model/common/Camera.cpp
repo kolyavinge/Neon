@@ -11,37 +11,45 @@ float Camera::getVerticalViewAngle() {
     return _verticalViewAngle;
 }
 
-void Camera::setVerticalViewAngle(float verticalViewAngle) {
-    _verticalViewAngle = verticalViewAngle;
-    _horizontalViewAngle = _verticalViewAngle * CommonConstants::screenAspect;
-}
-
 Vector3& Camera::getPosition() {
     return _position;
-}
-
-void Camera::setPosition(Vector3& position) {
-    _position = position;
 }
 
 Vector3& Camera::getLookDirection() {
     return _lookDirection;
 }
 
-void Camera::setLookDirection(Vector3& lookDirection) {
-    _lookDirection = lookDirection;
-}
-
 TransformMatrix4& Camera::getViewMatrix() {
     return _viewMatrix;
+}
+
+TransformMatrix4& Camera::getProjectionMatrix() {
+    return _projectionMatrix;
 }
 
 Plane& Camera::getFrustumPlane(FrustumPlanePosition position) {
     return _frustumPlanes[(int)position];
 }
 
-TransformMatrix4& Camera::getProjectionMatrix() {
-    return _projectionMatrix;
+void Camera::update(Vehicle& vehicle) {
+    setVerticalViewAngle(CommonConstants::verticalFieldOfView);
+    innerUpdate(vehicle);
+    calculateViewMatrix();
+    calculateProjectionMatrix();
+    calculateFrustumPlanes();
+}
+
+void Camera::setVerticalViewAngle(float verticalViewAngle) {
+    _verticalViewAngle = verticalViewAngle;
+    _horizontalViewAngle = _verticalViewAngle * CommonConstants::screenAspect;
+}
+
+void Camera::setPosition(Vector3& position) {
+    _position = position;
+}
+
+void Camera::setLookDirection(Vector3& lookDirection) {
+    _lookDirection = lookDirection;
 }
 
 void Camera::calculateViewMatrix() {

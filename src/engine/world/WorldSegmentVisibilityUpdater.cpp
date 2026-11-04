@@ -8,13 +8,16 @@ WorldSegmentVisibilityUpdater::WorldSegmentVisibilityUpdater() {
 
 void WorldSegmentVisibilityUpdater::update(
     BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, VisibleWorldSegmentsData& segmentsData) {
-    bool needUpdate = segmentsData.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.95f;
+    bool needUpdate =
+        segmentsData.cameraPosition.getLengthSquaredTo(camera.getPosition()) > 1.0f ||
+        segmentsData.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.95f;
     if (!needUpdate) return;
     _camera = &camera;
     _visibleSegments = &segmentsData.visibleSegments;
     _visibleSegments->clear();
     findVisibleSegmentsFor(*segmentTreeRoot.frontNode);
     findVisibleSegmentsFor(*segmentTreeRoot.backNode);
+    segmentsData.cameraPosition = camera.getPosition();
     segmentsData.cameraLookDirection = camera.getLookDirection();
 }
 

@@ -1,3 +1,4 @@
+#include <model/common/cameras.h>
 #include <model/world/GameWorld.h>
 
 void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
@@ -7,6 +8,7 @@ void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
 
 GameWorld::GameWorld() {
     _track = nullptr;
+    _camera = new BackSideCamera();
     init();
     for (int i = 0; i < _allVehicles.getCount(); i++) {
         _allVehicles[i].setId(i);
@@ -58,5 +60,5 @@ VisibleWorldSegmentsData& GameWorld::getVisibleWorldSegmentsData() {
 }
 
 Camera& GameWorld::getCamera() {
-    return _camera;
+    return *_camera;
 }

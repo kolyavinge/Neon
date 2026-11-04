@@ -13,6 +13,7 @@ class VisibleWorldSegmentsData : public Object {
 
 public:
     List<WorldSegment*> visibleSegments;
+    Vector3 cameraPosition;
     Vector3 cameraLookDirection;
     void init(BSPTree<WorldSegment>& segmentTree);
 };
@@ -25,7 +26,7 @@ class GameWorld : public Object {
     Array<Vehicle*, GameConstants::maxVehiclesCount - 1> _enemyVehicles;
     BSPTree<WorldSegment> _segmentTree;
     VisibleWorldSegmentsData _visibleWorldSegmentsData;
-    Camera _camera;
+    Camera* _camera;
     //RaceData _raceData;
 
 public:

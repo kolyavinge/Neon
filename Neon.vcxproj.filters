@@ -237,7 +237,7 @@
     <ClCompile Include="src\model\common\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\common\CameraUpdater.cpp">
+    <ClCompile Include="src\model\common\cameras.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp">
@@ -617,7 +617,7 @@
     <ClInclude Include="src\model\common\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\common\CameraUpdater.h">
+    <ClInclude Include="src\model\common\cameras.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h">
