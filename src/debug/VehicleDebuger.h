@@ -7,32 +7,34 @@
 
 class VehicleDebuger : public Object {
 
+    int _tick;
+
 public:
-    static void printDebugInfo(Vehicle& vehicle);
+    VehicleDebuger();
+    void printDebugInfo(Vehicle& vehicle);
 
 private:
-    static int _tick;
-    static void printGear(Vehicle& vehicle);
-    static void printThrottle(DrivingInputData& inputData);
-    static void printBrake(DrivingInputData& inputData);
-    static void printEngineRpm(Vehicle& vehicle);
-    static void printEngineTorque(Vehicle& vehicle);
-    static void printWheelsAngularVelocity(Vehicle& vehicle);
-    static void printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle);
-    static void printSlipRatio(Vehicle& vehicle, bool allWheels);
-    static void printSlipAngle(Vehicle& vehicle);
-    static void printLongitudinalForce(Vehicle& vehicle);
-    static void printLongitudinalForce(Wheel& wheel, bool last = false);
-    static void printLateralForce(Vehicle& vehicle);
-    static void printLateralForce(Wheel& wheel, bool last = false);
-    static void printVehicleLinearVelocity(Vehicle& vehicle);
-    static void printVehicleAngularVelocity(Vehicle& vehicle);
-    static void printSpringForce(Vehicle& vehicle);
-    static void printSpringLengths(Vehicle& vehicle);
-    static void printSpringPositions(Vehicle& vehicle);
-    static void printWheelsGroundContactPoint(Vehicle& vehicle);
-    static void printWheelsGroundContactPointLength(Vehicle& vehicle);
-    static void printWheelsGroundContact(Vehicle& vehicle);
-    static void printVector(Vector3 v);
-    static void paintText(DrivingInputData& inputData);
+    void printGear(Vehicle& vehicle);
+    void printThrottle(DrivingInputData& inputData);
+    void printBrake(DrivingInputData& inputData);
+    void printEngineRpm(Vehicle& vehicle);
+    void printEngineTorque(Vehicle& vehicle);
+    void printWheelsAngularVelocity(Vehicle& vehicle);
+    void printDiffBetweenRpmAndAngularVelocity(Vehicle& vehicle);
+    void printSlipRatio(Vehicle& vehicle, bool allWheels);
+    void printSlipAngle(Vehicle& vehicle);
+    void printLongitudinalForce(Vehicle& vehicle);
+    void printLongitudinalForce(Wheel& wheel, bool last = false);
+    void printLateralForce(Vehicle& vehicle);
+    void printLateralForce(Wheel& wheel, bool last = false);
+    void printVehicleLinearVelocity(Vehicle& vehicle);
+    void printVehicleAngularVelocity(Vehicle& vehicle);
+    void printSpringForce(Vehicle& vehicle);
+    void printSpringLengths(Vehicle& vehicle);
+    void printSpringPositions(Vehicle& vehicle);
+    void printWheelsGroundContactPoint(Vehicle& vehicle);
+    void printWheelsGroundContactPointLength(Vehicle& vehicle);
+    void printWheelsGroundContact(Vehicle& vehicle);
+    void printVector(Vector3 v);
+    void paintText(DrivingInputData& inputData);
 };

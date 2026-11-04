@@ -16,7 +16,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     _collisionPoints.clear();
     _collisionDepths.clear();
     Collection<Vector3>& bodyPoints = vehicle.getBody().getPoints();
-    Array<WorldSegment*, Box3dPoint::count> pointSegments;
+    Array<WorldSegment*, Box3dPoint::_count> pointSegments;
     findPointSegments(bodyPoints, output pointSegments);
     findBarrierCollisions(vehicle.getBody(), pointSegments);
     if (_collisionPoints.getCount() == 0) {
@@ -39,7 +39,7 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
     return true;
 }
 
-void BarrierCollisionLogic::findPointSegments(Collection<Vector3>& bodyPoints, output Array<WorldSegment*, Box3dPoint::count>& result) {
+void BarrierCollisionLogic::findPointSegments(Collection<Vector3>& bodyPoints, output Array<WorldSegment*, Box3dPoint::_count>& result) {
     // находим сегменты для 4 нижних точек кузова
     result[Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownLeft]);
     result[Box3dPoint::bottomDownRight] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownRight]);
@@ -52,7 +52,7 @@ void BarrierCollisionLogic::findPointSegments(Collection<Vector3>& bodyPoints, o
     result[Box3dPoint::topUpRight] = result[Box3dPoint::bottomUpRight];
 }
 
-void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment*, Box3dPoint::count>& pointSegments) {
+void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment*, Box3dPoint::_count>& pointSegments) {
     // проверяем на соударение 8 точек кузова в 4 сегментах
     // алгоритм рассчитан на поиск соударений только с лицевой гранью препятствия
     Collection<Vector3>& bodyPoints = body.getPoints();
@@ -91,11 +91,11 @@ void BarrierCollisionLogic::findBarrierCollisions(Body& body, Array<WorldSegment
 }
 
 void BarrierCollisionLogic::findOuterCornerCollisions(
-    Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, Box3dPoint::count>& pointSegments) {
+    Body& body, Vector3 vehicleLinearVelocity, Array<WorldSegment*, Box3dPoint::_count>& pointSegments) {
     // если обьекты игрового мира образуют внешние углы, то обрабатываем эти углы отдельно
     if (vehicleLinearVelocity.isZero()) return;
     bool hasOuterCorners = false;
-    for (int segmentIndex = 0; segmentIndex < Box3dPoint::bottomPointsCount; segmentIndex++) {
+    for (int segmentIndex = 0; segmentIndex < Box3dPoint::_bottomPointsCount; segmentIndex++) {
         if (pointSegments[segmentIndex]->getOuterCorners().getCount() > 0) {
             hasOuterCorners = true;
             break;
@@ -104,7 +104,7 @@ void BarrierCollisionLogic::findOuterCornerCollisions(
     if (!hasOuterCorners) return;
     body.calculateBottomTruncatedPlane();
     TruncatedPlane& bottomPlane = body.getBottomTruncatedPlane();
-    for (int segmentIndex = 0; hasOuterCorners && segmentIndex < Box3dPoint::count / 2; segmentIndex++) {
+    for (int segmentIndex = 0; hasOuterCorners && segmentIndex < Box3dPoint::_count / 2; segmentIndex++) {
         Collection<Line*>& outerCorners = pointSegments[segmentIndex]->getOuterCorners();
         for (int cornerIndex = 0; cornerIndex < outerCorners.getCount(); cornerIndex++) {
             Line& outerCorner = *outerCorners[cornerIndex];

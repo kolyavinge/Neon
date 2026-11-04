@@ -20,8 +20,9 @@ public:
 class GameWorld : public Object {
 
     Track* _track;
-    Array<Vehicle, GameConstants::maxVehiclesCount> _vehicles;
+    Array<Vehicle, GameConstants::maxVehiclesCount> _allVehicles;
     Vehicle* _playerVehicle;
+    Array<Vehicle*, GameConstants::maxVehiclesCount - 1> _enemyVehicles;
     BSPTree<WorldSegment> _segmentTree;
     VisibleWorldSegmentsData _visibleWorldSegmentsData;
     Camera _camera;
@@ -32,8 +33,9 @@ public:
     void init();
     Track& getTrack();
     void setTrack(Track& track);
-    Collection<Vehicle>& getVehicles();
+    Collection<Vehicle>& getAllVehicles();
     Vehicle& getPlayerVehicle();
+    Collection<Vehicle*>& getEnemyVehicles();
     BSPTree<WorldSegment>& getSegmentTree();
     List<WorldSegment*>& getVisibleWorldSegments();
     VisibleWorldSegmentsData& getVisibleWorldSegmentsData();

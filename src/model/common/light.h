@@ -14,3 +14,5 @@ public:
     Vector3 getColor();
     void setColor(Vector3 color);
 };
+
+// другие варианты источников света описывать тут

@@ -47,6 +47,7 @@ public:
     void round(float precision);
 
     static Vector3& getLongest(Collection<Vector3>& vectors);
+    static Vector3 getRightNormal(Vector3 front, Vector3 up);
 
 private:
     void raiseErrorIfCurrentLengthZero(float length);

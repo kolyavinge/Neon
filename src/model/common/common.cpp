@@ -82,7 +82,7 @@ int Box3d::getBox3dPointOppositeDiagonalPointFor(int pointIndex) {
         case Box3dPoint::topDownRight: return Box3dPoint::bottomUpLeft;
         case Box3dPoint::topUpLeft: return Box3dPoint::bottomDownRight;
         case Box3dPoint::topUpRight: return Box3dPoint::bottomDownLeft;
-        case Box3dPoint::count:
+        case Box3dPoint::_count:
         default: throw Exception(L"Wrong pointIndex.");
     }
 }

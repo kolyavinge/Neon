@@ -3,7 +3,9 @@
 #include <lib/calc/UnitConverter.h>
 #include <stdio.h>
 
-int VehicleDebuger::_tick = 0;
+VehicleDebuger::VehicleDebuger() {
+    _tick = 0;
+}
 
 void VehicleDebuger::printDebugInfo(Vehicle& vehicle) {
     _tick++;

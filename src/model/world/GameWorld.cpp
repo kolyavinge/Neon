@@ -8,16 +8,19 @@ void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
 GameWorld::GameWorld() {
     _track = nullptr;
     init();
-    _playerVehicle = &_vehicles[0];
-    for (int i = 0; i < _vehicles.getCount(); i++) {
-        _vehicles[i].setId(i);
+    for (int i = 0; i < _allVehicles.getCount(); i++) {
+        _allVehicles[i].setId(i);
+    }
+    _playerVehicle = &_allVehicles[0];
+    for (int i = 0; i < _enemyVehicles.getCount(); i++) {
+        _enemyVehicles[i] = &_allVehicles[i + 1];
     }
 }
 
 void GameWorld::init() {
     _track = nullptr;
-    for (int i = 0; i < _vehicles.getCount(); i++) {
-        _vehicles[i].init();
+    for (int i = 0; i < _allVehicles.getCount(); i++) {
+        _allVehicles[i].init();
     }
 }
 
@@ -30,12 +33,16 @@ void GameWorld::setTrack(Track& track) {
     _track = &track;
 }
 
-Collection<Vehicle>& GameWorld::getVehicles() {
-    return _vehicles;
+Collection<Vehicle>& GameWorld::getAllVehicles() {
+    return _allVehicles;
 }
 
 Vehicle& GameWorld::getPlayerVehicle() {
     return *_playerVehicle;
+}
+
+Collection<Vehicle*>& GameWorld::getEnemyVehicles() {
+    return _enemyVehicles;
 }
 
 BSPTree<WorldSegment>& GameWorld::getSegmentTree() {

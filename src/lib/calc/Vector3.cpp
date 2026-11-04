@@ -212,6 +212,13 @@ Vector3& Vector3::getLongest(Collection<Vector3>& vectors) {
     return *longest;
 }
 
+Vector3 Vector3::getRightNormal(Vector3 front, Vector3 up) {
+    Vector3 result = front;
+    result.crossProduct(up);
+
+    return result;
+}
+
 void Vector3::raiseErrorIfCurrentLengthZero(float length) {
     if (length == 0.0f) {
         throw InvalidVectorLengthException();

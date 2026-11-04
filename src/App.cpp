@@ -52,6 +52,7 @@ void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept
 
 void App::run() {
     if (glfwInit() == GLFW_FALSE) throw AppException();
+    glfwWindowHint(GLFW_SAMPLES, 4);
     GLFWwindow* window = glfwCreateWindow(CommonConstants::screenWidth, CommonConstants::screenHeight, CommonConstants::title, nullptr, nullptr);
     if (window == nullptr) { glfwTerminate(); throw AppException(); }
     setWindowedMode(window);
@@ -59,6 +60,8 @@ void App::run() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, onResize);
     if (glewInit() != GLEW_OK) throw AppException();
+    glEnable(GL_MULTISAMPLE);
+    glfwSwapInterval(1);
     moveConsoleToCorner();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();

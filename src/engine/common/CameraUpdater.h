@@ -7,15 +7,15 @@
 class CameraUpdater : public Object {
 
 public:
-    void update(Camera& camera, Vehicle& playerVehicle);
+    void update(Camera& camera, Vehicle& vehicle);
 
 private:
-    void setLeftSideView(Camera& camera, Vehicle& playerVehicle);
-    void setRightSideView(Camera& camera, Vehicle& playerVehicle);
-    void setBackView(Camera& camera, Vehicle& playerVehicle);
-    void setSideBackView(Camera& camera, Vehicle& playerVehicle);
-    void setTopView(Camera& camera, Vehicle& playerVehicle);
-    void setWheelCenterView(Camera& camera, Vehicle& playerVehicle);
-    void setRightSideStaticView(Camera& camera, Vehicle& playerVehicle);
-    void setAirView(Camera& camera, Vehicle& playerVehicle);
+    void setLeftSideView(Camera& camera, Vehicle& vehicle);
+    void setRightSideView(Camera& camera, Vehicle& vehicle);
+    void setBackSideView(Camera& camera, Vehicle& vehicle);
+    void setMirroredView(Camera& camera, Vehicle& vehicle);
+    void setTopSideView(Camera& camera, Vehicle& vehicle);
+    void setWheelCenterView(Camera& camera, Vehicle& vehicle);
+    void setRightSideStaticView(Camera& camera, Vehicle& vehicle);
+    void setAirView(Camera& camera, Vehicle& vehicle);
 };

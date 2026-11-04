@@ -48,15 +48,15 @@ public:
     inline static const int topDownRight = 5;
     inline static const int topUpLeft = 6;
     inline static const int topUpRight = 7;
-    inline static const int count = 8;
-    inline static const int bottomPointsCount = 4;
+    inline static const int _count = 8;
+    inline static const int _bottomPointsCount = 4;
 };
-static_assert(Box3dPoint::count == 8);
+static_assert(Box3dPoint::_count == 8);
 
 class Box3d : public Object {
 
     Measures _measures;
-    Array<Vector3, Box3dPoint::count> _points;
+    Array<Vector3, Box3dPoint::_count> _points;
 
 public:
     void setMeasures(Measures& measures);

@@ -35,7 +35,7 @@ void Vehicle::init() {
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.05f);
-    _rigidBody.setCenter(Vector3(10.0f, 15.0f, 1.0f));
+    _rigidBody.setCenter(Vector3(2.0f, 15.0f, 1.0f));
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {

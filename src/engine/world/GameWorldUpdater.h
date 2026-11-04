@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/PlayerInputManager.h>
+#include <debug/VehicleDebuger.h>
 #include <engine/common/CameraUpdater.h>
 #include <engine/vehicle/VehicleUpdater.h>
 #include <engine/world/WorldSegmentVisibilityUpdater.h>
@@ -14,6 +15,7 @@ class GameWorldUpdater : public Object {
     CameraUpdater& _cameraUpdater;
     VehicleUpdater& _vehicleUpdater;
     WorldSegmentVisibilityUpdater& _worldSegmentVisibilityUpdater;
+    VehicleDebuger& _vehicleDebuger;
 
 public:
     static GameWorldUpdater* resolve(Resolver& resolver) {
@@ -21,14 +23,16 @@ public:
             resolver.resolve<PlayerInputManager>(),
             resolver.resolve<CameraUpdater>(),
             resolver.resolve<VehicleUpdater>(),
-            resolver.resolve<WorldSegmentVisibilityUpdater>());
+            resolver.resolve<WorldSegmentVisibilityUpdater>(),
+            resolver.resolve<VehicleDebuger>());
     }
 
     GameWorldUpdater(
         PlayerInputManager& playerInputManager,
         CameraUpdater& cameraUpdater,
         VehicleUpdater& vehicleUpdater,
-        WorldSegmentVisibilityUpdater& worldSegmentVisibilityUpdater);
+        WorldSegmentVisibilityUpdater& worldSegmentVisibilityUpdater,
+        VehicleDebuger& vehicleDebuger);
 
     void update(GameWorld& gameWorld);
 };

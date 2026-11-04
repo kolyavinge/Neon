@@ -21,7 +21,9 @@ void RaceScreenRenderer::render() {
     GameWorld& gameWorld = _screen->getGameWorld();
     _trackRenderer.render(gameWorld.getVisibleWorldSegments(), gameWorld.getCamera());
     _vehicleRenderer.render(gameWorld.getPlayerVehicle(), gameWorld.getCamera(), gameWorld.getTrack().getGlobalLight());
-    // TODO определять видимость других машинок и рисовать только видимые (по аналогии с трассой, например)
-    _vehicleRenderer.render(gameWorld.getVehicles()[1], gameWorld.getCamera(), gameWorld.getTrack().getGlobalLight());
-    _debugRenderer.renderDebugInfo(gameWorld);
+    // TODO определять видимость других машинок и рисовать только видимые (по аналогии с сегментами трассы, например)
+    for (int i = 0; i < gameWorld.getEnemyVehicles().getCount(); i++) {
+        _vehicleRenderer.render(*gameWorld.getEnemyVehicles()[i], gameWorld.getCamera(), gameWorld.getTrack().getGlobalLight());
+    }
+    //_debugRenderer.renderDebugInfo(gameWorld);
 }
