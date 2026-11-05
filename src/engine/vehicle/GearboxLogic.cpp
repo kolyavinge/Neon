@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <engine/vehicle/GearboxLogic.h>
+#include <model/vehicle/DrivingInputData.h>
 #include <model/vehicle/Gear.h>
 #include <model/vehicle/VehicleData.h>
 
@@ -7,7 +8,7 @@ bool GearboxLogic::shift(Vehicle& vehicle) {
     if (vehicle.getGearbox().getKind() == GearboxKind::automatic) {
         return shiftAutomatic(vehicle);
     } else {
-        return shiftManual(vehicle.getGearbox(), vehicle.getDrivingInputData());
+        return shiftManual(vehicle);
     }
 }
 
@@ -15,11 +16,15 @@ bool GearboxLogic::shiftAutomatic(Vehicle& vehicle) {
     VehicleData& data = vehicle.getData();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();
+    DrivingInputData& drivingInputData = vehicle.getDrivingInputData();
     float sumSlipRatio = vehicle.getDriveWheel(0).getSlipRatio().value + vehicle.getDriveWheel(1).getSlipRatio().value;
     float averageSlipRatio = sumSlipRatio / (float)VehicleConstants::oneAxleWheelsCount;
     bool bothDriveWheelsHaveGroundContact = vehicle.getDriveWheel(0).hasGroundContact() && vehicle.getDriveWheel(1).hasGroundContact();
-    float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
+    float throttleRatio = drivingInputData.getThrottleRatio();
     bool isAccelerating = throttleRatio > 0.0f;
+    if (isAccelerating && !gearbox.isClutchActive()) {
+        gearbox.activateClutch();
+    }
     if (isAccelerating && bothDriveWheelsHaveGroundContact && engine.getRpm() > data.autoUpShiftRpm && averageSlipRatio < data.optimalSlipRatio) {
         return gearbox.shiftUp();
     } else if (isAccelerating && gearbox.getCurrentGear() < Gear::first) {
@@ -46,7 +51,17 @@ float GearboxLogic::getRpmOnLowerGear(Engine& engine, Gearbox& gearbox) {
     }
 }
 
-bool GearboxLogic::shiftManual(Gearbox& gearbox, DrivingInputData& drivingInputData) {
+bool GearboxLogic::shiftManual(Vehicle& vehicle) {
+    VehicleData& data = vehicle.getData();
+    Engine& engine = vehicle.getEngine();
+    Gearbox& gearbox = vehicle.getGearbox();
+    DrivingInputData& drivingInputData = vehicle.getDrivingInputData();
+    float throttleRatio = drivingInputData.getThrottleRatio();
+    if (throttleRatio > 0.0f && !gearbox.isClutchActive()) {
+        gearbox.activateClutch();
+    } else if (throttleRatio == 0.0f && engine.getRpm() == data.engineMinRpm && gearbox.isClutchActive()) {
+        gearbox.deactivateClutch();
+    }
     if (drivingInputData.isShiftedUp()) {
         return gearbox.shiftUp();
     } else if (drivingInputData.isShiftedDown()) {

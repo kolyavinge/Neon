@@ -6,6 +6,7 @@
 #include <lib/system.h>
 #include <model/vehicle/Vehicle.h>
 
+// для усеченной пирамиды используем только эти грани, ибо остальные в этой игре не нужны
 enum class FrustumPlanePosition {
     front = 0,
     left = 1,
@@ -31,6 +32,7 @@ public:
     TransformMatrix4& getViewMatrix();
     TransformMatrix4& getProjectionMatrix();
     Plane& getFrustumPlane(FrustumPlanePosition position);
+    bool inFrustum(Vector3 point);
     void update(Vehicle& vehicle);
 
 protected:

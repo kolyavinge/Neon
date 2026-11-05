@@ -5,11 +5,11 @@
 Gearbox::Gearbox() {
     _gearRatios = _data.gearRatios;
     _kind = GearboxKind::automatic;
+    //_kind = GearboxKind::manual;
     init();
 }
 
 void Gearbox::init() {
-    //_kind = GearboxKind::manual;
     _prevGearIndex = 1;
     _currentGearIndex = 1;
     _isClutchActive = true;

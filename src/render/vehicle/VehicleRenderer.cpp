@@ -18,7 +18,7 @@ void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
     _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
-void VehicleRenderer::render(Vehicle& vehicle, Camera& camera, Light& globalLight) {
+void VehicleRenderer::begin(Camera& camera, Light& globalLight) {
     glEnable(GL_DEPTH_TEST);
     _shader.use();
     _shader.setViewMatrix(camera.getViewMatrix());
@@ -27,11 +27,17 @@ void VehicleRenderer::render(Vehicle& vehicle, Camera& camera, Light& globalLigh
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(false);
     _shader.setGlobalLight(globalLight);
+}
+
+void VehicleRenderer::render(Vehicle& vehicle) {
     renderBody(vehicle.getModelMatrix());
     renderWheel(vehicle, WheelPosition::frontLeft);
     renderWheel(vehicle, WheelPosition::frontRight);
     renderWheel(vehicle, WheelPosition::rearLeft);
     renderWheel(vehicle, WheelPosition::rearRight);
+}
+
+void VehicleRenderer::end() {
     _shader.unuse();
     glDisable(GL_DEPTH_TEST);
 }

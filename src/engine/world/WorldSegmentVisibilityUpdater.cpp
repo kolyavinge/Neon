@@ -3,25 +3,23 @@
 
 WorldSegmentVisibilityUpdater::WorldSegmentVisibilityUpdater() {
     _camera = nullptr;
-    _visibleSegments = nullptr;
 }
 
 void WorldSegmentVisibilityUpdater::update(
     BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, VisibleWorldSegmentsData& segmentsData) {
     bool needUpdate =
         segmentsData.cameraPosition.getLengthSquaredTo(camera.getPosition()) > 1.0f ||
-        segmentsData.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.95f;
+        segmentsData.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.99f;
     if (!needUpdate) return;
     _camera = &camera;
-    _visibleSegments = &segmentsData.visibleSegments;
-    _visibleSegments->clear();
-    findVisibleSegmentsFor(*segmentTreeRoot.frontNode);
-    findVisibleSegmentsFor(*segmentTreeRoot.backNode);
+    segmentsData.visibleSegments.clear();
+    findVisibleSegmentsFor(*segmentTreeRoot.frontNode, output segmentsData.visibleSegments);
+    findVisibleSegmentsFor(*segmentTreeRoot.backNode, output segmentsData.visibleSegments);
     segmentsData.cameraPosition = camera.getPosition();
     segmentsData.cameraLookDirection = camera.getLookDirection();
 }
 
-void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node) {
+void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node, output List<WorldSegment*>& visibleSegments) {
     Rect2d& segmentBox = node.data.getBoundaryBox();
 
     int frontPoints = getPointsFromFrustumPlane(FrustumPlanePosition::front, segmentBox);
@@ -35,14 +33,14 @@ void WorldSegmentVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegm
 
     // сегмент полностью виден вместе с дочерними (видно по 4 точки для каждой плоскости камеры)
     if (frontPoints + leftPoints + rightPoints == 3 * Rect2d::pointsCount) {
-        _visibleSegments->add(&node.data);
+        visibleSegments.add(&node.data);
     } else {
         // виден частично
         if (!node.isLeaf) {
-            findVisibleSegmentsFor(*node.frontNode);
-            findVisibleSegmentsFor(*node.backNode);
+            findVisibleSegmentsFor(*node.frontNode, output visibleSegments);
+            findVisibleSegmentsFor(*node.backNode, output visibleSegments);
         } else {
-            _visibleSegments->add(&node.data);
+            visibleSegments.add(&node.data);
         }
     }
 }

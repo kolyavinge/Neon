@@ -9,6 +9,19 @@
 #include <model/world/Track.h>
 #include <model/world/WorldSegment.h>
 
+enum class SegmentVisibilityState {
+    full,
+    low,
+    shape
+};
+
+enum class VehicleVisibilityState {
+    full,
+    medium,
+    low,
+    shape
+};
+
 class VisibleWorldSegmentsData : public Object {
 
 public:
@@ -22,9 +35,10 @@ class GameWorld : public Object {
 
     Track* _track;
     Array<Vehicle, GameConstants::maxVehiclesCount> _allVehicles;
-    Vehicle* _playerVehicle;
-    Array<Vehicle*, GameConstants::maxVehiclesCount - 1> _enemyVehicles;
+    Vehicle& _playerVehicle;
+    Span<Vehicle> _enemyVehicles;
     BSPTree<WorldSegment> _segmentTree;
+    // TODO видимость обьектов должна быть привязана к камере
     VisibleWorldSegmentsData _visibleWorldSegmentsData;
     Camera* _camera;
     //RaceData _raceData;
@@ -36,7 +50,7 @@ public:
     void setTrack(Track& track);
     Collection<Vehicle>& getAllVehicles();
     Vehicle& getPlayerVehicle();
-    Collection<Vehicle*>& getEnemyVehicles();
+    Collection<Vehicle>& getEnemyVehicles();
     BSPTree<WorldSegment>& getSegmentTree();
     List<WorldSegment*>& getVisibleWorldSegments();
     VisibleWorldSegmentsData& getVisibleWorldSegmentsData();

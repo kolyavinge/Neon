@@ -34,7 +34,9 @@ public:
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void render(Vehicle& vehicle, Camera& camera, Light& globalLight);
+    void begin(Camera& camera, Light& globalLight);
+    void render(Vehicle& vehicle);
+    void end();
 
 private:
     void renderBody(TransformMatrix4& vehicleModelMatrix);

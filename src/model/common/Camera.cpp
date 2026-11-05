@@ -31,6 +31,15 @@ Plane& Camera::getFrustumPlane(FrustumPlanePosition position) {
     return _frustumPlanes[(int)position];
 }
 
+bool Camera::inFrustum(Vector3 point) {
+    bool result = true;
+    for (int i = 0; result && i < _frustumPlanes.getCount(); i++) {
+        result = _frustumPlanes[i].isPointInFront(point);
+    }
+
+    return result;
+}
+
 void Camera::update(Vehicle& vehicle) {
     setVerticalViewAngle(CommonConstants::verticalFieldOfView);
     innerUpdate(vehicle);

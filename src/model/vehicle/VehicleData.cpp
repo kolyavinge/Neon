@@ -16,7 +16,7 @@ VehicleData::VehicleData() {
     engineMinRpm = 800.0f;
     engineMaxRpm = 8000.0f;
     engineMaxReverseRpm = 2500.0f;
-    engineBrakingTorque = 20.0f; // если машинка плохо тормозит с отпущенным газом, нужно прибавить это значение
+    engineBrakingTorque = 20.0f; // если машинка плохо тормозит с отпущенным газом, можно прибавить это значение
     engineBrakingCoeff = 0.05f;
 
     /* gearbox */

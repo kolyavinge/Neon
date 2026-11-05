@@ -5,6 +5,7 @@
 #include <lib/system.h>
 
 class Quaternion : public Object {
+
     float _w, _x, _y, _z;
 
 public:

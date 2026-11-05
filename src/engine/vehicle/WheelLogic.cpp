@@ -1,5 +1,6 @@
 #include <common/constants.h>
 #include <engine/vehicle/WheelLogic.h>
+#include <lib/Numeric.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>

@@ -128,6 +128,7 @@
     <ClInclude Include="src\core\GameInitializer.h" />
     <ClInclude Include="src\debug\DebugRenderer.h" />
     <ClInclude Include="src\debug\VehicleDebuger.h" />
+    <ClInclude Include="src\lib\collections\Span.h" />
     <ClInclude Include="src\model\common\cameras.h" />
     <ClInclude Include="src\engine\world\BarrierCollisionLogic.h" />
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />

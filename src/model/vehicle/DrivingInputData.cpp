@@ -76,7 +76,17 @@ bool DrivingInputData::anyInput() {
 }
 
 void DrivingInputData::update(float dt) {
-    _throttleRatio.update(1.0f * dt);
-    _brakeRatio.update(1.0f * dt);
+    if (_throttleRatio.getDestinationValue() > 0.0f) {
+        _throttleRatio.update(1.0f * dt);
+    } else {
+        _throttleRatio.update(2.0f * dt);
+    }
+
+    if (_brakeRatio.getDestinationValue() > 0.0f) {
+        _brakeRatio.update(1.0f * dt);
+    } else {
+        _brakeRatio.update(2.0f * dt);
+    }
+
     _steeringRatio.update(2.0f * dt);
 }

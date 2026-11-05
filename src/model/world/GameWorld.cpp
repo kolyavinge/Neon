@@ -6,16 +6,14 @@ void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
     visibleSegments.prepareEnoughCapacity(segmentTree.getCountOfAllNodes() / 2);
 }
 
-GameWorld::GameWorld() {
+GameWorld::GameWorld():
+    _playerVehicle(_allVehicles[0]),
+    _enemyVehicles(_allVehicles, 1) {
     _track = nullptr;
     _camera = new BackSideCamera();
     init();
     for (int i = 0; i < _allVehicles.getCount(); i++) {
         _allVehicles[i].setId(i);
-    }
-    _playerVehicle = &_allVehicles[0];
-    for (int i = 0; i < _enemyVehicles.getCount(); i++) {
-        _enemyVehicles[i] = &_allVehicles[i + 1];
     }
 }
 
@@ -40,10 +38,10 @@ Collection<Vehicle>& GameWorld::getAllVehicles() {
 }
 
 Vehicle& GameWorld::getPlayerVehicle() {
-    return *_playerVehicle;
+    return _playerVehicle;
 }
 
-Collection<Vehicle*>& GameWorld::getEnemyVehicles() {
+Collection<Vehicle>& GameWorld::getEnemyVehicles() {
     return _enemyVehicles;
 }
 
