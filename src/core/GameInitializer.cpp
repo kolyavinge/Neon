@@ -9,7 +9,7 @@ GameInitializer::GameInitializer(
     Model3dCollection& model3dCollection,
     RenderModel3dCollection& renderModel3dCollection,
     VehicleRenderer& vehicleRenderer,
-    TrackRenderer& trackRenderer) :
+    WorldSegmentRenderer& worldSegmentRenderer) :
     _gameWorldInitializer(gameWorldInitializer),
     _debugScreen(debugScreen),
     _textureCollection(textureCollection),
@@ -18,7 +18,7 @@ GameInitializer::GameInitializer(
     _model3dCollection(model3dCollection),
     _renderModel3dCollection(renderModel3dCollection),
     _vehicleRenderer(vehicleRenderer),
-    _trackRenderer(trackRenderer) {
+    _worldSegmentRenderer(worldSegmentRenderer) {
 }
 
 void GameInitializer::initGame() {
@@ -35,7 +35,7 @@ void GameInitializer::initGameWorld(GameWorld& gameWorld) {
     _debugScreen.setGameWorld(gameWorld);
     List<WorldSegment*> allWorldSegments;
     gameWorld.getSegmentTree().getDataForAllNodes(output allWorldSegments);
-    _trackRenderer.init(allWorldSegments, gameWorld.getTrack().getGlobalLight());
+    _worldSegmentRenderer.init(allWorldSegments, gameWorld.getTrack().getGlobalLight());
     // во время инициализации рендера создаются 3d модели, выгружаем их в конце
     _model3dCollection.unload();
 }

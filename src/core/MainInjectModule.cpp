@@ -39,7 +39,7 @@
 #include <render/lib/VAORenderer.h>
 #include <render/ui/RaceScreenRenderer.h>
 #include <render/vehicle/VehicleRenderer.h>
-#include <render/world/TrackRenderer.h>
+#include <render/world/WorldSegmentRenderer.h>
 #include <ui/RaceScreen.h>
 
 void MainInjectModule::init(Binder& binder) {
@@ -83,6 +83,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
-    binder.bindSingleton<TrackRenderer>(TrackRenderer::resolve);
+    binder.bindSingleton<WorldSegmentRenderer>(WorldSegmentRenderer::resolve);
     binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
 }

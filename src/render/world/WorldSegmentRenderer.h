@@ -14,7 +14,7 @@
 #include <render/lib/VAORenderer.h>
 #include <render/shaderprograms/MeshShaderProgram.h>
 
-class TrackRenderer : public Object {
+class WorldSegmentRenderer : public Object {
 
     Model3dCollection& _model3dCollection;
     Model3dConverter& _model3dConverter;
@@ -25,8 +25,8 @@ class TrackRenderer : public Object {
     Light* _globalLight;
 
 public:
-    static TrackRenderer* resolve(Resolver& resolver) {
-        return new TrackRenderer(
+    static WorldSegmentRenderer* resolve(Resolver& resolver) {
+        return new WorldSegmentRenderer(
             resolver.resolve<Model3dCollection>(),
             resolver.resolve<Model3dConverter>(),
             resolver.resolve<RenderModel3dLoader>(),
@@ -34,7 +34,7 @@ public:
             resolver.resolve<VAORenderer>());
     }
 
-    TrackRenderer(
+    WorldSegmentRenderer(
         Model3dCollection& model3dCollection,
         Model3dConverter& model3dConverter,
         RenderModel3dLoader& renderModel3dLoader,

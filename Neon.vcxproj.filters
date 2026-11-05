@@ -291,7 +291,7 @@
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\world\TrackRenderer.cpp">
+    <ClCompile Include="src\render\world\WorldSegmentRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\Model3dConverter.cpp">
@@ -677,7 +677,7 @@
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\world\TrackRenderer.h">
+    <ClInclude Include="src\render\world\WorldSegmentRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\Model3dConverter.h">

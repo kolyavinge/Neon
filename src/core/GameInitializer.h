@@ -10,7 +10,7 @@
 #include <render/common/ShaderProgramCollection.h>
 #include <render/common/TextureCollection.h>
 #include <render/vehicle/VehicleRenderer.h>
-#include <render/world/TrackRenderer.h>
+#include <render/world/WorldSegmentRenderer.h>
 #include <ui/RaceScreen.h>
 
 class GameInitializer : public Object {
@@ -23,7 +23,7 @@ class GameInitializer : public Object {
     Model3dCollection& _model3dCollection;
     RenderModel3dCollection& _renderModel3dCollection;
     VehicleRenderer& _vehicleRenderer;
-    TrackRenderer& _trackRenderer;
+    WorldSegmentRenderer& _worldSegmentRenderer;
 
 public:
     static GameInitializer* resolve(Resolver& resolver) {
@@ -36,7 +36,7 @@ public:
             resolver.resolve<Model3dCollection>(),
             resolver.resolve<RenderModel3dCollection>(),
             resolver.resolve<VehicleRenderer>(),
-            resolver.resolve<TrackRenderer>());
+            resolver.resolve<WorldSegmentRenderer>());
     }
 
     GameInitializer(
@@ -48,7 +48,7 @@ public:
         Model3dCollection& model3dCollection,
         RenderModel3dCollection& renderModel3dCollection,
         VehicleRenderer& vehicleRenderer,
-        TrackRenderer& trackRenderer);
+        WorldSegmentRenderer& worldSegmentRenderer);
 
     void initGame();
     void initGameWorld(GameWorld& gameWorld);

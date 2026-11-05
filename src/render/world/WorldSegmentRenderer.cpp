@@ -2,9 +2,9 @@
 #include <model/world/WorldPrimitive.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
-#include <render/world/TrackRenderer.h>
+#include <render/world/WorldSegmentRenderer.h>
 
-TrackRenderer::TrackRenderer(
+WorldSegmentRenderer::WorldSegmentRenderer(
     Model3dCollection& model3dCollection,
     Model3dConverter& model3dConverter,
     RenderModel3dLoader& renderModel3dLoader,
@@ -18,7 +18,7 @@ TrackRenderer::TrackRenderer(
     _globalLight = nullptr;
 }
 
-void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight) {
+void WorldSegmentRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight) {
     _globalLight = &globalLight;
     // для всех обьектов WorldSegment создаем RenderModel3d для последующего рендера
     for (int i = 0; i < _segmentRenderModels.getCount(); i++) {
@@ -40,7 +40,7 @@ void TrackRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& glo
     }
 }
 
-void TrackRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d) {
+void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d) {
     if (worldSegment.getGroundPrimitives().getCount() > 0) {
         Model3d& groundModel3d = worldSegmentModels3d.addNew();
         _model3dConverter.fromWorldPrimitives(worldSegment.getGroundPrimitives(), output groundModel3d);
@@ -60,7 +60,7 @@ void TrackRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegment, out
     }
 }
 
-void TrackRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {
+void WorldSegmentRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
