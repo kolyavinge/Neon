@@ -57,6 +57,7 @@ bool GearboxLogic::shiftManual(Vehicle& vehicle) {
     Gearbox& gearbox = vehicle.getGearbox();
     DrivingInputData& drivingInputData = vehicle.getDrivingInputData();
     float throttleRatio = drivingInputData.getThrottleRatio();
+    // выжимаем сцепление на минимальных оборотах, иначе машинка будет себя неадекватно вести
     if (throttleRatio > 0.0f && !gearbox.isClutchActive()) {
         gearbox.activateClutch();
     } else if (throttleRatio == 0.0f && engine.getRpm() == data.engineMinRpm && gearbox.isClutchActive()) {

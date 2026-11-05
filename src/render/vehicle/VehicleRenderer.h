@@ -35,7 +35,7 @@ public:
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void render(Collection<Vehicle>& vehicles, Collection<VehicleVisibility::State>& state, Camera& camera, Light& globalLight);
+    void render(Collection<Vehicle>& vehicles, Collection<VisibilityState>& states, Camera& camera, Light& globalLight);
 
 private:
     void render(Vehicle& vehicle);

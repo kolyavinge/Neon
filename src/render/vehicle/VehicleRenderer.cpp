@@ -18,7 +18,7 @@ void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
     _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
-void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<VehicleVisibility::State>& state, Camera& camera, Light& globalLight) {
+void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<VisibilityState>& states, Camera& camera, Light& globalLight) {
     glEnable(GL_DEPTH_TEST);
     _shader.use();
     _shader.setViewMatrix(camera.getViewMatrix());
@@ -30,9 +30,8 @@ void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<VehicleVi
 
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        if (state[vehicle.getId()] == VehicleVisibility::State::full) {
-            render(vehicle);
-        }
+        if (states[vehicle.getId()] == VisibilityState::notVisible) continue;
+        render(vehicle);
     }
 
     _shader.unuse();

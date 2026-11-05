@@ -60,7 +60,7 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
     }
 }
 
-void WorldSegmentRenderer::render(Collection<WorldSegment*>& visibleSegments, Camera& camera) {
+void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Camera& camera) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -73,8 +73,9 @@ void WorldSegmentRenderer::render(Collection<WorldSegment*>& visibleSegments, Ca
     _shader.useTexture(true);
     _shader.setGlobalLight(*_globalLight);
 
-    for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
-        WorldSegment& worldSegment = *visibleSegments[segmentIndex];
+    for (int segmentIndex = 0; segmentIndex < segmentVisibility.visibleSegments.getCount(); segmentIndex++) {
+        WorldSegment& worldSegment = *segmentVisibility.visibleSegments[segmentIndex];
+        //worldSegmentVisibility.states[segmentIndex]
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);

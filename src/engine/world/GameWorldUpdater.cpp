@@ -20,6 +20,6 @@ void GameWorldUpdater::update(GameWorld& gameWorld) {
     _gameObjectVisibilityUpdater.updateWorldSegmentVisibility(
         gameWorld.getSegmentTree().getRoot(), gameWorld.getCamera(), gameWorld.getObjectVisibility().getWorldSegmentVisibility());
     _gameObjectVisibilityUpdater.updateVehicleVisibility(
-        gameWorld.getEnemyVehicles(), gameWorld.getCamera(), gameWorld.getObjectVisibility().getVehicleVisibility());
+        gameWorld.getEnemyVehicles(), gameWorld.getCamera(), gameWorld.getObjectVisibility().getVehicleVisibilityStates());
     _vehicleDebuger.printDebugInfo(gameWorld.getPlayerVehicle());
 }

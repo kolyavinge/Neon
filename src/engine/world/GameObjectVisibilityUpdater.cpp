@@ -35,7 +35,7 @@ void GameObjectVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegmen
     // сегмент полностью виден вместе с дочерними (видно по 4 точки для каждой плоскости камеры)
     if (frontPoints + leftPoints + rightPoints == 3 * Rect2d::pointsCount) {
         segmentVisibility.visibleSegments.add(&node.data);
-        segmentVisibility.states.add(WorldSegmentVisibility::State::full);
+        segmentVisibility.states.add(VisibilityState::high);
     } else {
         // виден частично
         if (!node.isLeaf) {
@@ -43,7 +43,7 @@ void GameObjectVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegmen
             findVisibleSegmentsFor(*node.backNode, output segmentVisibility);
         } else {
             segmentVisibility.visibleSegments.add(&node.data);
-            segmentVisibility.states.add(WorldSegmentVisibility::State::full);
+            segmentVisibility.states.add(VisibilityState::high);
         }
     }
 }
@@ -58,7 +58,7 @@ int GameObjectVisibilityUpdater::getPointsFromFrustumPlane(FrustumPlanePosition 
         (frustumPlane.isPointInFront(box.upRight) ? 1 : 0);
 }
 
-void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, VehicleVisibility& vehicleVisibility) {
+void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, Collection<VisibilityState>& vehicleVisibilityStates) {
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         Collection<Vector3>& bodyPoints = vehicle.getBody().getPoints();
@@ -67,6 +67,6 @@ void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& v
             camera.inFrustum(bodyPoints[Box3dPoint::topDownRight]) ||
             camera.inFrustum(bodyPoints[Box3dPoint::topUpLeft]) ||
             camera.inFrustum(bodyPoints[Box3dPoint::topUpRight]);
-        vehicleVisibility.states[vehicle.getId()] = isVisible ? VehicleVisibility::State::full : VehicleVisibility::State::notVisible;
+        vehicleVisibilityStates[vehicle.getId()] = isVisible ? VisibilityState::high : VisibilityState::notVisible;
     }
 }

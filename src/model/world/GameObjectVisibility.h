@@ -6,44 +6,31 @@
 #include <lib/system.h>
 #include <model/world/WorldSegment.h>
 
+enum class VisibilityState {
+    high,      // обьект виден с максимальной детализацией
+    medium,    // со средней детализацией
+    low,       // с низкой
+    shape,     // виден только силуэт
+    notVisible // обьект не виден
+};
+
 class WorldSegmentVisibility : public Object {
 
 public:
-    enum class State {
-        full,
-        low,
-        shape,
-        notVisible
-    };
-
     List<WorldSegment*> visibleSegments;
-    List<State> states;
+    List<VisibilityState> states;
     Vector3 cameraPosition;
     Vector3 cameraLookDirection;
     void init(BSPTree<WorldSegment>& segmentTree);
 };
 
-class VehicleVisibility : public Object {
-
-public:
-    enum class State {
-        full,
-        medium,
-        low,
-        shape,
-        notVisible
-    };
-
-    Array<State, GameConstants::maxVehiclesCount> states;
-};
-
 class GameObjectVisibility : public Object {
 
     WorldSegmentVisibility _worldSegmentVisibility;
-    VehicleVisibility _vehicleVisibility;
+    Array<VisibilityState, GameConstants::maxVehiclesCount> _vehicleVisibilityStates;
 
 public:
     void init(BSPTree<WorldSegment>& segmentTree);
     WorldSegmentVisibility& getWorldSegmentVisibility();
-    VehicleVisibility& getVehicleVisibility();
+    Collection<VisibilityState>& getVehicleVisibilityStates();
 };

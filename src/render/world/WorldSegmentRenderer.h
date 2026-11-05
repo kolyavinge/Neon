@@ -4,6 +4,7 @@
 #include <lib/system.h>
 #include <model/common/Camera.h>
 #include <model/common/light.h>
+#include <model/world/GameObjectVisibility.h>
 #include <model/world/WorldSegment.h>
 #include <render/common/Model3dCollection.h>
 #include <render/common/Model3dConverter.h>
@@ -42,7 +43,7 @@ public:
         VAORenderer& vaoRenderer);
 
     void init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight);
-    void render(Collection<WorldSegment*>& visibleSegments, Camera& camera);
+    void render(WorldSegmentVisibility& segmentVisibility, Camera& camera);
 
 private:
     void buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d);

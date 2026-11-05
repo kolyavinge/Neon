@@ -14,7 +14,7 @@ class GameObjectVisibilityUpdater : public Object {
 public:
     GameObjectVisibilityUpdater();
     void updateWorldSegmentVisibility(BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, WorldSegmentVisibility& segmentVisibility);
-    void updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, VehicleVisibility& vehicleVisibility);
+    void updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, Collection<VisibilityState>& vehicleVisibilityStates);
 
 private:
     void findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node, output WorldSegmentVisibility& segmentVisibility);
