@@ -14,6 +14,7 @@
 #include <engine/vehicle/VehicleUpdater.h>
 #include <engine/vehicle/WheelLogic.h>
 #include <engine/world/BarrierCollisionLogic.h>
+#include <engine/world/GameObjectVisibilityUpdater.h>
 #include <engine/world/GameWorldInitializer.h>
 #include <engine/world/GameWorldUpdater.h>
 #include <engine/world/TrackCollection.h>
@@ -21,7 +22,6 @@
 #include <engine/world/WheelGroundContactLogic.h>
 #include <engine/world/WorldSegmentDataFinder.h>
 #include <engine/world/WorldSegmentTreeBuilder.h>
-#include <engine/world/WorldSegmentVisibilityUpdater.h>
 #include <lib/Environment.h>
 #include <lib/FileSystem.h>
 #include <lib/ResourceManager.h>
@@ -58,6 +58,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
     binder.bindSingleton<WheelLogic>();
     binder.bindSingleton<BarrierCollisionLogic>(BarrierCollisionLogic::resolve);
+    binder.bindSingleton<GameObjectVisibilityUpdater>();
     binder.bindSingleton<GameWorldInitializer>(GameWorldInitializer::resolve);
     binder.bindSingleton<GameWorldUpdater>(GameWorldUpdater::resolve);
     binder.bindSingleton<TrackCollection>();
@@ -65,7 +66,6 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<WheelGroundContactLogic>(WheelGroundContactLogic::resolve);
     binder.bindSingleton<WorldSegmentDataFinder>();
     binder.bindSingleton<WorldSegmentTreeBuilder>();
-    binder.bindSingleton<WorldSegmentVisibilityUpdater>();
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();
     binder.bindSingleton<ResourceManager>();

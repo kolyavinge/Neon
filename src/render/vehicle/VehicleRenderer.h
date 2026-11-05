@@ -8,6 +8,7 @@
 #include <model/common/light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
+#include <model/world/GameObjectVisibility.h>
 #include <render/common/RenderModel3dCollection.h>
 #include <render/common/ShaderProgramCollection.h>
 #include <render/lib/RenderModel3d.h>
@@ -34,11 +35,10 @@ public:
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void begin(Camera& camera, Light& globalLight);
-    void render(Vehicle& vehicle);
-    void end();
+    void render(Collection<Vehicle>& vehicles, Collection<VehicleVisibility::State>& state, Camera& camera, Light& globalLight);
 
 private:
+    void render(Vehicle& vehicle);
     void renderBody(TransformMatrix4& vehicleModelMatrix);
     void renderWheel(Vehicle& vehicle, WheelPosition wheelPosition);
 };

@@ -285,7 +285,7 @@
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\world\WorldSegmentVisibilityUpdater.cpp">
+    <ClCompile Include="src\engine\world\GameObjectVisibilityUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp">
@@ -316,6 +316,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\world\VehiclesCollisionLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\world\GameObjectVisibility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -668,7 +671,7 @@
     <ClInclude Include="src\engine\world\GameWorldInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\world\WorldSegmentVisibilityUpdater.h">
+    <ClInclude Include="src\engine\world\GameObjectVisibilityUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h">
@@ -702,6 +705,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\collections\Span.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\world\GameObjectVisibility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

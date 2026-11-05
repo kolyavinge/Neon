@@ -1,11 +1,6 @@
 #include <model/common/cameras.h>
 #include <model/world/GameWorld.h>
 
-void VisibleWorldSegmentsData::init(BSPTree<WorldSegment>& segmentTree) {
-    // макс кол-во видимых сегментов не может быть больше половины всех сегментов
-    visibleSegments.prepareEnoughCapacity(segmentTree.getCountOfAllNodes() / 2);
-}
-
 GameWorld::GameWorld():
     _playerVehicle(_allVehicles[0]),
     _enemyVehicles(_allVehicles, 1) {
@@ -49,12 +44,8 @@ BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
     return _segmentTree;
 }
 
-List<WorldSegment*>& GameWorld::getVisibleWorldSegments() {
-    return _visibleWorldSegmentsData.visibleSegments;
-}
-
-VisibleWorldSegmentsData& GameWorld::getVisibleWorldSegmentsData() {
-    return _visibleWorldSegmentsData;
+GameObjectVisibility& GameWorld::getObjectVisibility() {
+    return _objectVisibility;
 }
 
 Camera& GameWorld::getCamera() {

@@ -15,7 +15,7 @@ void GameWorldInitializer::init(GameWorld& gameWorld) {
     Track& track = _trackCollection.get(Tracks::moonlightRide);
     gameWorld.setTrack(track);
     _worldSegmentTreeBuilder.build(track, gameWorld.getSegmentTree());
-    gameWorld.getVisibleWorldSegmentsData().init(gameWorld.getSegmentTree());
+    gameWorld.getObjectVisibility().init(gameWorld.getSegmentTree());
     _segmentDataFinder.init(gameWorld.getSegmentTree());
     // init player position for debug
     if (!track.getPlayerCenter().isZero()) {
