@@ -56,12 +56,12 @@ public:
     Measures getMeasures();
     void moveToOrigin(int axis = 0);
     void moveToCenter(int axis = 0);
-    void scale(Vector3 value);
     void scale(float value);
-    void invertAxis(int axis);
-    void clear();
+    void scaleNonUniform(Vector3 value); // стараться использовать по минимуму из-за последующих проблем с нормалями
+    void rotateByUpAxis180();
     void applyTransformMatrix4(TransformMatrix4& m);
     void merge(Model3d& model3d);
+    void clear();
 
 private:
     Vector3 getMinVertex();

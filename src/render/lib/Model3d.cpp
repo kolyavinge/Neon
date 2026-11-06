@@ -1,3 +1,5 @@
+#include <common/constants.h>
+#include <lib/calc/Math.h>
 #include <render/lib/Model3d.h>
 
 Mesh::Mesh() {
@@ -5,9 +7,9 @@ Mesh::Mesh() {
 }
 
 void Mesh::prepareEnoughCapacity(int elementsCount, int pointsByElement) {
-    vertices.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
-    normals.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
-    colors.prepareEnoughCapacity(3 * elementsCount * pointsByElement);
+    vertices.prepareEnoughCapacity(Mesh::verticesDimension * elementsCount * pointsByElement);
+    normals.prepareEnoughCapacity(Mesh::verticesDimension * elementsCount * pointsByElement);
+    colors.prepareEnoughCapacity(Mesh::verticesDimension * elementsCount * pointsByElement);
     texCoords.prepareEnoughCapacity(2 * elementsCount * pointsByElement);
     faces.prepareEnoughCapacity(6 * elementsCount);
 }
@@ -57,9 +59,9 @@ void Mesh::clear() {
 }
 
 void Mesh::applyTransformMatrix4(TransformMatrix4& m) {
-    for (int i = 0; i < vertices.getCount(); i += 3) {
-        m.mulPoint(output &vertices[i]);
-        m.mulVector(output &normals[i]);
+    for (int i = 0; i < vertices.getCount(); i += Mesh::verticesDimension) {
+        m.mulPoint(output & vertices[i]);
+        m.mulVector(output & normals[i]);
     }
 }
 
@@ -136,8 +138,8 @@ void Model3d::moveToOrigin(int axis) {
     }
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j]     -= min.x;
+        for (int j = 0; j < mesh.vertices.getCount(); j += Mesh::verticesDimension) {
+            mesh.vertices[j] -= min.x;
             mesh.vertices[j + 1] -= min.y;
             mesh.vertices[j + 2] -= min.z;
         }
@@ -159,53 +161,33 @@ void Model3d::moveToCenter(int axis) {
     }
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j]     -= delta.x;
+        for (int j = 0; j < mesh.vertices.getCount(); j += Mesh::verticesDimension) {
+            mesh.vertices[j] -= delta.x;
             mesh.vertices[j + 1] -= delta.y;
             mesh.vertices[j + 2] -= delta.z;
         }
     }
 }
 
-void Model3d::scale(Vector3 value) {
+void Model3d::scale(float value) {
+    scaleNonUniform(Vector3(value, value, value));
+}
+
+void Model3d::scaleNonUniform(Vector3 value) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j]     *= value.x;
+        for (int j = 0; j < mesh.vertices.getCount(); j += Mesh::verticesDimension) {
+            mesh.vertices[j] *= value.x;
             mesh.vertices[j + 1] *= value.y;
             mesh.vertices[j + 2] *= value.z;
         }
     }
 }
 
-void Model3d::scale(float value) {
-    scale(Vector3(value, value, value));
-}
-
-void Model3d::invertAxis(int axis) {
-    Vector3 invert(1.0f, 1.0f, 1.0f);
-    if ((axis & (int)Axis::x) > 0) invert.x = -1.0f;
-    if ((axis & (int)Axis::y) > 0) invert.y = -1.0f;
-    if ((axis & (int)Axis::z) > 0) invert.z = -1.0f;
-    for (int i = 0; i < _meshes.getCount(); i++) {
-        Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            mesh.vertices[j]     *= invert.x;
-            mesh.vertices[j + 1] *= invert.y;
-            mesh.vertices[j + 2] *= invert.z;
-            mesh.normals[j]      *= invert.x;
-            mesh.normals[j + 1]  *= invert.y;
-            mesh.normals[j + 2]  *= invert.z;
-        }
-    }
-}
-
-void Model3d::clear() {
-    for (int i = 0; i < _meshes.getCount(); i++) {
-        _meshes[i].clear();
-    }
-    _meshes.clear();
-    _textures.clear();
+void Model3d::rotateByUpAxis180() {
+    TransformMatrix4 rotation;
+    rotation.rotate(Math::pi, CommonConstants::upAxis);
+    applyTransformMatrix4(rotation);
 }
 
 void Model3d::applyTransformMatrix4(TransformMatrix4& m) {
@@ -233,14 +215,22 @@ void Model3d::merge(Model3d& model3d) {
     _textures.addRange(model3d._textures);
 }
 
+void Model3d::clear() {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        _meshes[i].clear();
+    }
+    _meshes.clear();
+    _textures.clear();
+}
+
 Vector3 Model3d::getMinVertex() {
     float minX = _meshes[0].vertices[0];
     float minY = _meshes[0].vertices[1];
     float minZ = _meshes[0].vertices[2];
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            if (mesh.vertices[j]     < minX) minX = mesh.vertices[j];
+        for (int j = 0; j < mesh.vertices.getCount(); j += Mesh::verticesDimension) {
+            if (mesh.vertices[j] < minX) minX = mesh.vertices[j];
             if (mesh.vertices[j + 1] < minY) minY = mesh.vertices[j + 1];
             if (mesh.vertices[j + 2] < minZ) minZ = mesh.vertices[j + 2];
         }
@@ -255,8 +245,8 @@ Vector3 Model3d::getMaxVertex() {
     float maxZ = _meshes[0].vertices[2];
     for (int i = 0; i < _meshes.getCount(); i++) {
         Mesh& mesh = _meshes[i];
-        for (int j = 0; j < mesh.vertices.getCount(); j += 3) {
-            if (mesh.vertices[j]     > maxX) maxX = mesh.vertices[j];
+        for (int j = 0; j < mesh.vertices.getCount(); j += Mesh::verticesDimension) {
+            if (mesh.vertices[j] > maxX) maxX = mesh.vertices[j];
             if (mesh.vertices[j + 1] > maxY) maxY = mesh.vertices[j + 1];
             if (mesh.vertices[j + 2] > maxZ) maxZ = mesh.vertices[j + 2];
         }

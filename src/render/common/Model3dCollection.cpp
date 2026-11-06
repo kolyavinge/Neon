@@ -25,7 +25,7 @@ Model3d& Model3dCollection::getModelFor(WorldPrimitiveKind kind) {
         // пока обрабатываются только барьеры
         model->moveToCenter();
         Measures measures = model->getMeasures();
-        model->scale(Vector3(1.0f, WorldPrimitive::barrierLength / measures.yLength, WorldPrimitive::barrierHeight / measures.zLength));
+        model->scale(WorldPrimitive::barrierLength / measures.yLength);
         _worldPrimitives[(int)kind] = model;
     }
 

@@ -39,11 +39,15 @@ void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<Visibilit
 }
 
 void VehicleRenderer::render(Vehicle& vehicle) {
+    // с включенным GL_CULL_FACE у кузова пропадают некоторые полигоны
     renderBody(vehicle.getModelMatrix());
+
+    glEnable(GL_CULL_FACE);
     renderWheel(vehicle, WheelPosition::frontLeft);
     renderWheel(vehicle, WheelPosition::frontRight);
     renderWheel(vehicle, WheelPosition::rearLeft);
     renderWheel(vehicle, WheelPosition::rearRight);
+    glDisable(GL_CULL_FACE);
 }
 
 void VehicleRenderer::renderBody(TransformMatrix4& vehicleModelMatrix) {

@@ -15,10 +15,9 @@ void RenderModel3dCollection::loadAllModels() {
 
     // vehicle body
     String modelPath = models3dDirectory;
-    modelPath.append("vehicle_body.glb");
+    modelPath.append("vehicle_body.obj");
     Model3d vehicleBodyModel;
     _model3dLoader.load(modelPath, output vehicleBodyModel);
-    vehicleBodyModel.invertAxis((int)Model3d::Axis::x | (int)Model3d::Axis::z);
     vehicleBodyModel.moveToCenter();
     vehicleBodyModel.scale(1.25f);
     _renderModel3dLoader.load(vehicleBodyModel, output vehicleBody);
@@ -26,28 +25,27 @@ void RenderModel3dCollection::loadAllModels() {
     // front wheels
     VehicleData data;
     modelPath = models3dDirectory;
-    modelPath.append("vehicle_front_right_wheel.glb");
-    Model3d frontWheelModel;
-    _model3dLoader.load(modelPath, output frontWheelModel);
-    frontWheelModel.moveToCenter();
-    float wheelRadius = getWheelRadius(frontWheelModel);
-    frontWheelModel.scale(data.frontWheelRadius / wheelRadius);
-    _renderModel3dLoader.load(frontWheelModel, output vehicleFrontRightWheel);
-    frontWheelModel.invertAxis((int)Model3d::Axis::x);
-    _renderModel3dLoader.load(frontWheelModel, output vehicleFrontLeftWheel);
+    modelPath.append("vehicle_front_left_wheel.obj");
+    Model3d frontLeftWheelModel;
+    _model3dLoader.load(modelPath, output frontLeftWheelModel);
+    frontLeftWheelModel.moveToCenter();
+    float wheelRadius = getWheelRadius(frontLeftWheelModel);
+    frontLeftWheelModel.scale(data.frontWheelRadius / wheelRadius);
+    _renderModel3dLoader.load(frontLeftWheelModel, output vehicleFrontLeftWheel);
+    frontLeftWheelModel.rotateByUpAxis180();
+    _renderModel3dLoader.load(frontLeftWheelModel, output vehicleFrontRightWheel);
 
     // rear wheels
     modelPath = models3dDirectory;
-    modelPath.append("vehicle_rear_right_wheel.glb");
-    Model3d rearWheelModel;
-    _model3dLoader.load(modelPath, output rearWheelModel);
-    rearWheelModel.invertAxis((int)Model3d::Axis::x);
-    rearWheelModel.moveToCenter();
-    wheelRadius = getWheelRadius(rearWheelModel);
-    rearWheelModel.scale(data.rearWheelRadius / wheelRadius);
-    _renderModel3dLoader.load(rearWheelModel, output vehicleRearRightWheel);
-    rearWheelModel.invertAxis((int)Model3d::Axis::x);
-    _renderModel3dLoader.load(rearWheelModel, output vehicleRearLeftWheel);
+    modelPath.append("vehicle_rear_left_wheel.obj");
+    Model3d rearLeftWheelModel;
+    _model3dLoader.load(modelPath, output rearLeftWheelModel);
+    rearLeftWheelModel.moveToCenter();
+    wheelRadius = getWheelRadius(rearLeftWheelModel);
+    rearLeftWheelModel.scale(data.rearWheelRadius / wheelRadius);
+    _renderModel3dLoader.load(rearLeftWheelModel, output vehicleRearLeftWheel);
+    rearLeftWheelModel.rotateByUpAxis180();
+    _renderModel3dLoader.load(rearLeftWheelModel, output vehicleRearRightWheel);
 }
 
 float RenderModel3dCollection::getWheelRadius(Model3d& wheelModel) {

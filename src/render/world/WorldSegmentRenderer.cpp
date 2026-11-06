@@ -63,7 +63,6 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
 void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Camera& camera) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
     _shader.use();
     _shader.setModelMatrix(TransformMatrix4::identity);
     _shader.setViewMatrix(camera.getViewMatrix());

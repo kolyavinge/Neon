@@ -228,7 +228,11 @@ void TransformMatrix4::rotate(float angle, Vector3& axis) {
     rotate(angle, axis.x, axis.y, axis.z);
 }
 
-void TransformMatrix4::scale(float x, float y, float z) {
+void TransformMatrix4::scale(float scale) {
+    scaleNonUniform(scale, scale, scale);
+}
+
+void TransformMatrix4::scaleNonUniform(float x, float y, float z) {
     setZero();
     _items[0] = x;
     _items[5] = y;
