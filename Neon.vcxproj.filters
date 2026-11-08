@@ -321,6 +321,12 @@
     <ClCompile Include="src\model\world\GameObjectVisibility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\lib\UniformArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\vehicle\VehicleLights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -708,6 +714,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\world\GameObjectVisibility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lib\UniformArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\vehicle\VehicleLights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

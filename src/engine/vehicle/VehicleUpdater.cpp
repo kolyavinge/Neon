@@ -59,6 +59,7 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
         vehicle.calculateBodyPosition();
         _wheelLogic.updateFrontAndOutsideNormals(vehicle);
         vehicle.calculateModelMatrixForAllWheels();
+        vehicle.calculateLightsPosition();
         if (vehicle.isFrozen()) {
             vehicle.clearAllVelocitiesAndForces();
         }

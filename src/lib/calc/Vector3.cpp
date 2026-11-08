@@ -9,6 +9,10 @@ Vector3::Vector3(float valueX, float valueY, float valueZ) {
     set(valueX, valueY, valueZ);
 }
 
+Vector3::Vector3(float xyz) {
+    set(xyz, xyz, xyz);
+}
+
 void Vector3::set(float valueX, float valueY, float valueZ) {
     x = valueX;
     y = valueY;

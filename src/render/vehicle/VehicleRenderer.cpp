@@ -1,4 +1,5 @@
 #include <lib/calc/TransformMatrix4.h>
+#include <model/vehicle/VehicleLights.h>
 #include <render/lib/opengl.h>
 #include <render/vehicle/VehicleRenderer.h>
 
@@ -27,6 +28,14 @@ void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<Visibilit
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(false);
     _shader.setGlobalLight(globalLight);
+
+    _shader.beginAddLights();
+    for (int i = 0; i < vehicles.getCount(); i++) {
+        VehicleLights& lights = vehicles[i].getLights();
+        _shader.addLight(lights.getFrontLeftLight());
+        _shader.addLight(lights.getFrontRightLight());
+    }
+    _shader.endAddLights();
 
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];

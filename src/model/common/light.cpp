@@ -15,3 +15,11 @@ Vector3 Light::getColor() {
 void Light::setColor(Vector3 color) {
     _color = color;
 }
+
+Vector3 DirectedLight::getDirection() {
+    return _direction;
+}
+
+void DirectedLight::setDirection(Vector3 direction) {
+    _direction = direction;
+}

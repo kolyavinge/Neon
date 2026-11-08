@@ -35,7 +35,7 @@ void Vehicle::init() {
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.05f);
-    _rigidBody.setCenter(Vector3(15.0f, 15.0f, 1.0f));
+    _rigidBody.setCenter(Vector3(15.0f, 100.0f, 1.0f)); // TODO убрать позиции ботов в Track
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {
@@ -89,6 +89,10 @@ Spring& Vehicle::getSpring(WheelPosition p) {
 
 Body& Vehicle::getBody() {
     return _body;
+}
+
+VehicleLights& Vehicle::getLights() {
+    return _lights;
 }
 
 bool Vehicle::isBrakingByWheelsOrEngine() {
@@ -202,6 +206,12 @@ void Vehicle::calculateModelMatrixForAllWheels() {
 
 void Vehicle::calculateBodyPosition() {
     _body.calculateBox(_rigidBody.getCenter(), getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal());
+}
+
+void Vehicle::calculateLightsPosition() {
+    Vector3 frontCenterPoint = _rigidBody.getCenter();
+    frontCenterPoint.addMultiplied(getChassisFrontNormal(), _data.bodyMeasures.yLength / 2.0f);
+    _lights.calculatePosition(getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal(), frontCenterPoint);
 }
 
 float Vehicle::getAverageDriveWheelsRpm() {

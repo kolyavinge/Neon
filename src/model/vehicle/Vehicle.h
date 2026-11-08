@@ -11,6 +11,7 @@
 #include <model/vehicle/Gearbox.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/VehicleData.h>
+#include <model/vehicle/VehicleLights.h>
 #include <model/vehicle/Wheel.h>
 
 class Vehicle : public Object {
@@ -24,6 +25,7 @@ private:
     Array<Wheel, VehicleConstants::wheelsCount> _wheels;
     Array<Spring, VehicleConstants::wheelsCount> _springs;
     Body _body;
+    VehicleLights _lights;
     RigidBody _rigidBody;
 
 public:
@@ -42,6 +44,7 @@ public:
     Spring& getSpring(int i);
     Spring& getSpring(WheelPosition p);
     Body& getBody();
+    VehicleLights& getLights();
     bool isBrakingByWheelsOrEngine();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);
@@ -65,6 +68,7 @@ public:
     void calculateCenterVelocityForAllWheels();
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition();
+    void calculateLightsPosition();
     float getAverageDriveWheelsRpm();
     bool allWheelsHaveGroundContact();
     bool isFrozen();

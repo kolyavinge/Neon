@@ -37,6 +37,7 @@
     <ClCompile Include="src\engine\world\GameObjectVisibilityUpdater.cpp" />
     <ClCompile Include="src\lib\input\Joystick.cpp" />
     <ClCompile Include="src\model\common\light.cpp" />
+    <ClCompile Include="src\model\vehicle\VehicleLights.cpp" />
     <ClCompile Include="src\model\world\GameObjectVisibility.cpp" />
     <ClCompile Include="src\model\world\GameWorld.cpp" />
     <ClCompile Include="src\engine\world\GameWorldUpdater.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="src\render\lib\ShaderCompiler.cpp" />
     <ClCompile Include="src\render\lib\ShaderProgram.cpp" />
     <ClCompile Include="src\render\lib\Texture.cpp" />
+    <ClCompile Include="src\render\lib\UniformArray.cpp" />
     <ClCompile Include="src\render\lib\VAO.cpp" />
     <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
@@ -141,6 +143,7 @@
     <ClInclude Include="src\model\common\light.h" />
     <ClInclude Include="src\model\tracks\MoonlightRide.h" />
     <ClInclude Include="src\engine\world\TrackCollection.h" />
+    <ClInclude Include="src\model\vehicle\VehicleLights.h" />
     <ClInclude Include="src\model\world\GameObjectVisibility.h" />
     <ClInclude Include="src\model\world\GroundBuilder.h" />
     <ClInclude Include="src\model\world\GameWorld.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="src\render\lib\ShaderCompiler.h" />
     <ClInclude Include="src\render\lib\ShaderProgram.h" />
     <ClInclude Include="src\render\lib\Texture.h" />
+    <ClInclude Include="src\render\lib\UniformArray.h" />
     <ClInclude Include="src\render\lib\VAO.h" />
     <ClInclude Include="src\render\lib\Model3dVAOBuilder.h" />
     <ClInclude Include="src\render\lib\VAORenderer.h" />

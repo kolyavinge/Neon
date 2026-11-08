@@ -15,4 +15,13 @@ public:
     void setColor(Vector3 color);
 };
 
+class DirectedLight : public Light {
+
+    Vector3 _direction;
+
+public:
+    Vector3 getDirection();
+    void setDirection(Vector3 direction);
+};
+
 // другие варианты источников света описывать тут

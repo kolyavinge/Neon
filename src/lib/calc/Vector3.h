@@ -11,6 +11,7 @@ public:
 
     Vector3();
     Vector3(float valueX, float valueY, float valueZ);
+    Vector3(float xyz);
     void set(float valueX, float valueY, float valueZ);
     void set(const Vector3 v);
     void setZero();

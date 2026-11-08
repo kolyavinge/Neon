@@ -1,5 +1,13 @@
 #include <render/shaderprograms/MeshShaderProgram.h>
 
+MeshShaderProgram::MeshShaderProgram() {
+    const int maxLightsCount = 20;
+    _lightsPosition.init(maxLightsCount, "lights", "position");
+    _lightsDirection.init(maxLightsCount, "lights", "direction");
+    _lightsColor.init(maxLightsCount, "lights", "color");
+    _lightIndex = 0;
+}
+
 void MeshShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
     setTransformMatrix4("modelMatrix", modelMatrix);
 }
@@ -34,4 +42,19 @@ void MeshShaderProgram::setMaterial(Material& material) {
 void MeshShaderProgram::setGlobalLight(Light& globalLight) {
     setVector3("globalLight.position", globalLight.getPosition());
     setVector3("globalLight.color", globalLight.getColor());
+}
+
+void MeshShaderProgram::beginAddLights() {
+    _lightIndex = 0;
+}
+
+void MeshShaderProgram::addLight(DirectedLight& light) {
+    setVector3(_lightsPosition.getNameFor(_lightIndex), light.getPosition());
+    setVector3(_lightsDirection.getNameFor(_lightIndex), light.getDirection());
+    setVector3(_lightsColor.getNameFor(_lightIndex), light.getColor());
+    _lightIndex++;
+}
+
+void MeshShaderProgram::endAddLights() {
+    setInt32("lightsCount", _lightIndex);
 }
