@@ -19,7 +19,6 @@ public:
     void setModelMatrix(TransformMatrix4& modelMatrix);
     void setViewMatrix(TransformMatrix4& viewMatrix);
     void setProjectionMatrix(TransformMatrix4& projectionMatrix);
-    void setColorFactor(float colorFactor);
     void setAlphaFactor(float alphaFactor);
     void useTexture(bool useTexture);
     void setMaterial(Material& material);

@@ -2,35 +2,42 @@
 
 #include <common/constants.h>
 #include <lib/calc/Vector3.h>
-#include <lib/collections/BSPTree.h>
 #include <lib/system.h>
+#include <model/vehicle/Vehicle.h>
 #include <model/world/WorldSegment.h>
 
 enum class VisibilityState {
-    high,      // обьект виден с максимальной детализацией
-    medium,    // со средней детализацией
-    low,       // с низкой
-    shape,     // виден только силуэт
-    notVisible // обьект не виден
+    notVisible, // обьект не виден
+    shape,      // виден только силуэт
+    low,        // с низкой
+    medium,     // со средней детализацией
+    high        // обьект виден с максимальной детализацией
 };
 
-class WorldSegmentVisibility : public Object {
+class IGameObjectVisibility {
 
 public:
-    List<WorldSegment*> visibleSegments;
-    List<VisibilityState> states;
+    virtual ~IGameObjectVisibility() = default;
+    virtual Collection<WorldSegment*>& getVisibleSegments() = 0;
+    virtual Collection<VisibilityState>& getVisibleSegmentStates() = 0;
+    virtual VisibilityState getVehicleVisibilityState(Vehicle& vehicle) = 0;
+    virtual bool isVehicleLightsVisible(Vehicle& vehicle) = 0;
+};
+
+class GameObjectVisibility : public Object, public IGameObjectVisibility {
+
+public:
+    void init(int allSegmentsCount);
     Vector3 cameraPosition;
     Vector3 cameraLookDirection;
-    void init(BSPTree<WorldSegment>& segmentTree);
-};
+    List<WorldSegment*> visibleSegments;
+    List<VisibilityState> visibleSegmentStates;
+    Array<VisibilityState, GameConstants::maxVehiclesCount> vehicleVisibilityStates;
+    Array<bool, GameConstants::maxVehiclesCount> vehicleLightsVisibility;
 
-class GameObjectVisibility : public Object {
-
-    WorldSegmentVisibility _worldSegmentVisibility;
-    Array<VisibilityState, GameConstants::maxVehiclesCount> _vehicleVisibilityStates;
-
-public:
-    void init(BSPTree<WorldSegment>& segmentTree);
-    WorldSegmentVisibility& getWorldSegmentVisibility();
-    Collection<VisibilityState>& getVehicleVisibilityStates();
+    // interface IGameObjectVisibility
+    Collection<WorldSegment*>& getVisibleSegments() override;
+    Collection<VisibilityState>& getVisibleSegmentStates() override;
+    VisibilityState getVehicleVisibilityState(Vehicle& vehicle) override;
+    bool isVehicleLightsVisible(Vehicle& vehicle) override;
 };

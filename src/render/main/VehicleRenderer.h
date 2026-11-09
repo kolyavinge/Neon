@@ -4,20 +4,16 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/common/Camera.h>
-#include <model/common/light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <model/world/GameObjectVisibility.h>
 #include <render/common/RenderModel3dCollection.h>
-#include <render/common/ShaderProgramCollection.h>
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/VAORenderer.h>
 #include <render/shaderprograms/MeshShaderProgram.h>
 
 class VehicleRenderer : public Object {
 
-    MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
     RenderModel3d* _vehicleBodyModel;
     Array<RenderModel3d*, VehicleConstants::wheelsCount> _wheelModels;
@@ -25,20 +21,18 @@ class VehicleRenderer : public Object {
 public:
     static VehicleRenderer* resolve(Resolver& resolver) {
         return new VehicleRenderer(
-            resolver.resolve<ShaderProgramCollection>(),
             resolver.resolve<VAORenderer>());
     }
 
     VehicleRenderer(
-        ShaderProgramCollection& shaderProgramCollection,
         VAORenderer& vaoRenderer
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void render(Collection<Vehicle>& vehicles, Collection<VisibilityState>& states, Camera& camera, Light& globalLight);
+    void render(MeshShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility);
 
 private:
-    void render(Vehicle& vehicle);
-    void renderBody(TransformMatrix4& vehicleModelMatrix);
-    void renderWheel(Vehicle& vehicle, WheelPosition wheelPosition);
+    void render(MeshShaderProgram& shader, Vehicle& vehicle);
+    void renderBody(MeshShaderProgram& shader, TransformMatrix4& vehicleModelMatrix);
+    void renderWheel(MeshShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition);
 };

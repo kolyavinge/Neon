@@ -12,5 +12,6 @@ class VehicleLights : public Object {
 public:
     DirectedLight& getFrontLeftLight();
     DirectedLight& getFrontRightLight();
-    void calculatePosition(Vector3 rightNormal, Vector3 frontNormal, Vector3 upNormal, Vector3 vehicleFrontCenterPoint);
+    void calculatePosition(
+        Vector3 rightNormal, Vector3 frontNormal, Vector3 upNormal, Vector3 vehicleFrontCenterPoint, Vector3 color);
 };

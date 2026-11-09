@@ -1,7 +1,7 @@
 #include <render/shaderprograms/MeshShaderProgram.h>
 
 MeshShaderProgram::MeshShaderProgram() {
-    const int maxLightsCount = 20;
+    const int maxLightsCount = 20; // есть в mesh.frag
     _lightsPosition.init(maxLightsCount, "lights", "position");
     _lightsDirection.init(maxLightsCount, "lights", "direction");
     _lightsColor.init(maxLightsCount, "lights", "color");
@@ -18,10 +18,6 @@ void MeshShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
 
 void MeshShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMatrix) {
     setTransformMatrix4("projectionMatrix", projectionMatrix);
-}
-
-void MeshShaderProgram::setColorFactor(float colorFactor) {
-    setFloat32("colorFactor", colorFactor);
 }
 
 void MeshShaderProgram::setAlphaFactor(float alphaFactor) {

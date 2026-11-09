@@ -1,16 +1,24 @@
 #include <model/world/GameObjectVisibility.h>
 
-void GameObjectVisibility::init(BSPTree<WorldSegment>& segmentTree) {
+void GameObjectVisibility::init(int allSegmentsCount) {
     // макс кол-во видимых сегментов не может быть больше половины всех сегментов
-    _worldSegmentVisibility.visibleSegments.prepareEnoughCapacity(segmentTree.getCountOfAllNodes() / 2);
-    _worldSegmentVisibility.states.initAll(VisibilityState::high);
-    _vehicleVisibilityStates.initAll(VisibilityState::high);
+    visibleSegments.prepareEnoughCapacity(allSegmentsCount / 2);
+    visibleSegmentStates.initAll(VisibilityState::high);
+    vehicleVisibilityStates.initAll(VisibilityState::high);
 }
 
-WorldSegmentVisibility& GameObjectVisibility::getWorldSegmentVisibility() {
-    return _worldSegmentVisibility;
+Collection<WorldSegment*>& GameObjectVisibility::getVisibleSegments() {
+    return visibleSegments;
 }
 
-Collection<VisibilityState>& GameObjectVisibility::getVehicleVisibilityStates() {
-    return _vehicleVisibilityStates;
+Collection<VisibilityState>& GameObjectVisibility::getVisibleSegmentStates() {
+    return visibleSegmentStates;
+}
+
+VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle) {
+    return vehicleVisibilityStates[vehicle.getId()];
+}
+
+bool GameObjectVisibility::isVehicleLightsVisible(Vehicle& vehicle) {
+    return vehicleLightsVisibility[vehicle.getId()];
 }

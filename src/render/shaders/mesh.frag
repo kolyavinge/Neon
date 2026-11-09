@@ -7,7 +7,6 @@ in vec3 NormalView;
 in vec4 Color;
 in vec2 TexCoord;
 
-uniform float colorFactor;
 uniform float alphaFactor;
 uniform bool useTexture;
 uniform sampler2D ourTexture;
@@ -25,7 +24,7 @@ uniform struct {
     vec3 color;
 } globalLight;
 
-const int maxLightsCount = 20;
+const int maxLightsCount = 20; // есть в MeshShaderProgram
 uniform struct {
     vec3 position;
     vec3 direction;
@@ -49,20 +48,22 @@ void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse, inout vec
 }
 
 void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse, inout vec3 specular) {
-    vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
-    vec3 n = normalize(NormalView);
     vec3 lightPositionView = vec3(viewMatrix * vec4(lights[lightIndex].position, 1.0));
-    vec3 s = normalize(lightPositionView - PositionView);
+    vec3 lightDirection = lightPositionView - PositionView;
+    float lightDistance = length(lightDirection);
+    vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
+    vec3 s = normalize(lightDirection);
+    vec3 colorIntensity = lights[lightIndex].color / lightDistance * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
+    if (length(colorIntensity) < 0.1) return; // 0.1 есть в VehicleData
+    vec3 n = normalize(NormalView);
     float sDotN = max(dot(s, n), 0.0);
     vec3 v = normalize(-PositionView);
     vec3 h = normalize(v + s);
     float hDotN = max(dot(h, n), 0.0);
-    float lightDistance = length(lightPositionView - PositionView);
-    float intensity = (1.0 / lightDistance) * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
-    ambient += lights[lightIndex].color * material.ambient * intensity;
-    diffuse += lights[lightIndex].color * material.diffuse * sDotN * intensity;
+    ambient += colorIntensity * material.ambient;
+    diffuse += colorIntensity * material.diffuse * sDotN;
     if (sDotN > 0.0) {
-        specular += lights[lightIndex].color * material.specular * pow(hDotN, material.shininess) * intensity;
+        specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
     }
 }
 
@@ -77,6 +78,5 @@ void main() {
     for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
         calculateLightColor(lightIndex, ambient, diffuse, specular);
     }
-    FragColor *= vec4(diffuse + specular + ambient, 1.0);
-    FragColor *= vec4(vec3(colorFactor), alphaFactor);
+    FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
 }

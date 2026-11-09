@@ -22,8 +22,8 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
-    for (int segmentIndex = 0; segmentIndex < gameWorld.getObjectVisibility().getWorldSegmentVisibility().visibleSegments.getCount(); segmentIndex++) {
-        WorldSegment& visibleSegment = *gameWorld.getObjectVisibility().getWorldSegmentVisibility().visibleSegments[segmentIndex];
+    for (int segmentIndex = 0; segmentIndex < gameWorld.getObjectVisibility().visibleSegments.getCount(); segmentIndex++) {
+        WorldSegment& visibleSegment = *gameWorld.getObjectVisibility().visibleSegments[segmentIndex];
         //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
         renderOuterCorners(visibleSegment.getOuterCorners());

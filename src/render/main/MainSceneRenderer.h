@@ -7,30 +7,35 @@
 #include <model/common/light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/GameObjectVisibility.h>
+#include <render/common/ShaderProgramCollection.h>
 #include <render/main/VehicleRenderer.h>
 #include <render/main/WorldSegmentRenderer.h>
+#include <render/shaderprograms/MeshShaderProgram.h>
 
 class MainSceneRenderer : public Object {
 
     WorldSegmentRenderer& _worldSegmentRenderer;
     VehicleRenderer& _vehicleRenderer;
     DebugRenderer& _debugRenderer;
+    MeshShaderProgram& _meshShader;
 
 public:
     static MainSceneRenderer* resolve(Resolver& resolver) {
         return new MainSceneRenderer(
             resolver.resolve<WorldSegmentRenderer>(),
             resolver.resolve<VehicleRenderer>(),
-            resolver.resolve<DebugRenderer>());
+            resolver.resolve<DebugRenderer>(),
+            resolver.resolve<ShaderProgramCollection>());
     }
 
     MainSceneRenderer(
         WorldSegmentRenderer& worldSegmentRenderer,
         VehicleRenderer& vehicleRenderer,
-        DebugRenderer& debugRenderer);
+        DebugRenderer& debugRenderer,
+        ShaderProgramCollection& shaderProgramCollection);
 
     void render(
-        GameObjectVisibility& objectVisibility,
+        IGameObjectVisibility& objectVisibility,
         Collection<Vehicle>& vehicles,
         Camera& camera,
         Light& globalLight);

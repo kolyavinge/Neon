@@ -54,6 +54,13 @@ VehicleData::VehicleData() {
     rearWingDownForceCoeff = 0.5f * airDensity * rearWingArea * rearWingLiftCoeff;
     rearWingDragForceCoeff = 0.5f * airDensity * rearWingArea * rearWingDragCoeff;
 
+    /* lights */
+    lightsColorIntensity = 20.0f;
+    lightsColor.set(1.0f);
+    lightsColor.mul(lightsColorIntensity);
+    maxLightsDistanceLength = lightsColorIntensity / 0.1f; // 0.1 есть в mesh.frag
+    maxLightsDistanceLengthSquared = maxLightsDistanceLength * maxLightsDistanceLength;
+
     /* chassis */
     wheelbaseLength = 2.0f;
     rearWheelLengthToMassCenter = 0.96f;

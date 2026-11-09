@@ -8,12 +8,10 @@ WorldSegmentRenderer::WorldSegmentRenderer(
     Model3dCollection& model3dCollection,
     Model3dConverter& model3dConverter,
     RenderModel3dLoader& renderModel3dLoader,
-    ShaderProgramCollection& shaderProgramCollection,
     VAORenderer& vaoRenderer) :
     _model3dCollection(model3dCollection),
     _model3dConverter(model3dConverter),
     _renderModel3dLoader(renderModel3dLoader),
-    _shader(shaderProgramCollection.mesh),
     _vaoRenderer(vaoRenderer) {
 }
 
@@ -58,32 +56,22 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
     }
 }
 
-void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Camera& camera, Light& globalLight) {
+void WorldSegmentRenderer::render(MeshShaderProgram& shader, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    _shader.use();
-    _shader.setModelMatrix(TransformMatrix4::identity);
-    _shader.setViewMatrix(camera.getViewMatrix());
-    _shader.setProjectionMatrix(camera.getProjectionMatrix());
-    _shader.setColorFactor(1.0f);
-    _shader.setAlphaFactor(1.0f);
-    _shader.useTexture(true);
-    _shader.setGlobalLight(globalLight);
-
-    for (int segmentIndex = 0; segmentIndex < segmentVisibility.visibleSegments.getCount(); segmentIndex++) {
-        WorldSegment& worldSegment = *segmentVisibility.visibleSegments[segmentIndex];
-        //worldSegmentVisibility.states[segmentIndex]
+    shader.useTexture(true);
+    Collection<WorldSegment*>& visibleSegments = objectVisibility.getVisibleSegments();
+    for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
+        WorldSegment& worldSegment = *visibleSegments[segmentIndex];
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);
             mesh.texture->bind(GL_TEXTURE0);
-            _shader.setMaterial(mesh.material);
+            shader.setMaterial(mesh.material);
             _vaoRenderer.render(mesh.vao);
         }
     }
-
     Texture::unbind();
-    _shader.unuse();
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 }

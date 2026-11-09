@@ -1,12 +1,9 @@
 #include <lib/calc/TransformMatrix4.h>
-#include <model/vehicle/VehicleLights.h>
 #include <render/lib/opengl.h>
 #include <render/main/VehicleRenderer.h>
 
 VehicleRenderer::VehicleRenderer(
-    ShaderProgramCollection& shaderProgramCollection,
     VAORenderer& vaoRenderer) :
-    _shader(shaderProgramCollection.mesh),
     _vaoRenderer(vaoRenderer) {
     _vehicleBodyModel = nullptr;
 }
@@ -19,62 +16,45 @@ void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
     _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
-void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<VisibilityState>& states, Camera& camera, Light& globalLight) {
+void VehicleRenderer::render(MeshShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
-    _shader.use();
-    _shader.setViewMatrix(camera.getViewMatrix());
-    _shader.setProjectionMatrix(camera.getProjectionMatrix());
-    _shader.setColorFactor(1.0f);
-    _shader.setAlphaFactor(1.0f);
-    _shader.useTexture(false);
-
-    _shader.setGlobalLight(globalLight);
-    _shader.beginAddLights();
-    for (int i = 0; i < vehicles.getCount(); i++) {
-        VehicleLights& lights = vehicles[i].getLights();
-        _shader.addLight(lights.getFrontLeftLight());
-        _shader.addLight(lights.getFrontRightLight());
-    }
-    _shader.endAddLights();
-
+    shader.useTexture(false);
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        if (states[vehicle.getId()] == VisibilityState::notVisible) continue;
-        render(vehicle);
+        if (objectVisibility.getVehicleVisibilityState(vehicle) == VisibilityState::notVisible) continue;
+        render(shader, vehicle);
     }
-
-    _shader.unuse();
     glDisable(GL_DEPTH_TEST);
 }
 
-void VehicleRenderer::render(Vehicle& vehicle) {
+void VehicleRenderer::render(MeshShaderProgram& shader, Vehicle& vehicle) {
     // с включенным GL_CULL_FACE у кузова пропадают некоторые полигоны
-    renderBody(vehicle.getModelMatrix());
+    renderBody(shader, vehicle.getModelMatrix());
 
     glEnable(GL_CULL_FACE);
-    renderWheel(vehicle, WheelPosition::frontLeft);
-    renderWheel(vehicle, WheelPosition::frontRight);
-    renderWheel(vehicle, WheelPosition::rearLeft);
-    renderWheel(vehicle, WheelPosition::rearRight);
+    renderWheel(shader, vehicle, WheelPosition::frontLeft);
+    renderWheel(shader, vehicle, WheelPosition::frontRight);
+    renderWheel(shader, vehicle, WheelPosition::rearLeft);
+    renderWheel(shader, vehicle, WheelPosition::rearRight);
     glDisable(GL_CULL_FACE);
 }
 
-void VehicleRenderer::renderBody(TransformMatrix4& vehicleModelMatrix) {
-    _shader.setModelMatrix(vehicleModelMatrix);
+void VehicleRenderer::renderBody(MeshShaderProgram& shader, TransformMatrix4& vehicleModelMatrix) {
+    shader.setModelMatrix(vehicleModelMatrix);
     for (int i = 0; i < _vehicleBodyModel->getMeshesCount(); i++) {
         RenderMesh& mesh = _vehicleBodyModel->getMesh(i);
-        _shader.setMaterial(mesh.material);
+        shader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
 }
 
-void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
+void VehicleRenderer::renderWheel(MeshShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition) {
     Wheel& wheel = vehicle.getWheel(wheelPosition);
     RenderModel3d& wheelModel = *_wheelModels[(int)wheelPosition];
-    _shader.setModelMatrix(wheel.getModelMatrix());
+    shader.setModelMatrix(wheel.getModelMatrix());
     for (int i = 0; i < wheelModel.getMeshesCount(); i++) {
         RenderMesh& mesh = wheelModel.getMesh(i);
-        _shader.setMaterial(mesh.material);
+        shader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
 }

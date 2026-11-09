@@ -13,10 +13,14 @@ class GameObjectVisibilityUpdater : public Object {
 
 public:
     GameObjectVisibilityUpdater();
-    void updateWorldSegmentVisibility(BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, WorldSegmentVisibility& segmentVisibility);
-    void updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, Collection<VisibilityState>& vehicleVisibilityStates);
+
+    void updateVisibility(
+        BSPTreeNode<WorldSegment>& segmentTreeRoot, Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility);
 
 private:
-    void findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node, output WorldSegmentVisibility& segmentVisibility);
+    void updateWorldSegmentVisibility(BSPTreeNode<WorldSegment>& segmentTreeRoot, Camera& camera, output GameObjectVisibility& objectVisibility);
+    void findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node, output GameObjectVisibility& objectVisibility);
     int getPointsFromFrustumPlane(FrustumPlanePosition position, Rect2d& box);
+    void updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility);
+    void updateVehicleLightsVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility);
 };
