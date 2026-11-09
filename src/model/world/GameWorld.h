@@ -26,6 +26,7 @@ public:
     void init();
     Track& getTrack();
     void setTrack(Track& track);
+    Light& getGlobalLight();
     Collection<Vehicle>& getAllVehicles();
     Vehicle& getPlayerVehicle();
     Collection<Vehicle>& getEnemyVehicles();

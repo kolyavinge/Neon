@@ -1,7 +1,7 @@
 #include <model/common/cameras.h>
 #include <model/world/GameWorld.h>
 
-GameWorld::GameWorld():
+GameWorld::GameWorld() :
     _playerVehicle(_allVehicles[0]),
     _enemyVehicles(_allVehicles, 1) {
     _track = nullptr;
@@ -26,6 +26,10 @@ Track& GameWorld::getTrack() {
 
 void GameWorld::setTrack(Track& track) {
     _track = &track;
+}
+
+Light& GameWorld::getGlobalLight() {
+    return _track->getGlobalLight();
 }
 
 Collection<Vehicle>& GameWorld::getAllVehicles() {

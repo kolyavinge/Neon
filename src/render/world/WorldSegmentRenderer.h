@@ -23,7 +23,6 @@ class WorldSegmentRenderer : public Object {
     MeshShaderProgram& _shader;
     VAORenderer& _vaoRenderer;
     List<RenderModel3d> _segmentRenderModels;
-    Light* _globalLight;
 
 public:
     static WorldSegmentRenderer* resolve(Resolver& resolver) {
@@ -42,8 +41,8 @@ public:
         ShaderProgramCollection& shaderProgramCollection,
         VAORenderer& vaoRenderer);
 
-    void init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight);
-    void render(WorldSegmentVisibility& segmentVisibility, Camera& camera);
+    void init(Collection<WorldSegment*>& allWorldSegments);
+    void render(WorldSegmentVisibility& segmentVisibility, Camera& camera, Light& globalLight);
 
 private:
     void buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d);

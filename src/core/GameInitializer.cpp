@@ -35,7 +35,7 @@ void GameInitializer::initGameWorld(GameWorld& gameWorld) {
     _debugScreen.setGameWorld(gameWorld);
     List<WorldSegment*> allWorldSegments;
     gameWorld.getSegmentTree().getDataForAllNodes(output allWorldSegments);
-    _worldSegmentRenderer.init(allWorldSegments, gameWorld.getTrack().getGlobalLight());
+    _worldSegmentRenderer.init(allWorldSegments);
     // во время инициализации рендера создаются 3d модели, выгружаем их в конце
     _model3dCollection.unload();
 }

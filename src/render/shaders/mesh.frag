@@ -57,8 +57,8 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     vec3 v = normalize(-PositionView);
     vec3 h = normalize(v + s);
     float hDotN = max(dot(h, n), 0.0);
-    float l = length(lightPositionView - PositionView);
-    float intensity = (1.0 / l) * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
+    float lightDistance = length(lightPositionView - PositionView);
+    float intensity = (1.0 / lightDistance) * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
     ambient += lights[lightIndex].color * material.ambient * intensity;
     diffuse += lights[lightIndex].color * material.diffuse * sDotN * intensity;
     if (sDotN > 0.0) {

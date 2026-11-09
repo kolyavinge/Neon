@@ -27,8 +27,8 @@ void VehicleRenderer::render(Collection<Vehicle>& vehicles, Collection<Visibilit
     _shader.setColorFactor(1.0f);
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(false);
-    _shader.setGlobalLight(globalLight);
 
+    _shader.setGlobalLight(globalLight);
     _shader.beginAddLights();
     for (int i = 0; i < vehicles.getCount(); i++) {
         VehicleLights& lights = vehicles[i].getLights();
@@ -70,10 +70,10 @@ void VehicleRenderer::renderBody(TransformMatrix4& vehicleModelMatrix) {
 
 void VehicleRenderer::renderWheel(Vehicle& vehicle, WheelPosition wheelPosition) {
     Wheel& wheel = vehicle.getWheel(wheelPosition);
-    RenderModel3d* wheelModel = _wheelModels[(int)wheelPosition];
+    RenderModel3d& wheelModel = *_wheelModels[(int)wheelPosition];
     _shader.setModelMatrix(wheel.getModelMatrix());
-    for (int i = 0; i < wheelModel->getMeshesCount(); i++) {
-        RenderMesh& mesh = wheelModel->getMesh(i);
+    for (int i = 0; i < wheelModel.getMeshesCount(); i++) {
+        RenderMesh& mesh = wheelModel.getMesh(i);
         _shader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }

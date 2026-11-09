@@ -15,11 +15,9 @@ WorldSegmentRenderer::WorldSegmentRenderer(
     _renderModel3dLoader(renderModel3dLoader),
     _shader(shaderProgramCollection.mesh),
     _vaoRenderer(vaoRenderer) {
-    _globalLight = nullptr;
 }
 
-void WorldSegmentRenderer::init(Collection<WorldSegment*>& allWorldSegments, Light& globalLight) {
-    _globalLight = &globalLight;
+void WorldSegmentRenderer::init(Collection<WorldSegment*>& allWorldSegments) {
     // для всех обьектов WorldSegment создаем RenderModel3d для последующего рендера
     for (int i = 0; i < _segmentRenderModels.getCount(); i++) {
         _segmentRenderModels[i].release();
@@ -60,7 +58,7 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
     }
 }
 
-void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Camera& camera) {
+void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Camera& camera, Light& globalLight) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     _shader.use();
@@ -70,7 +68,7 @@ void WorldSegmentRenderer::render(WorldSegmentVisibility& segmentVisibility, Cam
     _shader.setColorFactor(1.0f);
     _shader.setAlphaFactor(1.0f);
     _shader.useTexture(true);
-    _shader.setGlobalLight(*_globalLight);
+    _shader.setGlobalLight(globalLight);
 
     for (int segmentIndex = 0; segmentIndex < segmentVisibility.visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& worldSegment = *segmentVisibility.visibleSegments[segmentIndex];
