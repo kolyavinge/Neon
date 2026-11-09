@@ -116,6 +116,7 @@
     <ClCompile Include="src\render\lib\VAO.cpp" />
     <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
+    <ClCompile Include="src\render\main\MainSceneRenderer.cpp" />
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="src\render\lib\Model3dVAOBuilder.h" />
     <ClInclude Include="src\render\lib\VAORenderer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
+    <ClInclude Include="src\render\main\MainSceneRenderer.h" />
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
     <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h" />
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h" />

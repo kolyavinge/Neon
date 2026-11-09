@@ -327,6 +327,9 @@
     <ClCompile Include="src\model\vehicle\VehicleLights.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\main\MainSceneRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -720,6 +723,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\vehicle\VehicleLights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\main\MainSceneRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
