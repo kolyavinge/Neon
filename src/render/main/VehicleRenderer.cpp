@@ -1,7 +1,7 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <model/vehicle/VehicleLights.h>
 #include <render/lib/opengl.h>
-#include <render/vehicle/VehicleRenderer.h>
+#include <render/main/VehicleRenderer.h>
 
 VehicleRenderer::VehicleRenderer(
     ShaderProgramCollection& shaderProgramCollection,

@@ -7,8 +7,8 @@
 #include <model/common/light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/GameObjectVisibility.h>
-#include <render/vehicle/VehicleRenderer.h>
-#include <render/world/WorldSegmentRenderer.h>
+#include <render/main/VehicleRenderer.h>
+#include <render/main/WorldSegmentRenderer.h>
 
 class MainSceneRenderer : public Object {
 

@@ -38,9 +38,9 @@
 #include <render/lib/TextureLoader.h>
 #include <render/lib/VAORenderer.h>
 #include <render/main/MainSceneRenderer.h>
+#include <render/main/VehicleRenderer.h>
+#include <render/main/WorldSegmentRenderer.h>
 #include <render/ui/RaceScreenRenderer.h>
-#include <render/vehicle/VehicleRenderer.h>
-#include <render/world/WorldSegmentRenderer.h>
 #include <ui/RaceScreen.h>
 
 void MainInjectModule::init(Binder& binder) {
@@ -83,8 +83,8 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<TextureLoader>(TextureLoader::resolve);
     binder.bindSingleton<VAORenderer>();
     binder.bindSingleton<MainSceneRenderer>(MainSceneRenderer::resolve);
-    binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
     binder.bindSingleton<WorldSegmentRenderer>(WorldSegmentRenderer::resolve);
+    binder.bindSingleton<RaceScreenRenderer>(RaceScreenRenderer::resolve);
     binder.bindSingleton<RaceScreen>(RaceScreen::resolve);
 }

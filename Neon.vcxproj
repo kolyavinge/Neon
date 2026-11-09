@@ -120,8 +120,8 @@
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
-    <ClCompile Include="src\render\vehicle\VehicleRenderer.cpp" />
-    <ClCompile Include="src\render\world\WorldSegmentRenderer.cpp" />
+    <ClCompile Include="src\render\main\VehicleRenderer.cpp" />
+    <ClCompile Include="src\render\main\WorldSegmentRenderer.cpp" />
     <ClCompile Include="src\ui\RaceScreen.cpp" />
     <ClCompile Include="src\ui\Screen.cpp" />
     <ClInclude Include="src\common\resource.h" />
@@ -203,8 +203,8 @@
     <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h" />
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
-    <ClInclude Include="src\render\vehicle\VehicleRenderer.h" />
-    <ClInclude Include="src\render\world\WorldSegmentRenderer.h" />
+    <ClInclude Include="src\render\main\VehicleRenderer.h" />
+    <ClInclude Include="src\render\main\WorldSegmentRenderer.h" />
     <ClInclude Include="src\ui\RaceScreen.h" />
     <ClInclude Include="src\ui\IScreenSwitcher.h" />
     <ClInclude Include="src\ui\Screens.h" />

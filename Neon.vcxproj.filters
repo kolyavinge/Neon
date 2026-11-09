@@ -228,7 +228,7 @@
     <ClCompile Include="src\lib\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\vehicle\VehicleRenderer.cpp">
+    <ClCompile Include="src\render\main\VehicleRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp">
@@ -291,7 +291,7 @@
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\world\WorldSegmentRenderer.cpp">
+    <ClCompile Include="src\render\main\WorldSegmentRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\Model3dConverter.cpp">
@@ -620,7 +620,7 @@
     <ClInclude Include="src\lib\windows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\vehicle\VehicleRenderer.h">
+    <ClInclude Include="src\render\main\VehicleRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h">
@@ -686,7 +686,7 @@
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\world\WorldSegmentRenderer.h">
+    <ClInclude Include="src\render\main\WorldSegmentRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\Model3dConverter.h">

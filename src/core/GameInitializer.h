@@ -9,8 +9,8 @@
 #include <render/common/ShaderCollection.h>
 #include <render/common/ShaderProgramCollection.h>
 #include <render/common/TextureCollection.h>
-#include <render/vehicle/VehicleRenderer.h>
-#include <render/world/WorldSegmentRenderer.h>
+#include <render/main/VehicleRenderer.h>
+#include <render/main/WorldSegmentRenderer.h>
 #include <ui/RaceScreen.h>
 
 class GameInitializer : public Object {

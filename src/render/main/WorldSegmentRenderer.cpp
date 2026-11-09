@@ -2,7 +2,7 @@
 #include <model/world/WorldPrimitive.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
-#include <render/world/WorldSegmentRenderer.h>
+#include <render/main/WorldSegmentRenderer.h>
 
 WorldSegmentRenderer::WorldSegmentRenderer(
     Model3dCollection& model3dCollection,
