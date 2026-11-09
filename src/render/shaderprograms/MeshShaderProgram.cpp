@@ -1,43 +1,64 @@
+#include <render/lib/UniformArray.h>
 #include <render/shaderprograms/MeshShaderProgram.h>
 
 MeshShaderProgram::MeshShaderProgram() {
-    const int maxLightsCount = 20; // есть в mesh.frag
-    _lightsPosition.init(maxLightsCount, "lights", "position");
-    _lightsDirection.init(maxLightsCount, "lights", "direction");
-    _lightsColor.init(maxLightsCount, "lights", "color");
     _lightIndex = 0;
 }
 
+void MeshShaderProgram::initAfterLink() {
+    _locations.modelMatrix = glGetUniformLocation(_id, "modelMatrix");
+    _locations.viewMatrix = glGetUniformLocation(_id, "viewMatrix");
+    _locations.projectionMatrix = glGetUniformLocation(_id, "projectionMatrix");
+    _locations.alphaFactor = glGetUniformLocation(_id, "alphaFactor");
+    _locations.useTexture = glGetUniformLocation(_id, "useTexture");
+    _locations.materialAmbient = glGetUniformLocation(_id, "material.ambient");
+    _locations.materialDiffuse = glGetUniformLocation(_id, "material.diffuse");
+    _locations.materialSpecular = glGetUniformLocation(_id, "material.specular");
+    _locations.materialShininess = glGetUniformLocation(_id, "material.shininess");
+    _locations.globalLightPosition = glGetUniformLocation(_id, "globalLight.position");
+    _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
+    UniformArray lightsPosition, lightsDirection, lightsColor;
+    lightsPosition.init(maxLightsCount, "lights", "position");
+    lightsDirection.init(maxLightsCount, "lights", "direction");
+    lightsColor.init(maxLightsCount, "lights", "color");
+    for (int i = 0; i < maxLightsCount; i++) {
+        _locations.lightsPosition[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
+        _locations.lightsDirection[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
+        _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
+    }
+    _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
+}
+
 void MeshShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
-    setTransformMatrix4("modelMatrix", modelMatrix);
+    setTransformMatrix4(_locations.modelMatrix, modelMatrix);
 }
 
 void MeshShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
-    setTransformMatrix4("viewMatrix", viewMatrix);
+    setTransformMatrix4(_locations.viewMatrix, viewMatrix);
 }
 
 void MeshShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMatrix) {
-    setTransformMatrix4("projectionMatrix", projectionMatrix);
+    setTransformMatrix4(_locations.projectionMatrix, projectionMatrix);
 }
 
 void MeshShaderProgram::setAlphaFactor(float alphaFactor) {
-    setFloat32("alphaFactor", alphaFactor);
+    setFloat32(_locations.alphaFactor, alphaFactor);
 }
 
 void MeshShaderProgram::useTexture(bool useTexture) {
-    setBoolean("useTexture", useTexture);
+    setBoolean(_locations.useTexture, useTexture);
 }
 
 void MeshShaderProgram::setMaterial(Material& material) {
-    setFloat32("material.ambient", material.getAmbient());
-    setFloat32("material.diffuse", material.getDiffuse());
-    setFloat32("material.specular", material.getSpecular());
-    setFloat32("material.shininess", material.getShininess());
+    setFloat32(_locations.materialAmbient, material.getAmbient());
+    setFloat32(_locations.materialDiffuse, material.getDiffuse());
+    setFloat32(_locations.materialSpecular, material.getSpecular());
+    setFloat32(_locations.materialShininess, material.getShininess());
 }
 
 void MeshShaderProgram::setGlobalLight(Light& globalLight) {
-    setVector3("globalLight.position", globalLight.getPosition());
-    setVector3("globalLight.color", globalLight.getColor());
+    setVector3(_locations.globalLightPosition, globalLight.getPosition());
+    setVector3(_locations.globalLightColor, globalLight.getColor());
 }
 
 void MeshShaderProgram::beginAddLights() {
@@ -45,12 +66,12 @@ void MeshShaderProgram::beginAddLights() {
 }
 
 void MeshShaderProgram::addLight(DirectedLight& light) {
-    setVector3(_lightsPosition.getNameFor(_lightIndex), light.getPosition());
-    setVector3(_lightsDirection.getNameFor(_lightIndex), light.getDirection());
-    setVector3(_lightsColor.getNameFor(_lightIndex), light.getColor());
+    setVector3(_locations.lightsPosition[_lightIndex], light.getPosition());
+    setVector3(_locations.lightsDirection[_lightIndex], light.getDirection());
+    setVector3(_locations.lightsColor[_lightIndex], light.getColor());
     _lightIndex++;
 }
 
 void MeshShaderProgram::endAddLights() {
-    setInt32("lightsCount", _lightIndex);
+    setInt32(_locations.lightsCount, _lightIndex);
 }

@@ -13,7 +13,7 @@ class ShaderProgramCollection : public Object {
     ShaderCollection& _shaderCollection;
 
 public:
-    MainSceneShaderProgram mainScene;
+    //MainSceneShaderProgram mainScene;
     MeshShaderProgram mesh;
 
     static ShaderProgramCollection* resolve(Resolver& resolver) {

@@ -27,7 +27,9 @@ void ShaderProgram::init(Collection<Shader*>& shaders) {
     glLinkProgram(_id);
     GLint status = GL_FALSE;
     glGetProgramiv(_id, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE) {
+    if (status == GL_TRUE) {
+        initAfterLink();
+    } else {
         GLint logLength = 0;
         glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
         List<GLchar> log(logLength);
@@ -35,6 +37,8 @@ void ShaderProgram::init(Collection<Shader*>& shaders) {
         if (log.getCount() > 0) {
             String errorMessage(log.getItemsPointer());
             throw OpenGLException(errorMessage.getWCharPointer());
+        } else {
+            throw OpenGLException(L"Load shader program error.");
         }
     }
 }
@@ -49,32 +53,34 @@ void ShaderProgram::unuse() {
 
 void ShaderProgram::initBeforeLink() {}
 
-void ShaderProgram::setInt32(const char* name, GLint value) {
-    glUniform1i(glGetUniformLocation(_id, name), value);
+void ShaderProgram::initAfterLink() {}
+
+void ShaderProgram::setInt32(GLint location, GLint value) {
+    glUniform1i(location, value);
 }
 
-void ShaderProgram::setFloat32(const char* name, GLfloat value) {
-    glUniform1f(glGetUniformLocation(_id, name), value);
+void ShaderProgram::setFloat32(GLint location, GLfloat value) {
+    glUniform1f(location, value);
 }
 
-void ShaderProgram::setBoolean(const char* name, bool value) {
-    setInt32(name, value ? 1 : 0);
+void ShaderProgram::setBoolean(GLint location, bool value) {
+    setInt32(location, value ? 1 : 0);
 }
 
-void ShaderProgram::setVector2(const char* name, GLfloat x, GLfloat y) {
-    glUniform2f(glGetUniformLocation(_id, name), x, y);
+void ShaderProgram::setVector2(GLint location, GLfloat x, GLfloat y) {
+    glUniform2f(location, x, y);
 }
 
-void ShaderProgram::setVector3(const char* name, Vector3 v) {
-    glUniform3f(glGetUniformLocation(_id, name), v.x, v.y, v.z);
+void ShaderProgram::setVector3(GLint location, Vector3 v) {
+    glUniform3f(location, v.x, v.y, v.z);
 }
 
-void ShaderProgram::setMatrix3(const char* name, GLfloat* m) {
-    glUniformMatrix3fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m);
+void ShaderProgram::setMatrix3(GLint location, GLfloat* m) {
+    glUniformMatrix3fv(location, 1, GL_FALSE, m);
 }
 
-void ShaderProgram::setTransformMatrix4(const char* name, TransformMatrix4& m) {
-    glUniformMatrix4fv(glGetUniformLocation(_id, name), 1, GL_FALSE, m.getItems());
+void ShaderProgram::setTransformMatrix4(GLint location, TransformMatrix4& m) {
+    glUniformMatrix4fv(location, 1, GL_FALSE, m.getItems());
 }
 
 void ShaderProgram::setOutputNamesForTransformFeedback(GLint count, const char** outputNames) {

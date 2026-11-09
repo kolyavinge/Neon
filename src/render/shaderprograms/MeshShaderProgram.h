@@ -5,13 +5,30 @@
 #include <model/common/light.h>
 #include <render/lib/Material.h>
 #include <render/lib/ShaderProgram.h>
-#include <render/lib/UniformArray.h>
+#include <render/lib/opengl.h>
 
 class MeshShaderProgram : public ShaderProgram {
 
-    UniformArray _lightsPosition;
-    UniformArray _lightsDirection;
-    UniformArray _lightsColor;
+    inline static const int maxLightsCount = 20; // есть в mesh.frag
+
+    struct {
+        GLint modelMatrix;
+        GLint viewMatrix;
+        GLint projectionMatrix;
+        GLint alphaFactor;
+        GLint useTexture;
+        GLint materialAmbient;
+        GLint materialDiffuse;
+        GLint materialSpecular;
+        GLint materialShininess;
+        GLint globalLightPosition;
+        GLint globalLightColor;
+        GLint lightsPosition[maxLightsCount];
+        GLint lightsDirection[maxLightsCount];
+        GLint lightsColor[maxLightsCount];
+        GLint lightsCount;
+    } _locations = {};
+
     int _lightIndex;
 
 public:
@@ -26,4 +43,7 @@ public:
     void beginAddLights();
     void addLight(DirectedLight& light);
     void endAddLights();
+
+protected:
+    void initAfterLink() override;
 };

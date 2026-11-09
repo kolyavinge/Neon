@@ -8,7 +8,6 @@
 
 class ShaderProgram : public Object {
 
-    GLuint _id;
     List<GLuint> _shaderIds;
 
 public:
@@ -20,13 +19,16 @@ public:
     void unuse();
 
 protected:
+    GLuint _id;
+
     virtual void initBeforeLink();
-    void setInt32(const char* name, GLint value);
-    void setFloat32(const char* name, GLfloat value);
-    void setBoolean(const char* name, bool value);
-    void setVector2(const char* name, GLfloat x, GLfloat y);
-    void setVector3(const char* name, Vector3 v);
-    void setMatrix3(const char* name, GLfloat* m);
-    void setTransformMatrix4(const char* name, TransformMatrix4& m);
+    virtual void initAfterLink();
+    void setInt32(GLint location, GLint value);
+    void setFloat32(GLint location, GLfloat value);
+    void setBoolean(GLint location, bool value);
+    void setVector2(GLint location, GLfloat x, GLfloat y);
+    void setVector3(GLint location, Vector3 v);
+    void setMatrix3(GLint location, GLfloat* m);
+    void setTransformMatrix4(GLint location, TransformMatrix4& m);
     void setOutputNamesForTransformFeedback(GLint count, const char** outputNames);
 };

@@ -9,8 +9,8 @@
 class MainSceneShaderProgram : public ShaderProgram {
 
 public:
-    void setModelMatrix(TransformMatrix4& modelMatrix);
-    void setViewMatrix(TransformMatrix4& viewMatrix);
-    void setProjectionMatrix(TransformMatrix4& projectionMatrix);
-    void setMaterial(Material& material);
+    //void setModelMatrix(TransformMatrix4& modelMatrix);
+    //void setViewMatrix(TransformMatrix4& viewMatrix);
+    //void setProjectionMatrix(TransformMatrix4& projectionMatrix);
+    //void setMaterial(Material& material);
 };

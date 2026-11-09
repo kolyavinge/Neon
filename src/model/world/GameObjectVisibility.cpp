@@ -3,8 +3,10 @@
 void GameObjectVisibility::init(int allSegmentsCount) {
     // макс кол-во видимых сегментов не может быть больше половины всех сегментов
     visibleSegments.prepareEnoughCapacity(allSegmentsCount / 2);
+    visibleSegmentStates.prepareEnoughCapacity(allSegmentsCount / 2);
     visibleSegmentStates.initAll(VisibilityState::high);
     vehicleVisibilityStates.initAll(VisibilityState::high);
+    vehicleLightsVisibility.initAll(true);
 }
 
 Collection<WorldSegment*>& GameObjectVisibility::getVisibleSegments() {

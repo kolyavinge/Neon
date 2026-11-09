@@ -35,7 +35,7 @@ void Vehicle::init() {
         VehicleConstants::linearVelocityEps,
         VehicleConstants::angularVelocityEps);
     _rigidBody.setElastic(0.05f);
-    _rigidBody.setCenter(Vector3(15.0f, 10.0f, 1.0f)); // TODO убрать позиции ботов в Track
+    _rigidBody.setCenter(Vector3(10.0f, 20.0f, 1.0f)); // TODO убрать позиции ботов в Track
 }
 
 void Vehicle::initWheelAndSpring(WheelPosition position) {

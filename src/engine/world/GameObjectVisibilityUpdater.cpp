@@ -83,7 +83,7 @@ void GameObjectVisibilityUpdater::updateVehicleLightsVisibility(Collection<Vehic
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         bool isVisible =
-            objectVisibility.vehicleVisibilityStates[vehicle.getId()] > VisibilityState::low ||
+            objectVisibility.vehicleVisibilityStates[vehicle.getId()] >= VisibilityState::medium ||
             camera.getPosition().getLengthSquaredTo(vehicle.getCenter()) < maxDistanceLengthSquared;
         objectVisibility.vehicleLightsVisibility[vehicle.getId()] = isVisible;
     }
