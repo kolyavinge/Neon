@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/common.h>
 #include <model/world/WorldPrimitive.h>
@@ -12,6 +13,7 @@ class WorldSegment : Object {
     List<WorldPrimitive*> _groundAndBarrierPrimitives;
     List<Line*> _outerCorners;
     Rect2d _boundaryBox;
+    Vector3 _center;
 
 public:
     WorldSegment();
@@ -22,6 +24,7 @@ public:
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();
     Collection<Line*>& getOuterCorners();
     Rect2d& getBoundaryBox();
+    Vector3 getCenter(); // TODO не используется
     void setGroundPrimitives(Collection<WorldPrimitive>& primitives);
     void setBarrierPrimitives(Collection<WorldPrimitive>& primitives);
     void setOuterCorners(Collection<Line>& outerCorners);

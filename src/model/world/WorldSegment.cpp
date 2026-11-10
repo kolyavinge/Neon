@@ -33,6 +33,10 @@ Rect2d& WorldSegment::getBoundaryBox() {
     return _boundaryBox;
 }
 
+Vector3 WorldSegment::getCenter() {
+    return _center;
+}
+
 void WorldSegment::setGroundPrimitives(Collection<WorldPrimitive>& primitives) {
     for (int i = 0; i < primitives.getCount(); i++) {
         _groundPrimitives.add(&primitives[i]);
@@ -81,4 +85,5 @@ void WorldSegment::calculateBoundaryBox() {
     _boundaryBox.downRight.set(max.x, min.y, min.z);
     _boundaryBox.upLeft.set(min.x, max.y, min.z);
     _boundaryBox.upRight.set(max.x, max.y, min.z);
+    _center = _boundaryBox.downLeft.getMiddleTo(_boundaryBox.upRight);
 }

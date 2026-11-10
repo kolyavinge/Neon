@@ -32,6 +32,10 @@ uniform struct {
 } lights[maxLightsCount];
 uniform int lightsCount;
 
+uniform bool enableLight;
+
+const float maxDepth = 500.0;
+
 void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse, inout vec3 specular) {
     vec3 n = normalize(NormalView);
     vec3 lightPositionView = vec3(viewMatrix * vec4(globalLight.position, 1.0));
@@ -68,15 +72,23 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
 }
 
 void main() {
+    float depthFactor = 1.0 - clamp(length(PositionView) / maxDepth, 0.0, 1.0);
+    if (depthFactor == 0.0) {
+        FragColor = vec4(0.0);
+        return;
+    }
     if (useTexture) {
         FragColor = texture(ourTexture, TexCoord);
     } else {
         FragColor = Color;
     }
-    vec3 ambient = vec3(0.0), diffuse = vec3(0.0), specular = vec3(0.0);
-    calculateGlobalLightColor(ambient, diffuse, specular);
-    for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
-        calculateLightColor(lightIndex, ambient, diffuse, specular);
+    FragColor *= depthFactor;
+    if (enableLight) {
+        vec3 ambient = vec3(0.0), diffuse = vec3(0.0), specular = vec3(0.0);
+        calculateGlobalLightColor(ambient, diffuse, specular);
+        for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
+            calculateLightColor(lightIndex, ambient, diffuse, specular);
+        }
+        FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
     }
-    FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
 }

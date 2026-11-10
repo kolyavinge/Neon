@@ -27,6 +27,7 @@ class MeshShaderProgram : public ShaderProgram {
         GLint lightsDirection[maxLightsCount];
         GLint lightsColor[maxLightsCount];
         GLint lightsCount;
+        GLint enableLight;
     } _locations = {};
 
     int _lightIndex;
@@ -43,6 +44,7 @@ public:
     void beginAddLights();
     void addLight(DirectedLight& light);
     void endAddLights();
+    void enableLight(bool enable);
 
 protected:
     void initAfterLink() override;

@@ -13,8 +13,8 @@ Collection<WorldSegment*>& GameObjectVisibility::getVisibleSegments() {
     return visibleSegments;
 }
 
-Collection<VisibilityState>& GameObjectVisibility::getVisibleSegmentStates() {
-    return visibleSegmentStates;
+VisibilityState GameObjectVisibility::getSegmentVisibilityState(int segmentIndex) {
+    return visibleSegmentStates[segmentIndex];
 }
 
 VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle) {

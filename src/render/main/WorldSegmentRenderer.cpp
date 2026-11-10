@@ -59,10 +59,12 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
 void WorldSegmentRenderer::render(MeshShaderProgram& shader, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    shader.useTexture(true);
     Collection<WorldSegment*>& visibleSegments = objectVisibility.getVisibleSegments();
     for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& worldSegment = *visibleSegments[segmentIndex];
+        VisibilityState state = objectVisibility.getSegmentVisibilityState(segmentIndex);
+        shader.useTexture(state > VisibilityState::shape);
+        shader.enableLight(state > VisibilityState::shape);
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);

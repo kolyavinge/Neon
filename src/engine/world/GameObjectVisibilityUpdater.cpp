@@ -1,7 +1,9 @@
 #include <engine/world/GameObjectVisibilityUpdater.h>
 #include <lib/calc/Plane.h>
 
-GameObjectVisibilityUpdater::GameObjectVisibilityUpdater() {
+GameObjectVisibilityUpdater::GameObjectVisibilityUpdater(
+    VisibilityStateLogic& visibilityStateLogic) :
+    _visibilityStateLogic(visibilityStateLogic) {
     _camera = nullptr;
 }
 
@@ -19,12 +21,17 @@ void GameObjectVisibilityUpdater::updateWorldSegmentVisibility(
         objectVisibility.cameraLookDirection.dotProduct(camera.getLookDirection()) < 0.99f;
     if (!needUpdate) return;
     _camera = &camera;
+    objectVisibility.cameraPosition = _camera->getPosition();
+    objectVisibility.cameraLookDirection = _camera->getLookDirection();
     objectVisibility.visibleSegments.clear();
-    objectVisibility.visibleSegmentStates.clear();
-    findVisibleSegmentsFor(*segmentTreeRoot.frontNode, output objectVisibility);
-    findVisibleSegmentsFor(*segmentTreeRoot.backNode, output objectVisibility);
-    objectVisibility.cameraPosition = camera.getPosition();
-    objectVisibility.cameraLookDirection = camera.getLookDirection();
+    if (segmentTreeRoot.splitPlane.isPointInFront(_camera->getPosition())) {
+        findVisibleSegmentsFor(*segmentTreeRoot.frontNode, output objectVisibility);
+        findVisibleSegmentsFor(*segmentTreeRoot.backNode, output objectVisibility);
+    } else {
+        findVisibleSegmentsFor(*segmentTreeRoot.backNode, output objectVisibility);
+        findVisibleSegmentsFor(*segmentTreeRoot.frontNode, output objectVisibility);
+    }
+    updateSegmentVisibilityStates(output objectVisibility);
 }
 
 void GameObjectVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegment>& node, output GameObjectVisibility& objectVisibility) {
@@ -42,27 +49,41 @@ void GameObjectVisibilityUpdater::findVisibleSegmentsFor(BSPTreeNode<WorldSegmen
     // сегмент полностью виден вместе с дочерними (видно по 4 точки для каждой плоскости камеры)
     if (frontPoints + leftPoints + rightPoints == 3 * Rect2d::pointsCount) {
         objectVisibility.visibleSegments.add(&node.data);
-        objectVisibility.visibleSegmentStates.add(VisibilityState::high);
     } else {
         // виден частично
         if (!node.isLeaf) {
-            findVisibleSegmentsFor(*node.frontNode, output objectVisibility);
-            findVisibleSegmentsFor(*node.backNode, output objectVisibility);
+            // идем сначала в то поддерево, в котором находится камера
+            // список objectVisibility.visibleSegments будет заполняться от ближних сегментов к дальним
+            // так при рендере эффективнее заполняется буфер глубины
+            if (node.splitPlane.isPointInFront(_camera->getPosition())) {
+                findVisibleSegmentsFor(*node.frontNode, output objectVisibility);
+                findVisibleSegmentsFor(*node.backNode, output objectVisibility);
+            } else {
+                findVisibleSegmentsFor(*node.backNode, output objectVisibility);
+                findVisibleSegmentsFor(*node.frontNode, output objectVisibility);
+            }
         } else {
             objectVisibility.visibleSegments.add(&node.data);
-            objectVisibility.visibleSegmentStates.add(VisibilityState::high);
         }
     }
 }
 
 int GameObjectVisibilityUpdater::getPointsFromFrustumPlane(FrustumPlanePosition position, Rect2d& box) {
     Plane& frustumPlane = _camera->getFrustumPlane(position);
-
     return
         (frustumPlane.isPointInFront(box.downLeft) ? 1 : 0) +
         (frustumPlane.isPointInFront(box.downRight) ? 1 : 0) +
         (frustumPlane.isPointInFront(box.upLeft) ? 1 : 0) +
         (frustumPlane.isPointInFront(box.upRight) ? 1 : 0);
+}
+
+void GameObjectVisibilityUpdater::updateSegmentVisibilityStates(output GameObjectVisibility& objectVisibility) {
+    objectVisibility.visibleSegmentStates.clear();
+    for (int i = 0; i < objectVisibility.visibleSegments.getCount(); i++) {
+        WorldSegment& segment = *objectVisibility.visibleSegments[i];
+        VisibilityState state = _visibilityStateLogic.getStateForWorldSegment(segment, *_camera);
+        objectVisibility.visibleSegmentStates.add(state);
+    }
 }
 
 void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
@@ -74,7 +95,8 @@ void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& v
             camera.inFrustum(bodyPoints[Box3dPoint::topDownRight]) ||
             camera.inFrustum(bodyPoints[Box3dPoint::topUpLeft]) ||
             camera.inFrustum(bodyPoints[Box3dPoint::topUpRight]);
-        objectVisibility.vehicleVisibilityStates[vehicle.getId()] = isVisible ? VisibilityState::high : VisibilityState::notVisible;
+        objectVisibility.vehicleVisibilityStates[vehicle.getId()] = isVisible ?
+            _visibilityStateLogic.getStateForVehicle(vehicle, *_camera) : VisibilityState::notVisible;
     }
 }
 
@@ -84,7 +106,8 @@ void GameObjectVisibilityUpdater::updateVehicleLightsVisibility(Collection<Vehic
         Vehicle& vehicle = vehicles[i];
         bool isVisible =
             objectVisibility.vehicleVisibilityStates[vehicle.getId()] >= VisibilityState::medium ||
-            camera.getPosition().getLengthSquaredTo(vehicle.getCenter()) < maxDistanceLengthSquared;
+            (!Numeric::floatEquals(camera.getLookDirection().dotProduct(vehicle.getChassisFrontNormal()), -1.0f, 0.1f) &&
+                camera.getPosition().getLengthSquaredTo(vehicle.getCenter()) < maxDistanceLengthSquared);
         objectVisibility.vehicleLightsVisibility[vehicle.getId()] = isVisible;
     }
 }

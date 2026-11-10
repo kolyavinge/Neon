@@ -27,6 +27,7 @@ void MeshShaderProgram::initAfterLink() {
         _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
     }
     _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
+    _locations.enableLight = glGetUniformLocation(_id, "enableLight");
 }
 
 void MeshShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
@@ -74,4 +75,8 @@ void MeshShaderProgram::addLight(DirectedLight& light) {
 
 void MeshShaderProgram::endAddLights() {
     setInt32(_locations.lightsCount, _lightIndex);
+}
+
+void MeshShaderProgram::enableLight(bool enable) {
+    setBoolean(_locations.enableLight, enable);
 }

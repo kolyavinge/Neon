@@ -1,5 +1,6 @@
 #include <render/lib/ShaderProgram.h>
 #include <render/lib/opengl.h>
+#include <stdio.h>
 
 ShaderProgram::ShaderProgram() {
     _id = 0;
@@ -28,14 +29,22 @@ void ShaderProgram::init(Collection<Shader*>& shaders) {
     GLint status = GL_FALSE;
     glGetProgramiv(_id, GL_LINK_STATUS, &status);
     if (status == GL_TRUE) {
+        GLint logLength = 0;
+        glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
+        if (logLength > 0) {
+            char log[4000] = {};
+            glGetProgramInfoLog(_id, logLength, &logLength, log);
+            printf("Load shader program warning: %s\n", log);
+        }
         initAfterLink();
     } else {
         GLint logLength = 0;
         glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
-        List<GLchar> log(logLength);
-        glGetProgramInfoLog(_id, logLength, &logLength, log.getItemsPointer());
-        if (log.getCount() > 0) {
-            String errorMessage(log.getItemsPointer());
+        if (logLength > 0) {
+            char log[4000] = {};
+            glGetProgramInfoLog(_id, logLength, &logLength, log);
+            glDeleteProgram(_id);
+            String errorMessage(log);
             throw OpenGLException(errorMessage.getWCharPointer());
         } else {
             throw OpenGLException(L"Load shader program error.");

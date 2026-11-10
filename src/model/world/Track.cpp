@@ -47,11 +47,12 @@ void Track::makeSplitPlanes() {
     Vector3 max = finder.getMaxPoint();
     Vector3 diff = max;
     diff.sub(min);
+    const float segmentSize = 20.0f;
     if (diff.x > diff.y) {
         _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, (min.y + max.y) / 2.0f, 0.0f)));
 
         auto splitRec = [&](float minX, float maxX, auto&& self) {
-            if (maxX - minX <= 10.0f) return;
+            if (maxX - minX <= segmentSize) return;
             float middle = (minX + maxX) / 2.0f;
             _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3(middle, min.y, 0.0f)));
             _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3(middle, max.y, 0.0f)));
@@ -64,7 +65,7 @@ void Track::makeSplitPlanes() {
         _splitPlanes.addByValue(Plane(Vector3(1.0f, 0.0f, 0.0f), Vector3((min.x + max.x) / 2.0f, 0.0f, 0.0f)));
 
         auto splitRec = [&](float minY, float maxY, auto&& self) {
-            if (maxY - minY <= 10.0f) return;
+            if (maxY - minY <= segmentSize) return;
             float middle = (minY + maxY) / 2.0f;
             _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(min.x, middle, 0.0f)));
             _splitPlanes.addByValue(Plane(Vector3(0.0f, 1.0f, 0.0f), Vector3(max.x, middle, 0.0f)));

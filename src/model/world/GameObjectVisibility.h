@@ -19,7 +19,7 @@ class IGameObjectVisibility {
 public:
     virtual ~IGameObjectVisibility() = default;
     virtual Collection<WorldSegment*>& getVisibleSegments() = 0;
-    virtual Collection<VisibilityState>& getVisibleSegmentStates() = 0;
+    virtual VisibilityState getSegmentVisibilityState(int segmentIndex) = 0;
     virtual VisibilityState getVehicleVisibilityState(Vehicle& vehicle) = 0;
     virtual bool isVehicleLightsVisible(Vehicle& vehicle) = 0;
 };
@@ -37,7 +37,7 @@ public:
 
     // interface IGameObjectVisibility
     Collection<WorldSegment*>& getVisibleSegments() override;
-    Collection<VisibilityState>& getVisibleSegmentStates() override;
+    VisibilityState getSegmentVisibilityState(int segmentIndex) override;
     VisibilityState getVehicleVisibilityState(Vehicle& vehicle) override;
     bool isVehicleLightsVisible(Vehicle& vehicle) override;
 };

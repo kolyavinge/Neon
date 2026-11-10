@@ -39,4 +39,7 @@ public:
         Collection<Vehicle>& vehicles,
         Camera& camera,
         Light& globalLight);
+
+private:
+    void setupLight(IGameObjectVisibility& objectVisibility, Collection<Vehicle>& vehicles, Light& globalLight);
 };

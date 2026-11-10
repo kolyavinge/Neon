@@ -21,7 +21,9 @@ void VehicleRenderer::render(MeshShaderProgram& shader, Collection<Vehicle>& veh
     shader.useTexture(false);
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        if (objectVisibility.getVehicleVisibilityState(vehicle) == VisibilityState::notVisible) continue;
+        VisibilityState state = objectVisibility.getVehicleVisibilityState(vehicle);
+        if (state == VisibilityState::notVisible) continue;
+        shader.enableLight(state > VisibilityState::shape);
         render(shader, vehicle);
     }
     glDisable(GL_DEPTH_TEST);
