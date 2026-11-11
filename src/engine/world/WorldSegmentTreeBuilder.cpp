@@ -1,5 +1,6 @@
 #include <engine/world/WorldSegmentTreeBuilder.h>
 #include <model/common/common.h>
+#include <model/common/light.h>
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;
@@ -23,6 +24,7 @@ void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
     rootSegment.setBarrierPrimitives(_track->getBarrierPrimitives());
     rootSegment.setWorldObjects(_track->getWorldObjects());
     rootSegment.setOuterCorners(_track->getOuterCorners());
+    rootSegment.setLights(_track->getLights());
     rootSegment.calculateBoundaryBox();
 }
 
@@ -61,7 +63,7 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
     Collection<WorldObject*>& worldObjects = parentSegment.getWorldObjects();
     for (int i = 0; i < worldObjects.getCount(); i++) {
         WorldObject& object = *worldObjects[i];
-        SplittedPosition position = getSplittedPosition(splitPlane, object.getPoints());
+        SplittedPosition position = getSplittedPosition(splitPlane, object.getBoundaryPoints());
         if (position == SplittedPosition::front) {
             frontChildSegment.addWorldObject(object);
         } else if (position == SplittedPosition::back) {
@@ -84,6 +86,18 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
         }
     }
 
+    // lights
+    Collection<DirectedLight*>& lights = parentSegment.getLights();
+    for (int i = 0; i < lights.getCount(); i++) {
+        DirectedLight& light = *lights[i];
+        SplittedPosition position = getSplittedPosition(splitPlane, light.getPosition());
+        if (position == SplittedPosition::front) {
+            frontChildSegment.addLight(light);
+        } else {
+            backChildSegment.addLight(light);
+        }
+    }
+
     frontChildSegment.calculateBoundaryBox();
     backChildSegment.calculateBoundaryBox();
 }
@@ -102,7 +116,7 @@ WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPo
     }
 }
 
-WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPosition(Plane& splitPlane, Vector3& point) {
+WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPosition(Plane& splitPlane, Vector3 point) {
     return splitPlane.isPointInFront(point) ? SplittedPosition::front : SplittedPosition::back;
 }
 

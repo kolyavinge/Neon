@@ -34,6 +34,7 @@ public:
     }
 };
 
+// binary space partitioning
 template<class TNodeData>
 class BSPTree : public Object {
 

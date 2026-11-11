@@ -26,6 +26,6 @@ private:
     void initRoot(WorldSegment& rootSegment);
     void initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment);
     SplittedPosition getSplittedPosition(Plane& splitPlane, Collection<Vector3>& points);
-    SplittedPosition getSplittedPosition(Plane& splitPlane, Vector3& point);
+    SplittedPosition getSplittedPosition(Plane& splitPlane, Vector3 point);
     void removeEmptySegments(BSPTree<WorldSegment>& segmentTree);
 };

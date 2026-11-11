@@ -12,23 +12,38 @@ float WorldObject::getFenceHeightFor(WorldObjectKind kind) {
 
 WorldObject::WorldObject() {
     _kind = (WorldObjectKind)-1;
+    _hasLight = false;
 }
 
 WorldObject::WorldObject(
     WorldObjectKind kind, Vector3 basePoint, Collection<Vector3>& points, Vector3 frontNormal, Vector3 upNormal) {
     _kind = kind;
     _basePoint = basePoint;
-    _points.addRange(points);
+    _boundaryPoints.addRange(points);
     _frontNormal = frontNormal;
     _upNormal = upNormal;
+    _hasLight = false;
 }
 
 WorldObjectKind WorldObject::getKind() {
     return _kind;
 }
 
-Collection<Vector3>& WorldObject::getPoints() {
-    return _points;
+Collection<Vector3>& WorldObject::getBoundaryPoints() {
+    return _boundaryPoints;
+}
+
+bool WorldObject::hasLight() {
+    return _hasLight;
+}
+
+DirectedLight& WorldObject::getLight() {
+    return _light;
+}
+
+void WorldObject::setLight(DirectedLight light) {
+    _hasLight = true;
+    _light = light;
 }
 
 TransformMatrix4 WorldObject::getTransformMatrix4() {

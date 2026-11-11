@@ -22,12 +22,16 @@ Collection<Line>& Track::getOuterCorners() {
     return _outerCorners;
 }
 
-Collection<Plane>& Track::getSplitPlanes() {
-    return _splitPlanes;
+Collection<DirectedLight>& Track::getLights() {
+    return _lights;
 }
 
 Light& Track::getGlobalLight() {
     return _globalLight;
+}
+
+Collection<Plane>& Track::getSplitPlanes() {
+    return _splitPlanes;
 }
 
 Vector3 Track::getPlayerCenter() {
@@ -41,7 +45,17 @@ float Track::getPlayerRotationAngle() {
 void Track::build() {
     buildInternal();
     // доп инициализация после построения трека
+    collectLightsFromWorldObjects();
     makeSplitPlanes();
+}
+
+void Track::collectLightsFromWorldObjects() {
+    for (int i = 0; i < _worldObjects.getCount(); i++) {
+        WorldObject& object = _worldObjects[i];
+        if (object.hasLight()) {
+            _lights.add(object.getLight());
+        }
+    }
 }
 
 void Track::makeSplitPlanes() {

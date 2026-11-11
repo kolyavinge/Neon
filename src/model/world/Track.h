@@ -15,6 +15,7 @@ protected:
     List<WorldPrimitive> _barrierPrimitives;
     List<WorldObject> _worldObjects;
     List<Line> _outerCorners;
+    List<DirectedLight> _lights;
     List<Plane> _splitPlanes;
     Light _globalLight;
     Vector3 _playerCenter;
@@ -27,8 +28,9 @@ public:
     Collection<WorldPrimitive>& getBarrierPrimitives();
     Collection<WorldObject>& getWorldObjects();
     Collection<Line>& getOuterCorners();
-    Collection<Plane>& getSplitPlanes();
+    Collection<DirectedLight>& getLights();
     Light& getGlobalLight();
+    Collection<Plane>& getSplitPlanes();
     Vector3 getPlayerCenter();
     float getPlayerRotationAngle();
     void build();
@@ -37,5 +39,6 @@ protected:
     virtual void buildInternal() = 0;
 
 private:
+    void collectLightsFromWorldObjects();
     void makeSplitPlanes();
 };
