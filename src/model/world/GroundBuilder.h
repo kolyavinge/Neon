@@ -40,7 +40,7 @@ class GroundBuilder : public Object {
 
 public:
     GroundBuilder();
-    GroundBuilder& setResultList(List<WorldPrimitive>& resultPrimitives);
+    GroundBuilder& setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives);
     GroundBuilder& setTextureScale(float textureScale);
     GroundBuilder& setKind(WorldPrimitiveKind kind);
     GroundBuilder& setBasePlane(Vector3 downLeft, Vector3 downRight, Vector3 upLeft);

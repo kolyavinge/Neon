@@ -33,7 +33,7 @@ Model3d& Model3dCollection::getModelFor(WorldObjectKind kind) {
 void Model3dCollection::scaleIfNeed(WorldObjectKind kind, Model3d* model) {
     if (kind == WorldObjectKind::metalFence1) {
         Measures measures = model->getMeasures();
-        model->scale(WorldObject::fenceLength / measures.yLength);
+        model->scale(WorldObject::getFenceLengthFor(kind) / measures.yLength);
     }
 }
 

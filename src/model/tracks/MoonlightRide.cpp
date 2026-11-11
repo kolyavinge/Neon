@@ -21,7 +21,7 @@ void MoonlightRide::buildInternal() {
 void MoonlightRide::makeGround() {
     GroundBuilder builder;
     builder
-        .setResultList(_groundPrimitives)
+        .setWorldPrimitiveResultList(_groundPrimitives)
         .setDirections(CommonConstants::rightAxis, CommonConstants::frontAxis)
         .setTextureScale(5.0f);
 

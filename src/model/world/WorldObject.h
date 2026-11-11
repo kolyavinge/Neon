@@ -18,8 +18,8 @@ class WorldObject : public Object {
     Vector3 _upNormal;
 
 public:
-    inline static const float fenceLength = 2.0f;
-    inline static const float fenceHeight = 1.0f;
+    static float getFenceLengthFor(WorldObjectKind kind);
+    static float getFenceHeightFor(WorldObjectKind kind);
 
     WorldObject();
     WorldObject(WorldObjectKind kind, Vector3 basePoint, Collection<Vector3>& points, Vector3 frontNormal, Vector3 upNormal);

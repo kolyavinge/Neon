@@ -21,7 +21,7 @@ void GroundBuilder::init() {
     _getZFunc = nullptr;
 }
 
-GroundBuilder& GroundBuilder::setResultList(List<WorldPrimitive>& resultPrimitives) {
+GroundBuilder& GroundBuilder::setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives) {
     _resultPrimitives = &resultPrimitives;
     return *this;
 }

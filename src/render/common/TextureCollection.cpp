@@ -22,10 +22,11 @@ void TextureCollection::loadAllTextures() {
 }
 
 Texture& TextureCollection::getByWorldPrimitiveKind(WorldPrimitiveKind kind) {
-    Assert::isTrue(
-        kind == WorldPrimitiveKind::asphalt1 ||
+    if (kind == WorldPrimitiveKind::asphalt1 ||
         kind == WorldPrimitiveKind::asphalt2 ||
-        kind == WorldPrimitiveKind::asphalt3);
-
-    return _worldPrimitiveTextures[(int)kind];
+        kind == WorldPrimitiveKind::asphalt3) {
+        return _worldPrimitiveTextures[(int)kind];
+    } else {
+        throw ArgumentException(L"This function works only with ground primitives.");
+    }
 }

@@ -1,5 +1,15 @@
 #include <model/world/WorldObject.h>
 
+float WorldObject::getFenceLengthFor(WorldObjectKind kind) {
+    if (kind == WorldObjectKind::metalFence1) return 2.0f;
+    throw ArgumentException(L"Wrong world object type.");
+}
+
+float WorldObject::getFenceHeightFor(WorldObjectKind kind) {
+    if (kind == WorldObjectKind::metalFence1) return 1.0f;
+    throw ArgumentException(L"Wrong world object type.");
+}
+
 WorldObject::WorldObject() {
     _kind = (WorldObjectKind)-1;
 }

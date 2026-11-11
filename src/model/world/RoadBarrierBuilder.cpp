@@ -83,11 +83,11 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
     for (int i = 0; i < _count; i++) {
         Vector3 p2 = p1;
         recalculateDirectionAndUpNormalIfNeed(p2);
-        p2.addMultiplied(_direction, WorldObject::fenceLength);
+        p2.addMultiplied(_direction, WorldObject::getFenceLengthFor(_kind));
         Vector3 p3 = p2;
-        p3.addMultiplied(_upNormal, WorldObject::fenceHeight);
+        p3.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
         Vector3 p4 = p1;
-        p4.addMultiplied(_upNormal, WorldObject::fenceHeight);
+        p4.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
         WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
             ? WorldPrimitive(WorldPrimitiveKind::barrier, p1, p2, p3, p4)
             : WorldPrimitive(WorldPrimitiveKind::barrier, p4, p3, p2, p1);
@@ -110,7 +110,7 @@ Vector3 RoadBarrierBuilder::getLastBarrierPosition() {
 void RoadBarrierBuilder::addOuterCornerAtLastBarrierPosition() {
     Vector3 start = _lastPosition;
     Vector3 end = _lastPosition;
-    end.addMultiplied(_upNormal, WorldObject::fenceHeight);
+    end.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
     Line corner(start, end);
     _outerCorners->add(corner);
 }
@@ -121,8 +121,8 @@ void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
     Vector3 rayTo = startPoint;
     rayFrom.addMultiplied(_direction, 0.1f);
     rayTo.addMultiplied(_direction, 0.1f);
-    rayFrom.addMultiplied(CommonConstants::upAxis, WorldObject::fenceLength);
-    rayTo.subMultiplied(CommonConstants::upAxis, WorldObject::fenceLength);
+    rayFrom.addMultiplied(CommonConstants::upAxis, WorldObject::getFenceLengthFor(_kind));
+    rayTo.subMultiplied(CommonConstants::upAxis, WorldObject::getFenceLengthFor(_kind));
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
         Vector3 _;
@@ -137,10 +137,10 @@ void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
 void RoadBarrierBuilder::recalculateDirectionAndUpNormalIfNeed(Vector3 startPoint) {
     if (!_calculateZ) return;
     Vector3 endPoint = startPoint;
-    endPoint.addMultiplied(_direction, WorldObject::fenceLength);
+    endPoint.addMultiplied(_direction, WorldObject::getFenceLengthFor(_kind));
     Vector3 rayFrom = endPoint, rayTo = endPoint;
-    rayFrom.addMultiplied(_upNormal, WorldObject::fenceHeight);
-    rayTo.subMultiplied(_upNormal, WorldObject::fenceHeight);
+    rayFrom.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+    rayTo.subMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
     Vector3 collisionPoint;
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
@@ -159,7 +159,7 @@ void RoadBarrierBuilder::makeOuterCornerIfNeed() {
         start.subMultiplied(_prevDirection, 0.1f);
         start.subMultiplied(_lastBuiltPrimitive->getFrontNormal(), 0.1f);
         Vector3 end = start;
-        end.addMultiplied(_upNormal, WorldObject::fenceHeight);
+        end.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
         Line corner(start, end);
         _outerCorners->add(corner);
     }
