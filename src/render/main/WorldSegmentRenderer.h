@@ -10,7 +10,7 @@
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/RenderModel3dLoader.h>
 #include <render/lib/VAORenderer.h>
-#include <render/shaderprograms/MeshShaderProgram.h>
+#include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class WorldSegmentRenderer : public Object {
 
@@ -36,7 +36,7 @@ public:
         VAORenderer& vaoRenderer);
 
     void init(Collection<WorldSegment*>& allWorldSegments);
-    void render(MeshShaderProgram& shader, IGameObjectVisibility& objectVisibility);
+    void render(MainSceneShaderProgram& shader, IGameObjectVisibility& objectVisibility);
 
 private:
     void buildModels3dForWorldSegment(WorldSegment& worldSegment, output List<Model3d>& worldSegmentModels3d);

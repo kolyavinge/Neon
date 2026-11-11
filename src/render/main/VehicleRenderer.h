@@ -10,7 +10,7 @@
 #include <render/common/RenderModel3dCollection.h>
 #include <render/lib/RenderModel3d.h>
 #include <render/lib/VAORenderer.h>
-#include <render/shaderprograms/MeshShaderProgram.h>
+#include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class VehicleRenderer : public Object {
 
@@ -29,10 +29,10 @@ public:
     );
 
     void init(RenderModel3dCollection& renderModel3dCollection);
-    void render(MeshShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility);
+    void render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility);
 
 private:
-    void render(MeshShaderProgram& shader, Vehicle& vehicle);
-    void renderBody(MeshShaderProgram& shader, TransformMatrix4& vehicleModelMatrix);
-    void renderWheel(MeshShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition);
+    void render(MainSceneShaderProgram& shader, Vehicle& vehicle);
+    void renderBody(MainSceneShaderProgram& shader, TransformMatrix4& vehicleModelMatrix);
+    void renderWheel(MainSceneShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition);
 };

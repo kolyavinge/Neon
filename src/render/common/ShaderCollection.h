@@ -13,8 +13,8 @@ class ShaderCollection : public Object {
 
 public:
     Shader common;
-    Shader meshVertex;
-    Shader meshFragment;
+    Shader mainSceneVertex;
+    Shader mainSceneFragment;
 
     static ShaderCollection* resolve(Resolver& resolver) {
         return new ShaderCollection(

@@ -1,11 +1,11 @@
 #include <render/lib/UniformArray.h>
-#include <render/shaderprograms/MeshShaderProgram.h>
+#include <render/shaderprograms/MainSceneShaderProgram.h>
 
-MeshShaderProgram::MeshShaderProgram() {
+MainSceneShaderProgram::MainSceneShaderProgram() {
     _lightIndex = 0;
 }
 
-void MeshShaderProgram::initAfterLink() {
+void MainSceneShaderProgram::initAfterLink() {
     _locations.modelMatrix = glGetUniformLocation(_id, "modelMatrix");
     _locations.viewMatrix = glGetUniformLocation(_id, "viewMatrix");
     _locations.projectionMatrix = glGetUniformLocation(_id, "projectionMatrix");
@@ -30,53 +30,53 @@ void MeshShaderProgram::initAfterLink() {
     _locations.enableLight = glGetUniformLocation(_id, "enableLight");
 }
 
-void MeshShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
+void MainSceneShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
     setTransformMatrix4(_locations.modelMatrix, modelMatrix);
 }
 
-void MeshShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
+void MainSceneShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
     setTransformMatrix4(_locations.viewMatrix, viewMatrix);
 }
 
-void MeshShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMatrix) {
+void MainSceneShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMatrix) {
     setTransformMatrix4(_locations.projectionMatrix, projectionMatrix);
 }
 
-void MeshShaderProgram::setAlphaFactor(float alphaFactor) {
+void MainSceneShaderProgram::setAlphaFactor(float alphaFactor) {
     setFloat32(_locations.alphaFactor, alphaFactor);
 }
 
-void MeshShaderProgram::useTexture(bool useTexture) {
+void MainSceneShaderProgram::useTexture(bool useTexture) {
     setBoolean(_locations.useTexture, useTexture);
 }
 
-void MeshShaderProgram::setMaterial(Material& material) {
+void MainSceneShaderProgram::setMaterial(Material& material) {
     setFloat32(_locations.materialAmbient, material.getAmbient());
     setFloat32(_locations.materialDiffuse, material.getDiffuse());
     setFloat32(_locations.materialSpecular, material.getSpecular());
     setFloat32(_locations.materialShininess, material.getShininess());
 }
 
-void MeshShaderProgram::setGlobalLight(Light& globalLight) {
+void MainSceneShaderProgram::setGlobalLight(Light& globalLight) {
     setVector3(_locations.globalLightPosition, globalLight.getPosition());
     setVector3(_locations.globalLightColor, globalLight.getColor());
 }
 
-void MeshShaderProgram::beginAddLights() {
+void MainSceneShaderProgram::beginAddLights() {
     _lightIndex = 0;
 }
 
-void MeshShaderProgram::addLight(DirectedLight& light) {
+void MainSceneShaderProgram::addLight(DirectedLight& light) {
     setVector3(_locations.lightsPosition[_lightIndex], light.getPosition());
     setVector3(_locations.lightsDirection[_lightIndex], light.getDirection());
     setVector3(_locations.lightsColor[_lightIndex], light.getColor());
     _lightIndex++;
 }
 
-void MeshShaderProgram::endAddLights() {
+void MainSceneShaderProgram::endAddLights() {
     setInt32(_locations.lightsCount, _lightIndex);
 }
 
-void MeshShaderProgram::enableLight(bool enable) {
+void MainSceneShaderProgram::enableLight(bool enable) {
     setBoolean(_locations.enableLight, enable);
 }

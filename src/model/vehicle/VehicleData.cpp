@@ -58,7 +58,7 @@ VehicleData::VehicleData() {
     lightsColorIntensity = 20.0f;
     lightsColor.set(1.0f);
     lightsColor.mul(lightsColorIntensity);
-    maxLightsDistanceLength = lightsColorIntensity / 0.1f; // 0.1 есть в mesh.frag
+    maxLightsDistanceLength = lightsColorIntensity / 0.1f; // 0.1 есть в mainScene.frag
     maxLightsDistanceLengthSquared = maxLightsDistanceLength * maxLightsDistanceLength;
 
     /* chassis */

@@ -56,7 +56,7 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
     }
 }
 
-void WorldSegmentRenderer::render(MeshShaderProgram& shader, IGameObjectVisibility& objectVisibility) {
+void WorldSegmentRenderer::render(MainSceneShaderProgram& shader, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     Collection<WorldSegment*>& visibleSegments = objectVisibility.getVisibleSegments();

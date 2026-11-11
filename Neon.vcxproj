@@ -119,7 +119,7 @@
     <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
     <ClCompile Include="src\render\main\MainSceneRenderer.cpp" />
-    <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp" />
+    <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
     <ClCompile Include="src\render\main\VehicleRenderer.cpp" />
     <ClCompile Include="src\render\main\WorldSegmentRenderer.cpp" />
@@ -202,7 +202,7 @@
     <ClInclude Include="src\render\lib\VAORenderer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
     <ClInclude Include="src\render\main\MainSceneRenderer.h" />
-    <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h" />
+    <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
     <ClInclude Include="src\render\main\VehicleRenderer.h" />
@@ -265,8 +265,8 @@
     <None Include="src\render\shaders\common.glsl">
       <FileType>Document</FileType>
     </None>
-    <None Include="src\render\shaders\mesh.frag" />
-    <None Include="src\render\shaders\mesh.vert" />
+    <None Include="src\render\shaders\mainScene.frag" />
+    <None Include="src\render\shaders\mainScene.vert" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\common\Resource.rc" />

@@ -7,9 +7,9 @@
 #include <render/lib/ShaderProgram.h>
 #include <render/lib/opengl.h>
 
-class MeshShaderProgram : public ShaderProgram {
+class MainSceneShaderProgram : public ShaderProgram {
 
-    inline static const int maxLightsCount = 20; // есть в mesh.frag
+    inline static const int maxLightsCount = 20; // есть в mainScene.frag
 
     struct {
         GLint modelMatrix;
@@ -33,7 +33,7 @@ class MeshShaderProgram : public ShaderProgram {
     int _lightIndex;
 
 public:
-    MeshShaderProgram();
+    MainSceneShaderProgram();
     void setModelMatrix(TransformMatrix4& modelMatrix);
     void setViewMatrix(TransformMatrix4& viewMatrix);
     void setProjectionMatrix(TransformMatrix4& projectionMatrix);

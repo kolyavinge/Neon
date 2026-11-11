@@ -10,7 +10,7 @@ MainSceneRenderer::MainSceneRenderer(
     _worldSegmentRenderer(worldSegmentRenderer),
     _vehicleRenderer(vehicleRenderer),
     _debugRenderer(debugRenderer),
-    _meshShader(shaderProgramCollection.mesh) {
+    _mainSceneShader(shaderProgramCollection.mainScene) {
 }
 
 void MainSceneRenderer::render(
@@ -18,28 +18,28 @@ void MainSceneRenderer::render(
     Collection<Vehicle>& vehicles,
     Camera& camera,
     Light& globalLight) {
-    _meshShader.use();
-    _meshShader.setModelMatrix(TransformMatrix4::identity);
-    _meshShader.setViewMatrix(camera.getViewMatrix());
-    _meshShader.setProjectionMatrix(camera.getProjectionMatrix());
+    _mainSceneShader.use();
+    _mainSceneShader.setModelMatrix(TransformMatrix4::identity);
+    _mainSceneShader.setViewMatrix(camera.getViewMatrix());
+    _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
     setupLight(objectVisibility, vehicles, globalLight);
-    _worldSegmentRenderer.render(_meshShader, objectVisibility);
-    _vehicleRenderer.render(_meshShader, vehicles, objectVisibility);
-    _meshShader.unuse();
+    _worldSegmentRenderer.render(_mainSceneShader, objectVisibility);
+    _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
+    _mainSceneShader.unuse();
     //_debugRenderer.renderDebugInfo(gameWorld);
 }
 
 void MainSceneRenderer::setupLight(IGameObjectVisibility& objectVisibility, Collection<Vehicle>& vehicles, Light& globalLight) {
-    _meshShader.setGlobalLight(globalLight);
+    _mainSceneShader.setGlobalLight(globalLight);
 
-    _meshShader.beginAddLights();
+    _mainSceneShader.beginAddLights();
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         if (objectVisibility.isVehicleLightsVisible(vehicle)) {
             VehicleLights& lights = vehicle.getLights();
-            _meshShader.addLight(lights.getFrontLeftLight());
-            _meshShader.addLight(lights.getFrontRightLight());
+            _mainSceneShader.addLight(lights.getFrontLeftLight());
+            _mainSceneShader.addLight(lights.getFrontRightLight());
         }
     }
-    _meshShader.endAddLights();
+    _mainSceneShader.endAddLights();
 }

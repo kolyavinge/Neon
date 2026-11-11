@@ -10,8 +10,8 @@ ShaderCollection::ShaderCollection(
 
 void ShaderCollection::loadAllShaders() {
     loadShader(IDR_SHADER_COMMON, ShaderType::vertex, output common);
-    loadShader(IDR_SHADER_MESH_VERT, ShaderType::vertex, output meshVertex);
-    loadShader(IDR_SHADER_MESH_FRAG, ShaderType::fragment, output meshFragment);
+    loadShader(IDR_SHADER_MAIN_SCENE_VERT, ShaderType::vertex, output mainSceneVertex);
+    loadShader(IDR_SHADER_MAIN_SCENE_FRAG, ShaderType::fragment, output mainSceneFragment);
 }
 
 void ShaderCollection::loadShader(int shaderResourceId, ShaderType shaderType, output Shader& shader) {

@@ -16,7 +16,7 @@ void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
     _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
-void VehicleRenderer::render(MeshShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
+void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     shader.useTexture(false);
     for (int i = 0; i < vehicles.getCount(); i++) {
@@ -29,7 +29,7 @@ void VehicleRenderer::render(MeshShaderProgram& shader, Collection<Vehicle>& veh
     glDisable(GL_DEPTH_TEST);
 }
 
-void VehicleRenderer::render(MeshShaderProgram& shader, Vehicle& vehicle) {
+void VehicleRenderer::render(MainSceneShaderProgram& shader, Vehicle& vehicle) {
     // с включенным GL_CULL_FACE у кузова пропадают некоторые полигоны
     renderBody(shader, vehicle.getModelMatrix());
 
@@ -41,7 +41,7 @@ void VehicleRenderer::render(MeshShaderProgram& shader, Vehicle& vehicle) {
     glDisable(GL_CULL_FACE);
 }
 
-void VehicleRenderer::renderBody(MeshShaderProgram& shader, TransformMatrix4& vehicleModelMatrix) {
+void VehicleRenderer::renderBody(MainSceneShaderProgram& shader, TransformMatrix4& vehicleModelMatrix) {
     shader.setModelMatrix(vehicleModelMatrix);
     for (int i = 0; i < _vehicleBodyModel->getMeshesCount(); i++) {
         RenderMesh& mesh = _vehicleBodyModel->getMesh(i);
@@ -50,7 +50,7 @@ void VehicleRenderer::renderBody(MeshShaderProgram& shader, TransformMatrix4& ve
     }
 }
 
-void VehicleRenderer::renderWheel(MeshShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition) {
+void VehicleRenderer::renderWheel(MainSceneShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition) {
     Wheel& wheel = vehicle.getWheel(wheelPosition);
     RenderModel3d& wheelModel = *_wheelModels[(int)wheelPosition];
     shader.setModelMatrix(wheel.getModelMatrix());

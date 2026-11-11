@@ -1,6 +1,7 @@
 #include <common/resource.h>
 
 // все шейдеры являются ресурсами приложения
-IDR_SHADER_COMMON TEXTFILE    "src\\render\\shaders\\common.glsl"
-IDR_SHADER_MESH_VERT TEXTFILE "src\\render\\shaders\\mesh.vert"
-IDR_SHADER_MESH_FRAG TEXTFILE "src\\render\\shaders\\mesh.frag"
+
+IDR_SHADER_COMMON          TEXTFILE "src\\render\\shaders\\common.glsl"
+IDR_SHADER_MAIN_SCENE_VERT TEXTFILE "src\\render\\shaders\\mainScene.vert"
+IDR_SHADER_MAIN_SCENE_FRAG TEXTFILE "src\\render\\shaders\\mainScene.frag"

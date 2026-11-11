@@ -7,7 +7,7 @@ ShaderProgramCollection::ShaderProgramCollection(
 
 void ShaderProgramCollection::initAllPrograms() {
     //initProgram(output mainScene, 1, &_shaderCollection.common);
-    initProgram(output mesh, 2, &_shaderCollection.meshVertex, &_shaderCollection.meshFragment);
+    initProgram(output mainScene, 2, &_shaderCollection.mainSceneVertex, &_shaderCollection.mainSceneFragment);
 }
 
 void ShaderProgramCollection::initProgram(output ShaderProgram& program, int shadersCount, Shader* shaders ...) {

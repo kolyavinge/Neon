@@ -10,14 +10,14 @@
 #include <render/common/ShaderProgramCollection.h>
 #include <render/main/VehicleRenderer.h>
 #include <render/main/WorldSegmentRenderer.h>
-#include <render/shaderprograms/MeshShaderProgram.h>
+#include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class MainSceneRenderer : public Object {
 
     WorldSegmentRenderer& _worldSegmentRenderer;
     VehicleRenderer& _vehicleRenderer;
     DebugRenderer& _debugRenderer;
-    MeshShaderProgram& _meshShader;
+    MainSceneShaderProgram& _mainSceneShader;
 
 public:
     static MainSceneRenderer* resolve(Resolver& resolver) {

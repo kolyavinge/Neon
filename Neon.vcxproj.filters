@@ -237,7 +237,7 @@
     <ClCompile Include="src\model\common\cameras.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\shaderprograms\MeshShaderProgram.cpp">
+    <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\DebugRenderer.cpp">
@@ -632,7 +632,7 @@
     <ClInclude Include="src\model\common\cameras.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\shaderprograms\MeshShaderProgram.h">
+    <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\DebugRenderer.h">
@@ -742,7 +742,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\render\shaders\common.glsl" />
-    <None Include="src\render\shaders\mesh.frag" />
-    <None Include="src\render\shaders\mesh.vert" />
+    <None Include="src\render\shaders\mainScene.frag" />
+    <None Include="src\render\shaders\mainScene.vert" />
   </ItemGroup>
 </Project>
