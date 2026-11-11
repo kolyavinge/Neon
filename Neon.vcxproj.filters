@@ -231,9 +231,6 @@
     <ClCompile Include="src\render\main\VehicleRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\common\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -627,9 +624,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\main\VehicleRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\common\Camera.h">
