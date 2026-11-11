@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/TruncatedPlane.h>
 #include <lib/calc/Vector2.h>
 #include <lib/calc/Vector3.h>
@@ -10,7 +9,7 @@ enum class WorldPrimitiveKind {
     asphalt1,
     asphalt2,
     asphalt3,
-    metalBarrier1,
+    barrier,
     _count
 };
 
@@ -20,15 +19,12 @@ class WorldPrimitive : public Object {
 
 public:
     inline static const int pointsCount = 4;
-    inline static const float barrierLength = 2.0f;
-    inline static const float barrierHeight = 1.0f;
 
 private:
     WorldPrimitiveKind _kind;
     Array<Vector3, pointsCount> _points;
     TruncatedPlane _plane;
     Array<Vector2, pointsCount> _texCoords;
-    Vector3 _upNormal;
 
 public:
     WorldPrimitive();
@@ -44,9 +40,7 @@ public:
     bool isPointInFront(Vector3& point);
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     void setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4);
-    void setUpNormal(Vector3 upNormal);
     bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
-    TransformMatrix4 getTransformMatrix4();
 };
 
 class WorldPrimitiveMinMaxPointFinder : public Object {

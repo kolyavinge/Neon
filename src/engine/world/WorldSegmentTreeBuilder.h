@@ -5,7 +5,6 @@
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
 #include <model/world/Track.h>
-#include <model/world/WorldPrimitive.h>
 #include <model/world/WorldSegment.h>
 
 class WorldSegmentTreeBuilder : public Object, private IBSPTreeBuilder<WorldSegment> {
@@ -26,7 +25,7 @@ private:
 
     void initRoot(WorldSegment& rootSegment);
     void initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment);
-    SplittedPosition getSplittedPosition(Plane& splitPlane, WorldPrimitive& primitive);
+    SplittedPosition getSplittedPosition(Plane& splitPlane, Collection<Vector3>& points);
     SplittedPosition getSplittedPosition(Plane& splitPlane, Vector3& point);
     void removeEmptySegments(BSPTree<WorldSegment>& segmentTree);
 };

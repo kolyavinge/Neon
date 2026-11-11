@@ -3,7 +3,7 @@
 #include <common/AssetsDirectory.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
-#include <model/world/WorldPrimitive.h>
+#include <model/world/WorldObject.h>
 #include <render/lib/Model3d.h>
 #include <render/lib/Model3dLoader.h>
 
@@ -11,7 +11,7 @@ class Model3dCollection : public Object {
 
     AssetsDirectory& _assetsDirectory;
     Model3dLoader& _model3dLoader;
-    Array<Model3d*, (int)WorldPrimitiveKind::_count> _worldPrimitives;
+    Array<Model3d*, (int)WorldObjectKind::_count> _worldObjects;
 
 public:
     static Model3dCollection* resolve(Resolver& resolver) {
@@ -25,8 +25,9 @@ public:
         Model3dLoader& model3dLoader);
 
     void unload();
-    Model3d& getModelFor(WorldPrimitiveKind kind);
+    Model3d& getModelFor(WorldObjectKind kind);
 
 private:
-    String getModelNameFrom(WorldPrimitiveKind kind);
+    void scaleIfNeed(WorldObjectKind kind, Model3d* model);
+    String getModelNameFrom(WorldObjectKind kind);
 };

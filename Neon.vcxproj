@@ -92,6 +92,7 @@
     <ClCompile Include="src\model\vehicle\Vehicle.cpp" />
     <ClCompile Include="src\model\world\GroundBuilder.cpp" />
     <ClCompile Include="src\model\world\RoadBarrierBuilder.cpp" />
+    <ClCompile Include="src\model\world\WorldObject.cpp" />
     <ClCompile Include="src\model\world\WorldPrimitive.cpp" />
     <ClCompile Include="src\model\world\Track.cpp" />
     <ClCompile Include="src\engine\world\WorldSegmentTreeBuilder.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\model\common\common.h" />
     <ClInclude Include="src\model\common\RigidBody.h" />
     <ClInclude Include="src\model\world\RoadBarrierBuilder.h" />
+    <ClInclude Include="src\model\world\WorldObject.h" />
     <ClInclude Include="src\model\world\WorldPrimitive.h" />
     <ClInclude Include="src\model\world\Track.h" />
     <ClInclude Include="src\model\world\WorldSegment.h" />

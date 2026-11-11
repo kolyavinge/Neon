@@ -1,5 +1,5 @@
 #include <lib/calc/TransformMatrix4.h>
-#include <model/world/WorldPrimitive.h>
+#include <model/world/WorldObject.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
 #include <render/main/WorldSegmentRenderer.h>
@@ -43,16 +43,16 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
         Assert::isTrue(groundModel3d.getMeshesCount() > 0);
     }
 
-    if (worldSegment.getBarrierPrimitives().getCount() > 0) {
-        Model3d& totalBarrierModel3d = worldSegmentModels3d.addNew();
-        for (int barrierIndex = 0; barrierIndex < worldSegment.getBarrierPrimitives().getCount(); barrierIndex++) {
-            WorldPrimitive& barrier = *worldSegment.getBarrierPrimitives()[barrierIndex];
-            TransformMatrix4 transformMatrix = barrier.getTransformMatrix4();
-            Model3d barrierModel3d = _model3dCollection.getModelFor(barrier.getKind());
-            barrierModel3d.applyTransformMatrix4(transformMatrix);
-            totalBarrierModel3d.merge(barrierModel3d);
+    if (worldSegment.getWorldObjects().getCount() > 0) {
+        Model3d& totalObjectModel3d = worldSegmentModels3d.addNew();
+        for (int objectIndex = 0; objectIndex < worldSegment.getWorldObjects().getCount(); objectIndex++) {
+            WorldObject& object = *worldSegment.getWorldObjects()[objectIndex];
+            TransformMatrix4 transformMatrix = object.getTransformMatrix4();
+            Model3d objectModel3d = _model3dCollection.getModelFor(object.getKind());
+            objectModel3d.applyTransformMatrix4(transformMatrix);
+            totalObjectModel3d.merge(objectModel3d);
         }
-        Assert::isTrue(totalBarrierModel3d.getMeshesCount() > 0);
+        Assert::isTrue(totalObjectModel3d.getMeshesCount() > 0);
     }
 }
 

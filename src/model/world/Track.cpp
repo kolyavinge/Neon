@@ -14,6 +14,10 @@ Collection<WorldPrimitive>& Track::getBarrierPrimitives() {
     return _barrierPrimitives;
 }
 
+Collection<WorldObject>& Track::getWorldObjects() {
+    return _worldObjects;
+}
+
 Collection<Line>& Track::getOuterCorners() {
     return _outerCorners;
 }

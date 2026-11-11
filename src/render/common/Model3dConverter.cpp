@@ -8,7 +8,7 @@ Model3dConverter::Model3dConverter(
 
 void Model3dConverter::fromWorldPrimitives(Collection<WorldPrimitive*>& primitives, output Model3d& model3d) {
     List<Group<WorldPrimitiveKind, WorldPrimitive**>> grouped;
-    WorldPrimitiveKind(*getGroupKey)(WorldPrimitive * &pr) = [](WorldPrimitive*& pr) { return pr->getKind(); };
+    WorldPrimitiveKind(*getGroupKey)(WorldPrimitive*& pr) = [](WorldPrimitive*& pr) { return pr->getKind(); };
     primitives.groupBy(getGroupKey, output grouped);
 
     for (int i = 0; i < grouped.getCount(); i++) {
@@ -21,6 +21,7 @@ void Model3dConverter::fromWorldPrimitives(Collection<WorldPrimitive*>& primitiv
                 mesh.addVertex(primitive.getPoints()[pointIndex]);
                 mesh.addNormal(primitive.getFrontNormal());
                 mesh.addColor(0.1f, 0.4f, 0.1f, 1.0f); // для отладки, если рендерим без текстуры
+                //mesh.addColor(0.0f, 0.0f, 0.0f, 1.0f);
                 mesh.addTexCoord(primitive.getTexCoords()[pointIndex]);
             }
             mesh.addFacesForElement(primitiveIndex, WorldPrimitive::pointsCount);

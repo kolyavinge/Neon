@@ -21,6 +21,7 @@ void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segment
 void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
     rootSegment.setGroundPrimitives(_track->getGroundPrimitives());
     rootSegment.setBarrierPrimitives(_track->getBarrierPrimitives());
+    rootSegment.setWorldObjects(_track->getWorldObjects());
     rootSegment.setOuterCorners(_track->getOuterCorners());
     rootSegment.calculateBoundaryBox();
 }
@@ -30,7 +31,7 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
     Collection<WorldPrimitive*>& groundPrimitives = parentSegment.getGroundPrimitives();
     for (int i = 0; i < groundPrimitives.getCount(); i++) {
         WorldPrimitive& primitive = *groundPrimitives[i];
-        SplittedPosition position = getSplittedPosition(splitPlane, primitive);
+        SplittedPosition position = getSplittedPosition(splitPlane, primitive.getPoints());
         if (position == SplittedPosition::front) {
             frontChildSegment.addGroundPrimitive(primitive);
         } else if (position == SplittedPosition::back) {
@@ -45,7 +46,7 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
     Collection<WorldPrimitive*>& barrierPrimitives = parentSegment.getBarrierPrimitives();
     for (int i = 0; i < barrierPrimitives.getCount(); i++) {
         WorldPrimitive& primitive = *barrierPrimitives[i];
-        SplittedPosition position = getSplittedPosition(splitPlane, primitive);
+        SplittedPosition position = getSplittedPosition(splitPlane, primitive.getPoints());
         if (position == SplittedPosition::front) {
             frontChildSegment.addBarrierPrimitive(primitive);
         } else if (position == SplittedPosition::back) {
@@ -53,6 +54,21 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
         } else {
             frontChildSegment.addBarrierPrimitive(primitive);
             backChildSegment.addBarrierPrimitive(primitive);
+        }
+    }
+
+    // world objects
+    Collection<WorldObject*>& worldObjects = parentSegment.getWorldObjects();
+    for (int i = 0; i < worldObjects.getCount(); i++) {
+        WorldObject& object = *worldObjects[i];
+        SplittedPosition position = getSplittedPosition(splitPlane, object.getPoints());
+        if (position == SplittedPosition::front) {
+            frontChildSegment.addWorldObject(object);
+        } else if (position == SplittedPosition::back) {
+            backChildSegment.addWorldObject(object);
+        } else {
+            frontChildSegment.addWorldObject(object);
+            backChildSegment.addWorldObject(object);
         }
     }
 
@@ -72,9 +88,8 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
     backChildSegment.calculateBoundaryBox();
 }
 
-WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPosition(Plane& splitPlane, WorldPrimitive& primitive) {
+WorldSegmentTreeBuilder::SplittedPosition WorldSegmentTreeBuilder::getSplittedPosition(Plane& splitPlane, Collection<Vector3>& points) {
     int frontPoints = 0;
-    Collection<Vector3>& points = primitive.getPoints();
     for (int i = 0; i < points.getCount(); i++) {
         if (splitPlane.isPointInFront(points[i])) frontPoints++;
     }

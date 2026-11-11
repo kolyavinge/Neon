@@ -153,20 +153,22 @@ void MoonlightRide::makeGround() {
 void MoonlightRide::makeRoadBarriers() {
     RoadBarrierBuilder leftBarrierBuilder;
     leftBarrierBuilder
-        .setResultList(_barrierPrimitives)
+        .setWorldPrimitiveResultList(_barrierPrimitives)
+        .setWorldObjectResultList(_worldObjects)
         .setGroundPrimitives(_groundPrimitives)
         .setOuterCorners(_outerCorners)
         .setBarrierOrientation(BarrierOrientation::leftBarrier);
 
     RoadBarrierBuilder rightBarrierBuilder;
     rightBarrierBuilder
-        .setResultList(_barrierPrimitives)
+        .setWorldPrimitiveResultList(_barrierPrimitives)
+        .setWorldObjectResultList(_worldObjects)
         .setGroundPrimitives(_groundPrimitives)
         .setOuterCorners(_outerCorners)
         .setBarrierOrientation(BarrierOrientation::rightBarrier);
 
     leftBarrierBuilder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setKind(WorldObjectKind::metalFence1)
         .setPosition(Vector3(2.0f, 0.0f, 0.0f))
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(50)
@@ -176,7 +178,7 @@ void MoonlightRide::makeRoadBarriers() {
         .build();
 
     rightBarrierBuilder
-        .setKind(WorldPrimitiveKind::metalBarrier1)
+        .setKind(WorldObjectKind::metalFence1)
         .setPosition(Vector3(18.0f, 26.0f, 0.0f))
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
         .setCount(34)

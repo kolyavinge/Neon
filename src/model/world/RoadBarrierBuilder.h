@@ -3,6 +3,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/common.h>
+#include <model/world/WorldObject.h>
 #include <model/world/WorldPrimitive.h>
 
 enum class BarrierOrientation {
@@ -12,7 +13,7 @@ enum class BarrierOrientation {
 
 class RoadBarrierBuilder : public Object {
 
-    WorldPrimitiveKind _kind;
+    WorldObjectKind _kind;
     BarrierOrientation _orientation;
     Vector3 _lastPosition;
     Vector3 _prevDirection;
@@ -22,16 +23,18 @@ class RoadBarrierBuilder : public Object {
     int _count;
     List<WorldPrimitive>* _groundPrimitives;
     List<WorldPrimitive>* _resultPrimitives;
+    List<WorldObject>* _resultObjects;
     List<Line>* _outerCorners;
     WorldPrimitive* _lastBuiltPrimitive;
 
 public:
     RoadBarrierBuilder();
-    RoadBarrierBuilder& setResultList(List<WorldPrimitive>& resultPrimitives);
+    RoadBarrierBuilder& setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives);
+    RoadBarrierBuilder& setWorldObjectResultList(List<WorldObject>& resultObjects);
     RoadBarrierBuilder& setGroundPrimitives(List<WorldPrimitive>& groundPrimitives);
     RoadBarrierBuilder& setOuterCorners(List<Line>& outerCorners);
     RoadBarrierBuilder& setBarrierOrientation(BarrierOrientation orientation);
-    RoadBarrierBuilder& setKind(WorldPrimitiveKind kind);
+    RoadBarrierBuilder& setKind(WorldObjectKind kind);
     RoadBarrierBuilder& setPosition(Vector3 position);
     RoadBarrierBuilder& setDirection(Vector3 direction);
     RoadBarrierBuilder& rotateDirection(float angle);

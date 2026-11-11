@@ -333,6 +333,9 @@
     <ClCompile Include="src\engine\world\VisibilityStateLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\model\world\WorldObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -732,6 +735,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\world\VisibilityStateLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\world\WorldObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

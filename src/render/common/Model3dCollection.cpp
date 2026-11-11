@@ -9,36 +9,38 @@ Model3dCollection::Model3dCollection(
 }
 
 void Model3dCollection::unload() {
-    for (int i = 0; i < _worldPrimitives.getCount(); i++) {
-        delete _worldPrimitives[i];
-        _worldPrimitives[i] = nullptr;
+    for (int i = 0; i < _worldObjects.getCount(); i++) {
+        delete _worldObjects[i];
+        _worldObjects[i] = nullptr;
     }
 }
 
-Model3d& Model3dCollection::getModelFor(WorldPrimitiveKind kind) {
-    if (_worldPrimitives[(int)kind] == nullptr) {
+Model3d& Model3dCollection::getModelFor(WorldObjectKind kind) {
+    if (_worldObjects[(int)kind] == nullptr) {
         String modelDirectory = _assetsDirectory.getModels3d();
         String modelName = getModelNameFrom(kind);
         modelDirectory.append(modelName);
         Model3d* model = new Model3d();
         _model3dLoader.load(modelDirectory, output *model);
-        // пока обрабатываются только барьеры
         model->moveToCenter();
-        Measures measures = model->getMeasures();
-        model->scale(WorldPrimitive::barrierLength / measures.yLength);
-        _worldPrimitives[(int)kind] = model;
+        scaleIfNeed(kind, model);
+        _worldObjects[(int)kind] = model;
     }
 
-    return *_worldPrimitives[(int)kind];
+    return *_worldObjects[(int)kind];
 }
 
-String Model3dCollection::getModelNameFrom(WorldPrimitiveKind kind) {
+void Model3dCollection::scaleIfNeed(WorldObjectKind kind, Model3d* model) {
+    if (kind == WorldObjectKind::metalFence1) {
+        Measures measures = model->getMeasures();
+        model->scale(WorldObject::fenceLength / measures.yLength);
+    }
+}
+
+String Model3dCollection::getModelNameFrom(WorldObjectKind kind) {
     switch (kind) {
-        case WorldPrimitiveKind::metalBarrier1: return String("metal_barrier_1.obj");
-        case WorldPrimitiveKind::asphalt1:
-        case WorldPrimitiveKind::asphalt2:
-        case WorldPrimitiveKind::asphalt3:
-        case WorldPrimitiveKind::_count:
+        case WorldObjectKind::metalFence1: return String("metal_fence_1.obj");
+        case WorldObjectKind::_count:
         default: throw ArgumentException(L"Wrong kind to load a 3d model.");
     }
 }

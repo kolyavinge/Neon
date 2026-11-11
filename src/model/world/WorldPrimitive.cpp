@@ -64,33 +64,8 @@ void WorldPrimitive::setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vect
     _texCoords[3] = texCoord4;
 }
 
-void WorldPrimitive::setUpNormal(Vector3 upNormal) {
-    _upNormal = upNormal;
-}
-
 bool WorldPrimitive::hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint) {
     return _plane.hasCollision(startPoint, endPoint, eps, output collisionPoint, CollisionPointPosition::front);
-}
-
-TransformMatrix4 WorldPrimitive::getTransformMatrix4() {
-    if (_upNormal.isZero()) throw ArgumentException(L"UpNormal has not been set.");
-
-    TransformMatrix4 result;
-
-    Vector3 basePoint = getCenter();
-    TransformMatrix4 translate;
-    translate.translate(basePoint);
-
-    Vector3 y = _upNormal;
-    y.crossProduct(_plane.getFrontNormal());
-    y.normalize();
-    TransformMatrix4 rotate;
-    rotate.setCoordinateSystem(_plane.getFrontNormal(), y, _upNormal);
-
-    result.mul(translate);
-    result.mul(rotate);
-
-    return result;
 }
 
 WorldPrimitiveMinMaxPointFinder::WorldPrimitiveMinMaxPointFinder() {
