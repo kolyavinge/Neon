@@ -37,11 +37,11 @@ bool WorldObject::hasLight() {
     return _hasLight;
 }
 
-DirectedLight& WorldObject::getLight() {
+Light& WorldObject::getLight() {
     return _light;
 }
 
-void WorldObject::setLight(DirectedLight light) {
+void WorldObject::setLight(Light light) {
     _hasLight = true;
     _light = light;
 }

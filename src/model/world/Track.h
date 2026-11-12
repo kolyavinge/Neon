@@ -15,7 +15,7 @@ protected:
     List<WorldPrimitive> _barrierPrimitives;
     List<WorldObject> _worldObjects;
     List<Line> _outerCorners;
-    List<DirectedLight> _lights;
+    List<Light> _lights;
     List<Plane> _splitPlanes;
     Light _globalLight;
     Vector3 _playerCenter;
@@ -28,7 +28,7 @@ public:
     Collection<WorldPrimitive>& getBarrierPrimitives();
     Collection<WorldObject>& getWorldObjects();
     Collection<Line>& getOuterCorners();
-    Collection<DirectedLight>& getLights();
+    Collection<Light>& getLights();
     Light& getGlobalLight();
     Collection<Plane>& getSplitPlanes();
     Vector3 getPlayerCenter();

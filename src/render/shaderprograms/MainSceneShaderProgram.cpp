@@ -67,7 +67,7 @@ void MainSceneShaderProgram::beginAddLights() {
     _lightIndex = 0;
 }
 
-void MainSceneShaderProgram::addLight(DirectedLight& light) {
+void MainSceneShaderProgram::addLight(Light& light) {
     setVector3(_locations.lightsPosition[_lightIndex], light.getPosition());
     setVector3(_locations.lightsDirection[_lightIndex], light.getDirection());
     setVector3(_locations.lightsColor[_lightIndex], light.getColor());
@@ -78,7 +78,7 @@ void MainSceneShaderProgram::endAddLights() {
     setInt32(_locations.lightsCount, _lightIndex);
 }
 
-void MainSceneShaderProgram::addLights(Collection<DirectedLight*>& lights) {
+void MainSceneShaderProgram::addLights(Collection<Light*>& lights) {
     beginAddLights();
     for (int i = 0; i < lights.getCount(); i++) {
         addLight(*lights[i]);

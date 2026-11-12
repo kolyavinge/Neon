@@ -33,7 +33,7 @@ Collection<Line*>& WorldSegment::getOuterCorners() {
     return _outerCorners;
 }
 
-Collection<DirectedLight*>& WorldSegment::getLights() {
+Collection<Light*>& WorldSegment::getLights() {
     return _lights;
 }
 
@@ -71,7 +71,7 @@ void WorldSegment::setOuterCorners(Collection<Line>& outerCorners) {
     }
 }
 
-void WorldSegment::setLights(Collection<DirectedLight>& lights) {
+void WorldSegment::setLights(Collection<Light>& lights) {
     for (int i = 0; i < lights.getCount(); i++) {
         _lights.add(&lights[i]);
     }
@@ -95,7 +95,7 @@ void WorldSegment::addOuterCorner(Line& outerCorner) {
     _outerCorners.add(&outerCorner);
 }
 
-void WorldSegment::addLight(DirectedLight& light) {
+void WorldSegment::addLight(Light& light) {
     _lights.add(&light);
 }
 

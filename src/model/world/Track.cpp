@@ -22,7 +22,7 @@ Collection<Line>& Track::getOuterCorners() {
     return _outerCorners;
 }
 
-Collection<DirectedLight>& Track::getLights() {
+Collection<Light>& Track::getLights() {
     return _lights;
 }
 
@@ -57,7 +57,7 @@ void Track::collectLightsFromWorldObjects() {
         }
     }
 
-    DirectedLight l;
+    Light l;
     l.setPosition(Vector3(10.0f, 10.0f, 4.0f));
     l.setDirection(Vector3(0.0f, 0.0f, -1.0f));
     l.setColor(Vector3(10.0f));

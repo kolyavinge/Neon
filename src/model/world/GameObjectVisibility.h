@@ -23,15 +23,15 @@ public:
     virtual Collection<WorldSegment*>& getVisibleSegments() = 0;
     virtual VisibilityState getSegmentVisibilityState(int segmentIndex) = 0;
     virtual VisibilityState getVehicleVisibilityState(Vehicle& vehicle) = 0;
-    virtual Collection<DirectedLight*>& getLightsForSegment(WorldSegment& segment) = 0;
-    virtual Collection<DirectedLight*>& getLightsForVehicle(Vehicle& vehicle) = 0;
+    virtual Collection<Light*>& getLightsForSegment(WorldSegment& segment) = 0;
+    virtual Collection<Light*>& getLightsForVehicle(Vehicle& vehicle) = 0;
 };
 
 class GameObjectVisibility : public Object, public IGameObjectVisibility {
 
     BSPTree<WorldSegment>* _segmentTree;
     Collection<Vehicle>* _vehicles;
-    List<DirectedLight*> _lightsTmp;
+    List<Light*> _lightsTmp;
 
 public:
     void init(BSPTree<WorldSegment>& segmentTree, Collection<Vehicle>& vehicles, int allSegmentsCount);
@@ -45,6 +45,6 @@ public:
     Collection<WorldSegment*>& getVisibleSegments() override;
     VisibilityState getSegmentVisibilityState(int segmentIndex) override;
     VisibilityState getVehicleVisibilityState(Vehicle& vehicle) override;
-    Collection<DirectedLight*>& getLightsForSegment(WorldSegment& segment) override;
-    Collection<DirectedLight*>& getLightsForVehicle(Vehicle& vehicle) override;
+    Collection<Light*>& getLightsForSegment(WorldSegment& segment) override;
+    Collection<Light*>& getLightsForVehicle(Vehicle& vehicle) override;
 };

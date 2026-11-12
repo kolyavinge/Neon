@@ -43,9 +43,9 @@ public:
     void setMaterial(Material& material);
     void setGlobalLight(Light& globalLight);
     void beginAddLights();
-    void addLight(DirectedLight& light);
+    void addLight(Light& light);
     void endAddLights();
-    void addLights(Collection<DirectedLight*>& lights);
+    void addLights(Collection<Light*>& lights);
     void enableLight(bool enable);
     void enableSpecular(bool enable);
 

@@ -22,7 +22,7 @@ VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle
     return vehicleVisibilityStates[vehicle.getId()];
 }
 
-Collection<DirectedLight*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segment) {
+Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segment) {
     _lightsTmp.clear();
     _lightsTmp.addRange(segment.getLights());
     float maxDistanceLengthSquared = _vehicles->first().getData().maxLightsDistanceLengthSquared;
@@ -37,7 +37,7 @@ Collection<DirectedLight*>& GameObjectVisibility::getLightsForSegment(WorldSegme
     return _lightsTmp;
 }
 
-Collection<DirectedLight*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
+Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
     _lightsTmp.clear();
     WorldSegment& vehicleSegment = _segmentTree->findNodeDataByPoint(vehicle.getCenter());
     _lightsTmp.addRange(vehicleSegment.getLights());

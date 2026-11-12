@@ -6,11 +6,11 @@ Vector3 VehicleLights::getFrontCenter() {
     return _frontCenter;
 }
 
-DirectedLight& VehicleLights::getFrontLeftLight() {
+Light& VehicleLights::getFrontLeftLight() {
     return _frontLeftLight;
 }
 
-DirectedLight& VehicleLights::getFrontRightLight() {
+Light& VehicleLights::getFrontRightLight() {
     return _frontRightLight;
 }
 

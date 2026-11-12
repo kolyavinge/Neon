@@ -43,6 +43,7 @@ void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse) {
     // не считать lightPositionView - PositionView
     vec3 lightPositionView = vec3(viewMatrix * vec4(globalLight.position, 1.0));
     vec3 s = normalize(lightPositionView - PositionView);
+    //vec3 s = vec3(viewMatrix * vec4(globalLight.direction, 0.0));
     float sDotN = max(dot(s, n), 0.0);
     vec3 v = normalize(-PositionView);
     ambient += globalLight.color * material.ambient;

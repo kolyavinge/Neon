@@ -87,9 +87,9 @@ void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& spli
     }
 
     // lights
-    Collection<DirectedLight*>& lights = parentSegment.getLights();
+    Collection<Light*>& lights = parentSegment.getLights();
     for (int i = 0; i < lights.getCount(); i++) {
-        DirectedLight& light = *lights[i];
+        Light& light = *lights[i];
         SplittedPosition position = getSplittedPosition(splitPlane, light.getPosition());
         if (position == SplittedPosition::front) {
             frontChildSegment.addLight(light);

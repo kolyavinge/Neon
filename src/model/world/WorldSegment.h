@@ -15,7 +15,7 @@ class WorldSegment : Object {
     List<WorldPrimitive*> _groundAndBarrierPrimitives;
     List<WorldObject*> _worldObjects;
     List<Line*> _outerCorners;
-    List<DirectedLight*> _lights;
+    List<Light*> _lights;
     Rect2d _boundaryBox;
     Vector3 _center;
 
@@ -28,18 +28,18 @@ public:
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();
     Collection<WorldObject*>& getWorldObjects();
     Collection<Line*>& getOuterCorners();
-    Collection<DirectedLight*>& getLights();
+    Collection<Light*>& getLights();
     Rect2d& getBoundaryBox();
     Vector3 getCenter(); // TODO не используется
     void setGroundPrimitives(Collection<WorldPrimitive>& primitives);
     void setBarrierPrimitives(Collection<WorldPrimitive>& primitives);
     void setWorldObjects(Collection<WorldObject>& objects);
     void setOuterCorners(Collection<Line>& outerCorners);
-    void setLights(Collection<DirectedLight>& lights);
+    void setLights(Collection<Light>& lights);
     void addGroundPrimitive(WorldPrimitive& primitive);
     void addBarrierPrimitive(WorldPrimitive& primitive);
     void addWorldObject(WorldObject& object);
     void addOuterCorner(Line& outerCorner);
-    void addLight(DirectedLight& light);
+    void addLight(Light& light);
     void calculateBoundaryBox();
 };
