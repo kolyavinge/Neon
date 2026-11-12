@@ -66,6 +66,7 @@ void WorldSegmentRenderer::render(MainSceneShaderProgram& shader, IGameObjectVis
         bool useTextureAndLight = state > VisibilityState::shape;
         shader.useTexture(useTextureAndLight);
         shader.enableLight(useTextureAndLight);
+        shader.enableSpecular(state > VisibilityState::low);
         if (useTextureAndLight) {
             shader.addLights(objectVisibility.getLightsForSegment(worldSegment));
         }

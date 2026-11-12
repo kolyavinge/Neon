@@ -25,6 +25,7 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>
         if (state == VisibilityState::notVisible) continue;
         bool enableLight = state > VisibilityState::shape;
         shader.enableLight(enableLight);
+        shader.enableSpecular(state > VisibilityState::low);
         if (enableLight) {
             shader.addLights(objectVisibility.getLightsForVehicle(vehicle));
         }

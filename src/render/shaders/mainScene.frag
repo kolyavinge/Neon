@@ -33,22 +33,20 @@ uniform struct {
 uniform int lightsCount;
 
 uniform bool enableLight;
+uniform bool enableSpecular;
 
 const float maxDepth = 500.0;
 
-void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse, inout vec3 specular) {
+void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse) {
     vec3 n = normalize(NormalView);
+    // TODO передавать сюда направление к свету сразу умноженное на viewMatrix
+    // не считать lightPositionView - PositionView
     vec3 lightPositionView = vec3(viewMatrix * vec4(globalLight.position, 1.0));
     vec3 s = normalize(lightPositionView - PositionView);
     float sDotN = max(dot(s, n), 0.0);
     vec3 v = normalize(-PositionView);
-    vec3 h = normalize(v + s);
-    float hDotN = max(dot(h, n), 0.0);
     ambient += globalLight.color * material.ambient;
     diffuse += globalLight.color * material.diffuse * sDotN;
-    if (sDotN > 0.0) {
-        specular += globalLight.color * material.specular * pow(hDotN, material.shininess);
-    }
 }
 
 void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse, inout vec3 specular) {
@@ -62,11 +60,11 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     vec3 n = normalize(NormalView);
     float sDotN = max(dot(s, n), 0.0);
     vec3 v = normalize(-PositionView);
-    vec3 h = normalize(v + s);
-    float hDotN = max(dot(h, n), 0.0);
     ambient += colorIntensity * material.ambient;
     diffuse += colorIntensity * material.diffuse * sDotN;
-    if (sDotN > 0.0) {
+    if (enableSpecular && sDotN > 0.0) {
+        vec3 h = normalize(v + s);
+        float hDotN = max(dot(h, n), 0.0);
         specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
     }
 }
@@ -85,7 +83,7 @@ void main() {
     FragColor *= depthFactor;
     if (enableLight) {
         vec3 ambient = vec3(0.0), diffuse = vec3(0.0), specular = vec3(0.0);
-        calculateGlobalLightColor(ambient, diffuse, specular);
+        calculateGlobalLightColor(ambient, diffuse);
         for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
             calculateLightColor(lightIndex, ambient, diffuse, specular);
         }

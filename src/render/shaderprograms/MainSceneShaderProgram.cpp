@@ -28,6 +28,7 @@ void MainSceneShaderProgram::initAfterLink() {
     }
     _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
     _locations.enableLight = glGetUniformLocation(_id, "enableLight");
+    _locations.enableSpecular = glGetUniformLocation(_id, "enableSpecular");
 }
 
 void MainSceneShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
@@ -87,4 +88,8 @@ void MainSceneShaderProgram::addLights(Collection<DirectedLight*>& lights) {
 
 void MainSceneShaderProgram::enableLight(bool enable) {
     setBoolean(_locations.enableLight, enable);
+}
+
+void MainSceneShaderProgram::enableSpecular(bool enable) {
+    setBoolean(_locations.enableSpecular, enable);
 }

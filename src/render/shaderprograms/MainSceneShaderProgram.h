@@ -28,6 +28,7 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint lightsColor[maxLightsCount];
         GLint lightsCount;
         GLint enableLight;
+        GLint enableSpecular;
     } _locations = {};
 
     int _lightIndex;
@@ -46,6 +47,7 @@ public:
     void endAddLights();
     void addLights(Collection<DirectedLight*>& lights);
     void enableLight(bool enable);
+    void enableSpecular(bool enable);
 
 protected:
     void initAfterLink() override;
