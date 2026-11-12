@@ -4,7 +4,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/Camera.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/GameObjectVisibility.h>
 #include <render/common/ShaderProgramCollection.h>

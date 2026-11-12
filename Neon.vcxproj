@@ -37,7 +37,7 @@
     <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp" />
     <ClCompile Include="src\engine\world\GameObjectVisibilityUpdater.cpp" />
     <ClCompile Include="src\lib\input\Joystick.cpp" />
-    <ClCompile Include="src\model\common\light.cpp" />
+    <ClCompile Include="src\model\common\Light.cpp" />
     <ClCompile Include="src\model\vehicle\VehicleLights.cpp" />
     <ClCompile Include="src\model\world\GameObjectVisibility.cpp" />
     <ClCompile Include="src\model\world\GameWorld.cpp" />
@@ -143,7 +143,7 @@
     <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h" />
     <ClInclude Include="src\engine\world\GameObjectVisibilityUpdater.h" />
     <ClInclude Include="src\lib\input\Joystick.h" />
-    <ClInclude Include="src\model\common\light.h" />
+    <ClInclude Include="src\model\common\Light.h" />
     <ClInclude Include="src\model\tracks\MoonlightRide.h" />
     <ClInclude Include="src\engine\world\TrackCollection.h" />
     <ClInclude Include="src\model\vehicle\VehicleLights.h" />

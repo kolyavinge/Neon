@@ -2,7 +2,7 @@
 
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/system.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 #include <render/lib/Material.h>
 #include <render/lib/ShaderProgram.h>
 #include <render/lib/opengl.h>

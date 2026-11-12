@@ -4,7 +4,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/collections/BSPTree.h>
 #include <lib/system.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/WorldSegment.h>
 

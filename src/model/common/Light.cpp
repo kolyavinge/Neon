@@ -1,4 +1,4 @@
-#include <model/common/light.h>
+#include <model/common/Light.h>
 
 Vector3 Light::getPosition() {
     return _position;

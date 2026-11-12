@@ -1,6 +1,6 @@
 #include <engine/world/WorldSegmentTreeBuilder.h>
 #include <model/common/common.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;

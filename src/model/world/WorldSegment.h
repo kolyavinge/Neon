@@ -3,7 +3,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/common.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 #include <model/world/WorldObject.h>
 #include <model/world/WorldPrimitive.h>
 

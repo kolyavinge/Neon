@@ -300,7 +300,7 @@
     <ClCompile Include="src\lib\input\Joystick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\common\light.cpp">
+    <ClCompile Include="src\model\common\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\common\Model3dCollection.cpp">
@@ -698,7 +698,7 @@
     <ClInclude Include="src\lib\input\Joystick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\common\light.h">
+    <ClInclude Include="src\model\common\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\common\Model3dCollection.h">

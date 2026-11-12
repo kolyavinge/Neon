@@ -3,7 +3,7 @@
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/light.h>
+#include <model/common/Light.h>
 
 enum class WorldObjectKind {
     metalFence1,
