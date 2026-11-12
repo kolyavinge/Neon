@@ -66,13 +66,9 @@ void WorldSegmentRenderer::render(MainSceneShaderProgram& shader, IGameObjectVis
         bool useTextureAndLight = state > VisibilityState::shape;
         shader.useTexture(useTextureAndLight);
         shader.enableLight(useTextureAndLight);
-        //if (useTextureAndLight) {
-        //    shader.beginAddSegmentLights();
-        //    for (int i = 0; i < worldSegment.getLights().getCount(); i++) {
-        //        shader.addSegmentLight(*worldSegment.getLights()[i]);
-        //    }
-        //    shader.endAddSegmentLights();
-        //}
+        if (useTextureAndLight) {
+            shader.addLights(objectVisibility.getLightsForSegment(worldSegment));
+        }
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);

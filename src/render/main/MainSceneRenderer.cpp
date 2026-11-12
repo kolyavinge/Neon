@@ -22,24 +22,9 @@ void MainSceneRenderer::render(
     _mainSceneShader.setModelMatrix(TransformMatrix4::identity);
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());
     _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
-    setupLight(objectVisibility, vehicles, globalLight);
+    _mainSceneShader.setGlobalLight(globalLight);
     _worldSegmentRenderer.render(_mainSceneShader, objectVisibility);
     _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
     _mainSceneShader.unuse();
     //_debugRenderer.renderDebugInfo(gameWorld);
-}
-
-void MainSceneRenderer::setupLight(IGameObjectVisibility& objectVisibility, Collection<Vehicle>& vehicles, Light& globalLight) {
-    _mainSceneShader.setGlobalLight(globalLight);
-
-    _mainSceneShader.beginAddLights();
-    for (int i = 0; i < vehicles.getCount(); i++) {
-        Vehicle& vehicle = vehicles[i];
-        if (objectVisibility.isVehicleLightsVisible(vehicle)) {
-            VehicleLights& lights = vehicle.getLights();
-            _mainSceneShader.addLight(lights.getFrontLeftLight());
-            _mainSceneShader.addLight(lights.getFrontRightLight());
-        }
-    }
-    _mainSceneShader.endAddLights();
 }

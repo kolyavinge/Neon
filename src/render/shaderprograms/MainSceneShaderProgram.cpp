@@ -77,6 +77,14 @@ void MainSceneShaderProgram::endAddLights() {
     setInt32(_locations.lightsCount, _lightIndex);
 }
 
+void MainSceneShaderProgram::addLights(Collection<DirectedLight*>& lights) {
+    beginAddLights();
+    for (int i = 0; i < lights.getCount(); i++) {
+        addLight(*lights[i]);
+    }
+    endAddLights();
+}
+
 void MainSceneShaderProgram::enableLight(bool enable) {
     setBoolean(_locations.enableLight, enable);
 }

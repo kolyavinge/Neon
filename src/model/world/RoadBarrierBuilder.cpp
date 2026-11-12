@@ -88,6 +88,8 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         p3.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
         Vector3 p4 = p1;
         p4.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+        // TODO подумать как обьединять примитивы в один длинный, если они идут друг за другом
+        // только примитивы, обьекты остаются поштучно
         WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
             ? WorldPrimitive(WorldPrimitiveKind::barrier, p1, p2, p3, p4)
             : WorldPrimitive(WorldPrimitiveKind::barrier, p4, p3, p2, p1);

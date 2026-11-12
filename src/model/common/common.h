@@ -35,6 +35,7 @@ public:
     Vector3 upRight;
     void addMultiplied(Vector3& v, float multipliedBy);
     void subMultiplied(Vector3& v, float multipliedBy);
+    float getNearestLengthSquaredTo(Vector3 point);
 };
 
 class Box3dPoint : public Object {

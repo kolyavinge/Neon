@@ -11,7 +11,6 @@ void GameObjectVisibilityUpdater::updateVisibility(
     BSPTreeNode<WorldSegment>& segmentTreeRoot, Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
     updateWorldSegmentVisibility(segmentTreeRoot, camera, output objectVisibility);
     updateVehicleVisibility(vehicles, camera, output objectVisibility);
-    updateVehicleLightsVisibility(vehicles, camera, output objectVisibility);
 }
 
 void GameObjectVisibilityUpdater::updateWorldSegmentVisibility(
@@ -86,7 +85,8 @@ void GameObjectVisibilityUpdater::updateSegmentVisibilityStates(output GameObjec
     }
 }
 
-void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
+void GameObjectVisibilityUpdater::updateVehicleVisibility(
+    Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         Collection<Vector3>& bodyPoints = vehicle.getBody().getPoints();
@@ -97,17 +97,5 @@ void GameObjectVisibilityUpdater::updateVehicleVisibility(Collection<Vehicle>& v
             camera.inFrustum(bodyPoints[Box3dPoint::topUpRight]);
         objectVisibility.vehicleVisibilityStates[vehicle.getId()] = isVisible ?
             _visibilityStateLogic.getStateForVehicle(vehicle, *_camera) : VisibilityState::notVisible;
-    }
-}
-
-void GameObjectVisibilityUpdater::updateVehicleLightsVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
-    float maxDistanceLengthSquared = vehicles.first().getData().maxLightsDistanceLengthSquared;
-    for (int i = 0; i < vehicles.getCount(); i++) {
-        Vehicle& vehicle = vehicles[i];
-        bool isVisible =
-            objectVisibility.vehicleVisibilityStates[vehicle.getId()] >= VisibilityState::medium ||
-            (!Numeric::floatEquals(camera.getLookDirection().dotProduct(vehicle.getChassisFrontNormal()), -1.0f, 0.1f) &&
-                camera.getPosition().getLengthSquaredTo(vehicle.getCenter()) < maxDistanceLengthSquared);
-        objectVisibility.vehicleLightsVisibility[vehicle.getId()] = isVisible;
     }
 }

@@ -44,6 +44,7 @@ public:
     void beginAddLights();
     void addLight(DirectedLight& light);
     void endAddLights();
+    void addLights(Collection<DirectedLight*>& lights);
     void enableLight(bool enable);
 
 protected:

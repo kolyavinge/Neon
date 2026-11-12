@@ -2,6 +2,10 @@
 #include <lib/calc/Math.h>
 #include <model/vehicle/VehicleLights.h>
 
+Vector3 VehicleLights::getFrontCenter() {
+    return _frontCenter;
+}
+
 DirectedLight& VehicleLights::getFrontLeftLight() {
     return _frontLeftLight;
 }
@@ -25,4 +29,6 @@ void VehicleLights::calculatePosition(
     _frontRightLight.setPosition(position);
     _frontRightLight.setDirection(direction);
     _frontRightLight.setColor(color);
+
+    _frontCenter = _frontLeftLight.getPosition().getMiddleTo(_frontRightLight.getPosition());
 }

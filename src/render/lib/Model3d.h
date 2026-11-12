@@ -62,6 +62,7 @@ public:
     void applyTransformMatrix4(TransformMatrix4& m);
     void merge(Model3d& model3d);
     void clear();
+    int getTotalFacesCount();
 
 private:
     Vector3 getMinVertex();

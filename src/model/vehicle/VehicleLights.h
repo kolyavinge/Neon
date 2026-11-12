@@ -6,10 +6,12 @@
 
 class VehicleLights : public Object {
 
+    Vector3 _frontCenter;
     DirectedLight _frontLeftLight;
     DirectedLight _frontRightLight;
 
 public:
+    Vector3 getFrontCenter();
     DirectedLight& getFrontLeftLight();
     DirectedLight& getFrontRightLight();
     void calculatePosition(

@@ -32,5 +32,4 @@ private:
     int getPointsFromFrustumPlane(FrustumPlanePosition position, Rect2d& box);
     void updateSegmentVisibilityStates(output GameObjectVisibility& objectVisibility);
     void updateVehicleVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility);
-    void updateVehicleLightsVisibility(Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility);
 };

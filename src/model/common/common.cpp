@@ -1,3 +1,4 @@
+#include <lib/calc/Math.h>
 #include <model/common/common.h>
 
 Line::Line() {}
@@ -29,6 +30,12 @@ void Rect2d::subMultiplied(Vector3& v, float multipliedBy) {
     downRight.subMultiplied(v, multipliedBy);
     upLeft.subMultiplied(v, multipliedBy);
     upRight.subMultiplied(v, multipliedBy);
+}
+
+float Rect2d::getNearestLengthSquaredTo(Vector3 point) {
+    return Math::min(
+        Math::min(downLeft.getLengthSquaredTo(point), downRight.getLengthSquaredTo(point)),
+        Math::min(upLeft.getLengthSquaredTo(point), upRight.getLengthSquaredTo(point)));
 }
 
 void Box3d::setMeasures(Measures& measures) {

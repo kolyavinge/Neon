@@ -41,5 +41,4 @@ public:
         Light& globalLight);
 
 private:
-    void setupLight(IGameObjectVisibility& objectVisibility, Collection<Vehicle>& vehicles, Light& globalLight);
 };

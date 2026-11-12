@@ -23,7 +23,11 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>
         Vehicle& vehicle = vehicles[i];
         VisibilityState state = objectVisibility.getVehicleVisibilityState(vehicle);
         if (state == VisibilityState::notVisible) continue;
-        shader.enableLight(state > VisibilityState::shape);
+        bool enableLight = state > VisibilityState::shape;
+        shader.enableLight(enableLight);
+        if (enableLight) {
+            shader.addLights(objectVisibility.getLightsForVehicle(vehicle));
+        }
         render(shader, vehicle);
     }
     glDisable(GL_DEPTH_TEST);

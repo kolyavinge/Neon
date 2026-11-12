@@ -223,6 +223,15 @@ void Model3d::clear() {
     _textures.clear();
 }
 
+int Model3d::getTotalFacesCount() {
+    int result = 0;
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        result += _meshes[i].faces.getCount();
+    }
+
+    return result;
+}
+
 Vector3 Model3d::getMinVertex() {
     float minX = _meshes[0].vertices[0];
     float minY = _meshes[0].vertices[1];
