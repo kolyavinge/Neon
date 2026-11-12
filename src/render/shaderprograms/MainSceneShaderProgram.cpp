@@ -15,7 +15,7 @@ void MainSceneShaderProgram::initAfterLink() {
     _locations.materialDiffuse = glGetUniformLocation(_id, "material.diffuse");
     _locations.materialSpecular = glGetUniformLocation(_id, "material.specular");
     _locations.materialShininess = glGetUniformLocation(_id, "material.shininess");
-    _locations.globalLightPosition = glGetUniformLocation(_id, "globalLight.position");
+    _locations.globalLightDirectionView = glGetUniformLocation(_id, "globalLight.directionView");
     _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
     UniformArray lightsPosition, lightsDirection, lightsColor;
     lightsPosition.init(maxLightsCount, "lights", "position");
@@ -58,8 +58,9 @@ void MainSceneShaderProgram::setMaterial(Material& material) {
     setFloat32(_locations.materialShininess, material.getShininess());
 }
 
-void MainSceneShaderProgram::setGlobalLight(Light& globalLight) {
-    setVector3(_locations.globalLightPosition, globalLight.getPosition());
+void MainSceneShaderProgram::setGlobalLight(TransformMatrix4& viewMatrix, Light& globalLight) {
+    Vector3 directionView = viewMatrix.mulVector(globalLight.getDirection());
+    setVector3(_locations.globalLightDirectionView, directionView);
     setVector3(_locations.globalLightColor, globalLight.getColor());
 }
 

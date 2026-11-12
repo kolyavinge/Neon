@@ -22,7 +22,7 @@ void MainSceneRenderer::render(
     _mainSceneShader.setModelMatrix(TransformMatrix4::identity);
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());
     _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
-    _mainSceneShader.setGlobalLight(globalLight);
+    _mainSceneShader.setGlobalLight(camera.getViewMatrix(), globalLight);
     _worldSegmentRenderer.render(_mainSceneShader, objectVisibility);
     _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
     _mainSceneShader.unuse();

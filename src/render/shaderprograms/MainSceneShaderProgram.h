@@ -21,7 +21,7 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint materialDiffuse;
         GLint materialSpecular;
         GLint materialShininess;
-        GLint globalLightPosition;
+        GLint globalLightDirectionView;
         GLint globalLightColor;
         GLint lightsPosition[maxLightsCount];
         GLint lightsDirection[maxLightsCount];
@@ -41,7 +41,7 @@ public:
     void setAlphaFactor(float alphaFactor);
     void useTexture(bool useTexture);
     void setMaterial(Material& material);
-    void setGlobalLight(Light& globalLight);
+    void setGlobalLight(TransformMatrix4& viewMatrix, Light& globalLight);
     void beginAddLights();
     void addLight(Light& light);
     void endAddLights();

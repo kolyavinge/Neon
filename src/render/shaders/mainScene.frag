@@ -20,7 +20,7 @@ uniform struct Material {
 } material;
 
 uniform struct {
-    vec3 position;
+    vec3 directionView;
     vec3 color;
 } globalLight;
 
@@ -38,14 +38,9 @@ uniform bool enableSpecular;
 const float maxDepth = 500.0;
 
 void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse) {
+    vec3 s = -globalLight.directionView;
     vec3 n = normalize(NormalView);
-    // TODO передавать сюда направление к свету сразу умноженное на viewMatrix
-    // не считать lightPositionView - PositionView
-    vec3 lightPositionView = vec3(viewMatrix * vec4(globalLight.position, 1.0));
-    vec3 s = normalize(lightPositionView - PositionView);
-    //vec3 s = vec3(viewMatrix * vec4(globalLight.direction, 0.0));
     float sDotN = max(dot(s, n), 0.0);
-    vec3 v = normalize(-PositionView);
     ambient += globalLight.color * material.ambient;
     diffuse += globalLight.color * material.diffuse * sDotN;
 }
@@ -54,16 +49,17 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     vec3 lightPositionView = vec3(viewMatrix * vec4(lights[lightIndex].position, 1.0));
     vec3 lightDirection = lightPositionView - PositionView;
     float lightDistance = length(lightDirection);
+    // TODO проверять макс дистанцию и return
     vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
     vec3 s = normalize(lightDirection);
     vec3 colorIntensity = lights[lightIndex].color / lightDistance * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
-    if (length(colorIntensity) < 0.1) return; // 0.1 есть в VehicleData
+    if (length(colorIntensity) < 0.1) return; // 0.1 есть в VehicleData ! TODO это убрать
     vec3 n = normalize(NormalView);
     float sDotN = max(dot(s, n), 0.0);
-    vec3 v = normalize(-PositionView);
     ambient += colorIntensity * material.ambient;
     diffuse += colorIntensity * material.diffuse * sDotN;
     if (enableSpecular && sDotN > 0.0) {
+        vec3 v = normalize(-PositionView);
         vec3 h = normalize(v + s);
         float hDotN = max(dot(h, n), 0.0);
         specular += colorIntensity * material.specular * pow(hDotN, material.shininess);

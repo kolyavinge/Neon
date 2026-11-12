@@ -13,7 +13,7 @@ String MoonlightRide::getName() {
 void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
-    _globalLight.setPosition(Vector3(0.0f, CommonConstants::maxPerspectiveDepth - 1.0f, CommonConstants::maxPerspectiveDepth - 1.0f));
+    _globalLight.setDirection(Vector3(1.0f, -1.0f, -1.0f).getNormalized());
     _globalLight.setColor(Vector3(0.2f));
     setPlayerPosition();
 }
