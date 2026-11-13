@@ -285,7 +285,7 @@
     <ClCompile Include="src\engine\world\GameObjectVisibilityUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\world\WorldSegmentDataFinder.cpp">
+    <ClCompile Include="src\model\world\WorldSegmentCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\render\main\WorldSegmentRenderer.cpp">
@@ -683,7 +683,7 @@
     <ClInclude Include="src\engine\world\GameObjectVisibilityUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\world\WorldSegmentDataFinder.h">
+    <ClInclude Include="src\model\world\WorldSegmentCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\main\WorldSegmentRenderer.h">

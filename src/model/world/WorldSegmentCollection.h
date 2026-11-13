@@ -7,14 +7,12 @@
 #include <model/world/WorldPrimitive.h>
 #include <model/world/WorldSegment.h>
 
-class WorldSegmentDataFinder : public Object {
+class WorldSegmentCollection : public Object {
 
-    BSPTree<WorldSegment>* _segmentTree;
+    BSPTree<WorldSegment>& _segmentTree;
 
 public:
-    WorldSegmentDataFinder();
-    void init(BSPTree<WorldSegment>& segmentTree);
+    WorldSegmentCollection(BSPTree<WorldSegment>& segmentTree);
     WorldSegment& getWorldSegmentForPoint(Vector3 point);
     Collection<WorldPrimitive*>& getGroundPrimitivesForSpring(Spring& spring);
-    Collection<WorldPrimitive*>& getGroundAndBarrierPrimitivesForPoint(Vector3 point);
 };

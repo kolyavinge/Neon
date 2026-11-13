@@ -4,10 +4,12 @@
 GameWorldInitializer::GameWorldInitializer(
     TrackCollection& trackCollection,
     WorldSegmentTreeBuilder& worldSegmentTreeBuilder,
-    WorldSegmentDataFinder& segmentDataFinder) :
+    WheelGroundContactLogic& wheelGroundContactLogic,
+    BarrierCollisionLogic& barrierCollisionLogic) :
     _trackCollection(trackCollection),
     _worldSegmentTreeBuilder(worldSegmentTreeBuilder),
-    _segmentDataFinder(segmentDataFinder) {
+    _wheelGroundContactLogic(wheelGroundContactLogic),
+    _barrierCollisionLogic(barrierCollisionLogic) {
 }
 
 void GameWorldInitializer::init(GameWorld& gameWorld) {
@@ -15,9 +17,10 @@ void GameWorldInitializer::init(GameWorld& gameWorld) {
     Track& track = _trackCollection.get(Tracks::moonlightRide);
     gameWorld.setTrack(track);
     _worldSegmentTreeBuilder.build(track, gameWorld.getSegmentTree());
+    _wheelGroundContactLogic.init(gameWorld.getSegmentCollection());
+    _barrierCollisionLogic.init(gameWorld.getSegmentCollection());
     gameWorld.getObjectVisibility().init(
-        gameWorld.getSegmentTree(), gameWorld.getAllVehicles(), gameWorld.getSegmentTree().getCountOfAllNodes());
-    _segmentDataFinder.init(gameWorld.getSegmentTree());
+        gameWorld.getSegmentCollection(), gameWorld.getAllVehicles(), gameWorld.getSegmentTree().getCountOfAllNodes());
     // init player position for debug
     if (!track.getPlayerCenter().isZero()) {
         gameWorld.getPlayerVehicle().setCenter(track.getPlayerCenter());

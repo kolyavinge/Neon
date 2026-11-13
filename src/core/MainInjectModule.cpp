@@ -21,7 +21,6 @@
 #include <engine/world/VehiclesCollisionLogic.h>
 #include <engine/world/VisibilityStateLogic.h>
 #include <engine/world/WheelGroundContactLogic.h>
-#include <engine/world/WorldSegmentDataFinder.h>
 #include <engine/world/WorldSegmentTreeBuilder.h>
 #include <lib/Environment.h>
 #include <lib/FileSystem.h>
@@ -59,15 +58,14 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<SteeringLogic>(SteeringLogic::resolve);
     binder.bindSingleton<VehicleUpdater>(VehicleUpdater::resolve);
     binder.bindSingleton<WheelLogic>();
-    binder.bindSingleton<BarrierCollisionLogic>(BarrierCollisionLogic::resolve);
+    binder.bindSingleton<BarrierCollisionLogic>();
     binder.bindSingleton<GameObjectVisibilityUpdater>(GameObjectVisibilityUpdater::resolve);
     binder.bindSingleton<GameWorldInitializer>(GameWorldInitializer::resolve);
     binder.bindSingleton<GameWorldUpdater>(GameWorldUpdater::resolve);
     binder.bindSingleton<TrackCollection>();
     binder.bindSingleton<VehiclesCollisionLogic>();
     binder.bindSingleton<VisibilityStateLogic>();
-    binder.bindSingleton<WheelGroundContactLogic>(WheelGroundContactLogic::resolve);
-    binder.bindSingleton<WorldSegmentDataFinder>();
+    binder.bindSingleton<WheelGroundContactLogic>();
     binder.bindSingleton<WorldSegmentTreeBuilder>();
     binder.bindSingleton<Environment>();
     binder.bindSingleton<FileSystem>();

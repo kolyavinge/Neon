@@ -1,7 +1,12 @@
 #include <model/world/GameObjectVisibility.h>
 
-void GameObjectVisibility::init(BSPTree<WorldSegment>& segmentTree, Collection<Vehicle>& vehicles, int allSegmentsCount) {
-    _segmentTree = &segmentTree;
+GameObjectVisibility::GameObjectVisibility() {
+    _segmentCollection = nullptr;
+    _vehicles = nullptr;
+}
+
+void GameObjectVisibility::init(WorldSegmentCollection& segmentCollection, Collection<Vehicle>& vehicles, int allSegmentsCount) {
+    _segmentCollection = &segmentCollection;
     _vehicles = &vehicles;
     // макс кол-во видимых сегментов не может быть больше половины всех сегментов
     visibleSegments.prepareEnoughCapacity(allSegmentsCount / 2);
@@ -39,7 +44,7 @@ Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segm
 
 Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
     _lightsTmp.clear();
-    WorldSegment& vehicleSegment = _segmentTree->findNodeDataByPoint(vehicle.getCenter());
+    WorldSegment& vehicleSegment = _segmentCollection->getWorldSegmentForPoint(vehicle.getCenter());
     _lightsTmp.addRange(vehicleSegment.getLights());
     float maxDistanceLengthSquared = vehicle.getData().maxLightsDistanceLengthSquared;
     for (int i = 0; i < _vehicles->getCount(); i++) {

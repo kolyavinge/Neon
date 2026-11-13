@@ -5,9 +5,8 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Wheel.h>
 
-BarrierCollisionLogic::BarrierCollisionLogic(
-    WorldSegmentDataFinder& segmentDataFinder) :
-    _segmentDataFinder(segmentDataFinder) {
+void BarrierCollisionLogic::init(WorldSegmentCollection& segmentCollection) {
+    _segmentCollection = &segmentCollection;
 }
 
 bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
@@ -41,10 +40,10 @@ bool BarrierCollisionLogic::resolveBarrierCollisions(Vehicle& vehicle) {
 
 void BarrierCollisionLogic::findPointSegments(Collection<Vector3>& bodyPoints, output Array<WorldSegment*, Box3dPoint::_count>& result) {
     // находим сегменты для 4 нижних точек кузова
-    result[Box3dPoint::bottomDownLeft] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownLeft]);
-    result[Box3dPoint::bottomDownRight] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownRight]);
-    result[Box3dPoint::bottomUpLeft] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpLeft]);
-    result[Box3dPoint::bottomUpRight] = &_segmentDataFinder.getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpRight]);
+    result[Box3dPoint::bottomDownLeft] = &_segmentCollection->getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownLeft]);
+    result[Box3dPoint::bottomDownRight] = &_segmentCollection->getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomDownRight]);
+    result[Box3dPoint::bottomUpLeft] = &_segmentCollection->getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpLeft]);
+    result[Box3dPoint::bottomUpRight] = &_segmentCollection->getWorldSegmentForPoint(bodyPoints[Box3dPoint::bottomUpRight]);
     // считаем что верхние точки находятся в тех же сегментах что и нижние
     result[Box3dPoint::topDownLeft] = result[Box3dPoint::bottomDownLeft];
     result[Box3dPoint::topDownRight] = result[Box3dPoint::bottomDownRight];

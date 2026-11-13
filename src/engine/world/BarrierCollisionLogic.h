@@ -1,29 +1,21 @@
 #pragma once
 
-#include <engine/world/WorldSegmentDataFinder.h>
 #include <lib/calc/Vector3.h>
-#include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/common/common.h>
 #include <model/vehicle/Body.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/WorldSegment.h>
+#include <model/world/WorldSegmentCollection.h>
 
 class BarrierCollisionLogic : public Object {
 
-    WorldSegmentDataFinder& _segmentDataFinder;
+    WorldSegmentCollection* _segmentCollection;
     List<Vector3> _collisionPoints;
     List<Vector3> _collisionDepths;
 
 public:
-    static BarrierCollisionLogic* resolve(Resolver& resolver) {
-        return new BarrierCollisionLogic(
-            resolver.resolve<WorldSegmentDataFinder>());
-    }
-
-    BarrierCollisionLogic(
-        WorldSegmentDataFinder& segmentDataFinder);
-
+    void init(WorldSegmentCollection& segmentCollection);
     bool resolveBarrierCollisions(Vehicle& vehicle);
 
 private:

@@ -2,9 +2,8 @@
 #include <engine/world/WheelGroundContactLogic.h>
 #include <lib/Numeric.h>
 
-WheelGroundContactLogic::WheelGroundContactLogic(
-    WorldSegmentDataFinder& segmentDataFinder) :
-    _segmentDataFinder(segmentDataFinder) {
+void WheelGroundContactLogic::init(WorldSegmentCollection& segmentCollection) {
+    _segmentCollection = &segmentCollection;
 }
 
 void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact) {
@@ -20,7 +19,7 @@ void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, outpu
         rayToPosition.subMultiplied(chassisUpNormal, wheel.getRadius());
         // берем примитивы из сегмента в котором находится пружинка, а не колесо
         // ибо к этому моменту у нас пружинки находятся на своих новых позициях, а колеса нет
-        Collection<WorldPrimitive*>& groundPrimitives = _segmentDataFinder.getGroundPrimitivesForSpring(spring);
+        Collection<WorldPrimitive*>& groundPrimitives = _segmentCollection->getGroundPrimitivesForSpring(spring);
         Vector3 newGroundContactPoint;
         bool hasNewGroundContact = false;
         for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {

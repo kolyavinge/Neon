@@ -1,27 +1,19 @@
 #pragma once
 
-#include <engine/world/WorldSegmentDataFinder.h>
 #include <lib/calc/Vector3.h>
-#include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Spring.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/vehicle/Wheel.h>
 #include <model/world/WorldPrimitive.h>
+#include <model/world/WorldSegmentCollection.h>
 
 class WheelGroundContactLogic : public Object {
 
-    WorldSegmentDataFinder& _segmentDataFinder;
+    WorldSegmentCollection* _segmentCollection;
 
 public:
-    static WheelGroundContactLogic* resolve(Resolver& resolver) {
-        return new WheelGroundContactLogic(
-            resolver.resolve<WorldSegmentDataFinder>());
-    }
-
-    WheelGroundContactLogic(
-        WorldSegmentDataFinder& segmentDataFinder);
-
+    void init(WorldSegmentCollection& segmentCollection);
     void resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact);
 
 private:

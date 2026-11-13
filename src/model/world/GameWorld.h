@@ -16,6 +16,7 @@ class GameWorld : public Object {
     Vehicle& _playerVehicle;
     Span<Vehicle> _enemyVehicles;
     BSPTree<WorldSegment> _segmentTree;
+    WorldSegmentCollection _segmentCollection;
     // TODO видимость обьектов должна быть привязана к камере
     GameObjectVisibility _objectVisibility;
     Camera* _camera;
@@ -31,6 +32,7 @@ public:
     Vehicle& getPlayerVehicle();
     Collection<Vehicle>& getEnemyVehicles();
     BSPTree<WorldSegment>& getSegmentTree();
+    WorldSegmentCollection& getSegmentCollection();
     GameObjectVisibility& getObjectVisibility();
     Camera& getCamera();
 };

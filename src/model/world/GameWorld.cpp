@@ -3,7 +3,8 @@
 
 GameWorld::GameWorld() :
     _playerVehicle(_allVehicles[0]),
-    _enemyVehicles(_allVehicles, 1) {
+    _enemyVehicles(_allVehicles, 1),
+    _segmentCollection(_segmentTree) {
     _track = nullptr;
     _camera = new BackSideCamera();
     init();
@@ -46,6 +47,10 @@ Collection<Vehicle>& GameWorld::getEnemyVehicles() {
 
 BSPTree<WorldSegment>& GameWorld::getSegmentTree() {
     return _segmentTree;
+}
+
+WorldSegmentCollection& GameWorld::getSegmentCollection() {
+    return _segmentCollection;
 }
 
 GameObjectVisibility& GameWorld::getObjectVisibility() {
