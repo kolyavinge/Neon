@@ -333,6 +333,15 @@
     <ClCompile Include="src\model\world\WorldObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\lib\DateTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\Stopwatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\TimeSpan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -732,6 +741,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\world\WorldObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\DateTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\Stopwatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\TimeSpan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

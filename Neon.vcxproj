@@ -29,6 +29,9 @@
     <ClCompile Include="src\debug\DebugRenderer.cpp" />
     <ClCompile Include="src\debug\VehicleDebuger.cpp" />
     <ClCompile Include="src\engine\world\VisibilityStateLogic.cpp" />
+    <ClCompile Include="src\lib\DateTime.cpp" />
+    <ClCompile Include="src\lib\Stopwatch.cpp" />
+    <ClCompile Include="src\lib\TimeSpan.cpp" />
     <ClCompile Include="src\model\common\cameras.cpp" />
     <ClCompile Include="src\engine\world\BarrierCollisionLogic.cpp" />
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp" />
@@ -135,6 +138,9 @@
     <ClInclude Include="src\debug\VehicleDebuger.h" />
     <ClInclude Include="src\engine\world\VisibilityStateLogic.h" />
     <ClInclude Include="src\lib\collections\Span.h" />
+    <ClInclude Include="src\lib\DateTime.h" />
+    <ClInclude Include="src\lib\Stopwatch.h" />
+    <ClInclude Include="src\lib\TimeSpan.h" />
     <ClInclude Include="src\model\common\cameras.h" />
     <ClInclude Include="src\engine\world\BarrierCollisionLogic.h" />
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />
