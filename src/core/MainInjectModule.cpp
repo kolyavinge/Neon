@@ -6,6 +6,7 @@
 #include <core/PlayerInputManager.h>
 #include <core/ScreenManager.h>
 #include <debug/DebugRenderer.h>
+#include <debug/RenderDebuger.h>
 #include <debug/VehicleDebuger.h>
 #include <engine/vehicle/EngineLogic.h>
 #include <engine/vehicle/ForceLogic.h>
@@ -51,6 +52,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<PlayerInputManager>(PlayerInputManager::resolve);
     binder.bindSingleton<ScreenManager>(ScreenManager::resolve);
     binder.bindSingleton<DebugRenderer>();
+    binder.bindSingleton<RenderDebuger>(RenderDebuger::resolve);
     binder.bindSingleton<VehicleDebuger>();
     binder.bindSingleton<EngineLogic>(EngineLogic::resolve);
     binder.bindSingleton<ForceLogic>(ForceLogic::resolve);

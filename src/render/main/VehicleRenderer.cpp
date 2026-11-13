@@ -1,4 +1,5 @@
 #include <lib/calc/TransformMatrix4.h>
+#include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
 #include <render/main/VehicleRenderer.h>
 
@@ -19,6 +20,7 @@ void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
 void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     shader.useTexture(false);
+    Texture::dummy.bind(GL_TEXTURE0);
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         VisibilityState state = objectVisibility.getVehicleVisibilityState(vehicle);
@@ -31,6 +33,7 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>
         }
         render(shader, vehicle);
     }
+    Texture::unbind();
     glDisable(GL_DEPTH_TEST);
 }
 

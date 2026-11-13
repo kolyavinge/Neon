@@ -27,6 +27,11 @@ void Stopwatch::reset() {
     _startTimestamp = DateTime::getCurrentEpochMilliseconds();
 }
 
+void Stopwatch::restart() {
+    reset();
+    start();
+}
+
 long long Stopwatch::getElapsedMilliseconds() {
     return _elapsedMilliseconds;
 }

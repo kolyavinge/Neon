@@ -15,6 +15,7 @@ class BarrierCollisionLogic : public Object {
     List<Vector3> _collisionDepths;
 
 public:
+    BarrierCollisionLogic();
     void init(WorldSegmentCollection& segmentCollection);
     bool resolveBarrierCollisions(Vehicle& vehicle);
 

@@ -3,6 +3,7 @@
 #include <core/Game.h>
 #include <float.h>
 #include <lib/windows.h>
+#include <render/lib/opengl.h>
 
 bool App::_isFullScreenActive = false;
 
@@ -53,6 +54,7 @@ void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept
 void App::run() {
     if (glfwInit() == GLFW_FALSE) throw AppException();
     glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     GLFWwindow* window = glfwCreateWindow(CommonConstants::screenWidth, CommonConstants::screenHeight, CommonConstants::title, nullptr, nullptr);
     if (window == nullptr) { glfwTerminate(); throw AppException(); }
     setWindowedMode(window);
@@ -62,6 +64,10 @@ void App::run() {
     if (glewInit() != GLEW_OK) throw AppException();
     glEnable(GL_MULTISAMPLE);
     glfwSwapInterval(1);
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(glDebugOutput, nullptr);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     moveConsoleToCorner();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();

@@ -5,6 +5,10 @@
 #include <lib/calc/Vector3.h>
 #include <model/vehicle/Wheel.h>
 
+BarrierCollisionLogic::BarrierCollisionLogic() {
+    _segmentCollection = nullptr;
+}
+
 void BarrierCollisionLogic::init(WorldSegmentCollection& segmentCollection) {
     _segmentCollection = &segmentCollection;
 }

@@ -342,6 +342,12 @@
     <ClCompile Include="src\lib\TimeSpan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\debug\RenderDebuger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\lib\FrameStopwatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -750,6 +756,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\TimeSpan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\RenderDebuger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lib\FrameStopwatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

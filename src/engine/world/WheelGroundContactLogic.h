@@ -13,6 +13,7 @@ class WheelGroundContactLogic : public Object {
     WorldSegmentCollection* _segmentCollection;
 
 public:
+    WheelGroundContactLogic();
     void init(WorldSegmentCollection& segmentCollection);
     void resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact);
 

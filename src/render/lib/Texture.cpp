@@ -1,6 +1,16 @@
 #include <render/lib/Texture.h>
 
 Texture Texture::empty;
+Texture Texture::dummy;
+
+void Texture::initDummy() {
+    glGenTextures(1, &Texture::dummy._id);
+    glBindTexture(GL_TEXTURE_2D, Texture::dummy._id);
+    unsigned char whitePixel[4] = { 255, 255, 255, 255 };
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
 
 Texture::Texture() {
     init(0, 0, 0);

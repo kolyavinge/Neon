@@ -2,6 +2,10 @@
 #include <engine/world/WheelGroundContactLogic.h>
 #include <lib/Numeric.h>
 
+WheelGroundContactLogic::WheelGroundContactLogic() {
+    _segmentCollection = nullptr;
+}
+
 void WheelGroundContactLogic::init(WorldSegmentCollection& segmentCollection) {
     _segmentCollection = &segmentCollection;
 }

@@ -14,9 +14,10 @@ GameWorldUpdater::GameWorldUpdater(
 void GameWorldUpdater::update(GameWorld& gameWorld) {
     _playerInputManager.update(gameWorld.getPlayerVehicle());
     _vehicleUpdater.updateVehicles(gameWorld.getAllVehicles());
-    // TODO цикл по всем камерам
+    // TODO в будущем сделать цикл по всем камерам
     Camera& camera = gameWorld.getCamera();
     camera.update(gameWorld.getPlayerVehicle());
-    _gameObjectVisibilityUpdater.updateVisibility(gameWorld.getSegmentTree().getRoot(), gameWorld.getAllVehicles(), camera, output gameWorld.getObjectVisibility());
-    _vehicleDebuger.printDebugInfo(gameWorld.getPlayerVehicle());
+    _gameObjectVisibilityUpdater.updateVisibility(
+        gameWorld.getSegmentTree().getRoot(), gameWorld.getAllVehicles(), camera, output gameWorld.getObjectVisibility());
+    //_vehicleDebuger.printDebugInfo(gameWorld.getPlayerVehicle());
 }

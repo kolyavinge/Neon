@@ -19,6 +19,14 @@ void gluLookAt(Vector3 position, Vector3 lookAt, Vector3 upAxis);
 void glNormal3f(Vector3 v);
 void glScalef(Vector3 v);
 void glDrawCircleYZ(float radius, int edgesCount);
+void glDebugOutput(
+    GLenum source,
+    GLenum type,
+    unsigned int id,
+    GLenum severity,
+    GLsizei length,
+    const char* message,
+    const void* userParam);
 
 class OpenGLException : public Exception {
 

@@ -11,6 +11,8 @@ class Texture : public Object {
 
 public:
     static Texture empty;
+    static Texture dummy;
+    static void initDummy();
 
     DENY_COPYING(Texture); // классы использующие ресурсы opengl запрещены к копированию
     Texture();

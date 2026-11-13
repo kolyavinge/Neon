@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\common\AssetsDirectory.cpp" />
+    <ClCompile Include="src\debug\RenderDebuger.cpp" />
     <ClCompile Include="src\core\MainInjectModule.cpp" />
     <ClCompile Include="src\core\PlayerInputManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\render\common\ShaderCollection.cpp" />
     <ClCompile Include="src\render\common\ShaderProgramCollection.cpp" />
     <ClCompile Include="src\render\common\TextureCollection.cpp" />
+    <ClCompile Include="src\render\lib\FrameStopwatch.cpp" />
     <ClCompile Include="src\render\lib\Material.cpp" />
     <ClCompile Include="src\render\lib\RenderModel3d.cpp" />
     <ClCompile Include="src\render\lib\RenderModel3dLoader.cpp" />
@@ -131,6 +133,7 @@
     <ClInclude Include="src\common\resource.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\common\AssetsDirectory.h" />
+    <ClInclude Include="src\debug\RenderDebuger.h" />
     <ClInclude Include="src\core\PlayerInputManager.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\GameInitializer.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="src\render\common\ShaderCollection.h" />
     <ClInclude Include="src\render\common\ShaderProgramCollection.h" />
     <ClInclude Include="src\render\common\TextureCollection.h" />
+    <ClInclude Include="src\render\lib\FrameStopwatch.h" />
     <ClInclude Include="src\render\lib\Material.h" />
     <ClInclude Include="src\render\lib\Model3d.h" />
     <ClInclude Include="src\render\lib\Model3dLoader.h" />

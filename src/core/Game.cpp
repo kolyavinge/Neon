@@ -1,15 +1,16 @@
 #include <core/Game.h>
 #include <core/MainInjectModule.h>
 #include <lib/di/DependencyContainer.h>
-#include <render/lib/opengl.h>
 
 Game::Game(
     InputManager& inputManager,
     ScreenManager& screenManager,
-    GameInitializer& gameInitializer) :
+    GameInitializer& gameInitializer,
+    RenderDebuger& renderDebuger) :
     _inputManager(inputManager),
     _screenManager(screenManager),
-    _gameInitializer(gameInitializer) {
+    _gameInitializer(gameInitializer),
+    _renderDebuger(renderDebuger) {
 }
 
 void Game::init() {
@@ -25,7 +26,7 @@ void Game::update() {
 
 void Game::render() {
     _screenManager.getCurrentScreenRenderer().render();
-    if (glGetError() != GL_NO_ERROR) throw OpenGLException(L"");
+    _renderDebuger.print(_gameWorld);
 }
 
 Game& GameFactory::make() {

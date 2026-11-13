@@ -6,11 +6,13 @@ MainSceneRenderer::MainSceneRenderer(
     WorldSegmentRenderer& worldSegmentRenderer,
     VehicleRenderer& vehicleRenderer,
     DebugRenderer& debugRenderer,
-    ShaderProgramCollection& shaderProgramCollection) :
+    ShaderProgramCollection& shaderProgramCollection,
+    RenderDebuger& renderDebuger) :
     _worldSegmentRenderer(worldSegmentRenderer),
     _vehicleRenderer(vehicleRenderer),
     _debugRenderer(debugRenderer),
-    _mainSceneShader(shaderProgramCollection.mainScene) {
+    _mainSceneShader(shaderProgramCollection.mainScene),
+    _renderDebuger(renderDebuger) {
 }
 
 void MainSceneRenderer::render(
@@ -18,6 +20,8 @@ void MainSceneRenderer::render(
     Collection<Vehicle>& vehicles,
     Camera& camera,
     Light& globalLight) {
+    _frameStopwatch.beginFrame();
+
     _mainSceneShader.use();
     _mainSceneShader.setModelMatrix(TransformMatrix4::identity);
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());
@@ -27,4 +31,7 @@ void MainSceneRenderer::render(
     _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
     _mainSceneShader.unuse();
     //_debugRenderer.renderDebugInfo(gameWorld);
+
+    _frameStopwatch.endFrame();
+    _renderDebuger.renderTimeMsc = _frameStopwatch.renderTimeMsc;
 }

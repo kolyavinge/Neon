@@ -1,4 +1,5 @@
 #include <render/common/TextureCollection.h>
+#include <render/lib/Texture.h>
 
 TextureCollection::TextureCollection(
     AssetsDirectory& assetsDirectory,
@@ -8,6 +9,8 @@ TextureCollection::TextureCollection(
 }
 
 void TextureCollection::loadAllTextures() {
+    Texture::initDummy();
+
     String texturesDirectory = _assetsDirectory.getTextures();
 
     auto loadWorldPrimitiveTextures = [&](const wchar_t* fileName, WorldPrimitiveKind kind) {

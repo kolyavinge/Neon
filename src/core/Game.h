@@ -3,6 +3,7 @@
 #include <common/InputManager.h>
 #include <core/GameInitializer.h>
 #include <core/ScreenManager.h>
+#include <debug/RenderDebuger.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/world/GameWorld.h>
@@ -12,6 +13,7 @@ class Game : public Object {
     InputManager& _inputManager;
     ScreenManager& _screenManager;
     GameInitializer& _gameInitializer;
+    RenderDebuger& _renderDebuger;
     GameWorld _gameWorld;
 
 public:
@@ -19,13 +21,15 @@ public:
         return new Game(
             resolver.resolve<InputManager>(),
             resolver.resolve<ScreenManager>(),
-            resolver.resolve<GameInitializer>());
+            resolver.resolve<GameInitializer>(),
+            resolver.resolve<RenderDebuger>());
     }
 
     Game(
         InputManager& inputManager,
         ScreenManager& screenManager,
-        GameInitializer& gameInitializer);
+        GameInitializer& gameInitializer,
+        RenderDebuger& debugInfo);
 
     void init();
     void update();
