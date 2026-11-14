@@ -9,11 +9,12 @@
 #include <model/world/WorldSegmentCollection.h>
 
 enum class VisibilityState {
-    notVisible, // обьект не виден
-    shape,      // виден только силуэт
-    low,        // с низкой
-    medium,     // со средней детализацией
-    high        // обьект виден с максимальной детализацией
+    notVisible = -1, // обьект не виден
+    shape = 0,       // виден только силуэт
+    low = 1,         // с низкой
+    medium = 2,      // со средней детализацией
+    high = 3,        // обьект виден с максимальной детализацией
+    _count = 4
 };
 
 class IGameObjectVisibility {

@@ -23,7 +23,6 @@ void MainSceneRenderer::render(
     _frameStopwatch.beginFrame();
 
     _mainSceneShader.use();
-    _mainSceneShader.setModelMatrix(TransformMatrix4::identity);
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());
     _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
     _mainSceneShader.setGlobalLight(camera.getViewMatrix(), globalLight);

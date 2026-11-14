@@ -34,5 +34,5 @@ public:
 private:
     void render(MainSceneShaderProgram& shader, Vehicle& vehicle);
     void renderBody(MainSceneShaderProgram& shader, TransformMatrix4& vehicleModelMatrix);
-    void renderWheel(MainSceneShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition);
+    void renderWheel(MainSceneShaderProgram& shader, Wheel& wheel);
 };

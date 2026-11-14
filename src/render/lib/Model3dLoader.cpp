@@ -55,10 +55,17 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
         mesh.faces.prepareEnoughCapacity(3 * (int)aiMesh.mNumFaces);
         for (int aiFaceIndex = 0; aiFaceIndex < (int)aiMesh.mNumFaces; aiFaceIndex++) {
             aiFace& face = aiMesh.mFaces[aiFaceIndex];
-            Assert::isTrue(face.mNumIndices == 3);
-            mesh.faces.add(face.mIndices[0]);
-            mesh.faces.add(face.mIndices[1]);
-            mesh.faces.add(face.mIndices[2]);
+            if (face.mNumIndices == 3) {
+                mesh.faces.add(face.mIndices[0]);
+                mesh.faces.add(face.mIndices[1]);
+                mesh.faces.add(face.mIndices[2]);
+            } else if (face.mNumIndices == 2) {
+                mesh.faces.add(face.mIndices[0]);
+                mesh.faces.add(face.mIndices[1]);
+                mesh.faces.add(face.mIndices[1]);
+            } else {
+                Assert::fail();
+            }
         }
         if (model3d.getTexturesCount() > 0) {
             mesh.texture = &model3d.getTexture(0);

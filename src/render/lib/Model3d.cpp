@@ -196,7 +196,7 @@ void Model3d::applyTransformMatrix4(TransformMatrix4& m) {
     }
 }
 
-void Model3d::merge(Model3d& model3d) {
+void Model3d::mergeWith(Model3d& model3d) {
     if (_meshes.getCount() == 0) {
         for (int i = 0; i < model3d._meshes.getCount(); i++) {
             Mesh& mesh = createNewMesh();

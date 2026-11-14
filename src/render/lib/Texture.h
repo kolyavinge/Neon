@@ -11,6 +11,10 @@ class Texture : public Object {
 
 public:
     static Texture empty;
+
+    // пустышка с одним пикселем, для случаев когда шейдер ждет текстуру на вход,
+    // но по факту она не нужна и не используется
+    // без этой заглушки gl будет ругаться
     static Texture dummy;
     static void initDummy();
 

@@ -60,7 +60,7 @@ public:
     void scaleNonUniform(Vector3 value); // стараться использовать по минимуму из-за последующих проблем с нормалями
     void rotateByUpAxis180();
     void applyTransformMatrix4(TransformMatrix4& m);
-    void merge(Model3d& model3d);
+    void mergeWith(Model3d& model3d);
     void clear();
     int getTotalFacesCount();
 

@@ -13,6 +13,7 @@ RenderDebuger::RenderDebuger(
 }
 
 void RenderDebuger::print(GameWorld& gameWorld) {
+    //return;
     _tick++;
     if ((_tick % 20) != 0) return;
     //if (renderTimeMsc < 15) return;

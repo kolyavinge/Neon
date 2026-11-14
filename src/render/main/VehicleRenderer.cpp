@@ -25,10 +25,10 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>
         Vehicle& vehicle = vehicles[i];
         VisibilityState state = objectVisibility.getVehicleVisibilityState(vehicle);
         if (state == VisibilityState::notVisible) continue;
-        bool enableLight = state > VisibilityState::shape;
-        shader.enableLight(enableLight);
+        bool withDetails = state > VisibilityState::shape;
+        shader.enableLight(withDetails);
         shader.enableSpecular(state > VisibilityState::low);
-        if (enableLight) {
+        if (withDetails) {
             shader.addLights(objectVisibility.getLightsForVehicle(vehicle));
         }
         render(shader, vehicle);
@@ -42,10 +42,10 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Vehicle& vehicle) {
     renderBody(shader, vehicle.getModelMatrix());
 
     glEnable(GL_CULL_FACE);
-    renderWheel(shader, vehicle, WheelPosition::frontLeft);
-    renderWheel(shader, vehicle, WheelPosition::frontRight);
-    renderWheel(shader, vehicle, WheelPosition::rearLeft);
-    renderWheel(shader, vehicle, WheelPosition::rearRight);
+    renderWheel(shader, vehicle.getWheel(WheelPosition::frontLeft));
+    renderWheel(shader, vehicle.getWheel(WheelPosition::frontRight));
+    renderWheel(shader, vehicle.getWheel(WheelPosition::rearLeft));
+    renderWheel(shader, vehicle.getWheel(WheelPosition::rearRight));
     glDisable(GL_CULL_FACE);
 }
 
@@ -58,10 +58,9 @@ void VehicleRenderer::renderBody(MainSceneShaderProgram& shader, TransformMatrix
     }
 }
 
-void VehicleRenderer::renderWheel(MainSceneShaderProgram& shader, Vehicle& vehicle, WheelPosition wheelPosition) {
-    Wheel& wheel = vehicle.getWheel(wheelPosition);
-    RenderModel3d& wheelModel = *_wheelModels[(int)wheelPosition];
+void VehicleRenderer::renderWheel(MainSceneShaderProgram& shader, Wheel& wheel) {
     shader.setModelMatrix(wheel.getModelMatrix());
+    RenderModel3d& wheelModel = *_wheelModels[(int)wheel.getPosition()];
     for (int i = 0; i < wheelModel.getMeshesCount(); i++) {
         RenderMesh& mesh = wheelModel.getMesh(i);
         shader.setMaterial(mesh.material);

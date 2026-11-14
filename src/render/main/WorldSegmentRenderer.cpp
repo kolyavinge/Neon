@@ -44,36 +44,41 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
     }
 
     if (worldSegment.getWorldObjects().getCount() > 0) {
-        Model3d& totalObjectModel3d = worldSegmentModels3d.addNew();
+        Model3d& mergedObjectModel3d = worldSegmentModels3d.addNew();
         for (int objectIndex = 0; objectIndex < worldSegment.getWorldObjects().getCount(); objectIndex++) {
             WorldObject& object = *worldSegment.getWorldObjects()[objectIndex];
             TransformMatrix4 transformMatrix = object.getTransformMatrix4();
             Model3d objectModel3d = _model3dCollection.getModelFor(object.getKind());
             objectModel3d.applyTransformMatrix4(transformMatrix);
-            totalObjectModel3d.merge(objectModel3d);
+            mergedObjectModel3d.mergeWith(objectModel3d);
         }
-        Assert::isTrue(totalObjectModel3d.getMeshesCount() > 0);
+        Assert::isTrue(mergedObjectModel3d.getMeshesCount() > 0);
     }
 }
 
 void WorldSegmentRenderer::render(MainSceneShaderProgram& shader, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    shader.setModelMatrix(TransformMatrix4::identity);
     Collection<WorldSegment*>& visibleSegments = objectVisibility.getVisibleSegments();
     for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& worldSegment = *visibleSegments[segmentIndex];
         VisibilityState state = objectVisibility.getSegmentVisibilityState(segmentIndex);
-        bool useTextureAndLight = state > VisibilityState::shape;
-        shader.useTexture(useTextureAndLight);
-        shader.enableLight(useTextureAndLight);
+        bool withDetails = state > VisibilityState::shape;
+        shader.useTexture(withDetails);
+        shader.enableLight(withDetails);
         shader.enableSpecular(state > VisibilityState::low);
-        if (useTextureAndLight) {
+        if (withDetails) {
             shader.addLights(objectVisibility.getLightsForSegment(worldSegment));
         }
         RenderModel3d& renderModel = _segmentRenderModels[worldSegment.getId()];
         for (int meshIndex = 0; meshIndex < renderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = renderModel.getMesh(meshIndex);
-            mesh.texture->bind(GL_TEXTURE0);
+            if (withDetails) {
+                mesh.texture->bind(GL_TEXTURE0);
+            } else {
+                Texture::dummy.bind(GL_TEXTURE0);
+            }
             shader.setMaterial(mesh.material);
             _vaoRenderer.render(mesh.vao);
         }
