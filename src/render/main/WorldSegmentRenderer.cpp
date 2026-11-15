@@ -47,7 +47,7 @@ void WorldSegmentRenderer::buildModels3dForWorldSegment(WorldSegment& worldSegme
         Model3d& mergedObjectModel3d = worldSegmentModels3d.addNew();
         for (int objectIndex = 0; objectIndex < worldSegment.getWorldObjects().getCount(); objectIndex++) {
             WorldObject& object = *worldSegment.getWorldObjects()[objectIndex];
-            TransformMatrix4 transformMatrix = object.getTransformMatrix4();
+            TransformMatrix4& transformMatrix = object.getModelMatrix();
             Model3d objectModel3d = _model3dCollection.getModelFor(object.getKind());
             objectModel3d.applyTransformMatrix4(transformMatrix);
             mergedObjectModel3d.mergeWith(objectModel3d);

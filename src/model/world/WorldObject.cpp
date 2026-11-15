@@ -17,12 +17,16 @@ WorldObject::WorldObject() {
 
 WorldObject::WorldObject(
     WorldObjectKind kind, Vector3 basePoint, Collection<Vector3>& points, Vector3 frontNormal, Vector3 upNormal) {
+    if (points.getCount() == 0) throw ArgumentException(L"points cannot be empty.");
+    if (frontNormal.isZero()) throw ArgumentException(L"frontNormal has not been set.");
+    if (upNormal.isZero()) throw ArgumentException(L"upNormal has not been set.");
     _kind = kind;
     _basePoint = basePoint;
     _boundaryPoints.addRange(points);
     _frontNormal = frontNormal;
     _upNormal = upNormal;
     _hasLight = false;
+    calculateModelMatrix();
 }
 
 WorldObjectKind WorldObject::getKind() {
@@ -46,11 +50,11 @@ void WorldObject::setLight(Light light) {
     _light = light;
 }
 
-TransformMatrix4 WorldObject::getTransformMatrix4() {
-    if (_upNormal.isZero()) throw ArgumentException(L"UpNormal has not been set.");
+TransformMatrix4& WorldObject::getModelMatrix() {
+    return _modelMatrix;
+}
 
-    TransformMatrix4 result;
-
+void WorldObject::calculateModelMatrix() {
     TransformMatrix4 translate;
     translate.translate(_basePoint);
 
@@ -60,8 +64,6 @@ TransformMatrix4 WorldObject::getTransformMatrix4() {
     TransformMatrix4 rotate;
     rotate.setCoordinateSystem(_frontNormal, y, _upNormal);
 
-    result.mul(translate);
-    result.mul(rotate);
-
-    return result;
+    _modelMatrix.mul(translate);
+    _modelMatrix.mul(rotate);
 }

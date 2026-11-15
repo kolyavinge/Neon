@@ -18,10 +18,14 @@ void RenderDebuger::print(GameWorld& gameWorld) {
     if ((_tick % 20) != 0) return;
     //if (renderTimeMsc < 15) return;
 
-    printf("render: %i ms (*%i: %i)\n",
+    printf("render: %i ms (*%i: %i)",
         renderTimeMsc,
         (int)CommonConstants::frameRate,
         (int)((float)renderTimeMsc * CommonConstants::frameRate));
+    if ((float)renderTimeMsc * CommonConstants::frameRate >= 900.0) {
+        printf("\033[1;31m slow");
+    }
+    printf("\033[0m\n");
 
     GameObjectVisibility& objectVisibility = gameWorld.getObjectVisibility();
     Collection<WorldSegment*>& visibleSegments = objectVisibility.visibleSegments;

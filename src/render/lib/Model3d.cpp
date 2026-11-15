@@ -65,7 +65,7 @@ void Mesh::applyTransformMatrix4(TransformMatrix4& m) {
     }
 }
 
-void Mesh::merge(Mesh& mesh) {
+void Mesh::mergeWith(Mesh& mesh) {
     if (!name.equals(mesh.name)) {
         throw ArgumentException(L"Meshes must have the same name.");
     }
@@ -209,7 +209,7 @@ void Model3d::mergeWith(Model3d& model3d) {
     }
 
     for (int i = 0; i < _meshes.getCount(); i++) {
-        _meshes[i].merge(model3d._meshes[i]);
+        _meshes[i].mergeWith(model3d._meshes[i]);
     }
 
     _textures.addRange(model3d._textures);

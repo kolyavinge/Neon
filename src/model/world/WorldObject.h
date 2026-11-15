@@ -19,6 +19,7 @@ class WorldObject : public Object {
     Vector3 _upNormal;
     bool _hasLight;
     Light _light;
+    TransformMatrix4 _modelMatrix;
 
 public:
     static float getFenceLengthFor(WorldObjectKind kind);
@@ -31,5 +32,8 @@ public:
     bool hasLight();
     Light& getLight();
     void setLight(Light light);
-    TransformMatrix4 getTransformMatrix4();
+    TransformMatrix4& getModelMatrix();
+
+private:
+    void calculateModelMatrix();
 };

@@ -20,8 +20,7 @@ void Model3dConverter::fromWorldPrimitives(Collection<WorldPrimitive*>& primitiv
             for (int pointIndex = 0; pointIndex < primitive.getPoints().getCount(); pointIndex++) {
                 mesh.addVertex(primitive.getPoints()[pointIndex]);
                 mesh.addNormal(primitive.getFrontNormal());
-                mesh.addColor(0.1f, 0.4f, 0.1f, 1.0f); // для отладки, если рендерим без текстуры
-                //mesh.addColor(0.0f, 0.0f, 0.0f, 1.0f);
+                //mesh.addColor(0.1f, 0.4f, 0.1f, 1.0f); // для отладки, если рендерим без текстуры
                 mesh.addTexCoord(primitive.getTexCoords()[pointIndex]);
             }
             mesh.addFacesForElement(primitiveIndex, WorldPrimitive::pointsCount);

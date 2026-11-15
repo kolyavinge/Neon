@@ -29,7 +29,7 @@ public:
     void addFacesForElement(int elementIndex, int pointsByElement);
     void clear();
     void applyTransformMatrix4(TransformMatrix4& m);
-    void merge(Mesh& mesh);
+    void mergeWith(Mesh& mesh);
 };
 
 class Model3d : public Object {

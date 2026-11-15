@@ -28,12 +28,21 @@ void Model3dLoader::load(String& modelFilePath, output Model3d& model3d) {
 void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) {
     for (int meshIndex = 0; meshIndex < (int)aiScene.mNumMeshes; meshIndex++) {
         aiMesh& aiMesh = *aiScene.mMeshes[meshIndex];
+        aiMaterial* aiMaterial = aiScene.mMaterials[aiMesh.mMaterialIndex];
+        aiColor4D diffuseColor;
         Mesh& mesh = model3d.createNewMesh();
         mesh.name = String(aiMesh.mName.C_Str());
         mesh.vertices.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
         mesh.normals.prepareEnoughCapacity(3 * (int)aiMesh.mNumVertices);
-        mesh.colors.prepareEnoughCapacity(4 * (int)aiMesh.mNumVertices);
-        mesh.texCoords.prepareEnoughCapacity(2 * (int)aiMesh.mNumVertices);
+        bool loadTexture = false, loadColor = false;
+        // текстура приоритетнее чем цвет
+        if (model3d.getTexturesCount() > 0) {
+            mesh.texCoords.prepareEnoughCapacity(2 * (int)aiMesh.mNumVertices);
+            loadTexture = true;
+        } else if (aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, output & diffuseColor) == AI_SUCCESS) {
+            mesh.colors.prepareEnoughCapacity(4 * (int)aiMesh.mNumVertices);
+            loadColor = true;
+        }
         for (int aiVertexIndex = 0; aiVertexIndex < (int)aiMesh.mNumVertices; aiVertexIndex++) {
             mesh.vertices.add(aiMesh.mVertices[aiVertexIndex].x);
             mesh.vertices.add(aiMesh.mVertices[aiVertexIndex].y);
@@ -41,16 +50,15 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].x);
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].y);
             mesh.normals.add(aiMesh.mNormals[aiVertexIndex].z);
-            aiMaterial* aiMaterial = aiScene.mMaterials[aiMesh.mMaterialIndex];
-            aiColor4D diffuseColor;
-            if (aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, output & diffuseColor) == AI_SUCCESS) {
+            if (loadTexture) {
+                mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].x);
+                mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].y);
+            } else if (loadColor) {
                 mesh.colors.add(diffuseColor.r);
                 mesh.colors.add(diffuseColor.g);
                 mesh.colors.add(diffuseColor.b);
                 mesh.colors.add(diffuseColor.a);
             }
-            mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].x);
-            mesh.texCoords.add(aiMesh.mTextureCoords[0][aiVertexIndex].y);
         }
         mesh.faces.prepareEnoughCapacity(3 * (int)aiMesh.mNumFaces);
         for (int aiFaceIndex = 0; aiFaceIndex < (int)aiMesh.mNumFaces; aiFaceIndex++) {
