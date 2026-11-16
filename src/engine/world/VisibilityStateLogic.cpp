@@ -3,8 +3,8 @@
 VisibilityState VisibilityStateLogic::getStateForWorldSegment(WorldSegment& segment, Camera& camera) {
     float lengthSquared = segment.getBoundaryBox().getNearestLengthSquaredTo(camera.getPosition());
     if (lengthSquared > 500.0f * 500.0f) return VisibilityState::shape;
-    if (lengthSquared > 400.0f * 400.0f) return VisibilityState::low;
-    if (lengthSquared > 200.0f * 200.0f) return VisibilityState::medium;
+    if (lengthSquared > 300.0f * 300.0f) return VisibilityState::low;
+    if (lengthSquared > 100.0f * 100.0f) return VisibilityState::medium;
     return VisibilityState::high;
 }
 

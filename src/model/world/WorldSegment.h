@@ -40,7 +40,7 @@ public:
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();
     Collection<WorldObject*>& getWorldObjects();
     Collection<WorldObjectKindInfo>& getWorldObjectKindInfo();
-    List<float>& getWorldObjectModelMatricesForKind(WorldObjectKind kind);
+    List<float>& getWorldObjectModelMatricesFor(WorldObjectKind kind);
     Collection<Line*>& getOuterCorners();
     Collection<Light*>& getLights();
     Rect2d& getBoundaryBox();

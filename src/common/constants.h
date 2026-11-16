@@ -34,7 +34,7 @@ class GameConstants {
 
 public:
     inline static const int maxVehiclesCount = 2;
-    inline static const int maxWorldObjectsCountInSegment = 800;
+    inline static const int maxWorldObjectsCountInSegment = 1000;
 };
 
 class VehicleConstants {

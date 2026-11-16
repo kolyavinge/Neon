@@ -45,7 +45,7 @@ Collection<WorldObjectKindInfo>& WorldSegment::getWorldObjectKindInfo() {
     return _worldObjectKindInfo;
 }
 
-List<float>& WorldSegment::getWorldObjectModelMatricesForKind(WorldObjectKind kind) {
+List<float>& WorldSegment::getWorldObjectModelMatricesFor(WorldObjectKind kind) {
     return _worldObjectModelMatrices[(int)kind];
 }
 

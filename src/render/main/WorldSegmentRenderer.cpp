@@ -62,33 +62,35 @@ void WorldSegmentRenderer::renderWorldSegment(
     // render ground
     shader.enableInstances(false);
     shader.setModelMatrix(TransformMatrix4::identity);
+    if (!withDetails) {
+        Texture::dummy.bind(GL_TEXTURE0);
+    }
     RenderModel3d& groundRenderModel = _groundRenderModels[worldSegment.getId()];
     for (int meshIndex = 0; meshIndex < groundRenderModel.getMeshesCount(); meshIndex++) {
         RenderMesh& mesh = groundRenderModel.getMesh(meshIndex);
         if (withDetails) {
             mesh.texture->bind(GL_TEXTURE0);
-        } else {
-            Texture::dummy.bind(GL_TEXTURE0);
+            shader.setMaterial(mesh.material);
         }
-        shader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
 
     // render objects
     shader.enableInstances(true);
+    if (!withDetails) {
+        Texture::dummy.bind(GL_TEXTURE0);
+    }
     Collection<WorldObjectKindInfo>& objectKindInfo = worldSegment.getWorldObjectKindInfo();
     for (int objectKindIndex = 0; objectKindIndex < objectKindInfo.getCount(); objectKindIndex++) {
         WorldObjectKindInfo& info = objectKindInfo[objectKindIndex];
-        RenderModel3d& objectRenderModel = _renderModel3dCollection.getWorldObjectModelForKind(info.kind);
+        shader.setModelMatricesForInstances(worldSegment.getWorldObjectModelMatricesFor(info.kind));
+        RenderModel3d& objectRenderModel = _renderModel3dCollection.getWorldObjectModel(info.kind, state);
         for (int meshIndex = 0; meshIndex < objectRenderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = objectRenderModel.getMesh(meshIndex);
             if (withDetails) {
                 mesh.texture->bind(GL_TEXTURE0);
-            } else {
-                Texture::dummy.bind(GL_TEXTURE0);
+                shader.setMaterial(mesh.material);
             }
-            shader.setMaterial(mesh.material);
-            shader.setModelMatricesForInstances(worldSegment.getWorldObjectModelMatricesForKind(info.kind));
             _vaoRenderer.renderInstances(mesh.vao, info.count);
         }
     }

@@ -50,24 +50,33 @@ void RenderModel3dCollection::loadAllModels() {
     tmpModel.clear();
 
     // world objects
-    for (int i = 0; i < _worldObjects.getCount(); i++) {
-        WorldObjectKind kind = (WorldObjectKind)i;
-        modelPath = models3dDirectory;
-        modelPath.append(getModelNameFrom(kind));
-        _model3dLoader.load(modelPath, output tmpModel);
-        tmpModel.moveToCenter();
-        scaleIfNeed(kind, tmpModel);
-        _renderModel3dLoader.load(tmpModel, output _worldObjects[(int)kind]);
-        tmpModel.clear();
+    for (int kindIndex = 0; kindIndex < (int)WorldObjectKind::_count; kindIndex++) {
+        WorldObjectKind kind = (WorldObjectKind)kindIndex;
+        for (int stateIndex = 0; stateIndex < (int)VisibilityState::_count; stateIndex++) {
+            VisibilityState state = (VisibilityState)stateIndex;
+            modelPath = models3dDirectory;
+            modelPath.append(getModelNameFrom(kind, state));
+            _model3dLoader.load(modelPath, output tmpModel);
+            tmpModel.moveToCenter();
+            scaleIfNeed(kind, tmpModel);
+            _renderModel3dLoader.load(tmpModel, output _worldObjects[(int)kind][(int)state]);
+            tmpModel.clear();
+        }
     }
 }
 
-String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind) {
-    switch (kind) {
-        case WorldObjectKind::metalFence1: return String("metal_fence_1_high.obj");
-        case WorldObjectKind::_count:
-        default: throw ArgumentException(L"Wrong kind to load a 3d model.");
-    }
+String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind, VisibilityState state) {
+    String name;
+
+    if (kind == WorldObjectKind::metalFence1) name = "metal_fence_1_";
+
+    if (state == VisibilityState::high) name.append("high.obj");
+    else if (state == VisibilityState::medium) name.append("medium.obj");
+    else if (state == VisibilityState::low) name.append("low.obj");
+    else if (state == VisibilityState::shape) name.append("shape.obj");
+    else throw ArgumentException(L"Wrong state.");
+
+    return name;
 }
 
 void RenderModel3dCollection::scaleIfNeed(WorldObjectKind kind, Model3d& model) {
@@ -99,6 +108,6 @@ float RenderModel3dCollection::getWheelRadius(Model3d& wheelModel) {
     return wheelRadius;
 }
 
-RenderModel3d& RenderModel3dCollection::getWorldObjectModelForKind(WorldObjectKind kind) {
-    return _worldObjects[(int)kind];
+RenderModel3d& RenderModel3dCollection::getWorldObjectModel(WorldObjectKind kind, VisibilityState state) {
+    return _worldObjects[(int)kind][(int)state];
 }
