@@ -16,9 +16,10 @@ public:
     void static run();
 
 private:
-    void static moveConsoleToCorner();
-    void static setFullScreenMode(GLFWwindow* window);
-    void static setWindowedMode(GLFWwindow* window);
-    void static onResize(GLFWwindow* window, int width, int height) noexcept;
-    void static onKeyInput(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept;
+    static GLFWwindow* initMainWindow();
+    static void moveConsoleToCorner();
+    static void setFullScreenMode(GLFWwindow* window);
+    static void setWindowedMode(GLFWwindow* window);
+    static void onResize(GLFWwindow* window, int width, int height) noexcept;
+    static void onKeyInput(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept;
 };

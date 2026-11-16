@@ -51,7 +51,7 @@ void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept
     }
 }
 
-void App::run() {
+GLFWwindow* App::initMainWindow() {
     if (glfwInit() == GLFW_FALSE) throw AppException();
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
@@ -69,20 +69,30 @@ void App::run() {
     glDebugMessageCallback(glDebugOutput, nullptr);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     moveConsoleToCorner();
+
+    return window;
+}
+
+void App::run() {
+    GLFWwindow* window = initMainWindow();
     Game& game = GameFactory::make();
     double lastTime = glfwGetTime();
-    double accumulator = 0.0;
+    double modelAccumulator = 0.0, renderAccumulator = 0.0;
     while (!glfwWindowShouldClose(window)) {
         double currentTime = glfwGetTime();
-        accumulator += currentTime - lastTime;
+        modelAccumulator += currentTime - lastTime;
+        renderAccumulator += currentTime - lastTime;
         lastTime = currentTime;
-        if (accumulator >= CommonConstants::deltaTimeSec) {
+        if (modelAccumulator >= CommonConstants::modelDeltaTimeSec) {
             game.update();
-            game.render();
-            accumulator -= CommonConstants::deltaTimeSec;
-            glfwSwapBuffers(window);
-            glfwPollEvents();
+            modelAccumulator -= CommonConstants::modelDeltaTimeSec;
         }
+        if (renderAccumulator >= CommonConstants::renderDeltaTimeSec) {
+            game.render();
+            renderAccumulator -= CommonConstants::renderDeltaTimeSec;
+            glfwSwapBuffers(window);
+        }
+        glfwPollEvents();
     }
     glfwTerminate();
 }

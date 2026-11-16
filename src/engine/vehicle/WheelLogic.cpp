@@ -36,7 +36,7 @@ void WheelLogic::calculateDriveWheelAngularVelocity(
 }
 
 void WheelLogic::brakeByWheels(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     float brakeRatio = vehicle.getDrivingInputData().getBrakeRatio();
     if (brakeRatio > 0.0f) {
         for (int i = 0; i < VehicleConstants::wheelsCount; i++) {
@@ -62,7 +62,7 @@ void WheelLogic::brake(Wheel& wheel, float brakeRatio, float dt) {
 }
 
 void WheelLogic::calculateWheelAngularVelocityByLinear(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     Gearbox& gearbox = vehicle.getGearbox();
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();

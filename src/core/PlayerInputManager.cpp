@@ -75,7 +75,7 @@ void PlayerInputManager::update(Vehicle& vehicle) {
     }
     // debug only
 
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     inputData.update(dt);
 }
 

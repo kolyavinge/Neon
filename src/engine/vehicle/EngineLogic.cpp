@@ -31,7 +31,7 @@ void EngineLogic::synchEngineAndWheels(Vehicle& vehicle) {
 }
 
 void EngineLogic::applyEngineTorqueToWheels(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     float throttleRatio = vehicle.getDrivingInputData().getThrottleRatio();
     Engine& engine = vehicle.getEngine();
     Gearbox& gearbox = vehicle.getGearbox();

@@ -23,7 +23,7 @@ void ForceLogic::calculateAndApplyForces(Vehicle& vehicle) {
 
 void ForceLogic::applyForces(Vehicle& vehicle) {
     // применяем силы которые действуют на машинку при движении
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     Body& body = vehicle.getBody();
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     // силы от колес
@@ -57,7 +57,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
 }
 
 void ForceLogic::calculateSpringForces(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Spring& spring = vehicle.getSpring(wheelIndex);
         spring.calculateSpringForce(dt);
@@ -94,7 +94,7 @@ void ForceLogic::calculateAntiRollForces(Wheel& leftWheel, Wheel& rightWheel, Sp
 }
 
 void ForceLogic::calculateWheelForces(Vehicle& vehicle) {
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     float vehicleFrontLinearVelocity = vehicleLinearVelocity.dotProduct(chassisFrontNormal);
@@ -123,7 +123,7 @@ void ForceLogic::adjustLongitudinalForces(Vehicle& vehicle) {
     // при торможении суммарная продольная сила может превысеть линейную скорость и развернуть ее в обратном направлении
     // чтобы этого избежать, пропорционально уменьшаем продольную силу каждого колеса
     if (!vehicle.isBrakingByWheelsOrEngine()) return;
-    const float dt = CommonConstants::deltaTimeSec;
+    const float dt = CommonConstants::modelDeltaTimeSec;
     Vector3 vehicleLinearVelocity = vehicle.getLinearVelocity();
     Vector3 chassisFrontNormal = vehicle.getChassisFrontNormal();
     float vehicleFrontLinearVelocity = Math::abs(vehicleLinearVelocity.dotProduct(chassisFrontNormal));

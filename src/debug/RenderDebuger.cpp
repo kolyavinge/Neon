@@ -20,9 +20,9 @@ void RenderDebuger::print(GameWorld& gameWorld) {
 
     printf("render: %i ms (*%i: %i)",
         renderTimeMsc,
-        (int)CommonConstants::frameRate,
-        (int)((float)renderTimeMsc * CommonConstants::frameRate));
-    if ((float)renderTimeMsc * CommonConstants::frameRate >= 900.0) {
+        (int)CommonConstants::renderFrameRate,
+        (int)((float)renderTimeMsc * CommonConstants::renderFrameRate));
+    if ((float)renderTimeMsc * CommonConstants::renderFrameRate >= 900.0) {
         printf("\033[1;31m slow");
     }
     printf("\033[0m\n");
