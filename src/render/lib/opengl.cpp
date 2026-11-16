@@ -42,7 +42,7 @@ void glDrawCircleYZ(float radius, int edgesCount) {
 void glDebugOutput(
     GLenum source,
     GLenum type,
-    unsigned int id,
+    unsigned int,
     GLenum severity,
     GLsizei,
     const char* message,

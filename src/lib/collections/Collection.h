@@ -95,6 +95,18 @@ public:
         return false;
     }
 
+    bool find(auto&& predicate, T*& finded) {
+        for (int i = 0; i < getCount(); i++) {
+            T& item = (*this)[i];
+            if (predicate(item)) {
+                finded = &item;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     template<class TGroupKey>
     void groupBy(TGroupKey(*getGroupKey)(T& item), List<Group<TGroupKey, T*>>& grouped) {
         int count = getCount();

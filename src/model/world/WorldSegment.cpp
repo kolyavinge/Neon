@@ -1,6 +1,16 @@
 #include <lib/calc/Vector3.h>
 #include <model/world/WorldSegment.h>
 
+WorldObjectKindInfo::WorldObjectKindInfo() {
+    kind = (WorldObjectKind)-1;
+    count = 0;
+}
+
+WorldObjectKindInfo::WorldObjectKindInfo(WorldObjectKind k, int cnt) {
+    kind = k;
+    count = cnt;
+}
+
 WorldSegment::WorldSegment() {
     _id = 0;
 }
@@ -29,6 +39,10 @@ Collection<WorldObject*>& WorldSegment::getWorldObjects() {
     return _worldObjects;
 }
 
+Collection<WorldObjectKindInfo>& WorldSegment::getWorldObjectKindInfo() {
+    return _worldObjectKindInfo;
+}
+
 Collection<Line*>& WorldSegment::getOuterCorners() {
     return _outerCorners;
 }
@@ -47,33 +61,31 @@ Vector3 WorldSegment::getCenter() {
 
 void WorldSegment::setGroundPrimitives(Collection<WorldPrimitive>& primitives) {
     for (int i = 0; i < primitives.getCount(); i++) {
-        _groundPrimitives.add(&primitives[i]);
-        _groundAndBarrierPrimitives.add(&primitives[i]);
+        addGroundPrimitive(primitives[i]);
     }
 }
 
 void WorldSegment::setBarrierPrimitives(Collection<WorldPrimitive>& primitives) {
     for (int i = 0; i < primitives.getCount(); i++) {
-        _barrierPrimitives.add(&primitives[i]);
-        _groundAndBarrierPrimitives.add(&primitives[i]);
+        addBarrierPrimitive(primitives[i]);
     }
 }
 
 void WorldSegment::setWorldObjects(Collection<WorldObject>& objects) {
     for (int i = 0; i < objects.getCount(); i++) {
-        _worldObjects.add(&objects[i]);
+        addWorldObject(objects[i]);
     }
 }
 
 void WorldSegment::setOuterCorners(Collection<Line>& outerCorners) {
     for (int i = 0; i < outerCorners.getCount(); i++) {
-        _outerCorners.add(&outerCorners[i]);
+        addOuterCorner(outerCorners[i]);
     }
 }
 
 void WorldSegment::setLights(Collection<Light>& lights) {
     for (int i = 0; i < lights.getCount(); i++) {
-        _lights.add(&lights[i]);
+        addLight(lights[i]);
     }
 }
 
@@ -89,6 +101,13 @@ void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
 
 void WorldSegment::addWorldObject(WorldObject& object) {
     _worldObjects.add(&object);
+    WorldObjectKindInfo* finded = nullptr;
+    if (_worldObjectKindInfo.find([&](WorldObjectKindInfo& x) { return x.kind == object.getKind(); }, output finded)) {
+        assert(finded != nullptr);
+        finded->count++;
+    } else {
+        _worldObjectKindInfo.addByValue(WorldObjectKindInfo(object.getKind(), 1));
+    }
 }
 
 void WorldSegment::addOuterCorner(Line& outerCorner) {

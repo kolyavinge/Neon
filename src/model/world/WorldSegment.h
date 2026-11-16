@@ -2,18 +2,29 @@
 
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
-#include <model/common/common.h>
 #include <model/common/Light.h>
+#include <model/common/common.h>
 #include <model/world/WorldObject.h>
 #include <model/world/WorldPrimitive.h>
 
-class WorldSegment : Object {
+class WorldObjectKindInfo : public Object {
+
+public:
+    WorldObjectKind kind;
+    int count;
+
+    WorldObjectKindInfo();
+    WorldObjectKindInfo(WorldObjectKind k, int cnt);
+};
+
+class WorldSegment : public Object {
 
     int _id;
     List<WorldPrimitive*> _groundPrimitives;
     List<WorldPrimitive*> _barrierPrimitives;
     List<WorldPrimitive*> _groundAndBarrierPrimitives;
     List<WorldObject*> _worldObjects;
+    List<WorldObjectKindInfo> _worldObjectKindInfo;
     List<Line*> _outerCorners;
     List<Light*> _lights;
     Rect2d _boundaryBox;
@@ -27,6 +38,7 @@ public:
     Collection<WorldPrimitive*>& getBarrierPrimitives();
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();
     Collection<WorldObject*>& getWorldObjects();
+    Collection<WorldObjectKindInfo>& getWorldObjectKindInfo();
     Collection<Line*>& getOuterCorners();
     Collection<Light*>& getLights();
     Rect2d& getBoundaryBox();
