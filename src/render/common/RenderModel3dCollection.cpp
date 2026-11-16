@@ -20,7 +20,7 @@ void RenderModel3dCollection::loadAllModels() {
     _model3dLoader.load(modelPath, output vehicleBodyModel);
     vehicleBodyModel.moveToCenter();
     vehicleBodyModel.scale(1.25f);
-    _renderModel3dLoader.load(vehicleBodyModel, output vehicleBody);
+    _renderModel3dLoader.load(vehicleBodyModel, output _vehicleBody);
 
     // front wheels
     VehicleData data;
@@ -31,9 +31,9 @@ void RenderModel3dCollection::loadAllModels() {
     frontLeftWheelModel.moveToCenter();
     float wheelRadius = getWheelRadius(frontLeftWheelModel);
     frontLeftWheelModel.scale(data.frontWheelRadius / wheelRadius);
-    _renderModel3dLoader.load(frontLeftWheelModel, output vehicleFrontLeftWheel);
+    _renderModel3dLoader.load(frontLeftWheelModel, output _vehicleWheels[(int)WheelPosition::frontLeft]);
     frontLeftWheelModel.rotateByUpAxis180();
-    _renderModel3dLoader.load(frontLeftWheelModel, output vehicleFrontRightWheel);
+    _renderModel3dLoader.load(frontLeftWheelModel, output _vehicleWheels[(int)WheelPosition::frontRight]);
 
     // rear wheels
     modelPath = models3dDirectory;
@@ -43,9 +43,17 @@ void RenderModel3dCollection::loadAllModels() {
     rearLeftWheelModel.moveToCenter();
     wheelRadius = getWheelRadius(rearLeftWheelModel);
     rearLeftWheelModel.scale(data.rearWheelRadius / wheelRadius);
-    _renderModel3dLoader.load(rearLeftWheelModel, output vehicleRearLeftWheel);
+    _renderModel3dLoader.load(rearLeftWheelModel, output _vehicleWheels[(int)WheelPosition::rearLeft]);
     rearLeftWheelModel.rotateByUpAxis180();
-    _renderModel3dLoader.load(rearLeftWheelModel, output vehicleRearRightWheel);
+    _renderModel3dLoader.load(rearLeftWheelModel, output _vehicleWheels[(int)WheelPosition::rearRight]);
+}
+
+RenderModel3d& RenderModel3dCollection::getVehicleBody() {
+    return _vehicleBody;
+}
+
+RenderModel3d& RenderModel3dCollection::getVehicleWheel(WheelPosition position) {
+    return _vehicleWheels[(int)position];
 }
 
 float RenderModel3dCollection::getWheelRadius(Model3d& wheelModel) {

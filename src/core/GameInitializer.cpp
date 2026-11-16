@@ -26,7 +26,6 @@ void GameInitializer::initGame() {
     _shaderCollection.loadAllShaders();
     _shaderProgramCollection.initAllPrograms();
     _renderModel3dCollection.loadAllModels();
-    _vehicleRenderer.init(_renderModel3dCollection);
 }
 
 // TODO вызывать после выбора трассы

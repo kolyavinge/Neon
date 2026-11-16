@@ -1,20 +1,14 @@
 #include <lib/calc/TransformMatrix4.h>
+#include <render/lib/RenderModel3d.h>
 #include <render/lib/Texture.h>
 #include <render/lib/opengl.h>
 #include <render/main/VehicleRenderer.h>
 
 VehicleRenderer::VehicleRenderer(
+    RenderModel3dCollection& renderModel3dCollection,
     VAORenderer& vaoRenderer) :
+    _renderModel3dCollection(renderModel3dCollection),
     _vaoRenderer(vaoRenderer) {
-    _vehicleBodyModel = nullptr;
-}
-
-void VehicleRenderer::init(RenderModel3dCollection& renderModel3dCollection) {
-    _vehicleBodyModel = &renderModel3dCollection.vehicleBody;
-    _wheelModels[(int)WheelPosition::frontLeft] = &renderModel3dCollection.vehicleFrontLeftWheel;
-    _wheelModels[(int)WheelPosition::frontRight] = &renderModel3dCollection.vehicleFrontRightWheel;
-    _wheelModels[(int)WheelPosition::rearLeft] = &renderModel3dCollection.vehicleRearLeftWheel;
-    _wheelModels[(int)WheelPosition::rearRight] = &renderModel3dCollection.vehicleRearRightWheel;
 }
 
 void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
@@ -51,8 +45,9 @@ void VehicleRenderer::render(MainSceneShaderProgram& shader, Vehicle& vehicle) {
 
 void VehicleRenderer::renderBody(MainSceneShaderProgram& shader, TransformMatrix4& vehicleModelMatrix) {
     shader.setModelMatrix(vehicleModelMatrix);
-    for (int i = 0; i < _vehicleBodyModel->getMeshesCount(); i++) {
-        RenderMesh& mesh = _vehicleBodyModel->getMesh(i);
+    RenderModel3d& bodyModel = _renderModel3dCollection.getVehicleBody();
+    for (int i = 0; i < bodyModel.getMeshesCount(); i++) {
+        RenderMesh& mesh = bodyModel.getMesh(i);
         shader.setMaterial(mesh.material);
         _vaoRenderer.render(mesh.vao);
     }
@@ -60,7 +55,7 @@ void VehicleRenderer::renderBody(MainSceneShaderProgram& shader, TransformMatrix
 
 void VehicleRenderer::renderWheel(MainSceneShaderProgram& shader, Wheel& wheel) {
     shader.setModelMatrix(wheel.getModelMatrix());
-    RenderModel3d& wheelModel = *_wheelModels[(int)wheel.getPosition()];
+    RenderModel3d& wheelModel = _renderModel3dCollection.getVehicleWheel(wheel.getPosition());
     for (int i = 0; i < wheelModel.getMeshesCount(); i++) {
         RenderMesh& mesh = wheelModel.getMesh(i);
         shader.setMaterial(mesh.material);

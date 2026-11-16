@@ -1,6 +1,5 @@
 #pragma once
 
-#include <common/constants.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
@@ -8,27 +7,26 @@
 #include <model/vehicle/Wheel.h>
 #include <model/world/GameObjectVisibility.h>
 #include <render/common/RenderModel3dCollection.h>
-#include <render/lib/RenderModel3d.h>
 #include <render/lib/VAORenderer.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class VehicleRenderer : public Object {
 
+    RenderModel3dCollection& _renderModel3dCollection;
     VAORenderer& _vaoRenderer;
-    RenderModel3d* _vehicleBodyModel;
-    Array<RenderModel3d*, VehicleConstants::wheelsCount> _wheelModels;
 
 public:
     static VehicleRenderer* resolve(Resolver& resolver) {
         return new VehicleRenderer(
+            resolver.resolve<RenderModel3dCollection>(),
             resolver.resolve<VAORenderer>());
     }
 
     VehicleRenderer(
+        RenderModel3dCollection& renderModel3dCollection,
         VAORenderer& vaoRenderer
     );
 
-    void init(RenderModel3dCollection& renderModel3dCollection);
     void render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility);
 
 private:
