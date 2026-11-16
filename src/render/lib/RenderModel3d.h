@@ -27,6 +27,7 @@ public:
     RenderMesh& createNewMesh();
     RenderMesh& getMesh(int index);
     int getMeshesCount();
+    int getTotalFacesCount();
     RenderMesh& getMeshByName(String meshName);
     void addUniqueTextures(Collection<Texture*>& textures);
     void release();

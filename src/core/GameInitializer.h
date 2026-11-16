@@ -20,7 +20,6 @@ class GameInitializer : public Object {
     TextureCollection& _textureCollection;
     ShaderCollection& _shaderCollection;
     ShaderProgramCollection& _shaderProgramCollection;
-    Model3dCollection& _model3dCollection;
     RenderModel3dCollection& _renderModel3dCollection;
     VehicleRenderer& _vehicleRenderer;
     WorldSegmentRenderer& _worldSegmentRenderer;
@@ -33,7 +32,6 @@ public:
             resolver.resolve<TextureCollection>(),
             resolver.resolve<ShaderCollection>(),
             resolver.resolve<ShaderProgramCollection>(),
-            resolver.resolve<Model3dCollection>(),
             resolver.resolve<RenderModel3dCollection>(),
             resolver.resolve<VehicleRenderer>(),
             resolver.resolve<WorldSegmentRenderer>());
@@ -45,7 +43,6 @@ public:
         TextureCollection& textureCollection,
         ShaderCollection& shaderCollection,
         ShaderProgramCollection& shaderProgramCollection,
-        Model3dCollection& model3dCollection,
         RenderModel3dCollection& renderModel3dCollection,
         VehicleRenderer& vehicleRenderer,
         WorldSegmentRenderer& worldSegmentRenderer);

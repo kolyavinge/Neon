@@ -6,8 +6,8 @@
 #include <stdio.h>
 
 RenderDebuger::RenderDebuger(
-    Model3dCollection& model3dCollection) :
-    _model3dCollection(model3dCollection) {
+    RenderModel3dCollection& renderModel3dCollection) :
+    _renderModel3dCollection(renderModel3dCollection) {
     _tick = 0;
     renderTimeMsc = 0;
 }
@@ -35,9 +35,10 @@ void RenderDebuger::print(GameWorld& gameWorld) {
     int segmentsTotalFaces = 0;
     for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& segment = *visibleSegments[segmentIndex];
+        VisibilityState state = objectVisibility.getSegmentVisibilityState(segmentIndex);
         for (int j = 0; j < segment.getWorldObjects().getCount(); j++) {
             WorldObject& object = *segment.getWorldObjects()[j];
-            segmentsTotalFaces += _model3dCollection.getModelFor(object.getKind()).getTotalFacesCount();
+            segmentsTotalFaces += _renderModel3dCollection.getWorldObjectModel(object.getKind(), state).getTotalFacesCount();
         }
     }
     printf("segments total faces: ");
@@ -46,11 +47,12 @@ void RenderDebuger::print(GameWorld& gameWorld) {
 
     for (int segmentIndex = 0; segmentIndex < visibleSegments.getCount(); segmentIndex++) {
         WorldSegment& segment = *visibleSegments[segmentIndex];
+        VisibilityState state = objectVisibility.getSegmentVisibilityState(segmentIndex);
         printf("segment id: %i\tstate: %i ", segment.getId(), objectVisibility.getSegmentVisibilityState(segmentIndex));
         int faces = 0;
         for (int j = 0; j < segment.getWorldObjects().getCount(); j++) {
             WorldObject& object = *segment.getWorldObjects()[j];
-            faces += _model3dCollection.getModelFor(object.getKind()).getTotalFacesCount();
+            faces += _renderModel3dCollection.getWorldObjectModel(object.getKind(), state).getTotalFacesCount();
         }
         printf("faces: ");
         printFormatted(faces);

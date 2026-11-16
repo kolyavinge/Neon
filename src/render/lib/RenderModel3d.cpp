@@ -31,6 +31,15 @@ int RenderModel3d::getMeshesCount() {
     return _meshes.getCount();
 }
 
+int RenderModel3d::getTotalFacesCount() {
+    int result = 0;
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        result += _meshes[i]->vao.getElementsCount();
+    }
+
+    return result;
+}
+
 RenderMesh& RenderModel3d::getMeshByName(String meshName) {
     for (int i = 0; i < _meshes.getCount(); i++) {
         RenderMesh& mesh = *_meshes[i];

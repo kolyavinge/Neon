@@ -43,3 +43,6 @@ private:
         if (!inBounds) throw IndexOutOfBoundsException();
     }
 };
+
+template<class T, int Dimention1, int Dimention2>
+class Array2d : public Array<Array<T, Dimention2>, Dimention1> {};
