@@ -4,6 +4,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <model/vehicle/Wheel.h>
+#include <model/world/WorldObject.h>
 #include <render/lib/Model3d.h>
 #include <render/lib/Model3dLoader.h>
 #include <render/lib/RenderModel3d.h>
@@ -16,6 +17,7 @@ class RenderModel3dCollection : public Object {
     RenderModel3dLoader& _renderModel3dLoader;
     RenderModel3d _vehicleBody;
     Array<RenderModel3d, VehicleConstants::wheelsCount> _vehicleWheels;
+    Array<RenderModel3d, (int)WorldObjectKind::_count> _worldObjects;
 
 public:
     static RenderModel3dCollection* resolve(Resolver& resolver) {
@@ -33,7 +35,10 @@ public:
     void loadAllModels();
     RenderModel3d& getVehicleBody();
     RenderModel3d& getVehicleWheel(WheelPosition position);
+    RenderModel3d& getWorldObjectModelForKind(WorldObjectKind kind);
 
 private:
     float getWheelRadius(Model3d& wheelModel);
+    String getModelNameFrom(WorldObjectKind kind);
+    void scaleIfNeed(WorldObjectKind kind, Model3d& model);
 };

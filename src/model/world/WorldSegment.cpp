@@ -1,3 +1,5 @@
+#include <common/constants.h>
+#include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <model/world/WorldSegment.h>
 
@@ -41,6 +43,10 @@ Collection<WorldObject*>& WorldSegment::getWorldObjects() {
 
 Collection<WorldObjectKindInfo>& WorldSegment::getWorldObjectKindInfo() {
     return _worldObjectKindInfo;
+}
+
+List<float>& WorldSegment::getWorldObjectModelMatricesForKind(WorldObjectKind kind) {
+    return _worldObjectModelMatrices[(int)kind];
 }
 
 Collection<Line*>& WorldSegment::getOuterCorners() {
@@ -100,7 +106,12 @@ void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
 }
 
 void WorldSegment::addWorldObject(WorldObject& object) {
+    if (_worldObjects.getCount() == GameConstants::maxWorldObjectsCountInSegment) {
+        throw Exception(L"World objects count more than max value.");
+    }
+
     _worldObjects.add(&object);
+
     WorldObjectKindInfo* finded = nullptr;
     if (_worldObjectKindInfo.find([&](WorldObjectKindInfo& x) { return x.kind == object.getKind(); }, output finded)) {
         assert(finded != nullptr);
@@ -108,6 +119,8 @@ void WorldSegment::addWorldObject(WorldObject& object) {
     } else {
         _worldObjectKindInfo.addByValue(WorldObjectKindInfo(object.getKind(), 1));
     }
+
+    _worldObjectModelMatrices[(int)object.getKind()].addRange(object.getModelMatrix().getItems(), TransformMatrix4::itemsCount);
 }
 
 void WorldSegment::addOuterCorner(Line& outerCorner) {

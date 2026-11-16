@@ -7,6 +7,7 @@
 #include <render/lib/Model3d.h>
 #include <render/lib/Model3dLoader.h>
 
+// TODO не используется
 class Model3dCollection : public Object {
 
     AssetsDirectory& _assetsDirectory;

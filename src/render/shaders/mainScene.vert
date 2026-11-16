@@ -14,8 +14,14 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-mat4 modelViewMatrix = viewMatrix * modelMatrix;
-mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+uniform bool enableInstances;
+layout (std430, binding = 0) readonly buffer InstanceBuffer {
+    mat4 modelMatrices[];
+};
+
+mat4 model = enableInstances ? modelMatrices[gl_InstanceID] : modelMatrix;
+mat4 modelViewMatrix = viewMatrix * model;
+mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * model;
 mat3 normalMatrix = mat3(modelViewMatrix);
 
 void main() {

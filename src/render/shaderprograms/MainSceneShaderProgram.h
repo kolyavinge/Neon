@@ -15,6 +15,8 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint modelMatrix;
         GLint viewMatrix;
         GLint projectionMatrix;
+        GLint enableInstances;
+        GLuint modelMatrices;
         GLint alphaFactor;
         GLint useTexture;
         GLint materialAmbient;
@@ -38,6 +40,8 @@ public:
     void setModelMatrix(TransformMatrix4& modelMatrix);
     void setViewMatrix(TransformMatrix4& viewMatrix);
     void setProjectionMatrix(TransformMatrix4& projectionMatrix);
+    void enableInstances(bool enable);
+    void setModelMatricesForInstances(List<float>& modelMatrices);
     void setAlphaFactor(float alphaFactor);
     void useTexture(bool useTexture);
     void setMaterial(Material& material);

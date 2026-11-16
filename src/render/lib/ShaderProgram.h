@@ -31,4 +31,7 @@ protected:
     void setMatrix3(GLint location, GLfloat* m);
     void setTransformMatrix4(GLint location, TransformMatrix4& m);
     void setOutputNamesForTransformFeedback(GLint count, const char** outputNames);
+    GLuint createStorageBuffer(GLuint bindingIndex, int maxDataSizeInBytes);
+    void setStorageBuffer(GLuint id, List<float>& items);
+    void setStorageBuffer(GLuint id, int dataSizeInBytes, void* data);
 };

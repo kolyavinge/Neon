@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <render/lib/UniformArray.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 
@@ -9,6 +10,8 @@ void MainSceneShaderProgram::initAfterLink() {
     _locations.modelMatrix = glGetUniformLocation(_id, "modelMatrix");
     _locations.viewMatrix = glGetUniformLocation(_id, "viewMatrix");
     _locations.projectionMatrix = glGetUniformLocation(_id, "projectionMatrix");
+    _locations.enableInstances = glGetUniformLocation(_id, "enableInstances");
+    _locations.modelMatrices = createStorageBuffer(0, GameConstants::maxWorldObjectsCountInSegment * TransformMatrix4::sizeInBytes);
     _locations.alphaFactor = glGetUniformLocation(_id, "alphaFactor");
     _locations.useTexture = glGetUniformLocation(_id, "useTexture");
     _locations.materialAmbient = glGetUniformLocation(_id, "material.ambient");
@@ -41,6 +44,14 @@ void MainSceneShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
 
 void MainSceneShaderProgram::setProjectionMatrix(TransformMatrix4& projectionMatrix) {
     setTransformMatrix4(_locations.projectionMatrix, projectionMatrix);
+}
+
+void MainSceneShaderProgram::enableInstances(bool enable) {
+    setBoolean(_locations.enableInstances, enable);
+}
+
+void MainSceneShaderProgram::setModelMatricesForInstances(List<float>& modelMatrices) {
+    setStorageBuffer(_locations.modelMatrices, modelMatrices);
 }
 
 void MainSceneShaderProgram::setAlphaFactor(float alphaFactor) {

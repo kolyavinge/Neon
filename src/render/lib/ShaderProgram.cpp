@@ -95,3 +95,23 @@ void ShaderProgram::setTransformMatrix4(GLint location, TransformMatrix4& m) {
 void ShaderProgram::setOutputNamesForTransformFeedback(GLint count, const char** outputNames) {
     glTransformFeedbackVaryings(_id, count, outputNames, GL_SEPARATE_ATTRIBS);
 }
+
+GLuint ShaderProgram::createStorageBuffer(GLuint bindingIndex, int maxDataSizeInBytes) {
+    GLuint ssbo;
+    glGenBuffers(1, &ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, maxDataSizeInBytes, nullptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bindingIndex, ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, bindingIndex);
+
+    return ssbo;
+}
+
+void ShaderProgram::setStorageBuffer(GLuint id, List<float>& items) {
+    setStorageBuffer(id, items.getSizeInBytes(), items.getItemsPointer());
+}
+
+void ShaderProgram::setStorageBuffer(GLuint id, int dataSizeInBytes, void* data) {
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, id);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, dataSizeInBytes, data);
+}

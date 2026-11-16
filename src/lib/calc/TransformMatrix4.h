@@ -7,7 +7,12 @@
 // column major matrix (for OpenGL)
 class TransformMatrix4 : public Object {
 
-    float _items[16];
+public:
+    static inline const int itemsCount = 16;
+    static inline const int sizeInBytes = itemsCount * sizeof(float);
+
+private:
+    float _items[itemsCount];
 
 public:
     static TransformMatrix4 identity;
@@ -21,7 +26,7 @@ public:
         Vector3 axis3To);
 
     TransformMatrix4();
-    TransformMatrix4(float items[16]);
+    TransformMatrix4(float items[itemsCount]);
     float* getItems();
     void setIdentity();
     void setZero();

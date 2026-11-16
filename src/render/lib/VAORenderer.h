@@ -7,4 +7,5 @@ class VAORenderer : public Object {
 
 public:
     void render(VAO& vao);
+    void renderInstances(VAO& vao, int instancesCount);
 };

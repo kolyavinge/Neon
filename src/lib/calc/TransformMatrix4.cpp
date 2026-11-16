@@ -44,8 +44,8 @@ TransformMatrix4::TransformMatrix4() {
     setIdentity();
 }
 
-TransformMatrix4::TransformMatrix4(float items[16]) {
-    Memory::copy<float>(items, _items, 16);
+TransformMatrix4::TransformMatrix4(float items[itemsCount]) {
+    Memory::copy<float>(items, _items, itemsCount);
 }
 
 float* TransformMatrix4::getItems() {
@@ -61,7 +61,7 @@ void TransformMatrix4::setIdentity() {
 }
 
 void TransformMatrix4::setZero() {
-    Memory::zero<float>(_items, 16);
+    Memory::zero<float>(_items, itemsCount);
 }
 
 void TransformMatrix4::setCoordinateSystem(Vector3 axis1, Vector3 axis2, Vector3 axis3) {
@@ -177,14 +177,14 @@ void TransformMatrix4::transpose() {
     float i14 = _items[14];
     float i15 = _items[15];
 
-    float transposed[16] = {
+    float transposed[itemsCount] = {
         i0, i4,  i8, i12,
         i1, i5,  i9, i13,
         i2, i6, i10, i14,
         i3, i7, i11, i15
     };
 
-    Memory::copy(transposed, _items, 16);
+    Memory::copy(transposed, _items, itemsCount);
 }
 
 void TransformMatrix4::translate(float x, float y, float z) {

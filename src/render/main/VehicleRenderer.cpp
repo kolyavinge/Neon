@@ -13,6 +13,7 @@ VehicleRenderer::VehicleRenderer(
 
 void VehicleRenderer::render(MainSceneShaderProgram& shader, Collection<Vehicle>& vehicles, IGameObjectVisibility& objectVisibility) {
     glEnable(GL_DEPTH_TEST);
+    shader.enableInstances(false);
     shader.useTexture(false);
     Texture::dummy.bind(GL_TEXTURE0);
     for (int i = 0; i < vehicles.getCount(); i++) {
