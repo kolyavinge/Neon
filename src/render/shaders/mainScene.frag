@@ -49,11 +49,10 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     vec3 lightPositionView = vec3(viewMatrix * vec4(lights[lightIndex].position, 1.0));
     vec3 lightDirection = lightPositionView - PositionView;
     float lightDistance = length(lightDirection);
-    // TODO проверять макс дистанцию и return
+    if (lightDistance > 100.0) return; // есть в VehicleData
     vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
     vec3 s = normalize(lightDirection);
-    vec3 colorIntensity = lights[lightIndex].color / lightDistance * clamp(dot(-s, lightDirectionView), 0.0, 1.0);
-    if (length(colorIntensity) < 0.1) return; // 0.1 есть в VehicleData ! TODO это убрать
+    vec3 colorIntensity = lights[lightIndex].color / (lightDistance * lightDistance) * max(dot(-s, lightDirectionView), 0.0);
     vec3 n = normalize(NormalView);
     float sDotN = max(dot(s, n), 0.0);
     ambient += colorIntensity * material.ambient;
@@ -69,7 +68,7 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
 void main() {
     float depthFactor = 1.0 - clamp(length(PositionView) / maxDepth, 0.0, 1.0);
     if (depthFactor == 0.0) {
-        FragColor = vec4(0.0);
+        FragColor = vec4(0.0, 0.0, 0.0, alphaFactor);
         return;
     }
     if (useTexture) {

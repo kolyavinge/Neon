@@ -54,7 +54,7 @@ void WorldSegmentRenderer::renderWorldSegment(
     bool withDetails = state > VisibilityState::shape;
     shader.useTexture(withDetails);
     shader.enableLight(withDetails);
-    shader.enableSpecular(state > VisibilityState::low);
+    shader.enableSpecular(state == VisibilityState::high);
     if (withDetails) {
         shader.addLights(objectVisibility.getLightsForSegment(worldSegment));
     }
