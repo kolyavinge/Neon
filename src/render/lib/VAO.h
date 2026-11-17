@@ -16,7 +16,7 @@ enum class BufferIndices {
 class VAO : public Object {
 
     GLuint _id;
-    Array<GLuint, (int)BufferIndices::_count> _vboIds;
+    Array<GLuint, BufferIndices::_count> _vboIds;
     GLenum _format;
     GLsizei _elementsCount;
 
@@ -24,7 +24,7 @@ public:
     DENY_COPYING(VAO); // классы использующие ресурсы opengl запрещены к копированию
     VAO();
     ~VAO();
-    void init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount);
+    void init(GLuint id, Array<GLuint, BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount);
     GLuint getId();
     GLenum getFormat();
     GLsizei getElementsCount();

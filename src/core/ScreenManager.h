@@ -7,11 +7,12 @@
 #include <ui/IScreenSwitcher.h>
 #include <ui/RaceScreen.h>
 #include <ui/Screen.h>
+#include <ui/Screens.h>
 
 class ScreenManager : public Object, public IScreenSwitcher {
 
-    Array<Screen*, (int)Screens::_count> _screens;
-    Array<ScreenRenderer*, (int)Screens::_count> _screenRenderers;
+    Array<Screen*, Screens::_count> _screens;
+    Array<ScreenRenderer*, Screens::_count> _screenRenderers;
     Screens _currentScreen;
 
 public:

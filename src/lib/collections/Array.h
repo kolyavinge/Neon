@@ -1,12 +1,20 @@
 #pragma once
 
+#include <concepts>
 #include <lib/Memory.h>
 #include <lib/collections/Collection.h>
 #include <lib/exceptions.h>
+#include <type_traits>
 
-template<class T, int Count>
+template <auto Size>
+concept ConvertibleToPositiveInt =
+(requires { int{ Size }; } || std::is_enum_v<decltype(Size)>) &&
+(static_cast<int>(Size) > 0);
+
+template<class T, auto Size> requires ConvertibleToPositiveInt<Size>
 class Array : public Collection<T> {
 
+    static constexpr int Count = static_cast<int>(Size);
     T _items[Count] = {};
 
 public:
@@ -44,5 +52,6 @@ private:
     }
 };
 
-template<class T, int Dimention1, int Dimention2>
+template<class T, auto Dimention1, auto Dimention2>
+    requires ConvertibleToPositiveInt<Dimention1> && ConvertibleToPositiveInt<Dimention2>
 class Array2d : public Array<Array<T, Dimention2>, Dimention1> {};

@@ -10,7 +10,7 @@ class TextureCollection : public Object {
 
     AssetsDirectory& _assetsDirectory;
     TextureLoader& _textureLoader;
-    Array<Texture, (int)WorldPrimitiveKind::_count> _worldPrimitiveTextures;
+    Array<Texture, WorldPrimitiveKind::_count> _worldPrimitiveTextures;
 
 public:
     static TextureCollection* resolve(Resolver& resolver) {

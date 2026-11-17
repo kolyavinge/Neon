@@ -6,7 +6,7 @@ void Model3dVAOBuilder::build(Mesh& mesh, output VAO& vao) {
     GLuint vaoId;
     glGenVertexArrays(1, &vaoId);
     glBindVertexArray(vaoId);
-    Array<GLuint, (int)BufferIndices::_count> vboIds;
+    Array<GLuint, BufferIndices::_count> vboIds;
     buildArrayBuffer(vboIds, BufferIndices::vertices, mesh.vertices.getSizeInBytes(), mesh.vertices.getItemsPointer(), 3, GL_FLOAT);
     buildArrayBuffer(vboIds, BufferIndices::normals, mesh.normals.getSizeInBytes(), mesh.normals.getItemsPointer(), 3, GL_FLOAT);
     // грузим либо цвет, либо текстуру (экономим память видюхи)
@@ -22,7 +22,7 @@ void Model3dVAOBuilder::build(Mesh& mesh, output VAO& vao) {
 }
 
 void Model3dVAOBuilder::buildArrayBuffer(
-    Array<GLuint, (int)BufferIndices::_count>& vboIds,
+    Array<GLuint, BufferIndices::_count>& vboIds,
     BufferIndices bufferIndex,
     GLsizeiptr arraySizeInBytes,
     const void* arrayData,
@@ -36,7 +36,7 @@ void Model3dVAOBuilder::buildArrayBuffer(
 }
 
 void Model3dVAOBuilder::buildElementArrayBuffer(
-    Array<GLuint, (int)BufferIndices::_count>& vboIds,
+    Array<GLuint, BufferIndices::_count>& vboIds,
     BufferIndices bufferIndex,
     GLsizeiptr arraySizeInBytes,
     const void* arrayData) {

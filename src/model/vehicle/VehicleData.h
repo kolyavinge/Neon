@@ -27,7 +27,7 @@ public:
     /* gearbox */
     float gearboxEfficiency;
     float finalGearRatio;
-    Array<float, (int)Gear::_count> gearRatios;
+    Array<float, Gear::_count> gearRatios;
     float autoUpShiftRpm;
     float autoDownShiftRpm;
 

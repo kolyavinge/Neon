@@ -25,7 +25,7 @@ class WorldSegment : public Object {
     List<WorldPrimitive*> _groundAndBarrierPrimitives;
     List<WorldObject*> _worldObjects;
     List<WorldObjectKindInfo> _worldObjectKindInfo;
-    Array<List<float>, (int)WorldObjectKind::_count> _worldObjectModelMatrices;
+    Array<List<float>, WorldObjectKind::_count> _worldObjectModelMatrices;
     List<Line*> _outerCorners;
     List<Light*> _lights;
     Rect2d _boundaryBox;

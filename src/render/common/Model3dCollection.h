@@ -12,7 +12,7 @@ class Model3dCollection : public Object {
 
     AssetsDirectory& _assetsDirectory;
     Model3dLoader& _model3dLoader;
-    Array<Model3d*, (int)WorldObjectKind::_count> _worldObjects;
+    Array<Model3d*, WorldObjectKind::_count> _worldObjects;
 
 public:
     static Model3dCollection* resolve(Resolver& resolver) {

@@ -41,7 +41,7 @@ enum class KeyStates {
 
 class InputDevice : public Object {
 
-    Array<KeyStates, (int)Keys::_count> _keyStates;
+    Array<KeyStates, Keys::_count> _keyStates;
 
 public:
     InputDevice();
@@ -53,7 +53,7 @@ public:
     void update();
 
 protected:
-    Array<bool, (int)Keys::_count> _pressedKeys;
+    Array<bool, Keys::_count> _pressedKeys;
 
     void virtual updatePressedKeys() = 0;
 };

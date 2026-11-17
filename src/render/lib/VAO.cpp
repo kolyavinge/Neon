@@ -11,11 +11,11 @@ VAO::~VAO() {
     glBindVertexArray(0);
     glDeleteBuffers(_vboIds.getCount(), _vboIds.getItemsPointer());
     glDeleteVertexArrays(1, &_id);
-    Array<GLuint, (int)BufferIndices::_count> empty;
+    Array<GLuint, BufferIndices::_count> empty;
     init(0, empty, 0, 0);
 }
 
-void VAO::init(GLuint id, Array<GLuint, (int)BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount) {
+void VAO::init(GLuint id, Array<GLuint, BufferIndices::_count>& vboIds, GLenum format, GLsizei elementsCount) {
     _id = id;
     _vboIds = vboIds;
     _format = format;

@@ -10,7 +10,7 @@ enum class Tracks {
 
 class TrackCollection : public Object {
 
-    Array<Track*, (int)Tracks::_count> _tracks;
+    Array<Track*, Tracks::_count> _tracks;
 
 public:
     TrackCollection();

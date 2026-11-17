@@ -22,7 +22,7 @@ class Camera : public Object {
     float _horizontalViewAngle;
     TransformMatrix4 _viewMatrix;
     TransformMatrix4 _projectionMatrix;
-    Array<Plane, (int)FrustumPlanePosition::_count> _frustumPlanes;
+    Array<Plane, FrustumPlanePosition::_count> _frustumPlanes;
 
 public:
     Camera();

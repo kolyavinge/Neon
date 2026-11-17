@@ -11,7 +11,7 @@ public:
 
 private:
     void buildArrayBuffer(
-        Array<GLuint, (int)BufferIndices::_count>& vboIds,
+        Array<GLuint, BufferIndices::_count>& vboIds,
         BufferIndices bufferIndex,
         GLsizeiptr arraySizeInBytes,
         const void* arrayData,
@@ -19,7 +19,7 @@ private:
         GLenum attribType);
 
     void buildElementArrayBuffer(
-        Array<GLuint, (int)BufferIndices::_count>& vboIds,
+        Array<GLuint, BufferIndices::_count>& vboIds,
         BufferIndices bufferIndex,
         GLsizeiptr arraySizeInBytes,
         const void* arrayData);

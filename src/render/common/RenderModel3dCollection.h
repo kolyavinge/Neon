@@ -18,7 +18,7 @@ class RenderModel3dCollection : public Object {
     RenderModel3dLoader& _renderModel3dLoader;
     RenderModel3d _vehicleBody;
     Array<RenderModel3d, VehicleConstants::wheelsCount> _vehicleWheels;
-    Array2d<RenderModel3d, (int)WorldObjectKind::_count, (int)VisibilityState::_count> _worldObjects;
+    Array2d<RenderModel3d, WorldObjectKind::_count, VisibilityState::_count> _worldObjects;
 
 public:
     static RenderModel3dCollection* resolve(Resolver& resolver) {
