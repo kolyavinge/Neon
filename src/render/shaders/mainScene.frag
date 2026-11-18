@@ -29,6 +29,7 @@ uniform struct {
     vec3 position;
     vec3 direction;
     vec3 color;
+    float maxDistance;
 } lights[maxLightsCount];
 uniform int lightsCount;
 
@@ -49,7 +50,7 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     vec3 lightPositionView = vec3(viewMatrix * vec4(lights[lightIndex].position, 1.0));
     vec3 lightDirection = lightPositionView - PositionView;
     float lightDistance = length(lightDirection);
-    if (lightDistance > 100.0) return; // есть в VehicleData
+    if (lightDistance > lights[lightIndex].maxDistance) return;
     vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
     vec3 s = normalize(lightDirection);
     vec3 colorIntensity = lights[lightIndex].color / (lightDistance * lightDistance) * max(dot(-s, lightDirectionView), 0.0);

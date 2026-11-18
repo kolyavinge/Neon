@@ -20,14 +20,16 @@ void MainSceneShaderProgram::initAfterLink() {
     _locations.materialShininess = glGetUniformLocation(_id, "material.shininess");
     _locations.globalLightDirectionView = glGetUniformLocation(_id, "globalLight.directionView");
     _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
-    UniformArray lightsPosition, lightsDirection, lightsColor;
+    UniformArray lightsPosition, lightsDirection, lightsColor, lightsMaxDistance;
     lightsPosition.init(maxLightsCount, "lights", "position");
     lightsDirection.init(maxLightsCount, "lights", "direction");
     lightsColor.init(maxLightsCount, "lights", "color");
+    lightsMaxDistance.init(maxLightsCount, "lights", "maxDistance");
     for (int i = 0; i < maxLightsCount; i++) {
         _locations.lightsPosition[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
         _locations.lightsDirection[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
         _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
+        _locations.lightsMaxDistance[i] = glGetUniformLocation(_id, lightsMaxDistance.getNameFor(i));
     }
     _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
     _locations.enableLight = glGetUniformLocation(_id, "enableLight");
@@ -83,6 +85,7 @@ void MainSceneShaderProgram::addLight(Light& light) {
     setVector3(_locations.lightsPosition[_lightIndex], light.getPosition());
     setVector3(_locations.lightsDirection[_lightIndex], light.getDirection());
     setVector3(_locations.lightsColor[_lightIndex], light.getColor());
+    setFloat32(_locations.lightsMaxDistance[_lightIndex], light.getMaxDistance());
     _lightIndex++;
 }
 

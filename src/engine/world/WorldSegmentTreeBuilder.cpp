@@ -1,6 +1,6 @@
 #include <engine/world/WorldSegmentTreeBuilder.h>
-#include <model/common/common.h>
 #include <model/common/Light.h>
+#include <model/common/common.h>
 
 WorldSegmentTreeBuilder::WorldSegmentTreeBuilder() {
     _track = nullptr;
@@ -11,12 +11,7 @@ void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segment
     Collection<Plane>& splitPlanes = track.getSplitPlanes();
     segmentTree.build(*this, splitPlanes);
     removeEmptySegments(segmentTree);
-    // set id for all segments
-    List<WorldSegment*> allSegments;
-    segmentTree.getDataForAllNodes(output allSegments);
-    for (int i = 0; i < allSegments.getCount(); i++) {
-        allSegments[i]->setId(i);
-    }
+    setIdForAllSegments(segmentTree);
 }
 
 void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
@@ -134,4 +129,12 @@ void WorldSegmentTreeBuilder::removeEmptySegments(BSPTree<WorldSegment>& segment
         }
     };
     searchRec(segmentTree.getRoot(), searchRec);
+}
+
+void WorldSegmentTreeBuilder::setIdForAllSegments(BSPTree<WorldSegment>& segmentTree) {
+    List<WorldSegment*> allSegments(segmentTree.getCountOfAllNodes());
+    segmentTree.getDataForAllNodes(output allSegments);
+    for (int i = 0; i < allSegments.getCount(); i++) {
+        allSegments[i]->setId(i);
+    }
 }

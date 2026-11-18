@@ -132,8 +132,8 @@ private:
     void getDataForAllNodesRec(BSPTreeNode<TNodeData>& node, output List<TNodeData*>& result) {
         result.add(&node.data);
         if (!node.isLeaf) {
-            getDataForAllNodesRec(*node.frontNode, result);
-            getDataForAllNodesRec(*node.backNode, result);
+            getDataForAllNodesRec(*node.frontNode, output result);
+            getDataForAllNodesRec(*node.backNode, output result);
         }
     }
 

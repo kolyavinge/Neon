@@ -1,4 +1,10 @@
+#include <lib/calc/Math.h>
 #include <model/common/Light.h>
+
+Light::Light() {
+    _maxDistance = 0.0f;
+    _maxDistanceSquared = 0.0f;
+}
 
 Vector3 Light::getPosition() {
     return _position;
@@ -22,4 +28,14 @@ Vector3 Light::getColor() {
 
 void Light::setColor(Vector3 color) {
     _color = color;
+    _maxDistanceSquared = _color.getLength() / 0.01f;
+    _maxDistance = Math::sqrt(_maxDistanceSquared);
+}
+
+float Light::getMaxDistance() {
+    return _maxDistance;
+}
+
+float Light::getMaxDistanceSquared() {
+    return _maxDistanceSquared;
 }

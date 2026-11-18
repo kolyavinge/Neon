@@ -28,6 +28,7 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint lightsPosition[maxLightsCount];
         GLint lightsDirection[maxLightsCount];
         GLint lightsColor[maxLightsCount];
+        GLint lightsMaxDistance[maxLightsCount];
         GLint lightsCount;
         GLint enableLight;
         GLint enableSpecular;

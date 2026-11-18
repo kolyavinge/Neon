@@ -14,7 +14,7 @@ void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
     _globalLight.setDirection(Vector3(1.0f, -1.0f, -1.0f).getNormalized());
-    _globalLight.setColor(Vector3(0.2f));
+    _globalLight.setColor(Vector3(0.3f));
     setPlayerPosition();
 }
 

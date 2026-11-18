@@ -29,11 +29,14 @@ VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle
 
 Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segment) {
     _lightsTmp.clear();
+    // источники света в сегменте
     _lightsTmp.addRange(segment.getLights());
-    float maxDistanceLengthSquared = _vehicles->first().getData().maxLightsDistanceLengthSquared;
+    // свет других машинок достающих до сегмента
+    float maxLightDistanceSquared = _vehicles->first().getLights().getFrontLeftLight().getMaxDistanceSquared();
     for (int i = 0; i < _vehicles->getCount(); i++) {
         Vehicle& vehicle = (*_vehicles)[i];
-        if (segment.getBoundaryBox().getNearestLengthSquaredTo(vehicle.getLights().getFrontCenter()) < maxDistanceLengthSquared) {
+        if (segment.getBoundaryBox().getNearestLengthSquaredTo(vehicle.getLights().getFrontCenter()) < maxLightDistanceSquared ||
+            segment.getCenter().getLengthSquaredTo(vehicle.getLights().getFrontCenter()) < maxLightDistanceSquared) {
             _lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
             _lightsTmp.add(&vehicle.getLights().getFrontRightLight());
         }
@@ -45,8 +48,13 @@ Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segm
 Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
     _lightsTmp.clear();
     WorldSegment& vehicleSegment = _segmentCollection->getWorldSegmentForPoint(vehicle.getCenter());
+    // источники света в сегменте, в котором находится машинка
     _lightsTmp.addRange(vehicleSegment.getLights());
-    float maxDistanceLengthSquared = vehicle.getData().maxLightsDistanceLengthSquared;
+    // свет этой машинки
+    _lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
+    _lightsTmp.add(&vehicle.getLights().getFrontRightLight());
+    // свет других машинок достающих до этой
+    float maxDistanceLengthSquared = vehicle.getLights().getFrontLeftLight().getMaxDistanceSquared();
     for (int i = 0; i < _vehicles->getCount(); i++) {
         Vehicle& otherVehicle = (*_vehicles)[i];
         if (vehicle.getId() == otherVehicle.getId()) continue;

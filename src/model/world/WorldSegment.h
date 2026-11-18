@@ -44,7 +44,7 @@ public:
     Collection<Line*>& getOuterCorners();
     Collection<Light*>& getLights();
     Rect2d& getBoundaryBox();
-    Vector3 getCenter(); // TODO не используется
+    Vector3 getCenter();
     void setGroundPrimitives(Collection<WorldPrimitive>& primitives);
     void setBarrierPrimitives(Collection<WorldPrimitive>& primitives);
     void setWorldObjects(Collection<WorldObject>& objects);
