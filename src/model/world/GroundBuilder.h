@@ -23,10 +23,11 @@ typedef float (*GetZFunc)(GetZFuncData& data);
 
 class GroundBuilder : public Object {
 
-    WorldPrimitiveKind _kind;
+    List<WorldPrimitive>* _resultPrimitives;
     // задает размер участка земли, который будет покрыт текстурой один раз
     // например при значении 10, участок размером 40х40 будет покрыт четрые раза одной текстурой
     float _textureScale;
+    WorldPrimitiveKind _kind;
     Vector3 _basePlaneDownLeft;
     Vector3 _basePlaneDownRight;
     Vector3 _basePlaneUpLeft;
@@ -36,7 +37,6 @@ class GroundBuilder : public Object {
     int _segmentsCountLeftToRight;
     int _segmentsCountDownToUp;
     GetZFunc _getZFunc;
-    List<WorldPrimitive>* _resultPrimitives;
 
 public:
     GroundBuilder();

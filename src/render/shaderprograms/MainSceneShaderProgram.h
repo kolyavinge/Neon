@@ -9,7 +9,7 @@
 
 class MainSceneShaderProgram : public ShaderProgram {
 
-    inline static const int maxLightsCount = 20; // есть в mainScene.frag
+    inline static const int maxLightsCount = 50; // есть в mainScene.frag
 
     struct {
         GLint modelMatrix;

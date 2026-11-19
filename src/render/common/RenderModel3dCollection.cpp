@@ -57,8 +57,7 @@ void RenderModel3dCollection::loadAllModels() {
             modelPath = models3dDirectory;
             modelPath.append(getModelNameFrom(kind, state));
             _model3dLoader.load(modelPath, output tmpModel);
-            tmpModel.moveToCenter();
-            scaleIfNeed(kind, tmpModel);
+            transformModel(kind, tmpModel);
             _renderModel3dLoader.load(tmpModel, output _worldObjects[(int)kind][(int)state]);
             tmpModel.clear();
         }
@@ -69,6 +68,8 @@ String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind, Visibilit
     String name;
 
     if (kind == WorldObjectKind::metalFence1) name = "metal_fence_1_";
+    else if (kind == WorldObjectKind::streetLight1) name = "street_light_1_";
+    else throw WrongWorldObjectKindException();
 
     if (state == VisibilityState::high) name.append("high.obj");
     else if (state == VisibilityState::medium) name.append("medium.obj");
@@ -79,10 +80,14 @@ String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind, Visibilit
     return name;
 }
 
-void RenderModel3dCollection::scaleIfNeed(WorldObjectKind kind, Model3d& model) {
+void RenderModel3dCollection::transformModel(WorldObjectKind kind, Model3d& model) {
     if (kind == WorldObjectKind::metalFence1) {
+        model.moveToCenter();
         Measures measures = model.getMeasures();
-        model.scale(WorldObject::getFenceLengthFor(kind) / measures.yLength);
+        model.scale(WorldObjectData::getFenceLengthFor(kind) / measures.yLength);
+    } else if (kind == WorldObjectKind::streetLight1) {
+        Measures measures = model.getMeasures();
+        model.scale(WorldObjectData::getHightFor(kind) / measures.zLength);
     }
 }
 

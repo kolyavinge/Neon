@@ -14,6 +14,7 @@ protected:
 private:
     void makeGround();
     void makeRoadBarriers();
+    void makeStreetLights();
     void makeSplitPlanes();
     void setPlayerPosition();
 };

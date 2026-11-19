@@ -33,13 +33,14 @@ Model3d& Model3dCollection::getModelFor(WorldObjectKind kind) {
 void Model3dCollection::scaleIfNeed(WorldObjectKind kind, Model3d* model) {
     if (kind == WorldObjectKind::metalFence1) {
         Measures measures = model->getMeasures();
-        model->scale(WorldObject::getFenceLengthFor(kind) / measures.yLength);
+        model->scale(WorldObjectData::getFenceLengthFor(kind) / measures.yLength);
     }
 }
 
 String Model3dCollection::getModelNameFrom(WorldObjectKind kind) {
     switch (kind) {
         case WorldObjectKind::metalFence1: return String("metal_fence_1_high.obj");
+        case WorldObjectKind::streetLight1: return String("street_light_1_high.obj");
         case WorldObjectKind::_count:
         default: throw ArgumentException(L"Wrong kind to load a 3d model.");
     }

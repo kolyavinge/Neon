@@ -41,5 +41,5 @@ public:
 private:
     float getWheelRadius(Model3d& wheelModel);
     String getModelNameFrom(WorldObjectKind kind, VisibilityState state);
-    void scaleIfNeed(WorldObjectKind kind, Model3d& model);
+    void transformModel(WorldObjectKind kind, Model3d& model);
 };

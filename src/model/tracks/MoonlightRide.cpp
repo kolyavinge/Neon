@@ -4,6 +4,7 @@
 #include <model/tracks/MoonlightRide.h>
 #include <model/world/GroundBuilder.h>
 #include <model/world/RoadBarrierBuilder.h>
+#include <model/world/StreetLightBuilder.h>
 #include <model/world/WorldPrimitive.h>
 
 String MoonlightRide::getName() {
@@ -13,6 +14,7 @@ String MoonlightRide::getName() {
 void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
+    makeStreetLights();
     _globalLight.setDirection(Vector3(1.0f, -1.0f, -1.0f).getNormalized());
     _globalLight.setColor(Vector3(0.3f));
     setPlayerPosition();
@@ -264,6 +266,37 @@ void MoonlightRide::makeRoadBarriers() {
 
     // последний правый барьер образует внешний угол с самым первым правым барьером
     //rightBarrierBuilder.addOuterCornerAtLastBarrierPosition();
+}
+
+void MoonlightRide::makeStreetLights() {
+    StreetLightBuilder builder;
+    builder
+        .setWorldPrimitiveResultList(_barrierPrimitives)
+        .setWorldObjectResultList(_worldObjects)
+        .setGroundPrimitives(_groundPrimitives);
+
+    builder
+        .setKind(WorldObjectKind::streetLight1)
+        .setRotation(-Math::piHalf)
+        .setColor(150.0f, Vector3(1.0f))
+        .setPosition(Vector3(1.0f, 20.0f, 0.0f))
+        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
+        .setCount(9)
+        .build();
+
+    builder
+        .setRotation(Math::piHalf)
+        .setPosition(Vector3(19.0f, 40.0f, 0.0f))
+        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
+        .setCount(8)
+        .build();
+
+    builder
+        .setRotation(Math::piHalf)
+        .setPosition(Vector3(19.0f, 280.0f, 3.5f))
+        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
+        .setCount(40)
+        .build();
 }
 
 void MoonlightRide::setPlayerPosition() {

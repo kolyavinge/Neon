@@ -94,6 +94,7 @@ void MainSceneShaderProgram::addLight(Light& light) {
 }
 
 void MainSceneShaderProgram::endAddLights() {
+    Assert::isTrue(_lightIndex < maxLightsCount);
     setInt32(_locations.lightsCount, _lightIndex);
 }
 

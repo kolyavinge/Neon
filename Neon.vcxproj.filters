@@ -348,6 +348,9 @@
     <ClCompile Include="src\render\lib\FrameStopwatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\model\world\StreetLightBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -762,6 +765,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\render\lib\FrameStopwatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\world\StreetLightBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -63,7 +63,7 @@ GLFWwindow* App::initMainWindow() {
     glfwSetFramebufferSizeCallback(window, onResize);
     if (glewInit() != GLEW_OK) throw AppException();
     glEnable(GL_MULTISAMPLE);
-    glfwSwapInterval(1);
+    glfwSwapInterval(0); // VSync disabled
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(glDebugOutput, nullptr);

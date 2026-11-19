@@ -10,8 +10,8 @@ GetZFuncData::GetZFuncData() {
 }
 
 GroundBuilder::GroundBuilder() {
-    _kind = (WorldPrimitiveKind)-1;
     _resultPrimitives = nullptr;
+    _kind = (WorldPrimitiveKind)-1;
     init();
 }
 

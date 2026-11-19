@@ -11,7 +11,7 @@ public:
     inline static const int screenWidth = 1000;
     inline static const int screenHeight = (int)((float)screenWidth / screenAspect);
     inline static const float modelFrameRate = 60.0f;
-    inline static const float renderFrameRate = 60.0f;
+    inline static const float renderFrameRate = 30.0f;
     inline static const float modelDeltaTimeSec = 1.0f / modelFrameRate;
     inline static const float renderDeltaTimeSec = 1.0f / renderFrameRate;
     inline static Vector3 axisOrigin = Vector3(0.0f, 0.0f, 0.0f);

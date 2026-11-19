@@ -56,27 +56,6 @@ void Track::collectLightsFromWorldObjects() {
             _lights.add(object.getLight());
         }
     }
-
-    Light l;
-    l.setPosition(Vector3(2.0f, 20.0f, 6.0f));
-    l.setDirection(Vector3(0.0f, 0.0f, -1.0f));
-    l.setColor(Vector3(150.0f));
-    _lights.add(l);
-
-    l.setPosition(Vector3(20.0f, 40.0f, 6.0f));
-    l.setDirection(Vector3(0.0f, 0.0f, -1.0f));
-    l.setColor(Vector3(150.0f));
-    _lights.add(l);
-
-    l.setPosition(Vector3(2.0f, 60.0f, 6.0f));
-    l.setDirection(Vector3(0.0f, 0.0f, -1.0f));
-    l.setColor(Vector3(150.0f));
-    _lights.add(l);
-
-    l.setPosition(Vector3(15.0f, 30.0f, 6.0f));
-    l.setDirection(Vector3(0.0f, 0.0f, -1.0f));
-    l.setColor(Vector3(5.0f));
-    //_lights.add(l);
 }
 
 void Track::makeSplitPlanes() {

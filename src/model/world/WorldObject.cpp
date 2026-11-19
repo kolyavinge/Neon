@@ -1,13 +1,28 @@
 #include <model/world/WorldObject.h>
 
-float WorldObject::getFenceLengthFor(WorldObjectKind kind) {
+float WorldObjectData::getFenceLengthFor(WorldObjectKind kind) {
     if (kind == WorldObjectKind::metalFence1) return 2.0f;
-    throw ArgumentException(L"Wrong world object type.");
+    throw WrongWorldObjectKindException();
 }
 
-float WorldObject::getFenceHeightFor(WorldObjectKind kind) {
+float WorldObjectData::getFenceHeightFor(WorldObjectKind kind) {
     if (kind == WorldObjectKind::metalFence1) return 1.0f;
-    throw ArgumentException(L"Wrong world object type.");
+    throw WrongWorldObjectKindException();
+}
+
+float WorldObjectData::getHightFor(WorldObjectKind kind) {
+    if (kind == WorldObjectKind::streetLight1) return 8.0f;
+    throw WrongWorldObjectKindException();
+}
+
+Vector3 WorldObjectData::getLightPositionFor(WorldObjectKind kind) {
+    if (kind == WorldObjectKind::streetLight1) return Vector3(0.0f, 2.0f, 7.8f);
+    throw WrongWorldObjectKindException();
+}
+
+Vector3 WorldObjectData::getLightDirectionFor(WorldObjectKind kind) {
+    if (kind == WorldObjectKind::streetLight1) return Vector3(0.0f, 0.0f, -1.0f);
+    throw WrongWorldObjectKindException();
 }
 
 WorldObject::WorldObject() {

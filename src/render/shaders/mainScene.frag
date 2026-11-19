@@ -8,9 +8,9 @@ in vec4 Color;
 in vec2 TexCoord;
 
 uniform float alphaFactor;
+
 uniform bool useTexture;
 uniform sampler2D ourTexture;
-uniform mat4 viewMatrix;
 
 uniform struct Material {
     float ambient;
@@ -24,7 +24,7 @@ uniform struct {
     vec3 color;
 } globalLight;
 
-const int maxLightsCount = 20; // åñòü â MeshShaderProgram
+const int maxLightsCount = 50; // åñòü â MeshShaderProgram
 uniform struct {
     vec3 positionView;
     vec3 directionView;
@@ -37,6 +37,11 @@ uniform bool enableLight;
 uniform bool enableSpecular;
 
 const float maxDepth = 500.0;
+
+// Schlick’s approximation. Ðàáîòàåò äëÿ x [0;1] è p > 1
+float powSchlickApprox(float x, float p) {
+    return x / (p - p * x + x);
+}
 
 void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse) {
     vec3 s = -globalLight.directionView;
@@ -60,8 +65,8 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
         vec3 v = normalize(-PositionView);
         vec3 h = normalize(v + s);
         float hDotN = max(dot(h, n), 0.0);
-        //specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
-        specular += colorIntensity * hDotN / (material.shininess - material.shininess * hDotN + hDotN); // Schlick’s approximation
+        specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
+        //specular += colorIntensity * material.specular * powSchlickApprox(hDotN, material.shininess);
     }
 }
 
@@ -83,6 +88,6 @@ void main() {
         for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
             calculateLightColor(lightIndex, ambient, diffuse, specular);
         }
-        FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
+        FragColor *= vec4(diffuse + specular + ambient, alphaFactor) * 1.5;
     }
 }

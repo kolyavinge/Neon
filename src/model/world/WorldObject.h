@@ -7,7 +7,20 @@
 
 enum class WorldObjectKind {
     metalFence1,
+    streetLight1,
     _count
+};
+
+class WrongWorldObjectKindException : public Exception {};
+
+class WorldObjectData : public Object {
+
+public:
+    static float getFenceLengthFor(WorldObjectKind kind);
+    static float getFenceHeightFor(WorldObjectKind kind);
+    static float getHightFor(WorldObjectKind kind);
+    static Vector3 getLightPositionFor(WorldObjectKind kind);
+    static Vector3 getLightDirectionFor(WorldObjectKind kind);
 };
 
 class WorldObject : public Object {
@@ -22,9 +35,6 @@ class WorldObject : public Object {
     TransformMatrix4 _modelMatrix;
 
 public:
-    static float getFenceLengthFor(WorldObjectKind kind);
-    static float getFenceHeightFor(WorldObjectKind kind);
-
     WorldObject();
     WorldObject(WorldObjectKind kind, Vector3 basePoint, Collection<Vector3>& boundaryPoints, Vector3 frontNormal, Vector3 upNormal);
     WorldObjectKind getKind();

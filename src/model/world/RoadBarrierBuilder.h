@@ -13,18 +13,18 @@ enum class BarrierOrientation {
 
 class RoadBarrierBuilder : public Object {
 
-    WorldObjectKind _kind;
+    List<WorldPrimitive>* _resultPrimitives;
+    List<WorldObject>* _resultObjects;
+    List<WorldPrimitive>* _groundPrimitives;
+    List<Line>* _outerCorners;
     BarrierOrientation _orientation;
+    WorldObjectKind _kind;
     Vector3 _lastPosition;
     Vector3 _prevDirection;
     Vector3 _direction;
     Vector3 _upNormal;
     bool _calculateZ;
     int _count;
-    List<WorldPrimitive>* _groundPrimitives;
-    List<WorldPrimitive>* _resultPrimitives;
-    List<WorldObject>* _resultObjects;
-    List<Line>* _outerCorners;
     WorldPrimitive* _lastBuiltPrimitive;
 
 public:

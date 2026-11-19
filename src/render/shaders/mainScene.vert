@@ -21,11 +21,8 @@ layout (std430, binding = 0) readonly buffer InstanceBuffer {
 
 void main() {
     mat4 model = enableInstances ? modelMatrices[gl_InstanceID] : modelMatrix;
-
-    // TODO считать заранее и передавать
     mat4 modelViewMatrix = viewMatrix * model;
     mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * model;
-
     mat3 normalMatrix = mat3(modelViewMatrix);
     PositionView = vec3(modelViewMatrix * vec4(in_Position, 1.0));
     NormalView = normalize(normalMatrix * in_Normal);

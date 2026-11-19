@@ -17,6 +17,9 @@ void RenderDebuger::print(GameWorld& gameWorld) {
     if ((_tick % 20) != 0) return;
     //if (renderTimeMsc < 15) return;
 
+    printf("player position: %.2f %.2f %.2f\n",
+        gameWorld.getPlayerVehicle().getCenter().x, gameWorld.getPlayerVehicle().getCenter().y, gameWorld.getPlayerVehicle().getCenter().z);
+
     printf("render: %i ms (*%i: %i)",
         renderTimeMsc,
         (int)CommonConstants::renderFrameRate,

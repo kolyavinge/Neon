@@ -3,14 +3,14 @@
 #include <model/world/RoadBarrierBuilder.h>
 
 RoadBarrierBuilder::RoadBarrierBuilder() {
-    _kind = (WorldObjectKind)-1;
-    _orientation = (BarrierOrientation)-1;
-    _calculateZ = false;
-    _count = 0;
-    _groundPrimitives = nullptr;
     _resultPrimitives = nullptr;
     _resultObjects = nullptr;
+    _groundPrimitives = nullptr;
     _outerCorners = nullptr;
+    _orientation = (BarrierOrientation)-1;
+    _kind = (WorldObjectKind)-1;
+    _calculateZ = false;
+    _count = 0;
     _lastBuiltPrimitive = nullptr;
 }
 
@@ -83,11 +83,11 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
     for (int i = 0; i < _count; i++) {
         Vector3 p2 = p1;
         recalculateDirectionAndUpNormalIfNeed(p2);
-        p2.addMultiplied(_direction, WorldObject::getFenceLengthFor(_kind));
+        p2.addMultiplied(_direction, WorldObjectData::getFenceLengthFor(_kind));
         Vector3 p3 = p2;
-        p3.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+        p3.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
         Vector3 p4 = p1;
-        p4.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+        p4.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
         // TODO подумать как обьединять примитивы в один длинный, если они идут друг за другом
         // только примитивы, обьекты остаются поштучно
         WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
@@ -112,7 +112,7 @@ Vector3 RoadBarrierBuilder::getLastBarrierPosition() {
 void RoadBarrierBuilder::addOuterCornerAtLastBarrierPosition() {
     Vector3 start = _lastPosition;
     Vector3 end = _lastPosition;
-    end.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+    end.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
     Line corner(start, end);
     _outerCorners->add(corner);
 }
@@ -123,8 +123,8 @@ void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
     Vector3 rayTo = startPoint;
     rayFrom.addMultiplied(_direction, 0.1f);
     rayTo.addMultiplied(_direction, 0.1f);
-    rayFrom.addMultiplied(CommonConstants::upAxis, WorldObject::getFenceLengthFor(_kind));
-    rayTo.subMultiplied(CommonConstants::upAxis, WorldObject::getFenceLengthFor(_kind));
+    rayFrom.addMultiplied(CommonConstants::upAxis, WorldObjectData::getFenceLengthFor(_kind));
+    rayTo.subMultiplied(CommonConstants::upAxis, WorldObjectData::getFenceLengthFor(_kind));
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
         Vector3 _;
@@ -139,10 +139,10 @@ void RoadBarrierBuilder::recalculateUpNormalIfNeed(Vector3 startPoint) {
 void RoadBarrierBuilder::recalculateDirectionAndUpNormalIfNeed(Vector3 startPoint) {
     if (!_calculateZ) return;
     Vector3 endPoint = startPoint;
-    endPoint.addMultiplied(_direction, WorldObject::getFenceLengthFor(_kind));
+    endPoint.addMultiplied(_direction, WorldObjectData::getFenceLengthFor(_kind));
     Vector3 rayFrom = endPoint, rayTo = endPoint;
-    rayFrom.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
-    rayTo.subMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+    rayFrom.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
+    rayTo.subMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
     Vector3 collisionPoint;
     for (int i = 0; i < _groundPrimitives->getCount(); i++) {
         WorldPrimitive& pr = (*_groundPrimitives)[i];
@@ -161,7 +161,7 @@ void RoadBarrierBuilder::makeOuterCornerIfNeed() {
         start.subMultiplied(_prevDirection, 0.1f);
         start.subMultiplied(_lastBuiltPrimitive->getFrontNormal(), 0.1f);
         Vector3 end = start;
-        end.addMultiplied(_upNormal, WorldObject::getFenceHeightFor(_kind));
+        end.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
         Line corner(start, end);
         _outerCorners->add(corner);
     }
