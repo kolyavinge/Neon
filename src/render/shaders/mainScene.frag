@@ -26,8 +26,8 @@ uniform struct {
 
 const int maxLightsCount = 20; // åñòü â MeshShaderProgram
 uniform struct {
-    vec3 position;
-    vec3 direction;
+    vec3 positionView;
+    vec3 directionView;
     vec3 color;
     float maxDistance;
 } lights[maxLightsCount];
@@ -47,13 +47,11 @@ void calculateGlobalLightColor(inout vec3 ambient, inout vec3 diffuse) {
 }
 
 void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse, inout vec3 specular) {
-    vec3 lightPositionView = vec3(viewMatrix * vec4(lights[lightIndex].position, 1.0));
-    vec3 lightDirection = lightPositionView - PositionView;
+    vec3 lightDirection = lights[lightIndex].positionView - PositionView;
     float lightDistance = length(lightDirection);
     if (lightDistance > lights[lightIndex].maxDistance) return;
-    vec3 lightDirectionView = vec3(viewMatrix * vec4(lights[lightIndex].direction, 0.0));
     vec3 s = normalize(lightDirection);
-    vec3 colorIntensity = lights[lightIndex].color / (lightDistance * lightDistance) * max(dot(-s, lightDirectionView), 0.0);
+    vec3 colorIntensity = lights[lightIndex].color / (lightDistance * lightDistance) * max(dot(-s, lights[lightIndex].directionView), 0.0);
     vec3 n = normalize(NormalView);
     float sDotN = max(dot(s, n), 0.0);
     ambient += colorIntensity * material.ambient;
@@ -62,7 +60,8 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
         vec3 v = normalize(-PositionView);
         vec3 h = normalize(v + s);
         float hDotN = max(dot(h, n), 0.0);
-        specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
+        //specular += colorIntensity * material.specular * pow(hDotN, material.shininess);
+        specular += colorIntensity * hDotN / (material.shininess - material.shininess * hDotN + hDotN); // Schlick’s approximation
     }
 }
 

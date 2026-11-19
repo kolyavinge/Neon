@@ -25,8 +25,8 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint materialShininess;
         GLint globalLightDirectionView;
         GLint globalLightColor;
-        GLint lightsPosition[maxLightsCount];
-        GLint lightsDirection[maxLightsCount];
+        GLint lightsPositionView[maxLightsCount];
+        GLint lightsDirectionView[maxLightsCount];
         GLint lightsColor[maxLightsCount];
         GLint lightsMaxDistance[maxLightsCount];
         GLint lightsCount;
@@ -34,6 +34,7 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint enableSpecular;
     } _locations = {};
 
+    TransformMatrix4* _viewMatrix;
     int _lightIndex;
 
 public:
@@ -46,7 +47,7 @@ public:
     void setAlphaFactor(float alphaFactor);
     void useTexture(bool useTexture);
     void setMaterial(Material& material);
-    void setGlobalLight(TransformMatrix4& viewMatrix, Light& globalLight);
+    void setGlobalLight(Light& globalLight);
     void beginAddLights();
     void addLight(Light& light);
     void endAddLights();

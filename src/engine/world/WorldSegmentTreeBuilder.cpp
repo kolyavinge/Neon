@@ -160,6 +160,7 @@ void WorldSegmentTreeBuilder::joinLightsForSegments(BSPTree<WorldSegment>& segme
                 segmentTree.traverseFromRootToPoint(checkPoint, [&](WorldSegment& checkSegment) {
                     bool lightNotExists = !checkSegment.getLights().any([&](Light*& x) { return x->equals(light); });
                     if (lightNotExists) {
+                        // TODO может свет из другого сегмента класть в отдельный список, checkSegment.addJoinedLight(light) ?
                         checkSegment.addLight(light);
                     }
                 });

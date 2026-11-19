@@ -3,6 +3,7 @@
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 
 MainSceneShaderProgram::MainSceneShaderProgram() {
+    _viewMatrix = nullptr;
     _lightIndex = 0;
 }
 
@@ -21,13 +22,13 @@ void MainSceneShaderProgram::initAfterLink() {
     _locations.globalLightDirectionView = glGetUniformLocation(_id, "globalLight.directionView");
     _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
     UniformArray lightsPosition, lightsDirection, lightsColor, lightsMaxDistance;
-    lightsPosition.init(maxLightsCount, "lights", "position");
-    lightsDirection.init(maxLightsCount, "lights", "direction");
+    lightsPosition.init(maxLightsCount, "lights", "positionView");
+    lightsDirection.init(maxLightsCount, "lights", "directionView");
     lightsColor.init(maxLightsCount, "lights", "color");
     lightsMaxDistance.init(maxLightsCount, "lights", "maxDistance");
     for (int i = 0; i < maxLightsCount; i++) {
-        _locations.lightsPosition[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
-        _locations.lightsDirection[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
+        _locations.lightsPositionView[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
+        _locations.lightsDirectionView[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
         _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
         _locations.lightsMaxDistance[i] = glGetUniformLocation(_id, lightsMaxDistance.getNameFor(i));
     }
@@ -41,6 +42,7 @@ void MainSceneShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
 }
 
 void MainSceneShaderProgram::setViewMatrix(TransformMatrix4& viewMatrix) {
+    _viewMatrix = &viewMatrix;
     setTransformMatrix4(_locations.viewMatrix, viewMatrix);
 }
 
@@ -71,8 +73,8 @@ void MainSceneShaderProgram::setMaterial(Material& material) {
     setFloat32(_locations.materialShininess, material.getShininess());
 }
 
-void MainSceneShaderProgram::setGlobalLight(TransformMatrix4& viewMatrix, Light& globalLight) {
-    Vector3 directionView = viewMatrix.mulVector(globalLight.getDirection());
+void MainSceneShaderProgram::setGlobalLight(Light& globalLight) {
+    Vector3 directionView = _viewMatrix->mulVector(globalLight.getDirection());
     setVector3(_locations.globalLightDirectionView, directionView);
     setVector3(_locations.globalLightColor, globalLight.getColor());
 }
@@ -82,8 +84,10 @@ void MainSceneShaderProgram::beginAddLights() {
 }
 
 void MainSceneShaderProgram::addLight(Light& light) {
-    setVector3(_locations.lightsPosition[_lightIndex], light.getPosition());
-    setVector3(_locations.lightsDirection[_lightIndex], light.getDirection());
+    Vector3 lightPositionView = _viewMatrix->mulPoint(light.getPosition());
+    Vector3 lightDirectionView = _viewMatrix->mulVector(light.getDirection());
+    setVector3(_locations.lightsPositionView[_lightIndex], lightPositionView);
+    setVector3(_locations.lightsDirectionView[_lightIndex], lightDirectionView);
     setVector3(_locations.lightsColor[_lightIndex], light.getColor());
     setFloat32(_locations.lightsMaxDistance[_lightIndex], light.getMaxDistance());
     _lightIndex++;

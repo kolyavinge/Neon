@@ -29,8 +29,10 @@ VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle
 
 Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segment) {
     _lightsTmp.clear();
+
     // источники света в сегменте
     _lightsTmp.addRange(segment.getLights());
+
     // свет других машинок достающих до сегмента
     float maxLightDistanceSquared = _vehicles->first().getLights().getFrontLeftLight().getMaxDistanceSquared();
     for (int i = 0; i < _vehicles->getCount(); i++) {
@@ -48,11 +50,15 @@ Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segm
 Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
     _lightsTmp.clear();
     WorldSegment& vehicleSegment = _segmentCollection->getWorldSegmentForPoint(vehicle.getCenter());
+
     // источники света в сегменте, в котором находится машинка
     _lightsTmp.addRange(vehicleSegment.getLights());
+
     // свет этой машинки
-    _lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
-    _lightsTmp.add(&vehicle.getLights().getFrontRightLight());
+    // пока убрано. может вообще не нужно ибо свет машинки практически не действует на нее саму.
+    //_lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
+    //_lightsTmp.add(&vehicle.getLights().getFrontRightLight());
+
     // свет других машинок достающих до этой
     float maxDistanceLengthSquared = vehicle.getLights().getFrontLeftLight().getMaxDistanceSquared();
     for (int i = 0; i < _vehicles->getCount(); i++) {

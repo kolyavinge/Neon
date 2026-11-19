@@ -25,7 +25,7 @@ void MainSceneRenderer::render(
     _mainSceneShader.use();
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());
     _mainSceneShader.setProjectionMatrix(camera.getProjectionMatrix());
-    _mainSceneShader.setGlobalLight(camera.getViewMatrix(), globalLight);
+    _mainSceneShader.setGlobalLight(globalLight);
     _worldSegmentRenderer.render(_mainSceneShader, objectVisibility);
     _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
     _mainSceneShader.unuse();

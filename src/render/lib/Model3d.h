@@ -12,7 +12,7 @@ class Mesh : public Object {
 public:
     inline static const int verticesDimension = 3;
 
-    String name; // TODO неверное не нужно
+    String name;
     List<float> vertices;
     List<float> normals;
     List<float> colors;
