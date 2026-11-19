@@ -75,11 +75,46 @@ public:
     }
 
     TNodeData& findNodeDataByPoint(Vector3 point) {
-        return findNodeDataByPoint(_root, point);
+        auto rec = [&](BSPTreeNode<TNodeData>& parent, auto&& self) -> TNodeData& {
+            if (parent.isLeaf) {
+                return parent.data;
+            } else {
+                if (parent.splitPlane.isPointInFront(point)) {
+                    return self(*parent.frontNode, self);
+                } else {
+                    return self(*parent.backNode, self);
+                }
+            }
+        };
+
+        return rec(_root, rec);
+    }
+
+    void traverseFromRootToPoint(Vector3 point, auto&& actionFunc) {
+        auto rec = [&](BSPTreeNode<TNodeData>& parent, auto&& self) -> void {
+            actionFunc(parent.data);
+            if (!parent.isLeaf) {
+                if (parent.splitPlane.isPointInFront(point)) {
+                    return self(*parent.frontNode, self);
+                } else {
+                    return self(*parent.backNode, self);
+                }
+            }
+        };
+
+        return rec(_root, rec);
     }
 
     void getDataForAllNodes(output List<TNodeData*>& result) {
-        getDataForAllNodesRec(_root, output result);
+        auto rec = [&](BSPTreeNode<TNodeData>& node, auto&& self) -> void {
+            result.add(&node.data);
+            if (!node.isLeaf) {
+                self(*node.frontNode, self);
+                self(*node.backNode, self);
+            }
+        };
+
+        rec(_root, rec);
     }
 
     void deleteChildrenFor(BSPTreeNode<TNodeData>& node) {
@@ -115,26 +150,6 @@ private:
 
         buildRec(builder, *parent.frontNode, frontNodeSplitPlanes);
         buildRec(builder, *parent.backNode, backNodeSplitPlanes);
-    }
-
-    TNodeData& findNodeDataByPoint(BSPTreeNode<TNodeData>& parent, Vector3& point) {
-        if (parent.isLeaf) {
-            return parent.data;
-        } else {
-            if (parent.splitPlane.isPointInFront(point)) {
-                return findNodeDataByPoint(*parent.frontNode, point);
-            } else {
-                return findNodeDataByPoint(*parent.backNode, point);
-            }
-        }
-    }
-
-    void getDataForAllNodesRec(BSPTreeNode<TNodeData>& node, output List<TNodeData*>& result) {
-        result.add(&node.data);
-        if (!node.isLeaf) {
-            getDataForAllNodesRec(*node.frontNode, output result);
-            getDataForAllNodesRec(*node.backNode, output result);
-        }
     }
 
     void releaseAllNodes() {

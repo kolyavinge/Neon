@@ -6,6 +6,15 @@ Light::Light() {
     _maxDistanceSquared = 0.0f;
 }
 
+bool Light::equals(Object& x) {
+    Light& light = (Light&)x;
+
+    return
+        _position.equals(light._position) &&
+        _direction.equals(light._direction) &&
+        _color.equals(light._color);
+}
+
 Vector3 Light::getPosition() {
     return _position;
 }

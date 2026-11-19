@@ -13,6 +13,7 @@ class Light : public Object {
 
 public:
     Light();
+    bool equals(Object& x) override;
     Vector3 getPosition();
     void setPosition(Vector3 position);
     Vector3 getDirection();

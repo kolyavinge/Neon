@@ -1,4 +1,6 @@
+#include <common/constants.h>
 #include <engine/world/WorldSegmentTreeBuilder.h>
+#include <lib/calc/Math.h>
 #include <model/common/Light.h>
 #include <model/common/common.h>
 
@@ -12,6 +14,7 @@ void WorldSegmentTreeBuilder::build(Track& track, BSPTree<WorldSegment>& segment
     segmentTree.build(*this, splitPlanes);
     removeEmptySegments(segmentTree);
     setIdForAllSegments(segmentTree);
+    joinLightsForSegments(segmentTree);
 }
 
 void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
@@ -24,6 +27,8 @@ void WorldSegmentTreeBuilder::initRoot(WorldSegment& rootSegment) {
 }
 
 void WorldSegmentTreeBuilder::initNodes(WorldSegment& parentSegment, Plane& splitPlane, WorldSegment& frontChildSegment, WorldSegment& backChildSegment) {
+    parentSegment.setHasChildren(true);
+
     // ground primitives
     Collection<WorldPrimitive*>& groundPrimitives = parentSegment.getGroundPrimitives();
     for (int i = 0; i < groundPrimitives.getCount(); i++) {
@@ -136,5 +141,29 @@ void WorldSegmentTreeBuilder::setIdForAllSegments(BSPTree<WorldSegment>& segment
     segmentTree.getDataForAllNodes(output allSegments);
     for (int i = 0; i < allSegments.getCount(); i++) {
         allSegments[i]->setId(i);
+    }
+}
+
+void WorldSegmentTreeBuilder::joinLightsForSegments(BSPTree<WorldSegment>& segmentTree) {
+    Collection<Light*>& lights = segmentTree.getRoot().data.getLights();
+    for (int lightIndex = 0; lightIndex < lights.getCount(); lightIndex++) {
+        Light& light = *lights[lightIndex];
+        Plane lightPlane(light.getDirection(), light.getPosition());
+        Vector3 lightPlaneVector = lightPlane.getAnyVector();
+        lightPlaneVector.setLength(light.getMaxDistance());
+        for (int piHalfNum = 0; piHalfNum < 4; piHalfNum++) {
+            Vector3 checkVector = Math::rotatePoint(lightPlaneVector, (float)piHalfNum * Math::piHalf, light.getDirection(), CommonConstants::axisOrigin);
+            for (int div = 1; div <= 3; div++) {
+                Vector3 checkPoint = checkVector;
+                checkPoint.div((float)div);
+                checkPoint.add(light.getPosition());
+                segmentTree.traverseFromRootToPoint(checkPoint, [&](WorldSegment& checkSegment) {
+                    bool lightNotExists = !checkSegment.getLights().any([&](Light*& x) { return x->equals(light); });
+                    if (lightNotExists) {
+                        checkSegment.addLight(light);
+                    }
+                });
+            }
+        }
     }
 }

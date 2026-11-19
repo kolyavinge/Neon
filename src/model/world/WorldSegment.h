@@ -20,6 +20,7 @@ public:
 class WorldSegment : public Object {
 
     int _id;
+    bool _hasChildren;
     List<WorldPrimitive*> _groundPrimitives;
     List<WorldPrimitive*> _barrierPrimitives;
     List<WorldPrimitive*> _groundAndBarrierPrimitives;
@@ -35,6 +36,8 @@ public:
     WorldSegment();
     int getId();
     void setId(int id);
+    bool hasChildren();
+    void setHasChildren(bool value);
     Collection<WorldPrimitive*>& getGroundPrimitives();
     Collection<WorldPrimitive*>& getBarrierPrimitives();
     Collection<WorldPrimitive*>& getGroundAndBarrierPrimitives();

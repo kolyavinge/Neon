@@ -15,6 +15,7 @@ WorldObjectKindInfo::WorldObjectKindInfo(WorldObjectKind k, int cnt) {
 
 WorldSegment::WorldSegment() {
     _id = 0;
+    _hasChildren = false;
 }
 
 int WorldSegment::getId() {
@@ -23,6 +24,14 @@ int WorldSegment::getId() {
 
 void WorldSegment::setId(int id) {
     _id = id;
+}
+
+bool WorldSegment::hasChildren() {
+    return _hasChildren;
+}
+
+void WorldSegment::setHasChildren(bool value) {
+    _hasChildren = value;
 }
 
 Collection<WorldPrimitive*>& WorldSegment::getGroundPrimitives() {

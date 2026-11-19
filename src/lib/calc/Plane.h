@@ -27,6 +27,7 @@ public:
     bool pointsOnBothSides(Vector3& pointA, Vector3& pointB);
     Vector3 getProjectedVector(Vector3 v);
     Vector3 getProjectedPoint(Vector3 v, CollisionPointPosition cpp = CollisionPointPosition::front);
+    Vector3 getAnyVector();
     virtual bool contains(Vector3& point, float eps);
     virtual bool hasCollision(
         Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint, CollisionPointPosition cpp = CollisionPointPosition::front);

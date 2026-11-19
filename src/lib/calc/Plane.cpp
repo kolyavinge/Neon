@@ -57,6 +57,16 @@ Vector3 Plane::getProjectedPoint(Vector3 v, CollisionPointPosition cpp) {
     return v;
 }
 
+Vector3 Plane::getAnyVector() {
+    Vector3 v = _basePoint;
+    v.add(Vector3(1.0f));
+    v = getProjectedPoint(v);
+    Assert::isFalse(v.equals(_basePoint));
+    v.sub(_basePoint);
+
+    return v;
+}
+
 bool Plane::contains(Vector3& point, float eps) {
     // уравнение плоскости
     float a = _frontNormal.x;

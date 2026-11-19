@@ -29,4 +29,5 @@ private:
     SplittedPosition getSplittedPosition(Plane& splitPlane, Vector3 point);
     void removeEmptySegments(BSPTree<WorldSegment>& segmentTree);
     void setIdForAllSegments(BSPTree<WorldSegment>& segmentTree);
+    void joinLightsForSegments(BSPTree<WorldSegment>& segmentTree);
 };
