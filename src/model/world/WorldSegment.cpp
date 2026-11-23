@@ -1,6 +1,7 @@
 #include <common/constants.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
+#include <model/world/MinMaxPointFinder.h>
 #include <model/world/WorldSegment.h>
 
 WorldObjectKindInfo::WorldObjectKindInfo() {
@@ -141,13 +142,10 @@ void WorldSegment::addLight(Light& light) {
 }
 
 void WorldSegment::calculateBoundaryBox() {
-    if (_groundPrimitives.getCount() == 0 && _barrierPrimitives.getCount() == 0) {
-        return;
-    }
-
-    WorldPrimitiveMinMaxPointFinder finder;
+    if (_groundPrimitives.getCount() == 0 && _worldObjects.getCount() == 0) return;
+    MinMaxPointFinder finder;
     finder.findMinMaxPointFor(_groundPrimitives);
-    finder.findMinMaxPointFor(_barrierPrimitives);
+    finder.findMinMaxPointFor(_worldObjects);
     Vector3 min = finder.getMinPoint();
     Vector3 max = finder.getMaxPoint();
     _boundaryBox.downLeft.set(min.x, min.y, min.z);

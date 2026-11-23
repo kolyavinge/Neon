@@ -1,3 +1,4 @@
+#include <model/world/MinMaxPointFinder.h>
 #include <model/world/Track.h>
 
 Track::Track() :
@@ -59,7 +60,7 @@ void Track::collectLightsFromWorldObjects() {
 }
 
 void Track::makeSplitPlanes() {
-    WorldPrimitiveMinMaxPointFinder finder;
+    MinMaxPointFinder finder;
     finder.findMinMaxPointFor(getGroundPrimitives());
     Vector3 min = finder.getMinPoint();
     Vector3 max = finder.getMaxPoint();

@@ -38,6 +38,7 @@
     <ClCompile Include="src\engine\world\GameWorldInitializer.cpp" />
     <ClCompile Include="src\engine\world\VehiclesCollisionLogic.cpp" />
     <ClCompile Include="src\engine\world\WheelGroundContactLogic.cpp" />
+    <ClCompile Include="src\model\world\MinMaxPointFinder.cpp" />
     <ClCompile Include="src\model\world\StreetLightBuilder.cpp" />
     <ClCompile Include="src\model\world\WorldSegmentCollection.cpp" />
     <ClCompile Include="src\engine\world\GameObjectVisibilityUpdater.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="src\engine\world\GameWorldInitializer.h" />
     <ClInclude Include="src\engine\world\VehiclesCollisionLogic.h" />
     <ClInclude Include="src\engine\world\WheelGroundContactLogic.h" />
+    <ClInclude Include="src\model\world\MinMaxPointFinder.h" />
     <ClInclude Include="src\model\world\StreetLightBuilder.h" />
     <ClInclude Include="src\model\world\WorldSegmentCollection.h" />
     <ClInclude Include="src\engine\world\GameObjectVisibilityUpdater.h" />

@@ -43,20 +43,3 @@ public:
     void setTextureCoords(Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Vector2 texCoord4);
     bool hasCollision(Vector3 startPoint, Vector3 endPoint, float eps, output Vector3& collisionPoint);
 };
-
-class WorldPrimitiveMinMaxPointFinder : public Object {
-
-    bool _firstCall;
-    Vector3 _minPoint;
-    Vector3 _maxPoint;
-
-public:
-    WorldPrimitiveMinMaxPointFinder();
-    void findMinMaxPointFor(Collection<WorldPrimitive>& primitives);
-    void findMinMaxPointFor(Collection<WorldPrimitive*>& primitives);
-    Vector3 getMinPoint();
-    Vector3 getMaxPoint();
-
-private:
-    void findMinMaxPoint(Collection<Vector3>& primitivePoints);
-};
