@@ -11,7 +11,6 @@ RoadBarrierBuilder::RoadBarrierBuilder() {
     _kind = (WorldObjectKind)-1;
     _calculateZ = false;
     _count = 0;
-    _lastBuiltPrimitive = nullptr;
 }
 
 RoadBarrierBuilder& RoadBarrierBuilder::setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives) {
@@ -98,12 +97,12 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         _resultObjects->addByValue(barrierObject);
         p1 = p2;
     }
-    _lastBuiltPrimitive = &barriers.last();
     _lastPosition = p1;
     _calculateZ = false;
 
     int madeBarriersCount = makeWorldPrimitiveBarriers(barriers, barrierOrientations);
     Assert::isTrue(madeBarriersCount <= _count);
+    _lastBuiltPrimitiveFrontNormal = _resultPrimitives->last().getFrontNormal();
 
     return *this;
 }
@@ -158,11 +157,11 @@ void RoadBarrierBuilder::recalculateDirectionAndUpNormalIfNeed(Vector3 startPoin
 }
 
 void RoadBarrierBuilder::makeOuterCornerIfNeed() {
-    if (_lastBuiltPrimitive == nullptr) return;
-    if (Math::formOuterCorner(_prevDirection, _direction, _lastBuiltPrimitive->getFrontNormal())) {
+    if (_lastBuiltPrimitiveFrontNormal.isZero()) return;
+    if (Math::formOuterCorner(_prevDirection, _direction, _lastBuiltPrimitiveFrontNormal)) {
         Vector3 start = _lastPosition;
         start.subMultiplied(_prevDirection, 0.1f);
-        start.subMultiplied(_lastBuiltPrimitive->getFrontNormal(), 0.1f);
+        start.subMultiplied(_lastBuiltPrimitiveFrontNormal, 0.1f);
         Vector3 end = start;
         end.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
         Line corner(start, end);

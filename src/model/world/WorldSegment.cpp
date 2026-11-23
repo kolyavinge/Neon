@@ -1,4 +1,3 @@
-#include <common/constants.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <lib/calc/Vector3.h>
 #include <model/world/MinMaxPointFinder.h>
@@ -116,10 +115,6 @@ void WorldSegment::addBarrierPrimitive(WorldPrimitive& primitive) {
 }
 
 void WorldSegment::addWorldObject(WorldObject& object) {
-    if (_worldObjects.getCount() == GameConstants::maxWorldObjectsCountInSegment) {
-        throw Exception(L"World objects count more than max value.");
-    }
-
     _worldObjects.add(&object);
 
     WorldObjectKindInfo* finded = nullptr;

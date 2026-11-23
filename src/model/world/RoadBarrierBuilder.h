@@ -25,7 +25,7 @@ class RoadBarrierBuilder : public Object {
     Vector3 _upNormal;
     bool _calculateZ;
     int _count;
-    WorldPrimitive* _lastBuiltPrimitive;
+    Vector3 _lastBuiltPrimitiveFrontNormal;
 
 public:
     RoadBarrierBuilder();

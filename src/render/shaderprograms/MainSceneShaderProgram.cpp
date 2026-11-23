@@ -55,6 +55,7 @@ void MainSceneShaderProgram::enableInstances(bool enable) {
 }
 
 void MainSceneShaderProgram::setModelMatricesForInstances(List<float>& modelMatrices) {
+    Assert::isTrue((modelMatrices.getCount() / TransformMatrix4::itemsCount) < GameConstants::maxWorldObjectsCountInSegment);
     setStorageBuffer(_locations.modelMatrices, modelMatrices);
 }
 

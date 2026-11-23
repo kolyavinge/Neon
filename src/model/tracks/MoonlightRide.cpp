@@ -243,12 +243,6 @@ void MoonlightRide::makeRoadBarriers() {
         .build()
         .rotateDirection(-Math::piQuarter)
         .setCount(1)
-        .build()
-        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
-        .setCount(2)
-        .build()
-        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
-        .setCount(1)
         .build();
 
     // длинная прямая
@@ -262,6 +256,17 @@ void MoonlightRide::makeRoadBarriers() {
         .build()
         .setDirection(Vector3(1.0f, 0.0f, 0.0f))
         .setCount(10)
+        .build();
+
+    rightBarrierBuilder
+        .setDirection(Vector3(0.0f, 1.0f, 0.0f))
+        .setCount(390)
+        .build()
+        .rotateDirection(-Math::piQuarter)
+        .setCount(1)
+        .build()
+        .setDirection(Vector3(1.0f, 0.0f, 0.0f))
+        .setCount(1)
         .build();
 
     // последний правый барьер образует внешний угол с самым первым правым барьером
