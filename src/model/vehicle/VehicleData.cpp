@@ -88,14 +88,14 @@ VehicleData::VehicleData() {
     frontSpringDamperRebound = 3.0f * frontSpringDamperCompression;
     frontSpringMinLength = 0.1f;
     frontSpringMaxLength = 0.3f;
-    frontAntiRollStiffness = 5000.0f;
+    frontAntiRollStiffness = 10000.0f;
 
     rearSpringStiffness = 50.0f * stiffnessMul;
     rearSpringDamperCompression = 2.5f * stiffnessMul;
     rearSpringDamperRebound = 3.0f * rearSpringDamperCompression;
     rearSpringMinLength = 0.1f;
     rearSpringMaxLength = 0.3f;
-    rearAntiRollStiffness = 3500.0f;
+    rearAntiRollStiffness = 10000.0f;
 
     /* wheel longitudinal force */
     float D = 2.0f;

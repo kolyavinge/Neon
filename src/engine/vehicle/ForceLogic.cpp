@@ -31,6 +31,7 @@ void ForceLogic::applyForces(Vehicle& vehicle) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         if (!wheel.hasGroundContact()) continue;
         Vector3 applyPoint = wheel.getGroundContactPoint();
+        applyPoint.addMultiplied(vehicle.getChassisUpNormal(), 0.05f); // чуть выше земли, чтоб сильно не кренилась
         vehicle.applyForceAtPoint(wheel.getLongitudinalForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getLateralForce(), applyPoint);
         vehicle.applyForceAtPoint(wheel.getRollingResistanceForce(), applyPoint);

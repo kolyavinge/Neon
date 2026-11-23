@@ -1,7 +1,9 @@
 #pragma once
 
 #include <lib/system.h>
+#include <model/common/Camera.h>
 #include <model/vehicle/Vehicle.h>
+#include <model/world/GameObjectVisibility.h>
 #include <model/world/GameWorld.h>
 #include <model/world/WorldPrimitive.h>
 
@@ -11,7 +13,9 @@ class DebugRenderer : public Object {
     inline static const float _velocityDivider = 10.0f;
 
 public:
-    void renderDebugInfo(GameWorld& gameWorld);
+    void renderDebugInfo(Camera& camera, IGameObjectVisibility& objectVisibility);
+
+private:
     void renderVehicleWheels(Vehicle& vehicle);
     void renderVehicleBody(Vehicle& vehicle);
     void renderVehicleChassis(Vehicle& vehicle);

@@ -29,7 +29,8 @@ void MainSceneRenderer::render(
     _worldSegmentRenderer.render(_mainSceneShader, objectVisibility);
     _vehicleRenderer.render(_mainSceneShader, vehicles, objectVisibility);
     _mainSceneShader.unuse();
-    //_debugRenderer.renderDebugInfo(gameWorld);
+
+    //_debugRenderer.renderDebugInfo(camera, objectVisibility);
 
     _frameStopwatch.endFrame();
     _renderDebuger.renderTimeMsc = _frameStopwatch.renderTimeMsc;

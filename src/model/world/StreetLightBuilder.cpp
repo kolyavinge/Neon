@@ -29,7 +29,9 @@ StreetLightBuilder& StreetLightBuilder::setGroundPrimitives(List<WorldPrimitive>
 }
 
 StreetLightBuilder& StreetLightBuilder::setKind(WorldObjectKind kind) {
+    Assert::isTrue(kind == WorldObjectKind::streetLight1);
     _kind = kind;
+
     return *this;
 }
 

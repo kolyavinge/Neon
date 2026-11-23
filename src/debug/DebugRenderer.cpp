@@ -10,10 +10,9 @@
 #include <model/world/WorldSegment.h>
 #include <render/lib/opengl.h>
 
-void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
+void DebugRenderer::renderDebugInfo(Camera& camera, IGameObjectVisibility& objectVisibility) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    Camera& camera = gameWorld.getCamera();
     gluPerspective(
         UnitConverter::radiansToDegrees(camera.getVerticalViewAngle()),
         CommonConstants::screenAspect,
@@ -22,8 +21,8 @@ void DebugRenderer::renderDebugInfo(GameWorld& gameWorld) {
     Vector3 lookAtPosition = camera.getPosition();
     lookAtPosition.add(camera.getLookDirection());
     gluLookAt(camera.getPosition(), lookAtPosition, CommonConstants::upAxis);
-    for (int segmentIndex = 0; segmentIndex < gameWorld.getObjectVisibility().visibleSegments.getCount(); segmentIndex++) {
-        WorldSegment& visibleSegment = *gameWorld.getObjectVisibility().visibleSegments[segmentIndex];
+    for (int segmentIndex = 0; segmentIndex < objectVisibility.getVisibleSegments().getCount(); segmentIndex++) {
+        WorldSegment& visibleSegment = *objectVisibility.getVisibleSegments()[segmentIndex];
         //renderGround(visibleSegment.getGroundPrimitives());
         renderBarriers(visibleSegment.getBarrierPrimitives());
         renderOuterCorners(visibleSegment.getOuterCorners());

@@ -77,9 +77,10 @@ RoadBarrierBuilder& RoadBarrierBuilder::setCount(int count) {
 
 RoadBarrierBuilder& RoadBarrierBuilder::build() {
     makeOuterCornerIfNeed();
-    _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + _count);
     Vector3 p1 = _lastPosition;
     recalculateUpNormalIfNeed(p1);
+    List<WorldPrimitive> barriers(_count);
+    List<BarrierOrientation> barrierOrientations(_count);
     for (int i = 0; i < _count; i++) {
         Vector3 p2 = p1;
         recalculateDirectionAndUpNormalIfNeed(p2);
@@ -88,19 +89,21 @@ RoadBarrierBuilder& RoadBarrierBuilder::build() {
         p3.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
         Vector3 p4 = p1;
         p4.addMultiplied(_upNormal, WorldObjectData::getFenceHeightFor(_kind));
-        // TODO подумать как обьединять примитивы в один длинный, если они идут друг за другом
-        // только примитивы, обьекты остаются поштучно
         WorldPrimitive barrierPrimitive = _orientation == BarrierOrientation::leftBarrier
             ? WorldPrimitive(WorldPrimitiveKind::barrier, p1, p2, p3, p4)
-            : WorldPrimitive(WorldPrimitiveKind::barrier, p4, p3, p2, p1);
-        _resultPrimitives->addByValue(barrierPrimitive);
+            : WorldPrimitive(WorldPrimitiveKind::barrier, p2, p1, p4, p3);
+        barriers.add(barrierPrimitive);
+        barrierOrientations.add(_orientation);
         WorldObject barrierObject(_kind, barrierPrimitive.getCenter(), barrierPrimitive.getPoints(), barrierPrimitive.getFrontNormal(), _upNormal);
         _resultObjects->addByValue(barrierObject);
         p1 = p2;
     }
-    _lastBuiltPrimitive = &_resultPrimitives->last();
+    _lastBuiltPrimitive = &barriers.last();
     _lastPosition = p1;
     _calculateZ = false;
+
+    int madeBarriersCount = makeWorldPrimitiveBarriers(barriers, barrierOrientations);
+    Assert::isTrue(madeBarriersCount <= _count);
 
     return *this;
 }
@@ -165,4 +168,45 @@ void RoadBarrierBuilder::makeOuterCornerIfNeed() {
         Line corner(start, end);
         _outerCorners->add(corner);
     }
+}
+
+int RoadBarrierBuilder::makeWorldPrimitiveBarriers(Collection<WorldPrimitive>& barriers, Collection<BarrierOrientation>& barrierOrientations) {
+    int madeBarriers = 0;
+    _resultPrimitives->prepareEnoughCapacity(_resultPrimitives->getCount() + barriers.getCount());
+    // обьединяет барьеры идущие друг за другом в один длинный
+    for (int fromIndex = 0; fromIndex < barriers.getCount(); fromIndex++) {
+        WorldPrimitive& fromBarrier = barriers[fromIndex];
+        int toIndex = fromIndex + 1;
+        while (toIndex < barriers.getCount()) {
+            WorldPrimitive& toBarrier = barriers[toIndex];
+            Vector3 fromCheckVector = fromBarrier.getPoints()[0].getDirectionTo(fromBarrier.getPoints()[2]);
+            Vector3 toCheckVector = toBarrier.getPoints()[0].getDirectionTo(toBarrier.getPoints()[2]);
+            bool canMerge = fromCheckVector.isCollinear(toCheckVector, 1e-4f);
+            if (canMerge) toIndex++;
+            else break;
+        }
+        toIndex--;
+        if (fromIndex != toIndex) {
+            Vector3 p1, p2, p3, p4;
+            if (barrierOrientations[fromIndex] == BarrierOrientation::leftBarrier) {
+                p1 = barriers[fromIndex].getPoints()[0];
+                p2 = barriers[toIndex].getPoints()[1];
+                p3 = barriers[toIndex].getPoints()[2];
+                p4 = barriers[fromIndex].getPoints()[3];
+            } else {
+                p1 = barriers[toIndex].getPoints()[0];
+                p2 = barriers[fromIndex].getPoints()[1];
+                p3 = barriers[fromIndex].getPoints()[2];
+                p4 = barriers[toIndex].getPoints()[3];
+            }
+            WorldPrimitive pr(WorldPrimitiveKind::barrier, p1, p2, p3, p4);
+            _resultPrimitives->add(pr);
+            fromIndex = toIndex;
+        } else {
+            _resultPrimitives->add(barriers[fromIndex]);
+        }
+        madeBarriers++;
+    }
+
+    return madeBarriers;
 }

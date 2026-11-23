@@ -48,4 +48,5 @@ private:
     void recalculateUpNormalIfNeed(Vector3 startPoint);
     void recalculateDirectionAndUpNormalIfNeed(Vector3 startPoint);
     void makeOuterCornerIfNeed();
+    int makeWorldPrimitiveBarriers(Collection<WorldPrimitive>& barriers, Collection<BarrierOrientation>& barrierOrientations);
 };

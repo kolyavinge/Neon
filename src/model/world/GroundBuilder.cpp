@@ -33,7 +33,12 @@ GroundBuilder& GroundBuilder::setTextureScale(float textureScale) {
 }
 
 GroundBuilder& GroundBuilder::setKind(WorldPrimitiveKind kind) {
+    Assert::isTrue(
+        kind == WorldPrimitiveKind::asphalt1 ||
+        kind == WorldPrimitiveKind::asphalt2 ||
+        kind == WorldPrimitiveKind::asphalt3);
     _kind = kind;
+
     return *this;
 }
 

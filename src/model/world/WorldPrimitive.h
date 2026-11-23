@@ -18,6 +18,7 @@ enum class WorldPrimitiveKind {
 class WorldPrimitive : public Object {
 
 public:
+    // кол-во точек менять осторожно (ф-я getCenter() расчитана на 4 точки)
     inline static const int pointsCount = 4;
 
 private:

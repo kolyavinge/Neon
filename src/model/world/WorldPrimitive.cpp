@@ -1,6 +1,5 @@
 #include <lib/calc/Math.h>
 #include <lib/calc/Plane.h>
-#include <lib/calc/Quaternion.h>
 #include <model/world/WorldPrimitive.h>
 
 WorldPrimitive::WorldPrimitive() :
@@ -43,9 +42,6 @@ Vector3 WorldPrimitive::getProjectedPoint(Vector3 v, CollisionPointPosition cpp)
 
 Vector3 WorldPrimitive::getCenter() {
     // такой способ нахождения центра работает только для 4ех угольника
-    // (проверка на будущее, если кол-во точек примитива изменится)
-    Assert::isTrue(WorldPrimitive::pointsCount == 4);
-
     return _points[0].getMiddleTo(_points[2]);
 }
 

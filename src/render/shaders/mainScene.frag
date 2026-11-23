@@ -88,6 +88,7 @@ void main() {
         for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {
             calculateLightColor(lightIndex, ambient, diffuse, specular);
         }
-        FragColor *= vec4(diffuse + specular + ambient, alphaFactor) * 1.5;
+        FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
     }
+    FragColor *= 1.5; // общая контрастность
 }
