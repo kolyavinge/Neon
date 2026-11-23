@@ -348,7 +348,7 @@
     <ClCompile Include="src\render\lib\FrameStopwatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\world\StreetLightBuilder.cpp">
+    <ClCompile Include="src\model\world\WorldObjectBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\world\MinMaxPointFinder.cpp">
@@ -770,7 +770,7 @@
     <ClInclude Include="src\render\lib\FrameStopwatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\world\StreetLightBuilder.h">
+    <ClInclude Include="src\model\world\WorldObjectBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\world\MinMaxPointFinder.h">

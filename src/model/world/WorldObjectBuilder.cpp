@@ -2,9 +2,9 @@
 #include <lib/calc/Math.h>
 #include <lib/calc/TransformMatrix4.h>
 #include <model/common/Light.h>
-#include <model/world/StreetLightBuilder.h>
+#include <model/world/WorldObjectBuilder.h>
 
-StreetLightBuilder::StreetLightBuilder() {
+WorldObjectBuilder::WorldObjectBuilder() {
     _resultPrimitives = nullptr;
     _resultObjects = nullptr;
     _groundPrimitives = nullptr;
@@ -13,56 +13,56 @@ StreetLightBuilder::StreetLightBuilder() {
     _count = 1;
 }
 
-StreetLightBuilder& StreetLightBuilder::setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives) {
+WorldObjectBuilder& WorldObjectBuilder::setWorldPrimitiveResultList(List<WorldPrimitive>& resultPrimitives) {
     _resultPrimitives = &resultPrimitives;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setWorldObjectResultList(List<WorldObject>& resultObjects) {
+WorldObjectBuilder& WorldObjectBuilder::setWorldObjectResultList(List<WorldObject>& resultObjects) {
     _resultObjects = &resultObjects;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setGroundPrimitives(List<WorldPrimitive>& groundPrimitives) {
+WorldObjectBuilder& WorldObjectBuilder::setGroundPrimitives(List<WorldPrimitive>& groundPrimitives) {
     _groundPrimitives = &groundPrimitives;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setKind(WorldObjectKind kind) {
+WorldObjectBuilder& WorldObjectBuilder::setKind(WorldObjectKind kind) {
     Assert::isTrue(kind == WorldObjectKind::streetLight1);
     _kind = kind;
 
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setPosition(Vector3 position) {
+WorldObjectBuilder& WorldObjectBuilder::setPosition(Vector3 position) {
     _position = position;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setRotation(float angle) {
+WorldObjectBuilder& WorldObjectBuilder::setRotation(float angle) {
     _angle = angle;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setColor(float intensity, Vector3 color) {
+WorldObjectBuilder& WorldObjectBuilder::setColor(float intensity, Vector3 color) {
     _color = color;
     _color.setLength(intensity);
 
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setOffset(Vector3 offset) {
+WorldObjectBuilder& WorldObjectBuilder::setOffset(Vector3 offset) {
     _offset = offset;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::setCount(int count) {
+WorldObjectBuilder& WorldObjectBuilder::setCount(int count) {
     _count = count;
     return *this;
 }
 
-StreetLightBuilder& StreetLightBuilder::build() {
+WorldObjectBuilder& WorldObjectBuilder::build() {
     Array<Vector3, 1> boundaryPoints;
     for (int i = 0; i < _count; i++) {
         _position.z = getGroundZ(_position);
@@ -91,7 +91,7 @@ StreetLightBuilder& StreetLightBuilder::build() {
     return *this;
 }
 
-float StreetLightBuilder::getGroundZ(Vector3 position) {
+float WorldObjectBuilder::getGroundZ(Vector3 position) {
     Vector3 rayFrom = position, rayTo = position;
     rayFrom.z -= 2.0f;
     rayTo.z += 2.0f;

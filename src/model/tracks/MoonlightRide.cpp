@@ -4,7 +4,7 @@
 #include <model/tracks/MoonlightRide.h>
 #include <model/world/GroundBuilder.h>
 #include <model/world/RoadBarrierBuilder.h>
-#include <model/world/StreetLightBuilder.h>
+#include <model/world/WorldObjectBuilder.h>
 #include <model/world/WorldPrimitive.h>
 
 String MoonlightRide::getName() {
@@ -274,7 +274,7 @@ void MoonlightRide::makeRoadBarriers() {
 }
 
 void MoonlightRide::makeStreetLights() {
-    StreetLightBuilder builder;
+    WorldObjectBuilder builder;
     builder
         .setWorldPrimitiveResultList(_barrierPrimitives)
         .setWorldObjectResultList(_worldObjects)
