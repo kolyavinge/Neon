@@ -14,6 +14,8 @@ void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, outpu
     int wheelsWithSameGroundContact = 0;
     bool isVehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
+    // бот все время в движении => для него можно точность взять по-меньше
+    float collisionEps = vehicle.isPlayer() ? 0.0001f : 0.01f;
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         Spring& spring = vehicle.getSpring(wheelIndex);
@@ -28,7 +30,7 @@ void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, outpu
         bool hasNewGroundContact = false;
         for (int groundIndex = 0; groundIndex < groundPrimitives.getCount(); groundIndex++) {
             WorldPrimitive& groundPrimitive = *groundPrimitives[groundIndex];
-            hasNewGroundContact = groundPrimitive.hasCollision(rayFromPosition, rayToPosition, 0.0001f, output newGroundContactPoint);
+            hasNewGroundContact = groundPrimitive.hasCollision(rayFromPosition, rayToPosition, collisionEps, output newGroundContactPoint);
             if (!hasNewGroundContact) continue;
             if (wheelHasSameGroundContact(isVehicleStopped, hasNewGroundContact, wheel, groundPrimitive, newGroundContactPoint)) {
                 wheelsWithSameGroundContact++;

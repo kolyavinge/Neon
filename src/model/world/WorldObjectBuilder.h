@@ -32,4 +32,5 @@ public:
 
 private:
     float getGroundZ(Vector3 position);
+    void makeLightIfNeed(WorldObject& object);
 };

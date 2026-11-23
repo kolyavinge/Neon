@@ -69,19 +69,7 @@ WorldObjectBuilder& WorldObjectBuilder::build() {
         boundaryPoints[0] = _position;
         Vector3 frontNormal = Math::rotatePoint(CommonConstants::frontAxis, _angle, CommonConstants::upAxis, CommonConstants::axisOrigin);
         WorldObject object(_kind, _position, boundaryPoints, frontNormal, CommonConstants::upAxis);
-
-        TransformMatrix4 translate, rotate, translateAndRotate;
-        translate.translate(_position.x, _position.y, _position.z);
-        rotate.rotate(_angle, CommonConstants::upAxis);
-        translateAndRotate = translate;
-        translateAndRotate.mul(rotate);
-        Vector3 lightPosition = translateAndRotate.mulPoint(WorldObjectData::getLightPositionFor(_kind));
-        Vector3 lightDirection = rotate.mulVector(WorldObjectData::getLightDirectionFor(_kind));
-        Light light;
-        light.setPosition(lightPosition);
-        light.setDirection(lightDirection);
-        light.setColor(_color);
-        object.setLight(light);
+        makeLightIfNeed(object);
         _resultObjects->add(object);
         _position.add(_offset);
     }
@@ -105,4 +93,21 @@ float WorldObjectBuilder::getGroundZ(Vector3 position) {
     Assert::fail();
 
     return 0.0f;
+}
+
+void WorldObjectBuilder::makeLightIfNeed(WorldObject& object) {
+    if (object.getKind() == WorldObjectKind::streetLight1) {
+        TransformMatrix4 translate, rotate, translateAndRotate;
+        translate.translate(_position.x, _position.y, _position.z);
+        rotate.rotate(_angle, CommonConstants::upAxis);
+        translateAndRotate = translate;
+        translateAndRotate.mul(rotate);
+        Vector3 lightPosition = translateAndRotate.mulPoint(WorldObjectData::getLightPositionFor(_kind));
+        Vector3 lightDirection = rotate.mulVector(WorldObjectData::getLightDirectionFor(_kind));
+        Light light;
+        light.setPosition(lightPosition);
+        light.setDirection(lightDirection);
+        light.setColor(_color);
+        object.setLight(light);
+    }
 }

@@ -45,6 +45,7 @@ public:
     Spring& getSpring(WheelPosition p);
     Body& getBody();
     VehicleLights& getLights();
+    bool isPlayer();
     bool isBrakingByWheelsOrEngine();
     void applyForceAtCenter(Vector3 force);
     void applyForceAtPoint(Vector3 force, Vector3 point);

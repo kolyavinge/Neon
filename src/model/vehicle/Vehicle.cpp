@@ -95,6 +95,10 @@ VehicleLights& Vehicle::getLights() {
     return _lights;
 }
 
+bool Vehicle::isPlayer() {
+    return _id == 0; // TODO переделать когда будут 2 игрока и сплит скрин
+}
+
 bool Vehicle::isBrakingByWheelsOrEngine() {
     return
         _drivingInputData.getBrakeRatio() > 0.0f ||
