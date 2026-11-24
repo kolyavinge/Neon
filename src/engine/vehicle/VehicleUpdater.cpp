@@ -20,6 +20,8 @@ VehicleUpdater::VehicleUpdater(
 }
 
 void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
+    const float dt = CommonConstants::modelDeltaTimeSec;
+
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
         if (vehicle.isFrozen()) continue;
@@ -42,6 +44,7 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
 
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
+        vehicle.updateLights(dt);
         if (vehicle.isFrozen()) continue;
         vehicle.calculatePositionForAllSprings();
         bool allWheelsHaveSameGroundContact = false;
@@ -59,9 +62,9 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
         vehicle.calculateBodyPosition();
         _wheelLogic.updateFrontAndOutsideNormals(vehicle);
         vehicle.calculateModelMatrixForAllWheels();
-        vehicle.calculateLightsPosition();
+        vehicle.updateLights(dt);
         if (vehicle.isFrozen()) {
-            vehicle.clearAllVelocitiesAndForces();
+            vehicle.clearAllVelocitiesAndForces(); // TODO не выполнится ибо есть проверка vehicle.isFrozen() выше
         }
         _engineLogic.synchEngineAndWheels(vehicle);
     }

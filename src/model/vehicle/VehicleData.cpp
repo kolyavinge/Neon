@@ -55,9 +55,12 @@ VehicleData::VehicleData() {
     rearWingDragForceCoeff = 0.5f * airDensity * rearWingArea * rearWingDragCoeff;
 
     /* lights */
-    lightsColorIntensity = 25.0f;
-    lightsColor.set(1.0f);
-    lightsColor.setLength(lightsColorIntensity);
+    frontLightsColorIntensity = 25.0f;
+    frontLightsColor.set(1.0f);
+    frontLightsColor.setLength(frontLightsColorIntensity);
+    rearLightsColorIntensity = 50.0f;
+    rearLightsColor.set(1.0f, 0.0f, 0.0f);
+    rearLightsColor.setLength(rearLightsColorIntensity);
 
     /* chassis */
     wheelbaseLength = 2.0f;

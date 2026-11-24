@@ -69,7 +69,7 @@ public:
     void calculateCenterVelocityForAllWheels();
     void calculateModelMatrixForAllWheels();
     void calculateBodyPosition();
-    void calculateLightsPosition();
+    void updateLights(float dt);
     float getAverageDriveWheelsRpm();
     bool allWheelsHaveGroundContact();
     bool isFrozen();

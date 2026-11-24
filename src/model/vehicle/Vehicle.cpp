@@ -27,6 +27,7 @@ void Vehicle::init() {
     initWheelAndSpring(WheelPosition::rearLeft);
     initWheelAndSpring(WheelPosition::rearRight);
     _body.init();
+    _lights.init(_data.frontLightsColor, _data.rearLightsColor);
     _rigidBody.init(
         CommonConstants::rightAxis,
         CommonConstants::frontAxis,
@@ -212,10 +213,13 @@ void Vehicle::calculateBodyPosition() {
     _body.calculateBox(_rigidBody.getCenter(), getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal());
 }
 
-void Vehicle::calculateLightsPosition() {
+void Vehicle::updateLights(float dt) {
     Vector3 frontCenterPoint = _rigidBody.getCenter();
+    Vector3 rearCenterPoint = _rigidBody.getCenter();
     frontCenterPoint.addMultiplied(getChassisFrontNormal(), _data.bodyMeasures.yLength / 2.0f);
-    _lights.calculatePosition(getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal(), frontCenterPoint, _data.lightsColor);
+    rearCenterPoint.subMultiplied(getChassisFrontNormal(), _data.bodyMeasures.yLength / 2.0f);
+    _lights.calculatePosition(getChassisRightNormal(), getChassisFrontNormal(), getChassisUpNormal(), frontCenterPoint, rearCenterPoint);
+    _lights.update(_drivingInputData.getBrakeRatio(), dt);
 }
 
 float Vehicle::getAverageDriveWheelsRpm() {

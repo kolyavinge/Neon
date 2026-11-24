@@ -51,8 +51,10 @@ public:
     float rearWingDragForceCoeff;
 
     /* lights */
-    float lightsColorIntensity;
-    Vector3 lightsColor;
+    float frontLightsColorIntensity;
+    Vector3 frontLightsColor;
+    float rearLightsColorIntensity;
+    Vector3 rearLightsColor;
 
     /* chassis */
     float frontWheelLengthToMassCenter;

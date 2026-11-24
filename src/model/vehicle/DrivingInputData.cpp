@@ -85,7 +85,7 @@ void DrivingInputData::update(float dt) {
     if (_brakeRatio.getDestinationValue() > 0.0f) {
         _brakeRatio.update(1.0f * dt);
     } else {
-        _brakeRatio.update(2.0f * dt);
+        _brakeRatio.update(4.0f * dt);
     }
 
     _steeringRatio.update(2.0f * dt);
