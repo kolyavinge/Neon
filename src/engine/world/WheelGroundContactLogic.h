@@ -15,7 +15,7 @@ class WheelGroundContactLogic : public Object {
 public:
     WheelGroundContactLogic();
     void init(WorldSegmentCollection& segmentCollection);
-    void resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact);
+    bool resolveWheelGroundContacts(Vehicle& vehicle);
 
 private:
     bool wheelHasSameGroundContact(bool isVehicleStopped, bool hasNewGroundContact, Wheel& wheel, WorldPrimitive& groundPrimitive, Vector3 newGroundContactPoint);

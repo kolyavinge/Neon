@@ -1,3 +1,4 @@
+#include <common/constants.h>
 #include <engine/vehicle/VehicleUpdater.h>
 
 VehicleUpdater::VehicleUpdater(
@@ -44,28 +45,28 @@ void VehicleUpdater::updateVehicles(Collection<Vehicle>& vehicles) {
 
     for (int i = 0; i < vehicles.getCount(); i++) {
         Vehicle& vehicle = vehicles[i];
-        vehicle.updateLights(dt);
         if (vehicle.isFrozen()) continue;
         vehicle.calculatePositionForAllSprings();
-        bool allWheelsHaveSameGroundContact = false;
-        _wheelGroundContactLogic.resolveWheelGroundContacts(vehicle, output allWheelsHaveSameGroundContact);
-        if (allWheelsHaveSameGroundContact) {
+        bool wheelsHaveNewGroundContacts = _wheelGroundContactLogic.resolveWheelGroundContacts(vehicle);
+        if (wheelsHaveNewGroundContacts) {
+            // рассчитываем новую позицию
+            vehicle.calculateLengthForAllSprings();
+            vehicle.calculateCenterVelocityForAllWheels();
+            vehicle.calculateBodyPosition();
+            _wheelLogic.updateFrontAndOutsideNormals(vehicle);
+            _engineLogic.synchEngineAndWheels(vehicle);
+        } else {
+            // сбрасываем на предыдущую, машинка будет заморожена (frozen)
             vehicle.resetToPrevPosition();
             vehicle.calculatePositionForAllSprings();
             vehicle.clearAllVelocitiesAndForces();
-            // обновим матрицы для колес, на случай если игрок крутит руль стоя на месте
-            vehicle.calculateModelMatrixForAllWheels();
-            continue;
         }
-        vehicle.calculateLengthForAllSprings();
-        vehicle.calculateCenterVelocityForAllWheels();
-        vehicle.calculateBodyPosition();
-        _wheelLogic.updateFrontAndOutsideNormals(vehicle);
         vehicle.calculateModelMatrixForAllWheels();
+    }
+
+    // дополнительные штуки
+    for (int i = 0; i < vehicles.getCount(); i++) {
+        Vehicle& vehicle = vehicles[i];
         vehicle.updateLights(dt);
-        if (vehicle.isFrozen()) {
-            vehicle.clearAllVelocitiesAndForces(); // TODO не выполнится ибо есть проверка vehicle.isFrozen() выше
-        }
-        _engineLogic.synchEngineAndWheels(vehicle);
     }
 }

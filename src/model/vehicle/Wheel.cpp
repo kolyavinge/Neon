@@ -1,4 +1,5 @@
 #include <common/constants.h>
+#include <lib/Numeric.h>
 #include <lib/SmoothValue.h>
 #include <lib/calc/Math.h>
 #include <model/vehicle/Wheel.h>

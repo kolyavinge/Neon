@@ -10,12 +10,12 @@ void WheelGroundContactLogic::init(WorldSegmentCollection& segmentCollection) {
     _segmentCollection = &segmentCollection;
 }
 
-void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, output bool& allWheelsHaveSameGroundContact) {
+bool WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle) {
     int wheelsWithSameGroundContact = 0;
     bool isVehicleStopped = Numeric::floatEquals(vehicle.getLinearVelocity().getLength(), 0.0f, VehicleConstants::linearVelocityEps);
     Vector3 chassisUpNormal = vehicle.getChassisUpNormal();
     // бот все время в движении => для него можно точность взять по-меньше
-    float collisionEps = vehicle.isPlayer() ? 0.0001f : 0.01f;
+    float collisionEps = vehicle.isPlayer() ? 0.0001f : 0.001f;
     for (int wheelIndex = 0; wheelIndex < VehicleConstants::wheelsCount; wheelIndex++) {
         Wheel& wheel = vehicle.getWheel(wheelIndex);
         Spring& spring = vehicle.getSpring(wheelIndex);
@@ -43,7 +43,10 @@ void WheelGroundContactLogic::resolveWheelGroundContacts(Vehicle& vehicle, outpu
             resetGroundContact(wheel, spring, chassisUpNormal);
         }
     }
-    allWheelsHaveSameGroundContact = wheelsWithSameGroundContact == VehicleConstants::wheelsCount;
+
+    bool wheelsHaveNewGroundContacts = wheelsWithSameGroundContact != VehicleConstants::wheelsCount;
+
+    return wheelsHaveNewGroundContacts;
 }
 
 bool WheelGroundContactLogic::wheelHasSameGroundContact(
