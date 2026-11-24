@@ -58,9 +58,12 @@ VehicleData::VehicleData() {
     frontLightsColorIntensity = 25.0f;
     frontLightsColor.set(1.0f);
     frontLightsColor.setLength(frontLightsColorIntensity);
-    rearLightsColorIntensity = 50.0f;
-    rearLightsColor.set(1.0f, 0.0f, 0.0f);
-    rearLightsColor.setLength(rearLightsColorIntensity);
+    rearBrakeLightColorIntensity = 50.0f;
+    rearBrakeLightColor.set(1.0f, 0.0f, 0.0f);
+    rearBrakeLightColor.setLength(rearBrakeLightColorIntensity);
+    rearSideLightsColorIntensity = 10.0f;
+    rearSideLightsColor.set(1.0f, 0.0f, 0.0f);
+    rearSideLightsColor.setLength(rearSideLightsColorIntensity);
 
     /* chassis */
     wheelbaseLength = 2.0f;

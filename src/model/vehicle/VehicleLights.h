@@ -11,16 +11,21 @@ class VehicleLights : public Object {
     Light _frontLeftLight;
     Light _frontRightLight;
 
-    Vector3 _rearLightsColorFullIntensity;
-    SmoothValue<float> _rearLightsColorIntensity;
-    Light _rearLight;
+    Vector3 _rearBrakeLightColorFullIntensity;
+    SmoothValue<float> _rearBrakeLightColorIntensity;
+    Light _rearBrakeLight;
+    Light _rearLeftSideLight;
+    Light _rearRightSideLight;
 
 public:
-    void init(Vector3 frontLightsColor, Vector3 rearLightsColor);
+    void init(Vector3 frontLightsColor, Vector3 rearBrakeLightColor, Vector3 rearSideLightsColor);
     Vector3 getFrontCenter();
     Light& getFrontLeftLight();
     Light& getFrontRightLight();
-    Light& getRearLight();
+    Light& getRearBrakeLight();
+    Light& getRearLeftSideLight();
+    Light& getRearRightSideLight();
+    bool isRearBrakeLightActive();
     void calculatePosition(
         Vector3 rightNormal, Vector3 frontNormal, Vector3 upNormal, Vector3 vehicleFrontCenterPoint, Vector3 vehicleRearCenterPoint);
     void update(float brakeRatio, float dt);

@@ -55,10 +55,14 @@ Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) 
     _lightsTmp.addRange(vehicleSegment.getLights());
 
     // свет этой машинки
-    // пока убрано. может вообще не нужно ибо передний свет машинки практически не действует на нее саму.
+    // передний свет убран. может вообще не нужно, ибо передний свет машинки практически не действует на нее саму.
     //_lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
     //_lightsTmp.add(&vehicle.getLights().getFrontRightLight());
-    _lightsTmp.add(&vehicle.getLights().getRearLight());
+    if (vehicle.getLights().isRearBrakeLightActive()) {
+        _lightsTmp.add(&vehicle.getLights().getRearBrakeLight());
+    }
+    _lightsTmp.add(&vehicle.getLights().getRearLeftSideLight());
+    _lightsTmp.add(&vehicle.getLights().getRearRightSideLight());
 
     // свет других машинок достающих до этой
     float maxDistanceLengthSquared = vehicle.getLights().getFrontLeftLight().getMaxDistanceSquared();

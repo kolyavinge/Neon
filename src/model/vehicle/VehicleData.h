@@ -53,8 +53,10 @@ public:
     /* lights */
     float frontLightsColorIntensity;
     Vector3 frontLightsColor;
-    float rearLightsColorIntensity;
-    Vector3 rearLightsColor;
+    float rearBrakeLightColorIntensity;
+    Vector3 rearBrakeLightColor;
+    float rearSideLightsColorIntensity;
+    Vector3 rearSideLightsColor;
 
     /* chassis */
     float frontWheelLengthToMassCenter;
