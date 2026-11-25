@@ -58,6 +58,7 @@ VehicleData::VehicleData() {
     frontLightsColorIntensity = 25.0f;
     frontLightsColor.set(1.0f);
     frontLightsColor.setLength(frontLightsColorIntensity);
+    rearLightsMaxDistance = 1.0f;
     rearBrakeLightColorIntensity = 50.0f;
     rearBrakeLightColor.set(1.0f, 0.0f, 0.0f);
     rearBrakeLightColor.setLength(rearBrakeLightColorIntensity);

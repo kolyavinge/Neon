@@ -29,9 +29,10 @@ class MainSceneShaderProgram : public ShaderProgram {
         GLint lightsDirectionView[maxLightsCount];
         GLint lightsColor[maxLightsCount];
         GLint lightsMaxDistance[maxLightsCount];
+        GLint lightsIsSpecularEnabled[maxLightsCount];
         GLint lightsCount;
-        GLint enableLight;
-        GLint enableSpecular;
+        GLint isLightEnabled;
+        GLint isSpecularEnabled;
     } _locations = {};
 
     TransformMatrix4* _viewMatrix;

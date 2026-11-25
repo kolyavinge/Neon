@@ -53,6 +53,7 @@ public:
     /* lights */
     float frontLightsColorIntensity;
     Vector3 frontLightsColor;
+    float rearLightsMaxDistance;
     float rearBrakeLightColorIntensity;
     Vector3 rearBrakeLightColor;
     float rearSideLightsColorIntensity;

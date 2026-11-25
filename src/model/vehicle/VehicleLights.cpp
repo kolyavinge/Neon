@@ -3,12 +3,19 @@
 #include <lib/calc/Math.h>
 #include <model/vehicle/VehicleLights.h>
 
-void VehicleLights::init(Vector3 frontLightsColor, Vector3 rearBrakeLightColor, Vector3 rearSideLightsColor) {
+void VehicleLights::init(
+    Vector3 frontLightsColor, Vector3 rearBrakeLightColor, Vector3 rearSideLightsColor, float rearLightsMaxDistance) {
     _frontLeftLight.setColor(frontLightsColor);
     _frontRightLight.setColor(frontLightsColor);
     _rearBrakeLightColorFullIntensity = rearBrakeLightColor;
     _rearLeftSideLight.setColor(rearSideLightsColor);
     _rearRightSideLight.setColor(rearSideLightsColor);
+    _rearBrakeLight.setMaxDistance(rearLightsMaxDistance);
+    _rearLeftSideLight.setMaxDistance(rearLightsMaxDistance);
+    _rearRightSideLight.setMaxDistance(rearLightsMaxDistance);
+    _rearBrakeLight.enableSpecular(false);
+    _rearLeftSideLight.enableSpecular(false);
+    _rearRightSideLight.enableSpecular(false);
 }
 
 Vector3 VehicleLights::getFrontCenter() {

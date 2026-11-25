@@ -21,20 +21,22 @@ void MainSceneShaderProgram::initAfterLink() {
     _locations.materialShininess = glGetUniformLocation(_id, "material.shininess");
     _locations.globalLightDirectionView = glGetUniformLocation(_id, "globalLight.directionView");
     _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
-    UniformArray lightsPosition, lightsDirection, lightsColor, lightsMaxDistance;
+    UniformArray lightsPosition, lightsDirection, lightsColor, lightsMaxDistance, lightsIsSpecularEnabled;
     lightsPosition.init(maxLightsCount, "lights", "positionView");
     lightsDirection.init(maxLightsCount, "lights", "directionView");
     lightsColor.init(maxLightsCount, "lights", "color");
     lightsMaxDistance.init(maxLightsCount, "lights", "maxDistance");
+    lightsIsSpecularEnabled.init(maxLightsCount, "lights", "isSpecularEnabled");
     for (int i = 0; i < maxLightsCount; i++) {
         _locations.lightsPositionView[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
         _locations.lightsDirectionView[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
         _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
         _locations.lightsMaxDistance[i] = glGetUniformLocation(_id, lightsMaxDistance.getNameFor(i));
+        _locations.lightsIsSpecularEnabled[i] = glGetUniformLocation(_id, lightsIsSpecularEnabled.getNameFor(i));
     }
     _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
-    _locations.enableLight = glGetUniformLocation(_id, "enableLight");
-    _locations.enableSpecular = glGetUniformLocation(_id, "enableSpecular");
+    _locations.isLightEnabled = glGetUniformLocation(_id, "isLightEnabled");
+    _locations.isSpecularEnabled = glGetUniformLocation(_id, "isSpecularEnabled");
 }
 
 void MainSceneShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {
@@ -91,6 +93,7 @@ void MainSceneShaderProgram::addLight(Light& light) {
     setVector3(_locations.lightsDirectionView[_lightIndex], lightDirectionView);
     setVector3(_locations.lightsColor[_lightIndex], light.getColor());
     setFloat32(_locations.lightsMaxDistance[_lightIndex], light.getMaxDistance());
+    setFloat32(_locations.lightsIsSpecularEnabled[_lightIndex], light.isSpecularEnabled());
     _lightIndex++;
 }
 
@@ -108,9 +111,9 @@ void MainSceneShaderProgram::addLights(Collection<Light*>& lights) {
 }
 
 void MainSceneShaderProgram::enableLight(bool enable) {
-    setBoolean(_locations.enableLight, enable);
+    setBoolean(_locations.isLightEnabled, enable);
 }
 
 void MainSceneShaderProgram::enableSpecular(bool enable) {
-    setBoolean(_locations.enableSpecular, enable);
+    setBoolean(_locations.isSpecularEnabled, enable);
 }

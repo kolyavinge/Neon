@@ -27,7 +27,11 @@ void Vehicle::init() {
     initWheelAndSpring(WheelPosition::rearLeft);
     initWheelAndSpring(WheelPosition::rearRight);
     _body.init();
-    _lights.init(_data.frontLightsColor, _data.rearBrakeLightColor, _data.rearSideLightsColor);
+    _lights.init(
+        _data.frontLightsColor,
+        _data.rearBrakeLightColor,
+        _data.rearSideLightsColor,
+        _data.rearLightsMaxDistance);
     _rigidBody.init(
         CommonConstants::rightAxis,
         CommonConstants::frontAxis,

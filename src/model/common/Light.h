@@ -10,6 +10,7 @@ class Light : public Object {
     Vector3 _color;
     float _maxDistance;
     float _maxDistanceSquared;
+    bool _isSpecularEnabled;
 
 public:
     Light();
@@ -22,4 +23,7 @@ public:
     void setColor(Vector3 color);
     float getMaxDistance();
     float getMaxDistanceSquared();
+    void setMaxDistance(float value);
+    bool isSpecularEnabled();
+    void enableSpecular(bool enable);
 };

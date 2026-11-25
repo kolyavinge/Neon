@@ -30,11 +30,12 @@ uniform struct {
     vec3 directionView;
     vec3 color;
     float maxDistance;
+    bool isSpecularEnabled;
 } lights[maxLightsCount];
 uniform int lightsCount;
 
-uniform bool enableLight;
-uniform bool enableSpecular;
+uniform bool isLightEnabled;
+uniform bool isSpecularEnabled;
 
 const float maxDepth = 500.0;
 
@@ -61,7 +62,7 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     float sDotN = max(dot(s, n), 0.0);
     ambient += colorIntensity * material.ambient;
     diffuse += colorIntensity * material.diffuse * sDotN;
-    if (enableSpecular && sDotN > 0.0) {
+    if (isSpecularEnabled && lights[lightIndex].isSpecularEnabled && sDotN > 0.0) {
         vec3 v = normalize(-PositionView);
         vec3 h = normalize(v + s);
         float hDotN = max(dot(h, n), 0.0);
@@ -82,7 +83,7 @@ void main() {
         FragColor = Color;
     }
     FragColor *= depthFactor;
-    if (enableLight) {
+    if (isLightEnabled) {
         vec3 ambient = vec3(0.0), diffuse = vec3(0.0), specular = vec3(0.0);
         calculateGlobalLightColor(ambient, diffuse);
         for (int lightIndex = 0; lightIndex < lightsCount; lightIndex++) {

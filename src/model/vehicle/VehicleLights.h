@@ -18,7 +18,7 @@ class VehicleLights : public Object {
     Light _rearRightSideLight;
 
 public:
-    void init(Vector3 frontLightsColor, Vector3 rearBrakeLightColor, Vector3 rearSideLightsColor);
+    void init(Vector3 frontLightsColor, Vector3 rearBrakeLightColor, Vector3 rearSideLightsColor, float rearLightsMaxDistance);
     Vector3 getFrontCenter();
     Light& getFrontLeftLight();
     Light& getFrontRightLight();

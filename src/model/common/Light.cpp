@@ -4,6 +4,7 @@
 Light::Light() {
     _maxDistance = 0.0f;
     _maxDistanceSquared = 0.0f;
+    _isSpecularEnabled = true;
 }
 
 bool Light::equals(Object& x) {
@@ -47,4 +48,17 @@ float Light::getMaxDistance() {
 
 float Light::getMaxDistanceSquared() {
     return _maxDistanceSquared;
+}
+
+void Light::setMaxDistance(float value) {
+    _maxDistance = value;
+    _maxDistanceSquared = _maxDistance * _maxDistance;
+}
+
+bool Light::isSpecularEnabled() {
+    return _isSpecularEnabled;
+}
+
+void Light::enableSpecular(bool enable) {
+    _isSpecularEnabled = enable;
 }
