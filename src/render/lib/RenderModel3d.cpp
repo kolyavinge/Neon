@@ -60,6 +60,10 @@ void RenderModel3d::addUniqueTextures(Collection<Texture*>& textures) {
     }
 }
 
+bool RenderModel3d::hasTextures() {
+    return _textures.getCount() > 0;
+}
+
 void RenderModel3d::release() {
     for (int i = 0; i < _meshes.getCount(); i++) {
         delete _meshes[i];

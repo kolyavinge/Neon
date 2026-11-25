@@ -1,6 +1,5 @@
 #include <render/lib/Texture.h>
 
-Texture Texture::empty;
 Texture Texture::dummy;
 
 void Texture::initDummy() {

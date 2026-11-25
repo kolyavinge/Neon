@@ -30,5 +30,6 @@ public:
     int getTotalFacesCount();
     RenderMesh& getMeshByName(String meshName);
     void addUniqueTextures(Collection<Texture*>& textures);
+    bool hasTextures();
     void release();
 };
