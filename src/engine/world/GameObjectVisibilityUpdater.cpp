@@ -9,6 +9,7 @@ GameObjectVisibilityUpdater::GameObjectVisibilityUpdater(
 
 void GameObjectVisibilityUpdater::updateVisibility(
     BSPTreeNode<WorldSegment>& segmentTreeRoot, Collection<Vehicle>& vehicles, Camera& camera, output GameObjectVisibility& objectVisibility) {
+    objectVisibility.setCamera(camera); // камера может меняться, обновляем ее каждый раз
     updateWorldSegmentVisibility(segmentTreeRoot, camera, output objectVisibility);
     updateVehicleVisibility(vehicles, camera, output objectVisibility);
 }

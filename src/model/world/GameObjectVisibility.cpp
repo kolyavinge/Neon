@@ -1,6 +1,8 @@
+#include <model/vehicle/VehicleLights.h>
 #include <model/world/GameObjectVisibility.h>
 
 GameObjectVisibility::GameObjectVisibility() {
+    _camera = nullptr;
     _segmentCollection = nullptr;
     _vehicles = nullptr;
 }
@@ -13,6 +15,10 @@ void GameObjectVisibility::init(WorldSegmentCollection& segmentCollection, Colle
     visibleSegmentStates.prepareEnoughCapacity(allSegmentsCount / 2);
     visibleSegmentStates.initAll(VisibilityState::high);
     vehicleVisibilityStates.initAll(VisibilityState::high);
+}
+
+void GameObjectVisibility::setCamera(Camera& camera) {
+    _camera = &camera;
 }
 
 Collection<WorldSegment*>& GameObjectVisibility::getVisibleSegments() {
@@ -28,41 +34,64 @@ VisibilityState GameObjectVisibility::getVehicleVisibilityState(Vehicle& vehicle
 }
 
 Collection<Light*>& GameObjectVisibility::getLightsForSegment(WorldSegment& segment) {
-    _lightsTmp.clear();
+    _lightsWithoutSpecular.clear();
+    _lightsResultTmp.clear();
 
     // источники света в сегменте
-    _lightsTmp.addRange(segment.getLights());
+    _lightsResultTmp.addRange(segment.getLights());
 
     // свет других машинок достающих до сегмента
     float maxLightDistanceSquared = _vehicles->first().getLights().getFrontLeftLight().getMaxDistanceSquared();
     for (int i = 0; i < _vehicles->getCount(); i++) {
         Vehicle& vehicle = (*_vehicles)[i];
-        if (segment.getBoundaryBox().getNearestLengthSquaredTo(vehicle.getLights().getFrontCenter()) < maxLightDistanceSquared ||
-            segment.getCenter().getLengthSquaredTo(vehicle.getLights().getFrontCenter()) < maxLightDistanceSquared) {
-            _lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
-            _lightsTmp.add(&vehicle.getLights().getFrontRightLight());
+        VehicleLights& vehicleLights = vehicle.getLights();
+        bool vehicleLightsAffectToSegment =
+            segment.getBoundaryBox().getNearestLengthSquaredTo(vehicleLights.getFrontCenter()) < maxLightDistanceSquared ||
+            segment.getCenter().getLengthSquaredTo(vehicleLights.getFrontCenter()) < maxLightDistanceSquared;
+        if (!vehicleLightsAffectToSegment) continue;
+        // нет смысла считать specular от фар, если они смотрят туда же куда камера, машинка перекроет собой это световое пятно
+        bool isSpecularEnabled = _camera->getLookDirection().dotProduct(vehicle.getChassisFrontNormal()) < 0.9f;
+        if (isSpecularEnabled) {
+            _lightsResultTmp.add(&vehicleLights.getFrontLeftLight());
+            _lightsResultTmp.add(&vehicleLights.getFrontRightLight());
+        } else {
+            // выключаем specular для левой фары
+            Light* light = &_lightsWithoutSpecular.addNew();
+            *light = vehicleLights.getFrontLeftLight();
+            light->enableSpecular(false);
+            _lightsResultTmp.add(light);
+            // и для правой
+            light = &_lightsWithoutSpecular.addNew();
+            *light = vehicleLights.getFrontRightLight();
+            light->enableSpecular(false);
+            _lightsResultTmp.add(light);
         }
     }
 
-    return _lightsTmp;
+    return _lightsResultTmp;
 }
 
 Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) {
-    _lightsTmp.clear();
+    _lightsResultTmp.clear();
     WorldSegment& vehicleSegment = _segmentCollection->getWorldSegmentForPoint(vehicle.getCenter());
 
     // источники света в сегменте, в котором находится машинка
-    _lightsTmp.addRange(vehicleSegment.getLights());
+    _lightsResultTmp.addRange(vehicleSegment.getLights());
 
-    // свет этой машинки
-    // передний свет убран. может вообще не нужно, ибо передний свет машинки практически не действует на нее саму.
-    //_lightsTmp.add(&vehicle.getLights().getFrontLeftLight());
-    //_lightsTmp.add(&vehicle.getLights().getFrontRightLight());
-    if (vehicle.getLights().isRearBrakeLightActive()) {
-        _lightsTmp.add(&vehicle.getLights().getRearBrakeLight());
+    // свет самой машинки. передние фары
+    bool vehicleLightsLookToCamera = _camera->getLookDirection().dotProduct(vehicle.getChassisFrontNormal()) < 0.0f;
+    if (vehicleLightsLookToCamera) {
+        // результат действия света виден, только если фары обращены в камеру
+        _lightsResultTmp.add(&vehicle.getLights().getFrontLeftLight());
+        _lightsResultTmp.add(&vehicle.getLights().getFrontRightLight());
     }
-    _lightsTmp.add(&vehicle.getLights().getRearLeftSideLight());
-    _lightsTmp.add(&vehicle.getLights().getRearRightSideLight());
+
+    // свет самой машинки. задние фары
+    if (vehicle.getLights().isRearBrakeLightActive()) {
+        _lightsResultTmp.add(&vehicle.getLights().getRearBrakeLight());
+    }
+    _lightsResultTmp.add(&vehicle.getLights().getRearLeftSideLight());
+    _lightsResultTmp.add(&vehicle.getLights().getRearRightSideLight());
 
     // свет других машинок достающих до этой
     float maxDistanceLengthSquared = vehicle.getLights().getFrontLeftLight().getMaxDistanceSquared();
@@ -70,10 +99,10 @@ Collection<Light*>& GameObjectVisibility::getLightsForVehicle(Vehicle& vehicle) 
         Vehicle& otherVehicle = (*_vehicles)[i];
         if (vehicle.getId() == otherVehicle.getId()) continue;
         if (vehicle.getCenter().getLengthSquaredTo(otherVehicle.getLights().getFrontCenter()) < maxDistanceLengthSquared) {
-            _lightsTmp.add(&otherVehicle.getLights().getFrontLeftLight());
-            _lightsTmp.add(&otherVehicle.getLights().getFrontRightLight());
+            _lightsResultTmp.add(&otherVehicle.getLights().getFrontLeftLight());
+            _lightsResultTmp.add(&otherVehicle.getLights().getFrontRightLight());
         }
     }
 
-    return _lightsTmp;
+    return _lightsResultTmp;
 }

@@ -3,6 +3,7 @@
 #include <common/constants.h>
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
+#include <model/common/Camera.h>
 #include <model/common/Light.h>
 #include <model/vehicle/Vehicle.h>
 #include <model/world/WorldSegment.h>
@@ -30,12 +31,13 @@ public:
 
 class GameObjectVisibility : public Object, public IGameObjectVisibility {
 
+    Camera* _camera;
     WorldSegmentCollection* _segmentCollection;
     Collection<Vehicle>* _vehicles;
-    List<Light*> _lightsTmp;
+    List<Light> _lightsWithoutSpecular;
+    List<Light*> _lightsResultTmp;
 
 public:
-    void init(WorldSegmentCollection& segmentCollection, Collection<Vehicle>& vehicles, int allSegmentsCount);
     Vector3 cameraPosition;
     Vector3 cameraLookDirection;
     List<WorldSegment*> visibleSegments;
@@ -43,6 +45,8 @@ public:
     Array<VisibilityState, GameConstants::maxVehiclesCount> vehicleVisibilityStates;
 
     GameObjectVisibility();
+    void init(WorldSegmentCollection& segmentCollection, Collection<Vehicle>& vehicles, int allSegmentsCount);
+    void setCamera(Camera& camera);
 
     // interface IGameObjectVisibility
     Collection<WorldSegment*>& getVisibleSegments() override;
