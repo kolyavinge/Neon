@@ -1,3 +1,4 @@
+#include <model/common/common.h>
 #include <model/vehicle/VehicleData.h>
 #include <render/common/RenderModel3dCollection.h>
 
@@ -19,6 +20,7 @@ void RenderModel3dCollection::loadAllModels() {
     String modelPath = models3dDirectory;
     modelPath.append("vehicle_body.obj");
     _model3dLoader.load(modelPath, output tmpModel);
+    tmpModel.setMaterial(Material::standardWithoutSpecular);
     tmpModel.moveToCenter();
     tmpModel.scale(1.25f);
     _renderModel3dLoader.load(tmpModel, output _vehicleBody);
@@ -29,6 +31,7 @@ void RenderModel3dCollection::loadAllModels() {
     modelPath = models3dDirectory;
     modelPath.append("vehicle_front_left_wheel.obj");
     _model3dLoader.load(modelPath, output tmpModel);
+    tmpModel.setMaterial(Material::standardWithoutSpecular);
     tmpModel.moveToCenter();
     float wheelRadius = getWheelRadius(tmpModel);
     tmpModel.scale(data.frontWheelRadius / wheelRadius);
@@ -41,6 +44,7 @@ void RenderModel3dCollection::loadAllModels() {
     modelPath = models3dDirectory;
     modelPath.append("vehicle_rear_left_wheel.obj");
     _model3dLoader.load(modelPath, output tmpModel);
+    tmpModel.setMaterial(Material::standardWithoutSpecular);
     tmpModel.moveToCenter();
     wheelRadius = getWheelRadius(tmpModel);
     tmpModel.scale(data.rearWheelRadius / wheelRadius);
@@ -57,6 +61,7 @@ void RenderModel3dCollection::loadAllModels() {
             modelPath = models3dDirectory;
             modelPath.append(getModelNameFrom(kind, state));
             _model3dLoader.load(modelPath, output tmpModel);
+            tmpModel.setMaterial(Material::standardWithoutSpecular);
             transformModel(kind, tmpModel);
             _renderModel3dLoader.load(tmpModel, output _worldObjects[(int)kind][(int)state]);
             tmpModel.clear();

@@ -10,7 +10,9 @@ class Material : public Object {
     float _shininess;
 
 public:
+    static Material empty;
     static Material standard;
+    static Material standardWithoutSpecular;
 
     Material();
     Material(float ambient, float diffuse, float specular, float shininess);

@@ -4,6 +4,7 @@
 
 Mesh::Mesh() {
     texture = &Texture::dummy;
+    material = Material::empty;
 }
 
 void Mesh::prepareEnoughCapacity(int elementsCount, int pointsByElement) {
@@ -127,6 +128,12 @@ Measures Model3d::getMeasures() {
     result.zLength = max.z - min.z;
 
     return result;
+}
+
+void Model3d::setMaterial(Material& material) {
+    for (int i = 0; i < _meshes.getCount(); i++) {
+        _meshes[i].material = material;
+    }
 }
 
 void Model3d::moveToOrigin(int axis) {

@@ -2,7 +2,7 @@
 
 RenderMesh::RenderMesh() {
     texture = nullptr;
-    material = Material::standard;
+    material = Material::empty;
 }
 
 RenderModel3d::~RenderModel3d() {

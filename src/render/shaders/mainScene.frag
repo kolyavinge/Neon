@@ -62,7 +62,10 @@ void calculateLightColor(int lightIndex, inout vec3 ambient, inout vec3 diffuse,
     float sDotN = max(dot(s, n), 0.0);
     ambient += colorIntensity * material.ambient;
     diffuse += colorIntensity * material.diffuse * sDotN;
-    if (isSpecularEnabled && lights[lightIndex].isSpecularEnabled && sDotN > 0.0) {
+    if (isSpecularEnabled &&
+        lights[lightIndex].isSpecularEnabled &&
+        material.specular > 0.0 &&
+        sDotN > 0.0) {
         vec3 v = normalize(-PositionView);
         vec3 h = normalize(v + s);
         float hDotN = max(dot(h, n), 0.0);

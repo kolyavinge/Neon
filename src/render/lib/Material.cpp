@@ -1,6 +1,8 @@
 #include <render/lib/Material.h>
 
+Material Material::empty = Material(0.0f, 0.0f, 0.0f, 0.0f);
 Material Material::standard = Material(0.2f, 0.8f, 0.5f, 32.0f);
+Material Material::standardWithoutSpecular = Material(0.2f, 0.8f, 0.0f, 0.0f);
 
 Material::Material() {
     _ambient = 0.0f;

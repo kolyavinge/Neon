@@ -1,5 +1,6 @@
 #include <model/world/WorldPrimitive.h>
 #include <render/common/Model3dConverter.h>
+#include <render/lib/Material.h>
 
 Model3dConverter::Model3dConverter(
     TextureCollection& textureCollection) :
@@ -25,6 +26,7 @@ void Model3dConverter::fromWorldPrimitives(Collection<WorldPrimitive*>& primitiv
             }
             mesh.addFacesForElement(primitiveIndex, WorldPrimitive::pointsCount);
         }
+        mesh.material = Material::standard;
         mesh.texture = &_textureCollection.getByWorldPrimitiveKind(group.getKey());
     }
 }

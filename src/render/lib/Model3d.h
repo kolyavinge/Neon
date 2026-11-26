@@ -5,6 +5,7 @@
 #include <lib/calc/Vector3.h>
 #include <lib/system.h>
 #include <model/common/common.h>
+#include <render/lib/Material.h>
 #include <render/lib/Texture.h>
 
 class Mesh : public Object {
@@ -19,6 +20,7 @@ public:
     List<float> texCoords;
     List<unsigned int> faces;
     Texture* texture;
+    Material material;
 
     Mesh();
     void prepareEnoughCapacity(int elementsCount, int pointsByElement);
@@ -54,6 +56,7 @@ public:
     Collection<Texture*>& getTextures();
     int getTexturesCount();
     Measures getMeasures();
+    void setMaterial(Material& material);
     void moveToOrigin(int axis = 0);
     void moveToCenter(int axis = 0);
     void scale(float value);

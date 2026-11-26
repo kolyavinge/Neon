@@ -12,6 +12,7 @@ void RenderModel3dLoader::load(Model3d& model3d, output RenderModel3d& renderMod
         renderMesh.name = mesh.name;
         _model3dVAOBuilder.build(mesh, output renderMesh.vao);
         renderMesh.texture = mesh.texture;
+        renderMesh.material = mesh.material;
     }
 
     renderModel3d.addUniqueTextures(model3d.getTextures());
