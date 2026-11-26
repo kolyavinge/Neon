@@ -12,6 +12,7 @@ float WorldObjectData::getFenceHeightFor(WorldObjectKind kind) {
 
 float WorldObjectData::getHightFor(WorldObjectKind kind) {
     if (kind == WorldObjectKind::streetLight1) return 8.0f;
+    if (kind == WorldObjectKind::building1) return 35.0f;
     throw WrongWorldObjectKindException();
 }
 

@@ -41,6 +41,7 @@ String Model3dCollection::getModelNameFrom(WorldObjectKind kind) {
     switch (kind) {
         case WorldObjectKind::metalFence1: return String("metal_fence_1_high.obj");
         case WorldObjectKind::streetLight1: return String("street_light_1_high.obj");
+        case WorldObjectKind::building1: return String("building_1_high.obj");
         case WorldObjectKind::_count:
         default: throw ArgumentException(L"Wrong kind to load a 3d model.");
     }

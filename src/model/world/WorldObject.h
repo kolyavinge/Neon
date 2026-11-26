@@ -8,6 +8,7 @@
 enum class WorldObjectKind {
     metalFence1,
     streetLight1,
+    building1,
     _count
 };
 

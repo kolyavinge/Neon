@@ -74,6 +74,7 @@ String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind, Visibilit
 
     if (kind == WorldObjectKind::metalFence1) name = "metal_fence_1_";
     else if (kind == WorldObjectKind::streetLight1) name = "street_light_1_";
+    else if (kind == WorldObjectKind::building1) name = "building_1_";
     else throw WrongWorldObjectKindException();
 
     if (state == VisibilityState::high) name.append("high.obj");
@@ -86,12 +87,13 @@ String RenderModel3dCollection::getModelNameFrom(WorldObjectKind kind, Visibilit
 }
 
 void RenderModel3dCollection::transformModel(WorldObjectKind kind, Model3d& model) {
+    Measures measures = model.getMeasures();
     if (kind == WorldObjectKind::metalFence1) {
         model.moveToCenter();
-        Measures measures = model.getMeasures();
         model.scale(WorldObjectData::getFenceLengthFor(kind) / measures.yLength);
     } else if (kind == WorldObjectKind::streetLight1) {
-        Measures measures = model.getMeasures();
+        model.scale(WorldObjectData::getHightFor(kind) / measures.zLength);
+    } else if (kind == WorldObjectKind::building1) {
         model.scale(WorldObjectData::getHightFor(kind) / measures.zLength);
     }
 }

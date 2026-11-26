@@ -29,7 +29,10 @@ WorldObjectBuilder& WorldObjectBuilder::setGroundPrimitives(List<WorldPrimitive>
 }
 
 WorldObjectBuilder& WorldObjectBuilder::setKind(WorldObjectKind kind) {
-    Assert::isTrue(kind == WorldObjectKind::streetLight1);
+    Assert::isTrue(
+        kind == WorldObjectKind::streetLight1 ||
+        kind == WorldObjectKind::building1);
+
     _kind = kind;
 
     return *this;

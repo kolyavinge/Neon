@@ -52,7 +52,6 @@ void WorldSegmentRenderer::render(MainSceneShaderProgram& shader, IGameObjectVis
 void WorldSegmentRenderer::renderWorldSegment(
     MainSceneShaderProgram& shader, IGameObjectVisibility& objectVisibility, WorldSegment& worldSegment, VisibilityState state) {
     bool withDetails = state > VisibilityState::shape;
-    shader.useTexture(withDetails);
     shader.enableLight(withDetails);
     shader.enableSpecular(state == VisibilityState::high);
     if (withDetails) {
@@ -60,11 +59,9 @@ void WorldSegmentRenderer::renderWorldSegment(
     }
 
     // render ground
+    shader.useTexture(withDetails);
     shader.enableInstances(false);
     shader.setModelMatrix(TransformMatrix4::identity);
-    if (!withDetails) {
-        Texture::dummy.bind(GL_TEXTURE0);
-    }
     RenderModel3d& groundRenderModel = _groundRenderModels[worldSegment.getId()];
     for (int meshIndex = 0; meshIndex < groundRenderModel.getMeshesCount(); meshIndex++) {
         RenderMesh& mesh = groundRenderModel.getMesh(meshIndex);
@@ -85,6 +82,11 @@ void WorldSegmentRenderer::renderWorldSegment(
         WorldObjectKindInfo& info = objectKindInfo[objectKindIndex];
         shader.setModelMatricesForInstances(worldSegment.getWorldObjectModelMatricesFor(info.kind));
         RenderModel3d& objectRenderModel = _renderModel3dCollection.getWorldObjectModel(info.kind, state);
+        if (objectRenderModel.hasTextures()) {
+            shader.useTexture(withDetails);
+        } else {
+            shader.useTexture(false);
+        }
         for (int meshIndex = 0; meshIndex < objectRenderModel.getMeshesCount(); meshIndex++) {
             RenderMesh& mesh = objectRenderModel.getMesh(meshIndex);
             if (withDetails) {

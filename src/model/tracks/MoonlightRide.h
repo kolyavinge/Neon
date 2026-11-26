@@ -15,6 +15,7 @@ private:
     void makeGround();
     void makeRoadBarriers();
     void makeStreetLights();
+    void makeBuildings();
     void makeSplitPlanes();
     void setPlayerPosition();
 };

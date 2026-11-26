@@ -15,6 +15,7 @@ void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
     makeStreetLights();
+    makeBuildings();
     _globalLight.setDirection(Vector3(1.0f, -1.0f, -1.0f).getNormalized());
     _globalLight.setColor(Vector3(0.3f));
     setPlayerPosition();
@@ -301,6 +302,21 @@ void MoonlightRide::makeStreetLights() {
         .setPosition(Vector3(19.0f, 280.0f, 3.5f))
         .setOffset(Vector3(0.0f, 20.0f, 0.0f))
         .setCount(40)
+        .build();
+}
+
+void MoonlightRide::makeBuildings() {
+    WorldObjectBuilder builder;
+    builder
+        .setWorldPrimitiveResultList(_barrierPrimitives)
+        .setWorldObjectResultList(_worldObjects)
+        .setGroundPrimitives(_groundPrimitives);
+
+    builder
+        .setKind(WorldObjectKind::building1)
+        .setPosition(Vector3(0.0f, 20.0f, 0.0f))
+        .setOffset(Vector3(0.0f, 40.0f, 0.0f))
+        .setCount(4)
         .build();
 }
 
