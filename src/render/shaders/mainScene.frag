@@ -24,7 +24,7 @@ uniform struct {
     vec3 color;
 } globalLight;
 
-const int maxLightsCount = 50; // есть в MeshShaderProgram
+const int maxLightsCount = 20; // есть в MeshShaderProgram
 uniform struct {
     vec3 positionView;
     vec3 directionView;

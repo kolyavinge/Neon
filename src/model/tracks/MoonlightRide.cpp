@@ -15,9 +15,9 @@ void MoonlightRide::buildInternal() {
     makeGround();
     makeRoadBarriers();
     makeStreetLights();
-    makeBuildings();
+    //makeBuildings();
     _globalLight.setDirection(Vector3(1.0f, -1.0f, -1.0f).getNormalized());
-    _globalLight.setColor(Vector3(0.3f));
+    _globalLight.setColor(Vector3(0.4f));
     setPlayerPosition();
 }
 
@@ -247,6 +247,7 @@ void MoonlightRide::makeRoadBarriers() {
         .build();
 
     // длинная прямая
+    // TODO сделать глухое ограждение, можно повыше, чтобы не видеть пустоту за пределами земли
 
     leftBarrierBuilder
         .setDirection(Vector3(0.0f, 1.0f, 0.0f))
@@ -286,22 +287,22 @@ void MoonlightRide::makeStreetLights() {
         .setRotation(-Math::piHalf)
         .setColor(150.0f, Vector3(1.0f))
         .setPosition(Vector3(1.0f, 20.0f, 0.0f))
-        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
-        .setCount(9)
+        .setOffset(Vector3(0.0f, 40.0f, 0.0f))
+        .setCount(4)
         .build();
 
     builder
         .setRotation(Math::piHalf)
         .setPosition(Vector3(19.0f, 40.0f, 0.0f))
-        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
-        .setCount(8)
+        .setOffset(Vector3(0.0f, 40.0f, 0.0f))
+        .setCount(3)
         .build();
 
     builder
         .setRotation(Math::piHalf)
         .setPosition(Vector3(19.0f, 280.0f, 3.5f))
-        .setOffset(Vector3(0.0f, 20.0f, 0.0f))
-        .setCount(40)
+        .setOffset(Vector3(0.0f, 100.0f, 0.0f))
+        .setCount(8)
         .build();
 }
 
@@ -314,6 +315,7 @@ void MoonlightRide::makeBuildings() {
 
     builder
         .setKind(WorldObjectKind::building1)
+        //.setLight(Light(...))
         .setPosition(Vector3(0.0f, 20.0f, 0.0f))
         .setOffset(Vector3(0.0f, 40.0f, 0.0f))
         .setCount(4)

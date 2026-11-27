@@ -39,7 +39,7 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
         if (model3d.getTexturesCount() > 0) {
             mesh.texCoords.prepareEnoughCapacity(2 * (int)aiMesh.mNumVertices);
             loadTexture = true;
-        } else if (aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, output & diffuseColor) == AI_SUCCESS) {
+        } else if (aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, output &diffuseColor) == AI_SUCCESS) {
             mesh.colors.prepareEnoughCapacity(4 * (int)aiMesh.mNumVertices);
             loadColor = true;
         }
@@ -84,7 +84,7 @@ void Model3dLoader::loadMeshes(const aiScene& aiScene, output Model3d& model3d) 
 void Model3dLoader::loadTextures(String& modelFilePath, output Model3d& model3d) {
     String modelDirectoryPath = Path::getDirectoryPath(modelFilePath);
     String filter = Path::getFileNameWithoutExtension(modelFilePath);
-    filter.append(L"*.jpg");
+    filter.append(L".jpg");
     List<String> textureFiles;
     _fileSystem.getFilesInDirectoryByFilter(modelDirectoryPath, filter, output textureFiles);
     for (int i = 0; i < textureFiles.getCount(); i++) {

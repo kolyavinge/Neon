@@ -236,7 +236,7 @@ int Model3d::getTotalFacesCount() {
         result += _meshes[i].faces.getCount();
     }
 
-    return result;
+    return result / Mesh::verticesDimension;
 }
 
 Vector3 Model3d::getMinVertex() {

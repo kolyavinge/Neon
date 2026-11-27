@@ -1,3 +1,4 @@
+#include <render/lib/Model3d.h>
 #include <render/lib/RenderModel3d.h>
 
 RenderMesh::RenderMesh() {
@@ -37,7 +38,7 @@ int RenderModel3d::getTotalFacesCount() {
         result += _meshes[i]->vao.getElementsCount();
     }
 
-    return result;
+    return result / Mesh::verticesDimension;
 }
 
 RenderMesh& RenderModel3d::getMeshByName(String meshName) {

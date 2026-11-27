@@ -9,7 +9,9 @@
 
 class MainSceneShaderProgram : public ShaderProgram {
 
-    inline static const int maxLightsCount = 50; // есть в mainScene.frag
+    // чем больше источников света, тем сильнее нагрузка на видюху
+    // стараться обходиться минимальным кол-вом
+    inline static const int maxLightsCount = 20; // есть в mainScene.frag
 
     struct {
         GLint modelMatrix;
