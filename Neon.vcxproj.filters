@@ -354,6 +354,12 @@
     <ClCompile Include="src\model\world\MinMaxPointFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\shaderprograms\MainSceneBackgroundShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\main\BackgroundRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Object.h">
@@ -776,6 +782,12 @@
     <ClInclude Include="src\model\world\MinMaxPointFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\render\shaderprograms\MainSceneBackgroundShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\main\BackgroundRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\common\Resource.rc">
@@ -786,5 +798,7 @@
     <None Include="src\render\shaders\common.glsl" />
     <None Include="src\render\shaders\mainScene.frag" />
     <None Include="src\render\shaders\mainScene.vert" />
+    <None Include="src\render\shaders\mainSceneBackground.frag" />
+    <None Include="src\render\shaders\simple.vert" />
   </ItemGroup>
 </Project>

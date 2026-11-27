@@ -5,11 +5,13 @@
 MainSceneRenderer::MainSceneRenderer(
     WorldSegmentRenderer& worldSegmentRenderer,
     VehicleRenderer& vehicleRenderer,
+    BackgroundRenderer& backgroundRenderer,
     DebugRenderer& debugRenderer,
     ShaderProgramCollection& shaderProgramCollection,
     RenderDebuger& renderDebuger) :
     _worldSegmentRenderer(worldSegmentRenderer),
     _vehicleRenderer(vehicleRenderer),
+    _backgroundRenderer(backgroundRenderer),
     _debugRenderer(debugRenderer),
     _mainSceneShader(shaderProgramCollection.mainScene),
     _renderDebuger(renderDebuger) {
@@ -21,6 +23,8 @@ void MainSceneRenderer::render(
     Camera& camera,
     Light& globalLight) {
     _frameStopwatch.beginFrame();
+
+    _backgroundRenderer.render();
 
     _mainSceneShader.use();
     _mainSceneShader.setViewMatrix(camera.getViewMatrix());

@@ -125,7 +125,9 @@
     <ClCompile Include="src\render\lib\VAO.cpp" />
     <ClCompile Include="src\render\lib\Model3dVAOBuilder.cpp" />
     <ClCompile Include="src\render\lib\VAORenderer.cpp" />
+    <ClCompile Include="src\render\main\BackgroundRenderer.cpp" />
     <ClCompile Include="src\render\main\MainSceneRenderer.cpp" />
+    <ClCompile Include="src\render\shaderprograms\MainSceneBackgroundShaderProgram.cpp" />
     <ClCompile Include="src\render\shaderprograms\MainSceneShaderProgram.cpp" />
     <ClCompile Include="src\render\ui\RaceScreenRenderer.cpp" />
     <ClCompile Include="src\render\main\VehicleRenderer.cpp" />
@@ -215,7 +217,9 @@
     <ClInclude Include="src\render\lib\Model3dVAOBuilder.h" />
     <ClInclude Include="src\render\lib\VAORenderer.h" />
     <ClInclude Include="src\render\lib\TextureLoader.h" />
+    <ClInclude Include="src\render\main\BackgroundRenderer.h" />
     <ClInclude Include="src\render\main\MainSceneRenderer.h" />
+    <ClInclude Include="src\render\shaderprograms\MainSceneBackgroundShaderProgram.h" />
     <ClInclude Include="src\render\shaderprograms\MainSceneShaderProgram.h" />
     <ClInclude Include="src\render\ui\RaceScreenRenderer.h" />
     <ClInclude Include="src\render\ui\ScreenRenderer.h" />
@@ -281,6 +285,8 @@
     </None>
     <None Include="src\render\shaders\mainScene.frag" />
     <None Include="src\render\shaders\mainScene.vert" />
+    <None Include="src\render\shaders\mainSceneBackground.frag" />
+    <None Include="src\render\shaders\simple.vert" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\common\Resource.rc" />

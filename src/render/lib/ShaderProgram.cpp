@@ -38,6 +38,8 @@ void ShaderProgram::init(Collection<Shader*>& shaders) {
         }
         initAfterLink();
     } else {
+        // при возникновении ошибок - проверить какие шейдеры были подключены к программе (_shaderIds)
+        // на все подключенные шейдеры одного типа должна приходится одна ф-я main()
         GLint logLength = 0;
         glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
         if (logLength > 0) {
@@ -64,6 +66,10 @@ void ShaderProgram::initBeforeLink() {}
 
 void ShaderProgram::initAfterLink() {}
 
+GLint ShaderProgram::getUniformLocation(const GLchar* name) {
+    return glGetUniformLocation(_id, name);
+}
+
 void ShaderProgram::setInt32(GLint location, GLint value) {
     glUniform1i(location, value);
 }
@@ -74,6 +80,10 @@ void ShaderProgram::setFloat32(GLint location, GLfloat value) {
 
 void ShaderProgram::setBoolean(GLint location, bool value) {
     setInt32(location, value ? 1 : 0);
+}
+
+void ShaderProgram::setVector2(GLint location, GLint x, GLint y) {
+    glUniform2i(location, x, y);
 }
 
 void ShaderProgram::setVector2(GLint location, GLfloat x, GLfloat y) {

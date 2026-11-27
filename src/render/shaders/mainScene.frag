@@ -24,7 +24,7 @@ uniform struct {
     vec3 color;
 } globalLight;
 
-const int maxLightsCount = 20; // есть в MeshShaderProgram
+const int maxLightsCount = 20; // РµСЃС‚СЊ РІ MeshShaderProgram
 uniform struct {
     vec3 positionView;
     vec3 directionView;
@@ -39,7 +39,7 @@ uniform bool isSpecularEnabled;
 
 const float maxDepth = 500.0;
 
-// Schlick’s approximation. Работает для x [0;1] и p > 1
+// SchlickвЂ™s approximation. Р Р°Р±РѕС‚Р°РµС‚ РґР»СЏ x [0;1] Рё p > 1
 float powSchlickApprox(float x, float p) {
     return x / (p - p * x + x);
 }
@@ -94,5 +94,5 @@ void main() {
         }
         FragColor *= vec4(diffuse + specular + ambient, alphaFactor);
     }
-    FragColor *= 1.5; // общая контрастность
+    FragColor *= 1.5; // РѕР±С‰Р°СЏ РєРѕРЅС‚СЂР°СЃС‚РЅРѕСЃС‚СЊ
 }

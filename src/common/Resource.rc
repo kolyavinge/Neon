@@ -2,6 +2,8 @@
 
 // все шейдеры являются ресурсами приложения
 
-IDR_SHADER_COMMON          TEXTFILE "src\\render\\shaders\\common.glsl"
-IDR_SHADER_MAIN_SCENE_VERT TEXTFILE "src\\render\\shaders\\mainScene.vert"
-IDR_SHADER_MAIN_SCENE_FRAG TEXTFILE "src\\render\\shaders\\mainScene.frag"
+IDR_SHADER_COMMON                   TEXTFILE "src\\render\\shaders\\common.glsl"
+IDR_SHADER_SIMPLE_VERT              TEXTFILE "src\\render\\shaders\\simple.vert"
+IDR_SHADER_MAINSCENE_VERT           TEXTFILE "src\\render\\shaders\\mainScene.vert"
+IDR_SHADER_MAINSCENE_FRAG           TEXTFILE "src\\render\\shaders\\mainScene.frag"
+IDR_SHADER_MAINSCENEBACKGROUND_FRAG TEXTFILE "src\\render\\shaders\\mainSceneBackground.frag"

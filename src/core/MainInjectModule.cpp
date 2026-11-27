@@ -37,6 +37,7 @@
 #include <render/lib/ShaderCompiler.h>
 #include <render/lib/TextureLoader.h>
 #include <render/lib/VAORenderer.h>
+#include <render/main/BackgroundRenderer.h>
 #include <render/main/MainSceneRenderer.h>
 #include <render/main/VehicleRenderer.h>
 #include <render/main/WorldSegmentRenderer.h>
@@ -82,6 +83,7 @@ void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<ShaderCompiler>();
     binder.bindSingleton<TextureLoader>(TextureLoader::resolve);
     binder.bindSingleton<VAORenderer>();
+    binder.bindSingleton<BackgroundRenderer>(BackgroundRenderer::resolve);
     binder.bindSingleton<MainSceneRenderer>(MainSceneRenderer::resolve);
     binder.bindSingleton<VehicleRenderer>(VehicleRenderer::resolve);
     binder.bindSingleton<WorldSegmentRenderer>(WorldSegmentRenderer::resolve);

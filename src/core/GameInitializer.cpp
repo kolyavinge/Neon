@@ -7,6 +7,7 @@ GameInitializer::GameInitializer(
     ShaderCollection& shaderCollection,
     ShaderProgramCollection& shaderProgramCollection,
     RenderModel3dCollection& renderModel3dCollection,
+    VAORenderer& vaoRenderer,
     VehicleRenderer& vehicleRenderer,
     WorldSegmentRenderer& worldSegmentRenderer) :
     _gameWorldInitializer(gameWorldInitializer),
@@ -15,6 +16,7 @@ GameInitializer::GameInitializer(
     _shaderCollection(shaderCollection),
     _shaderProgramCollection(shaderProgramCollection),
     _renderModel3dCollection(renderModel3dCollection),
+    _vaoRenderer(vaoRenderer),
     _vehicleRenderer(vehicleRenderer),
     _worldSegmentRenderer(worldSegmentRenderer) {
 }
@@ -24,6 +26,7 @@ void GameInitializer::initGame() {
     _shaderCollection.loadAllShaders();
     _shaderProgramCollection.initAllPrograms();
     _renderModel3dCollection.loadAllModels();
+    _vaoRenderer.init();
 }
 
 // TODO вызывать после выбора трассы

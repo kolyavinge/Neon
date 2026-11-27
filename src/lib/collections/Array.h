@@ -14,10 +14,9 @@ concept ConvertibleToPositiveInt =
 template<class T, auto Size> requires ConvertibleToPositiveInt<Size>
 class Array : public Collection<T> {
 
-    static constexpr int Count = static_cast<int>(Size);
-    T _items[Count] = {};
-
 public:
+    static constexpr int Count = static_cast<int>(Size);
+
     T& operator[](int index) override {
         checkBounds(index);
         return _items[index];
@@ -45,6 +44,8 @@ public:
     }
 
 private:
+    T _items[Count] = {};
+
     void checkBounds(int index) {
         if (index < 0) throw ArgumentException(L"index cannot be negative.");
         bool inBounds = 0 <= index && index < Count;
@@ -53,5 +54,5 @@ private:
 };
 
 template<class T, auto Dimention1, auto Dimention2>
-    requires ConvertibleToPositiveInt<Dimention1> && ConvertibleToPositiveInt<Dimention2>
+    requires ConvertibleToPositiveInt<Dimention1>&& ConvertibleToPositiveInt<Dimention2>
 class Array2d : public Array<Array<T, Dimention2>, Dimention1> {};

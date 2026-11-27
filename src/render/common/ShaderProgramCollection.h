@@ -3,8 +3,7 @@
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <render/common/ShaderCollection.h>
-#include <render/lib/Shader.h>
-#include <render/lib/ShaderProgram.h>
+#include <render/shaderprograms/MainSceneBackgroundShaderProgram.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
 
 class ShaderProgramCollection : public Object {
@@ -13,6 +12,7 @@ class ShaderProgramCollection : public Object {
 
 public:
     MainSceneShaderProgram mainScene;
+    MainSceneBackgroundShaderProgram mainSceneBackground;
 
     static ShaderProgramCollection* resolve(Resolver& resolver) {
         return new ShaderProgramCollection(
@@ -23,7 +23,4 @@ public:
         ShaderCollection& shaderCollection);
 
     void initAllPrograms();
-
-private:
-    void initProgram(output ShaderProgram& program, int shadersCount, Shader* shaders ...);
 };

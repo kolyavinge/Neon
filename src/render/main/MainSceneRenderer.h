@@ -10,6 +10,7 @@
 #include <model/world/GameObjectVisibility.h>
 #include <render/common/ShaderProgramCollection.h>
 #include <render/lib/FrameStopwatch.h>
+#include <render/main/BackgroundRenderer.h>
 #include <render/main/VehicleRenderer.h>
 #include <render/main/WorldSegmentRenderer.h>
 #include <render/shaderprograms/MainSceneShaderProgram.h>
@@ -18,6 +19,7 @@ class MainSceneRenderer : public Object {
 
     WorldSegmentRenderer& _worldSegmentRenderer;
     VehicleRenderer& _vehicleRenderer;
+    BackgroundRenderer& _backgroundRenderer;
     DebugRenderer& _debugRenderer;
     MainSceneShaderProgram& _mainSceneShader;
     RenderDebuger& _renderDebuger;
@@ -28,6 +30,7 @@ public:
         return new MainSceneRenderer(
             resolver.resolve<WorldSegmentRenderer>(),
             resolver.resolve<VehicleRenderer>(),
+            resolver.resolve<BackgroundRenderer>(),
             resolver.resolve<DebugRenderer>(),
             resolver.resolve<ShaderProgramCollection>(),
             resolver.resolve<RenderDebuger>());
@@ -36,6 +39,7 @@ public:
     MainSceneRenderer(
         WorldSegmentRenderer& worldSegmentRenderer,
         VehicleRenderer& vehicleRenderer,
+        BackgroundRenderer& backgroundRenderer,
         DebugRenderer& debugRenderer,
         ShaderProgramCollection& shaderProgramCollection,
         RenderDebuger& renderDebuger);

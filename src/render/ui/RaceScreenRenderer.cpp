@@ -12,9 +12,7 @@ void RaceScreenRenderer::setScreen(RaceScreen& screen) {
 }
 
 void RaceScreenRenderer::render() {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // TODO для отладки
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // TODO перенести в _mainSceneRenderer ?
     GameWorld& gameWorld = _screen->getGameWorld();
     _mainSceneRenderer.render(
         gameWorld.getObjectVisibility(),

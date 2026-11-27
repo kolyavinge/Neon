@@ -8,19 +8,19 @@ MainSceneShaderProgram::MainSceneShaderProgram() {
 }
 
 void MainSceneShaderProgram::initAfterLink() {
-    _locations.modelMatrix = glGetUniformLocation(_id, "modelMatrix");
-    _locations.viewMatrix = glGetUniformLocation(_id, "viewMatrix");
-    _locations.projectionMatrix = glGetUniformLocation(_id, "projectionMatrix");
-    _locations.enableInstances = glGetUniformLocation(_id, "enableInstances");
+    _locations.modelMatrix = getUniformLocation("modelMatrix");
+    _locations.viewMatrix = getUniformLocation("viewMatrix");
+    _locations.projectionMatrix = getUniformLocation("projectionMatrix");
+    _locations.enableInstances = getUniformLocation("enableInstances");
     _locations.modelMatrices = createStorageBuffer(0, GameConstants::maxWorldObjectsCountInSegment * TransformMatrix4::sizeInBytes);
-    _locations.alphaFactor = glGetUniformLocation(_id, "alphaFactor");
-    _locations.useTexture = glGetUniformLocation(_id, "useTexture");
-    _locations.materialAmbient = glGetUniformLocation(_id, "material.ambient");
-    _locations.materialDiffuse = glGetUniformLocation(_id, "material.diffuse");
-    _locations.materialSpecular = glGetUniformLocation(_id, "material.specular");
-    _locations.materialShininess = glGetUniformLocation(_id, "material.shininess");
-    _locations.globalLightDirectionView = glGetUniformLocation(_id, "globalLight.directionView");
-    _locations.globalLightColor = glGetUniformLocation(_id, "globalLight.color");
+    _locations.alphaFactor = getUniformLocation("alphaFactor");
+    _locations.useTexture = getUniformLocation("useTexture");
+    _locations.materialAmbient = getUniformLocation("material.ambient");
+    _locations.materialDiffuse = getUniformLocation("material.diffuse");
+    _locations.materialSpecular = getUniformLocation("material.specular");
+    _locations.materialShininess = getUniformLocation("material.shininess");
+    _locations.globalLightDirectionView = getUniformLocation("globalLight.directionView");
+    _locations.globalLightColor = getUniformLocation("globalLight.color");
     UniformArray lightsPosition, lightsDirection, lightsColor, lightsMaxDistance, lightsIsSpecularEnabled;
     lightsPosition.init(maxLightsCount, "lights", "positionView");
     lightsDirection.init(maxLightsCount, "lights", "directionView");
@@ -28,15 +28,15 @@ void MainSceneShaderProgram::initAfterLink() {
     lightsMaxDistance.init(maxLightsCount, "lights", "maxDistance");
     lightsIsSpecularEnabled.init(maxLightsCount, "lights", "isSpecularEnabled");
     for (int i = 0; i < maxLightsCount; i++) {
-        _locations.lightsPositionView[i] = glGetUniformLocation(_id, lightsPosition.getNameFor(i));
-        _locations.lightsDirectionView[i] = glGetUniformLocation(_id, lightsDirection.getNameFor(i));
-        _locations.lightsColor[i] = glGetUniformLocation(_id, lightsColor.getNameFor(i));
-        _locations.lightsMaxDistance[i] = glGetUniformLocation(_id, lightsMaxDistance.getNameFor(i));
-        _locations.lightsIsSpecularEnabled[i] = glGetUniformLocation(_id, lightsIsSpecularEnabled.getNameFor(i));
+        _locations.lightsPositionView[i] = getUniformLocation(lightsPosition.getNameFor(i));
+        _locations.lightsDirectionView[i] = getUniformLocation(lightsDirection.getNameFor(i));
+        _locations.lightsColor[i] = getUniformLocation(lightsColor.getNameFor(i));
+        _locations.lightsMaxDistance[i] = getUniformLocation(lightsMaxDistance.getNameFor(i));
+        _locations.lightsIsSpecularEnabled[i] = getUniformLocation(lightsIsSpecularEnabled.getNameFor(i));
     }
-    _locations.lightsCount = glGetUniformLocation(_id, "lightsCount");
-    _locations.isLightEnabled = glGetUniformLocation(_id, "isLightEnabled");
-    _locations.isSpecularEnabled = glGetUniformLocation(_id, "isSpecularEnabled");
+    _locations.lightsCount = getUniformLocation("lightsCount");
+    _locations.isLightEnabled = getUniformLocation("isLightEnabled");
+    _locations.isSpecularEnabled = getUniformLocation("isSpecularEnabled");
 }
 
 void MainSceneShaderProgram::setModelMatrix(TransformMatrix4& modelMatrix) {

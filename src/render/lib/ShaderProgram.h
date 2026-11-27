@@ -23,9 +23,11 @@ protected:
 
     virtual void initBeforeLink();
     virtual void initAfterLink();
+    GLint getUniformLocation(const GLchar* name);
     void setInt32(GLint location, GLint value);
     void setFloat32(GLint location, GLfloat value);
     void setBoolean(GLint location, bool value);
+    void setVector2(GLint location, GLint x, GLint y);
     void setVector2(GLint location, GLfloat x, GLfloat y);
     void setVector3(GLint location, Vector3 v);
     void setMatrix3(GLint location, GLfloat* m);

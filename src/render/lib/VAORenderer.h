@@ -5,7 +5,14 @@
 
 class VAORenderer : public Object {
 
+    VAO _screenQuad;
+
 public:
+    void init();
     void render(VAO& vao);
     void renderInstances(VAO& vao, int instancesCount);
+    void renderScreenQuad();
+
+private:
+    void initScreenQuad();
 };
