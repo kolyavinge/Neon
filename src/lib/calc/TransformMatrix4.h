@@ -38,6 +38,7 @@ public:
     Vector3 mulPoint(Vector3 p);
     void mulPoint(output float* x);
     void transpose();
+    void inverse();
     void translate(float x, float y, float z);
     void translate(Vector3& v);
     void rotate(float angle, float axisX, float axisY, float axisZ);
