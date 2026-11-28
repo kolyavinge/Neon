@@ -3,6 +3,7 @@
 // в glfw3.h подключается gl.h, glew.h нужно подключить раньше
 #include <glew/glew.h>
 
+#include <core/Game.h>
 #include <glfw/glfw3.h>
 #include <lib/system.h>
 
@@ -10,6 +11,7 @@ class AppException : public Exception {};
 
 class App : public Object {
 
+    static Game* _game;
     static bool _isFullScreenActive;
 
 public:

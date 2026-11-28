@@ -1,10 +1,10 @@
 #include <App.h>
 #include <common/constants.h>
-#include <core/Game.h>
 #include <float.h>
 #include <lib/windows.h>
 #include <render/lib/opengl.h>
 
+Game* App::_game = nullptr;
 bool App::_isFullScreenActive = false;
 
 void App::moveConsoleToCorner() {
@@ -35,7 +35,10 @@ void App::setWindowedMode(GLFWwindow* window) {
 }
 
 void App::onResize(GLFWwindow*, int width, int) noexcept {
-    glViewport(0, 0, width, (int)((float)width / CommonConstants::screenAspect));
+    int scaledHeight = (int)((float)width / CommonConstants::screenAspect);
+    glViewport(0, 0, width, scaledHeight);
+    ResizeScreenEventArgs args(width, scaledHeight);
+    _game->raiseEvent(Events::onResizeScreen, args);
 }
 
 void App::onKeyInput(GLFWwindow* window, int key, int, int action, int) noexcept {
@@ -75,7 +78,11 @@ GLFWwindow* App::initMainWindow() {
 
 void App::run() {
     GLFWwindow* window = initMainWindow();
-    Game& game = GameFactory::make();
+    _game = &GameFactory::make();
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    ResizeScreenEventArgs args(viewport[2], viewport[3]);
+    _game->raiseEvent(Events::onResizeScreen, args);
     double lastTime = glfwGetTime();
     double modelAccumulator = 0.0, renderAccumulator = 0.0;
     while (!glfwWindowShouldClose(window)) {
@@ -84,11 +91,11 @@ void App::run() {
         renderAccumulator += currentTime - lastTime;
         lastTime = currentTime;
         if (modelAccumulator >= CommonConstants::modelDeltaTimeSec) {
-            game.update();
+            _game->update();
             modelAccumulator -= CommonConstants::modelDeltaTimeSec;
         }
         if (renderAccumulator >= CommonConstants::renderDeltaTimeSec) {
-            game.render();
+            _game->render();
             renderAccumulator -= CommonConstants::renderDeltaTimeSec;
             glfwSwapBuffers(window);
         }

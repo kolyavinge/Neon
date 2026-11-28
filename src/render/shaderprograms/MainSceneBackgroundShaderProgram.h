@@ -11,7 +11,7 @@ class MainSceneBackgroundShaderProgram : public ShaderProgram {
     } _locations = {};
 
 public:
-    void setResolution(float width, float height);
+    void setResolution(int width, int height);
     void setBackgroundColor(Vector3 color);
 
 private:

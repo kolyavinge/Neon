@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/EventManager.h>
 #include <lib/di/Resolver.h>
 #include <lib/system.h>
 #include <render/common/ShaderProgramCollection.h>
@@ -15,12 +16,14 @@ public:
     static BackgroundRenderer* resolve(Resolver& resolver) {
         return new BackgroundRenderer(
             resolver.resolve<ShaderProgramCollection>(),
-            resolver.resolve<VAORenderer>());
+            resolver.resolve<VAORenderer>(),
+            resolver.resolve<EventManager>());
     }
 
     BackgroundRenderer(
         ShaderProgramCollection& shaderProgramCollection,
-        VAORenderer& vaoRenderer
+        VAORenderer& vaoRenderer,
+        EventManager& eventManager
     );
 
     void render();

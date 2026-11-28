@@ -1,4 +1,5 @@
 #include <common/AssetsDirectory.h>
+#include <common/EventManager.h>
 #include <common/InputManager.h>
 #include <core/Game.h>
 #include <core/GameInitializer.h>
@@ -46,6 +47,7 @@
 
 void MainInjectModule::init(Binder& binder) {
     binder.bindSingleton<AssetsDirectory>(AssetsDirectory::resolve);
+    binder.bindSingleton<EventManager>();
     binder.bindSingleton<InputManager>();
     binder.bindSingleton<Game>(Game::resolve);
     binder.bindSingleton<GameInitializer>(GameInitializer::resolve);

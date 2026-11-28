@@ -2,9 +2,16 @@
 
 BackgroundRenderer::BackgroundRenderer(
     ShaderProgramCollection& shaderProgramCollection,
-    VAORenderer& vaoRenderer) :
+    VAORenderer& vaoRenderer,
+    EventManager& eventManager) :
     _shader(shaderProgramCollection.mainSceneBackground),
     _vaoRenderer(vaoRenderer) {
+    eventManager.attachToEvent(Events::onResizeScreen, [&](EventArgs& args) {
+        ResizeScreenEventArgs& rsArgs = (ResizeScreenEventArgs&)args;
+        _shader.use();
+        _shader.setResolution(rsArgs.width, rsArgs.height);
+        _shader.unuse();
+    });
 }
 
 void BackgroundRenderer::render() {

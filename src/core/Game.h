@@ -1,5 +1,6 @@
 #pragma once
 
+#include <common/EventManager.h>
 #include <common/InputManager.h>
 #include <core/GameInitializer.h>
 #include <core/ScreenManager.h>
@@ -13,6 +14,7 @@ class Game : public Object {
     InputManager& _inputManager;
     ScreenManager& _screenManager;
     GameInitializer& _gameInitializer;
+    EventManager& _eventManager;
     RenderDebuger& _renderDebuger;
     GameWorld _gameWorld;
 
@@ -22,6 +24,7 @@ public:
             resolver.resolve<InputManager>(),
             resolver.resolve<ScreenManager>(),
             resolver.resolve<GameInitializer>(),
+            resolver.resolve<EventManager>(),
             resolver.resolve<RenderDebuger>());
     }
 
@@ -29,11 +32,13 @@ public:
         InputManager& inputManager,
         ScreenManager& screenManager,
         GameInitializer& gameInitializer,
+        EventManager& eventManager,
         RenderDebuger& debugInfo);
 
     void init();
     void update();
     void render();
+    void raiseEvent(Events event, EventArgs& args);
 };
 
 class GameFactory : public Object {

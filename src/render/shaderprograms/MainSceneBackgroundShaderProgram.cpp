@@ -5,7 +5,7 @@ void MainSceneBackgroundShaderProgram::initAfterLink() {
     _locations.backgroundColor = getUniformLocation("backgroundColor");
 }
 
-void MainSceneBackgroundShaderProgram::setResolution(float width, float height) {
+void MainSceneBackgroundShaderProgram::setResolution(int width, int height) {
     setVector2(_locations.resolution, width, height);
 }
 

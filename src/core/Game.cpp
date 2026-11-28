@@ -6,10 +6,12 @@ Game::Game(
     InputManager& inputManager,
     ScreenManager& screenManager,
     GameInitializer& gameInitializer,
+    EventManager& eventManager,
     RenderDebuger& renderDebuger) :
     _inputManager(inputManager),
     _screenManager(screenManager),
     _gameInitializer(gameInitializer),
+    _eventManager(eventManager),
     _renderDebuger(renderDebuger) {
 }
 
@@ -27,6 +29,10 @@ void Game::update() {
 void Game::render() {
     _screenManager.getCurrentScreenRenderer().render();
     _renderDebuger.print(_gameWorld);
+}
+
+void Game::raiseEvent(Events event, EventArgs& args) {
+    _eventManager.raiseEvent(event, args);
 }
 
 Game& GameFactory::make() {

@@ -2,7 +2,7 @@
 
 out vec4 FragColor;
 
-uniform vec2 resolution;
+uniform ivec2 resolution;
 uniform vec3 backgroundColor;
 
 void main() {
